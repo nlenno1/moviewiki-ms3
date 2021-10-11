@@ -74,6 +74,8 @@ User Permissions will be split into 3 Tiers :
 
 ## Skeleton
 
+To view the wireframes for this project [click here](readme_assets/wireframe_display.md)
+
 ### Design
 
 **Colour Scheme**
