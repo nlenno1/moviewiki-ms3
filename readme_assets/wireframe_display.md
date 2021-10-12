@@ -5,26 +5,26 @@ Base/Home
 Sign Up
 ![sing_up.html wireframe](wireframes/sign_up.html.jpg)
 
-view_user
+Sign In
+![sing_in.html wireframe](wireframes/sign_in.html.jpg)
+
+View_user
 ![view_user.html wireframe](wireframes/view_user.html.jpg)
 
-Create Movie Profile
+Create or Edit Movie Profile
 ![create_movie-profile.html wireframe](wireframes/create_movie_profile.html.jpg)
 
-view_movie
+View Movie Profile
 ![view_movie.html wireframe](wireframes/view_movie.html.jpg)
 
-create_review
+Create or Edit Review
 ![create_review.html wireframe](wireframes/create_review.html.jpg)
 
-view_all_movie_reviews
+View All Movie Reviews
 ![view_all_movie_reviews.html wireframe](wireframes/view_all_movie_reviews.html.jpg)
 
-genre
-![genre.html_admin_only wireframe](wireframes/genre.html_admin_only.jpg)
-
-notifications
-![notifications.html wireframe](wireframes/notifications.html.jpg)
+Genre Control (Admin Only)
+![genre.html wireframe](wireframes/genre.html.jpg)
 
 Contact
 ![contact.html wireframe](wireframes/contact.html.jpg)
