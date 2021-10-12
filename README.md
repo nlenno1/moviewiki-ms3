@@ -95,6 +95,111 @@ Feature R (Links to socials) has been left in due to its simplicity.
 
 # Scope 
 
+## Functionality Requirements
+- Clean and themed presentation of information
+ - Easy navigation to the required information
+ - Quick loading of the website
+ - Quick response times from calls to MongoDB
+ - Contact the developer for and feedback or bug reports
+
+## Features
+
+This is a full breakdown of all the features & elements that will be impliments for the first production release of MovieWiki.
+
+### Multi Page Elements
+
+**Notifications** - All notifications will come in the form of "Toasts" displayed on the bottom of the viewing screen.
+
+**Navbar**
+- Logo - to establish identity and act as a home button on smaller devices
+- Home button - link to homepage
+- About button - link to about page/modal containing information and instructions  to inform users on what they can do on the website
+- "Write a review" button - link to create_review.html (Only visible when logged in)
+- Contact button - link to contact.html which will auto fill user information when logged in
+- Sign In/Sign Up buttons - link to sign_in.html/sign_up.html (Only visable when not logged in)
+- Profile button - link to view_user.html with hover effect popover that displays username
+- Log Out button - runs log_out() function and reloads home page
+
+**Footer**
+- Logo - to establish identity and act as a home button
+- Copyright information
+- Back to top button - for easier navigation of larger pages to links in the navbar
+- Links to socials for promotion
+
+### base.html/index.html
+
+- Movie displays - on load will show User appropriate or reccommended movies based on their profile or previous interactions.
+- Movie Search Bar - Will search all Movie names and return the results in the space where the Movie Displays were
+
+### sign_up.html
+
+- Form input section - Collects data from user. Favourite Film Genre list generated from Genre collection in the database
+- Create Account button - will "POST" the data to the database and return the user to their view_user.html page
+- Cancel button - links to homepage
+
+### sign_in.html
+
+- Form input section - Collects data from user
+- Login button - compares the submitted data with the stored data to confirm Users identity. If information is correct then User is returned to their view_user.html page
+
+### view_user.html
+
+- User information section - formats and presents information recieved from the database
+- Update Profile button - link to sign_up.html in edit mode to edit page content (only avaliable to Admin and the User who created the account)
+- Delete Profile button - calls the delete_profile() function and returns user to the homepage with a deletion notification (only avaliable to Admin and the User who created the page)
+- Latest Reviews Section - Shows the last 3 reviews this user added. This section includes buttons for every review displayed to View the Movie Profile reviewed, View other Reviews on that particular Movie and, if Admin or the User who created the account, Edit or Delete the review
+
+### genre.html (admin only)
+
+- Add New Genre input and button - Collects admin input and "POST"s it to the database
+- Genre Accordion section - An accordion section will be generated for each Genre in the Genre collection with an Update Genre section and Delete Genre button
+- Update Genre input and button - Collects admin input and "POST"s it to the database
+- Delete - calls the delete_genre() function and returns admin to genre.html
+
+### create_movie_profile.html
+
+- Form input section - Collects data from user. Genre list generated from Genre collection in the database. On focus, a popover will explain what each field requires to validate the input
+- "Is this movie part of a seres" switch - This switch toggles the extra input section, in and out of view, which requires additional information about the series that this movie is part of
+- Create Movie Profile button - will "POST" the data to the database and return the user to the view_movie.html page they just created
+- Cancel button - Cancel button will return User to home page
+
+        If user is Admin, there will also be a Delete Profile button. Delete Profile button calls the delete_profile() function and returns user to the homepage with a deletion notification.
+
+        If user is editing a Movie profile, then the buttons will be update and cancel but with similar functionality
+
+### view_movie.html
+
+- Movie information section - formats and presents information recieved from the database
+- Latest Reviews Section - Shows basic information for the 3 latest reviews for this movie
+- "I Have Watched This" Button - Toggles the movie on the Users watch list and adds the glasses icon next to the Movie Title if Movie is on the list
+- "View All Reviews" button - links to view_all_movie_reviews.html to allow the user to view all the reviews of that specific Movie
+- Accordion Section - Accordion elements containing supporting information, videos and possible API interfaces and monetizable links on future updates
+- Edit Profile button - link to create_movie_profile.html in edit mode to edit page content (only avaliable to Admin and the User who created the page)
+- Delete Profile button - calls the delete_profile() function and returns user to the homepage with a deletion notification (only avaliable to Admin and the User who created the page)
+- Similar Movies Section - Displays movies in the same genre as the current film, not watched by the user and ranked in order of average star ratings
+
+### create_review.html
+
+- Form input section - Collects data from user. Movie title dropdown will be auto filled if coming from a Movie Profile. On focus, a popover will explain what each field requires to validate the input
+- Submit Review - will "POST" the data to the database and return the user to the view_movie.html page they just created a review for
+- Delete Profile button - calls the delete_profile() function and returns user to the homepage with a deletion notification
+- Cancel button - Cancel button will return User to home page 
+
+### view_all_movie_reviews
+
+- Review cards - contain all information in the review
+- Update Review button - link to create_review.html in edit mode to edit review content (only avaliable to Admin and the User who created the review)
+- Delete Review button - calls the delete_profile() function and returns user to the homepage with a deletion notification (only avaliable to Admin and the User who created the review)
+
+### contact.html
+
+- Form input section - Collects data from user. On focus, a popover will explain what each field requires to validate the input
+- Send Message Button - Passes message data onto API to send message. Returns user to contact.html with an empty form and a sent message notification.
+- Cancel button - Cancel button will return User to home page 
+
+---
+## Features for future releases
+
 ## Structure
 
 ## Skeleton
@@ -108,10 +213,6 @@ To view the wireframes for this project [click here](readme_assets/wireframe_dis
 **Typography**
 
 **Imagery**
-
-# Features
-
-## Features for future releases
 
 # Credits
 
