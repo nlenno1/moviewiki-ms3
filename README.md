@@ -200,6 +200,15 @@ This is a full breakdown of all the features & elements that will be impliments 
 ---
 ## Features for future releases
 
+- Advanced Movie Search using mulitple parameters
+- Search User Profiles
+- Recieve notificatons about activity related to - the User
+- Display Cinema times & location/Link to streaming services on Movie Profile
+- Report/Suggest corrections/updates for Movie Profiles
+- Moderate Content being submitted by Users
+- Actor/Actresses profiles
+- Add computer location to User profile to change movie age restrictions depending on country
+
 ## Structure
 
 ## Skeleton
