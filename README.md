@@ -63,7 +63,7 @@ This is the third of four Milestone Projects that make up the Full Stack Web Dev
 
 ### Strategy Table
 
-After an initial planning session I drew up a list of potential features to build into this project. Below is my Importance Viability analysis of these features. All scores are out of 10.
+After an initial planning session I drew up a list of potential features to build into this project. Below is my Importance Viability analysis of these features.
 
 | ID      | Feature | Importance |	Viability |
 | ----------- | ----------- | ----------- | ----------- |
@@ -163,9 +163,9 @@ This is a full breakdown of all the features & elements that will be impliments 
 - Create Movie Profile button - will "POST" the data to the database and return the user to the view_movie.html page they just created
 - Cancel button - Cancel button will return User to home page
 
-        If user is Admin, there will also be a Delete Profile button. Delete Profile button calls the delete_profile() function and returns user to the homepage with a deletion notification.
+If user is Admin, there will also be a Delete Profile button. Delete Profile button calls the delete_profile() function and returns user to the homepage with a deletion notification.
 
-        If user is editing a Movie profile, then the buttons will be update and cancel but with similar functionality
+If user is editing a Movie profile, then the buttons will be update and cancel but with similar functionality
 
 ### view_movie.html
 
