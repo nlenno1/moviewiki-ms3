@@ -223,6 +223,30 @@ To view the wireframes for this project [click here](readme_assets/wireframe_dis
 
 **Imagery**
 
+# Technologies Used
+
+- [HTML5](https://developer.mozilla.org/en-US/docs/Glossary/HTML5) - Programming Language
+- [CSS 3](https://developer.mozilla.org/en-US/docs/Web/CSS) - Programming Language
+- [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript) - Programming Language
+- [MongoDB](https://www.mongodb.com/) - Data base storage
+- [Flask](https://flask.palletsprojects.com/en/2.0.x/) - Python Web Framework
+- [jQuery](https://jquery.com/) - JavaScript Library
+- [Bootstrap v4.3.1](https://getbootstrap.com/) - Library Import
+- [Google Fonts](https://fonts.google.com/) - Typography Import
+- [Git Pod](https://gitpod.io/) - IDE (Integrated Development Environment)
+- [Git](https://git-scm.com/) - Version Control Tool
+- [Github](https://github.com/) - Cloud based hosting service to manager my Git Repositories
+- [Code Institute GitPod Template](https://github.com/Code-Institute-Org/gitpod-full-template) - Provides GitPod extensions to help with code production
+- [Google Chrome Development Tools](https://developer.chrome.com/docs/devtools/) - Development Tools
+- [Tiny JPG](https://tinyjpg.com/) - JPG and PNG Image Compressor
+- [Figma](https://www.figma.com/) - Wireframe designer software
+- [HTML Formatter](https://www.freeformatter.com/html-formatter.html#ad-output) - Formatting HTML Code
+- [CSS Beautifier](https://www.freeformatter.com/css-beautifier.html) - Beautifying CSS Code
+- [JavaScript Validator](https://beautifytools.com/javascript-validator.php) - Validating JS code
+- [GIMP](https://www.gimp.org/) - Image editor
+- [Coolors](https://coolors.co/) - Colour scheme generator
+- [Font Awesome](https://fontawesome.com/) - Icon provider
+
 # Credits
 
 ### Code snippets
