@@ -211,6 +211,23 @@ If user is editing a Movie profile, then the buttons will be update and cancel b
 
 ## Structure
 
+**Topology Diagrams**
+
+The Blue elements in these diagrams signify pages that are accessable from Navbar at all times.
+
+Buttons not referances will return to the same page, use Ajax so no reload or return the home page.
+User Update Profile Page and Update Profile Review only avaliable if User created page or review.
+
+Guest User
+![Website Topology Diagram Guest User](readme_assets/website_structure_guest_user.jpg)
+
+Contributer User
+![Website Topology Diagram Guest User](readme_assets/website_structure_contributer_user.jpg)
+
+Admin User
+![Website Topology Diagram Guest User](readme_assets/website_structure_admin_user.jpg)
+
+
 ## Skeleton
 
 To view the wireframes for this project [click here](readme_assets/wireframe_display.md)
