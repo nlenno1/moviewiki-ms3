@@ -3,8 +3,14 @@ from flask import Flask
 if os.path.exists("env.py"):
     import env
 
+
 # create an instance of Flask called app
 app = Flask(__name__)
+
+
+@app.route("/")
+def test():
+    return "Hello World. Testing that Heroku is connected up properly"
 
 
 # application running instructions by retieving hidden env variables
