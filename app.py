@@ -12,5 +12,4 @@ if __name__ == "__main__":
     # retrieve the hidden env values and set them in variables
     app.run(host=os.environ.get("IP"),
             port=int(os.environ.get("PORT")),
-            debug=True)# this only used in development to debug
-
+            debug=True)  # this only used in development to debug
