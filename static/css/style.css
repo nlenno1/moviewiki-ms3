@@ -2,6 +2,39 @@ body {
     font-family: Montserrat, sans-serif;
 }
 
-h1, h2, h3 {
+h1, h2, h3,.navbar-brand {
     font-family: Bebas Neue, sans-serif;
+}
+
+/*  Navbar */
+
+.navbar-brand, .nav-link {
+    color: #FAFAFA;
+    transition: 0.25s;
+}
+
+.navbar-brand {
+    font-size: 2rem;
+    padding: 0.25rem 1rem 0 1rem;
+    margin-left: 1rem;
+} 
+
+.navbar-brand:hover, .nav-link:hover {
+    color: #EEBC1D;
+}
+
+.navbar-buttons {
+    margin-right: 2rem;
+    justify-content: end !important;
+}
+
+.navbar-button {
+    display: block;
+    background-color: #EEBC1D;
+    color: #000;
+    font-weight: 600;
+    margin: .125rem 0.25rem 0;
+    padding: .375rem .75rem;
+    border-radius: .25rem;
+    text-decoration: none;
 }
