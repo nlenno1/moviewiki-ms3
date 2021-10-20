@@ -8,7 +8,7 @@ h1, h2, h3,.navbar-brand {
 
 /*  Navbar */
 
-.navbar-brand, .nav-link {
+.navbar-brand, .navbar-dark .navbar-nav .nav-link {
     color: #FAFAFA;
     transition: 0.25s;
 }
@@ -19,7 +19,7 @@ h1, h2, h3,.navbar-brand {
     margin-left: 1rem;
 } 
 
-.navbar-brand:hover, .nav-link:hover {
+.navbar-dark .navbar-brand:hover, .navbar-dark .navbar-nav .nav-link:hover {
     color: #EEBC1D;
 }
 
@@ -31,10 +31,37 @@ h1, h2, h3,.navbar-brand {
 .navbar-button {
     display: block;
     background-color: #EEBC1D;
+    border: 2px solid #EEBC1D;
     color: #000;
     font-weight: 600;
     margin: .125rem 0.25rem 0;
     padding: .375rem .75rem;
     border-radius: .25rem;
     text-decoration: none;
+    transition: 0.25s;
 }
+
+.navbar-button:hover {
+    color: #c4c4c4;
+    background-color: transparent;
+}
+
+.navbar-toggler {
+    margin-right: 2rem;
+}
+
+
+/* Side Bar */
+
+.sidenav {
+    height: 100%; /* 100% Full-height */
+    width: 0; /* 0 width - change this with JavaScript */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Stay on top */
+    top: 0; /* Stay at the top */
+    left: 0;
+    background-color: #111; /* Black*/
+    overflow-x: hidden; /* Disable horizontal scroll */
+    padding-top: 60px; /* Place content 60px from the top */
+    transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+  }
