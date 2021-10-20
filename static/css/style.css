@@ -19,7 +19,7 @@ h1, h2, h3,.navbar-brand {
     margin-left: 1rem;
 } 
 
-.navbar-dark .navbar-brand:hover, .navbar-dark .navbar-nav .nav-link:hover {
+.navbar-dark .navbar-brand:hover, .navbar-dark .navbar-nav .nav-link:hover, .sidenav a:hover, .sidenav .closebtn:hover {
     color: #EEBC1D;
 }
 
@@ -55,13 +55,39 @@ h1, h2, h3,.navbar-brand {
 
 .sidenav {
     height: 100%; /* 100% Full-height */
-    width: 0; /* 0 width - change this with JavaScript */
+    width: 280px; /* 0 width - change this with JavaScript */
     position: fixed; /* Stay in place */
-    z-index: 1; /* Stay on top */
+    z-index: 1050; /* Stay on top */
     top: 0; /* Stay at the top */
-    left: 0;
+    right: 0;
     background-color: #111; /* Black*/
     overflow-x: hidden; /* Disable horizontal scroll */
     padding-top: 60px; /* Place content 60px from the top */
     transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
-  }
+}
+
+.sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 1.25rem;
+    color: #fafafa;
+    display: block;
+    transition: 0.3s;
+}
+
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 4rem;
+    border: none;
+    background-color: transparent;
+    color: #fafafa;
+}
+  
+
+@media (max-width: 320px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav {width:100%;}
+    .sidenav a {font-size: 18px;}
+}
