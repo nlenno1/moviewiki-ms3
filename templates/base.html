@@ -86,11 +86,44 @@
     </aside>
     <!-- Mask to cover onscreen content when sidenav is opened -->
     <div id="content-cover" class="content-cover" onclick="closeNav()"></div>
+    <img class="header-image"></img>
     
     <h1>MovieWiki</h1>
     {% block content %}
 
     {% endblock %}
+
+    <footer class="fixed-bottom">
+        <div class="row text-center g-0">
+            <div class="col-12 col-sm-4">
+                <div class="socials">
+                    <a href="http://www.facebook.com">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                    <a href="http://www.twitter.com">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="http://www.github.com">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="http://www.instagram.com">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="http://www.linkedin.com">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="col-12 col-sm-4 socials">
+                <div class="logo">
+                    MovieWiki
+                </div>
+            </div>
+            <div class="col-12 col-sm-4 socials">
+                <div class="back-to-top-button" onclick="backToTop()">Back To Top</div>
+            </div>
+        </div>
+    </footer>
 
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>

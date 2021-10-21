@@ -3,7 +3,7 @@ body {
     transition: 0.3s;
 }
 
-h1, h2, h3,.navbar-brand {
+h1, h2, h3, .navbar-brand, .logo {
     font-family: Bebas Neue, sans-serif;
 }
 
@@ -24,8 +24,9 @@ h1, h2, h3,.navbar-brand {
     margin-left: 1rem;
 } 
 
-.navbar-dark .navbar-brand:hover, .navbar-dark .navbar-nav .nav-link:hover, .sidenav a:hover, .sidenav .closebtn:hover {
+.navbar-dark .navbar-brand:hover, .navbar-dark .navbar-nav .nav-link:hover, .sidenav a:hover, .sidenav .closebtn:hover, .socials i:hover, .logo:hover, .back-to-top-button:hover {
     color: #EEBC1D;
+    cursor: pointer;
 }
 
 .bg-dark {
@@ -121,6 +122,7 @@ h1, h2, h3,.navbar-brand {
 .sidenav .closebtn {
     position: absolute;
     top: 0;
+    margin: 0;
     right: 25px;
     font-size: 4rem;
     border: none;
@@ -131,6 +133,36 @@ h1, h2, h3,.navbar-brand {
 
 @media (max-width: 320px) {
     .sidenav {padding-top: 15px;}
-    .sidenav {width:100%;}
     .sidenav a {font-size: 18px;}
+    .navbar-brand {margin: 0;}
+    .navbar-toggler  {margin-right: 0.5rem;}
+}
+
+/* Footer */
+
+footer {
+    background-color: #111;
+    color: #fafafa;
+    border-top: 5px solid #EEBC1D;
+}
+
+.socials {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.socials i, .back-to-top-button, .logo {
+    text-decoration: none;
+    color: #fafafa;
+    transition: 0.3s;
+    font-size: 1.3rem;
+    margin: 10px 5px;
+    padding: 3px;
+}
+
+footer .logo {
+    font-size: 2rem;
+    margin: 1px 5px;
 }
