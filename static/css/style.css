@@ -1,5 +1,6 @@
 body {
     font-family: Montserrat, sans-serif;
+    transition: 0.3s;
 }
 
 h1, h2, h3,.navbar-brand {
@@ -7,6 +8,10 @@ h1, h2, h3,.navbar-brand {
 }
 
 /*  Navbar */
+
+.navbar {
+    border-bottom: 5px solid #EEBC1D;
+}
 
 .navbar-brand, .navbar-dark .navbar-nav .nav-link {
     color: #FAFAFA;
@@ -23,22 +28,30 @@ h1, h2, h3,.navbar-brand {
     color: #EEBC1D;
 }
 
+.bg-dark {
+    background-color: #111 !important;
+}
+
 .navbar-buttons {
     margin-right: 2rem;
     justify-content: end !important;
 }
 
 .navbar-button {
-    display: block;
+    width: 100px;
     background-color: #EEBC1D;
     border: 2px solid #EEBC1D;
     color: #000;
     font-weight: 600;
     margin: .125rem 0.25rem 0;
-    padding: .375rem .75rem;
+    padding: .375rem .25rem;
     border-radius: .25rem;
     text-decoration: none;
     transition: 0.25s;
+}
+
+.navbar-button i {
+    margin-right: 5px;
 }
 
 .navbar-button:hover {
@@ -55,24 +68,54 @@ h1, h2, h3,.navbar-brand {
 
 .sidenav {
     height: 100%; /* 100% Full-height */
-    width: 280px; /* 0 width - change this with JavaScript */
+    width: 0px; /* 0 width - change this with JavaScript */
     position: fixed; /* Stay in place */
     z-index: 1050; /* Stay on top */
     top: 0; /* Stay at the top */
     right: 0;
     background-color: #111; /* Black*/
+    border-left: 0px solid #EEBC1D;
     overflow-x: hidden; /* Disable horizontal scroll */
     padding-top: 60px; /* Place content 60px from the top */
     transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
 }
 
+.content-cover {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1045;
+    top: 0;
+    left: 0;
+    background-color: rgba(0,0,0, 0.4);
+    overflow-y: auto;
+    overflow-x: hidden;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 1s;
+}
+
+.sidenav hr {
+    border: 2px solid #EEBC1D;
+    background-color: #EEBC1D;
+    margin: 20px 32px;
+    border-radius: 50px;
+    width: 75%;
+    opacity: 1;
+}
+
 .sidenav a {
+    width: 180px;
     padding: 8px 8px 8px 32px;
     text-decoration: none;
     font-size: 1.25rem;
     color: #fafafa;
     display: block;
     transition: 0.3s;
+}
+
+.sidenav button {
+    margin: 8px 8px 8px 32px;
 }
 
 .sidenav .closebtn {
