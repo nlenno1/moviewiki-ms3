@@ -21,6 +21,7 @@
     <title> MovieWiki </title>
 </head>
 <body>
+    <!-- Navbar -->
     <nav class="navbar navbar-expand-md sticky-top navbar-dark bg-dark">
         <a class="navbar-brand" href="#">MovieWiki</a>
         <button onclick="openNav()" class="navbar-toggler" id="sidenav-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -86,9 +87,10 @@
     </aside>
     <!-- Mask to cover onscreen content when sidenav is opened -->
     <div id="content-cover" class="content-cover" onclick="closeNav()"></div>
+    <!-- Content container to keep footer at bottom with no content -->
     <div class="content">
-        <img class="header-image"></img>
-        <h1>MovieWiki</h1>
+        <img id="header-image" src="{{ url_for('static', filename='img/movie_header_image.jpg') }}"></img>
+        <h1 id="header-title">MovieWiki</h1>
 
         {% block content %}
     
