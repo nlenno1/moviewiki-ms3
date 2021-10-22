@@ -141,7 +141,20 @@ h1, h2, h3, .navbar-brand, .logo {
 /* Content */
 
 .content {
-    min-height: calc(100vh - 159px);
+    min-height: calc(100vh - 237px);
+}
+
+@media (min-width: 768px) {
+    .content {
+        min-height: calc(100vh - 135px);
+    }
+}
+
+@media (max-width: 320px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
+    .navbar-brand {margin: 0;}
+    .navbar-toggler  {margin-right: 0.5rem;}
 }
 
 /* Footer */
