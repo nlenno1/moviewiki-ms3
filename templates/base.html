@@ -87,13 +87,17 @@
     <!-- Mask to cover onscreen content when sidenav is opened -->
     <div id="content-cover" class="content-cover" onclick="closeNav()"></div>
     <img class="header-image"></img>
+
+    <div class="content">
+        <h1>MovieWiki</h1>
+
+        {% block content %}
     
-    <h1>MovieWiki</h1>
-    {% block content %}
+        {% endblock %}
+    </div>
 
-    {% endblock %}
 
-    <footer class="fixed-bottom">
+    <footer>
         <div class="row text-center g-0">
             <div class="col-12 col-sm-4">
                 <div class="socials">

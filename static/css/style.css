@@ -138,6 +138,12 @@ h1, h2, h3, .navbar-brand, .logo {
     .navbar-toggler  {margin-right: 0.5rem;}
 }
 
+/* Content */
+
+.content {
+    min-height: calc(100vh - 159px);
+}
+
 /* Footer */
 
 footer {
