@@ -22,4 +22,8 @@ function closeNav() {
     contentCover.style.opacity = "0";
 }
 
+function backToTop() {
+    window.scrollTo(0, 0)
+}
+
 
