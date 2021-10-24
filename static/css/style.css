@@ -7,6 +7,26 @@ h1, h2, h3, .navbar-brand, .logo {
     font-family: Bebas Neue, sans-serif;
 }
 
+.generic-button {
+    border-radius: 10px;
+    background-color: #c4c4c4;
+    font-weight: 600;
+    width: 180px;
+    margin: 0 2px;
+}
+
+.button-color-green {
+    background-color: #00DE00;
+}
+
+.button-color-gold {
+    background-color: #EEBC1D;
+}
+
+.button-color-red {
+    background-color: #D80000;
+}
+
 /*  Navbar */
 
 .navbar {
@@ -68,17 +88,17 @@ h1, h2, h3, .navbar-brand, .logo {
 /* Side Bar */
 
 .sidenav {
-    height: 100%; /* 100% Full-height */
-    width: 0px; /* 0 width - change this with JavaScript */
-    position: fixed; /* Stay in place */
-    z-index: 1050; /* Stay on top */
-    top: 0; /* Stay at the top */
+    height: 100%;
+    width: 0px; 
+    position: fixed;
+    z-index: 1050; 
+    top: 0; 
     right: 0;
-    background-color: #111; /* Black*/
+    background-color: #111; 
     border-left: 0px solid #EEBC1D;
-    overflow-x: hidden; /* Disable horizontal scroll */
-    padding-top: 60px; /* Place content 60px from the top */
-    transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+    overflow-x: hidden; 
+    padding-top: 60px; 
+    transition: 0.5s; 
 }
 
 .content-cover {
@@ -202,4 +222,42 @@ footer {
 footer .logo {
     font-size: 2rem;
     margin: 1px 5px;
+}
+
+/* Genre Management */
+
+.new-genre-form {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 40px 0 50px;
+    flex-wrap: wrap;
+}
+
+.accordion-genre-form {
+    margin: 10px 0;
+}
+
+.input-container {
+    position: relative;
+}
+
+.new-genre-form input {
+    width: 80vw;
+    min-width: 180px;
+    margin: 10px 20px 30px;
+    border-radius: 10px;
+    padding-left: 55px;
+    position: relative;
+}
+
+.new-genre-form i {
+    position: absolute;
+    left: 40px;
+    top: 17px;
+}
+
+@media (min-width: 768px) {
+    .new-genre-form input {width: 450px; margin: 0 20px 0 0;}
+    .new-genre-form i {position: absolute; left: 20px; top: 8px;}
 }

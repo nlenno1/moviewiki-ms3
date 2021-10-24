@@ -1,7 +1,54 @@
 {% extends "base.html" %}
 {% block content %}
 
-    <h2>Genre Management</h2>
+    <h1 id="header-title">MovieWiki</h1>
+
+    <div class="container-md">
+        <div class="row g-0">
+            <div class="col">
+                <form class="new-genre-form" action="#">
+                    <div class="input-container">
+                        <input type="text" name="genre-name" id="genre-name" placeholder="New Genre Name" required>
+                        <i class="fas fa-folder-plus"></i>
+                    </div>
+                    <button class="generic-button button-color-green" type="submit">Add New Genre</button>
+                </form>
+                <div class="card genre-display-card">
+                    <div class="card-body">
+                        <div class="accordion" id= "genreAccordion">
+                            {% for genre in genre_list %}
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="heading{{ genre.genre_name|capitalize }}">
+                                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ genre.genre_name|capitalize }}" aria-expanded="true" aria-controls="collapseOne">
+                                    {{ genre.genre_name|capitalize }}
+                                  </button>
+                                </h2>
+                                <div id="collapse{{ genre.genre_name|capitalize }}" class="accordion-collapse collapse" aria-labelledby="heading{{ genre.genre_name|capitalize }}" data-bs-parent="#genreAccordion">
+                                    <div class="accordion-body">
+                                        <div class="row g-0">
+                                            <form class="new-genre-form accordion-genre-form" action="#">
+                                                <div class="col col-md-7">
+                                                    <div class="input-container">
+                                                        <input type="text" name="genre-name" id="genre-name" placeholder="New Genre Name" required>
+                                                        <i class="fas fa-folder-plus"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="col col-md-5">
+                                                    <button class="generic-button button-color-gold" type="submit">Update Genre</button>
+                                                    <button class="generic-button button-color-red" type="submit">Delete</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                              </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     {% for genre in genre_list %}
         {{ genre.genre_name }} <br>
