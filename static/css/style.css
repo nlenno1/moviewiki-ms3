@@ -18,6 +18,11 @@ h1, h2, h3, .navbar-brand, .logo {
     font-weight: 600;
     width: 180px;
     margin: 0 2px;
+    transition: 0.3s;
+}
+
+.generic-button:hover {
+    color: #fafafa;
 }
 
 .button-color-green {
