@@ -121,8 +121,9 @@ h1, h2, h3, .navbar-brand, .logo {
     transition: opacity 1s;
 }
 
-.sidenav hr {
-    border: 2px solid #EEBC1D;
+.side-nav hr,.form-card hr {
+    height: 5px;
+    border: none;
     background-color: #EEBC1D;
     margin: 20px 32px;
     border-radius: 50px;
