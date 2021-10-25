@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <h1 id="header-title">Sign Up</h1>
+
+    <div class="container">
+        <div class="card form-card">
+            <form class="generic-form" action="POST">
+                <input type="text" name="username" id="username" placeholder="Username" required>
+                <input type="password" name="password" id="password" placeholder="Password" required>
+                <input type="password" name="password-confirm" id="password-confirm" placeholder="Confirm Password" required>
+                <hr>
+                <input type="text" name="firstname" id="firstname" placeholder="First Name" required>
+                <input type="text" name="lastname" id="lastname" placeholder="Last Name" required>
+                <input type="date" name="dob" id="dob" placeholder="Date of Birth" required>
+                <input type="email" name="email" id="email" placeholder="Email Address" required>
+                <hr>
+                <label for="favourite-genre" class="text-center">Pick your favourite movie genre. You can choose more than one.</label>
+                <div class="checkbox-container">
+                    {% for genre in genre_list %}
+                    <div class="row">
+                        <div class="col-6 text-end">
+                            <label for="{{ genre.genre_name }}">{{ genre.genre_name|capitalize }}</label>
+                        </div>
+                        <div class="col-6 col-sm-2 position-start">
+                            <input type="checkbox" id="{{ genre.genre_name }}" name="{{ genre.genre_name }}" value="{{ genre.genre_name|capitalize }}">
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="buttons-container mt-4">
+                    <button type="submit" class="generic-button button-color-green mt-2">Create Account</button>
+                    <button class="generic-button mt-2">Cancel</button>
+                    <button type="submit" class="generic-button button-color-red mt-2">Delete Account</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+{% endblock %}

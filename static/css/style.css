@@ -7,6 +7,11 @@ h1, h2, h3, .navbar-brand, .logo {
     font-family: Bebas Neue, sans-serif;
 }
 
+.container {
+    display: flex;
+    justify-content: center;
+}
+
 .generic-button {
     border-radius: 10px;
     background-color: #c4c4c4;
@@ -149,7 +154,7 @@ h1, h2, h3, .navbar-brand, .logo {
     background-color: transparent;
     color: #fafafa;
 }
-  
+
 
 @media (max-width: 320px) {
     .sidenav {padding-top: 15px;}
@@ -260,4 +265,44 @@ footer .logo {
 @media (min-width: 768px) {
     .new-genre-form input {width: 450px; margin: 0 20px 0 0;}
     .new-genre-form i {position: absolute; left: 20px; top: 8px;}
+}
+
+/* Sign Up */
+
+.generic-form {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.generic-form input {
+    width: 100%;
+    margin-bottom: 8px;
+}
+
+.generic-form select {
+    height: 100%;
+    max-height: 120px;
+    margin: 8px;
+    width: 200px;
+}
+
+.buttons-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.form-card {
+    margin: 30px 0;
+    max-width: 550px;
+    padding: 20px 15px;
+}
+
+.checkbox-container {
+    width: 100%;
+    margin: 25px 0;
 }

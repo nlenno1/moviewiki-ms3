@@ -3,9 +3,10 @@ from flask import (
     Flask, flash, render_template,
     redirect, request, session, url_for)
 from flask_pymongo import PyMongo
-from bson.objectid import ObjectId  # to render the object id in a bson format to use in mongo db
+from bson.objectid import ObjectId  # to render an object id in a bson format
 if os.path.exists("env.py"):
     import env
+    from werkzeug.security import generate_password_hash, check_password_hash
 
 
 # create an instance of Flask called app
@@ -25,6 +26,12 @@ mongo = PyMongo(app)
 def get_all_genre():
     genre_list = mongo.db.genre.find()
     return render_template("genre-management.html", genre_list=genre_list)
+
+
+@app.route("/signup", methods=["GET", "POST"])
+def signup():
+    genre_list = mongo.db.genre.find()
+    return render_template("signup.html", genre_list=genre_list)
 
 
 # application running instructions by retieving hidden env variables
