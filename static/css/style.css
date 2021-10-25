@@ -299,6 +299,7 @@ footer .logo {
 
 .form-card {
     margin: 30px 0;
+    width: 100%;
     max-width: 550px;
     padding: 20px 15px;
 }

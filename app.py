@@ -34,6 +34,11 @@ def signup():
     return render_template("signup.html", genre_list=genre_list)
 
 
+@app.route("/signin")
+def signin():
+    return render_template("signin.html")
+
+
 # application running instructions by retieving hidden env variables
 if __name__ == "__main__":
     # retrieve the hidden env values and set them in variables
