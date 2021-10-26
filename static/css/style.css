@@ -134,6 +134,7 @@ h1, h2, h3, .navbar-brand, .logo {
     border-radius: 50px;
     width: 75%;
     opacity: 1;
+    max-width: 250px;
 }
 
 .sidenav a {
@@ -306,6 +307,10 @@ footer .logo {
     margin: 30px 0;
     width: 100%;
     padding: 20px 25px;
+}
+
+.form-card input {
+    max-width: 350px;
 }
 
 .card-small {
