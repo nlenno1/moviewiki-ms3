@@ -74,7 +74,7 @@
                     <a href="#">Contact</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('get_all_genre') }}">Genre Management</a>
+                    <a href="{{ url_for('get_all_genre') }}">Genre Management</a>
                 </li>
                 <hr>
                 <li>
@@ -91,17 +91,29 @@
                 </li>
             </ul>
     </aside>
+    <div>
+        <!-- flash messages -->
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            {% for message in messages %}
+                <div class="row">
+                    <div class="col-12 alert alert-light text-center">
+                        <h4> {{ message }} </h4>
+                    </div>
+                </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+    </div>
     <!-- Mask to cover onscreen content when sidenav is opened -->
     <div id="content-cover" class="content-cover" onclick="closeNav()"></div>
     <!-- Content container to keep footer at bottom with no content -->
-    <div class="content">
+    <main class="content">
         <img id="header-image" src="{{ url_for('static', filename='img/movie_header_image.jpg') }}"></img>
-
         {% block content %}
-    
-        {% endblock %}
-    </div>
 
+        {% endblock %}
+    </main>
 
     <footer>
         <div class="row text-center g-0">
