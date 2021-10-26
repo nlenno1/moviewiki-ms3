@@ -6,7 +6,7 @@
     <div class="container-md">
         <div class="row g-0">
             <div class="col">
-                <form class="new-genre-form" action="#">
+                <form class="search-bar-container" action="#">
                     <div class="input-container">
                         <input type="text" name="genre-name" id="genre-name" placeholder="New Genre Name" required>
                         <i class="fas fa-folder-plus"></i>
@@ -26,7 +26,7 @@
                                 <div id="collapse{{ genre.genre_name|capitalize }}" class="accordion-collapse collapse" aria-labelledby="heading{{ genre.genre_name|capitalize }}" data-bs-parent="#genreAccordion">
                                     <div class="accordion-body">
                                         <div class="row g-0">
-                                            <form class="new-genre-form accordion-genre-form" action="#">
+                                            <form class="search-bar-container accordion-genre-form" action="#">
                                                 <div class="col col-md-7">
                                                     <div class="input-container">
                                                         <input type="text" name="genre-name" id="genre-name" placeholder="New Genre Name" required>

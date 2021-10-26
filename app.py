@@ -62,9 +62,15 @@ def signup():
 def signin():
     return render_template("signin.html")
 
+
 @app.route("/contact", methods=["GET", "POST"])
 def contact():
     return render_template("contact.html")
+
+
+@app.route("/home", methods=["GET", "POST"])
+def home():
+    return render_template("home.html")
 
 
 # application running instructions by retieving hidden env variables

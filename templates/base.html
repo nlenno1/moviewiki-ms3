@@ -30,7 +30,7 @@
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Home</a>
+                    <a class="nav-link" href="{{ url_for('home') }}">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">About</a>
@@ -62,7 +62,7 @@
         <button onclick="closeNav()" class="closebtn">&times;</button>
         <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a href="#">Home</a>
+                    <a href="{{ url_for('home') }}">Home</a>
                 </li>
                 <li class="nav-item">
                     <a href="#">About</a>

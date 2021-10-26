@@ -237,7 +237,7 @@ footer .logo {
 
 /* Genre Management */
 
-.new-genre-form {
+.search-bar-container {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -253,7 +253,7 @@ footer .logo {
     position: relative;
 }
 
-.new-genre-form input {
+.search-bar-container input {
     width: 80vw;
     min-width: 180px;
     margin: 10px 20px 30px;
@@ -262,15 +262,15 @@ footer .logo {
     position: relative;
 }
 
-.new-genre-form i {
+.search-bar-container i {
     position: absolute;
     left: 40px;
     top: 17px;
 }
 
 @media (min-width: 768px) {
-    .new-genre-form input {width: 450px; margin: 0 20px 0 0;}
-    .new-genre-form i {position: absolute; left: 20px; top: 8px;}
+    .search-bar-container input {width: 450px; margin: 0 20px 0 0;}
+    .search-bar-container i {position: absolute; left: 20px; top: 8px;}
 }
 
 /* Sign Up */
@@ -318,4 +318,18 @@ footer .logo {
 
 .generic-form textarea {
     width: 100%
+}
+
+/* Home */
+
+.carousel-label {
+    padding-left: 2rem;
+}
+
+.movie-carousel {
+    height: 195px;
+    width: 100%;
+    overflow-x: scroll;
+    background-color: #c4c4c4;
+    margin-bottom: 2rem;
 }
