@@ -22,6 +22,10 @@ mongo = PyMongo(app)
 
 
 @app.route("/")
+@app.route("/home", methods=["GET", "POST"])
+def home():
+    return render_template("home.html")
+
 @app.route("/get_all_genre")
 def get_all_genre():
     genre_list = mongo.db.genre.find()
@@ -66,11 +70,6 @@ def signin():
 @app.route("/contact", methods=["GET", "POST"])
 def contact():
     return render_template("contact.html")
-
-
-@app.route("/home", methods=["GET", "POST"])
-def home():
-    return render_template("home.html")
 
 
 # application running instructions by retieving hidden env variables

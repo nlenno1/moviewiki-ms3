@@ -4,7 +4,7 @@
     <h1 id="header-title">Sign Up</h1>
 
     <div class="container">
-        <div class="card form-card shadow">
+        <div class="card form-card card-small shadow">
             <form class="generic-form" method="POST" action="{{ url_for('signup') }}" >
                 <input type="text" name="username" id="username" placeholder="Username" minlength="5" maxlength="15" class="validate" pattern="^[a-zA-Z0-9-_]+{5,15}$" required>
                 <input type="password" name="password" id="password" placeholder="Password" minlength="5" maxlength="15" class="validate" pattern="^[a-zA-Z0-9-_]+{5,15}$" required>
