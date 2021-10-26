@@ -39,7 +39,7 @@
                     <a class="nav-link" href="#">Write a Review</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Contact</a>
+                    <a class="nav-link" href="{{ url_for('contact') }}">Contact</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('get_all_genre') }}">Genre Management</a>
@@ -71,7 +71,7 @@
                     <a href="#">Write a Review</a>
                 </li>
                 <li class="nav-item">
-                    <a href="#">Contact</a>
+                    <a href="{{ url_for('contact') }}">Contact</a>
                 </li>
                 <li class="nav-item">
                     <a href="{{ url_for('get_all_genre') }}">Genre Management</a>
@@ -96,9 +96,9 @@
         {% with messages = get_flashed_messages() %}
           {% if messages %}
             {% for message in messages %}
-                <div class="row">
-                    <div class="col-12 alert alert-light text-center">
-                        <h4> {{ message }} </h4>
+                <div class="row g-0">
+                    <div class="col-12 alert alert-light text-center m-0 p-2">
+                        <h4 class="m-0"> {{ message }} </h4>
                     </div>
                 </div>
             {% endfor %}
@@ -147,8 +147,10 @@
         </div>
     </footer>
 
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <!-- JQuery Script -->
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
     <!-- Bootstrap Script-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>

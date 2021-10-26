@@ -30,6 +30,30 @@ def get_all_genre():
 
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
+    if request.method == "POST":
+        requested_username = request.form.get("username")
+        existing_user = mongo.db.users.find_one(
+            {"username": requested_username.lower()}
+        )
+
+        if existing_user:
+            flash("Username ${requested_username.capitalize()} already exists")
+            return redirect(url_for("signup"))
+
+        register = {
+            "username": request.form.get("username").lower(),
+            "password": generate_password_hash(request.form.get("password")),
+            "firstname": request.form.get("firstname").lower(),
+            "lastname": request.form.get("lastname").lower(),
+            "dob": request.form.get("dob"),
+            "email": request.form.get('email'),
+            "favourite-genre": request.form.getlist('favourite-genre')
+        }
+        mongo.db.users.insert_one(register)
+
+        # put the user into session
+        session['user'] = request.form.get("username").lower()
+        flash("Registration Successful ${session['user]}!")
     genre_list = mongo.db.genre.find()
     return render_template("signup.html", genre_list=genre_list)
 
@@ -37,6 +61,10 @@ def signup():
 @app.route("/signin")
 def signin():
     return render_template("signin.html")
+
+@app.route("/contact", methods=["GET", "POST"])
+def contact():
+    return render_template("contact.html")
 
 
 # application running instructions by retieving hidden env variables

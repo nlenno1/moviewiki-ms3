@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <h1 id="header-title">Contact Us</h1>
+
+    <h5 class="text-center mt-5">If you have any feedback on this website then please fill out this form to get in touch!</h5>
+
+    <div class="container">
+        <div class="card form-card shadow">
+            <form class="generic-form" action="POST">
+                <input type="text" name="full-name" id="full-name" placeholder="Full Name"  pattern="^[a-zA-Z0-9]+{5,15}$" class="validate" required>
+                <input type="email" name="email" id="email" placeholder="Email" required>
+                <textarea rows="6" name="message" id="message" placeholder="Message" required></textarea>
+                <button type="submit" class="generic-button button-color-green mt-2">Send Message</button>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

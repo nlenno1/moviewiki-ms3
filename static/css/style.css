@@ -306,10 +306,16 @@ footer .logo {
     margin: 30px 0;
     width: 100%;
     max-width: 550px;
-    padding: 20px 15px;
+    padding: 20px 25px;
 }
 
 .checkbox-container {
     width: 100%;
     margin: 25px 0;
+}
+
+/* Contact */
+
+.generic-form textarea {
+    width: 100%
 }
