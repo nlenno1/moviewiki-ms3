@@ -23,7 +23,7 @@
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-md sticky-top navbar-dark bg-dark">
-        <a class="navbar-brand" href="#">MovieWiki</a>
+        <a class="navbar-brand" href="{{ url_for('home') }}">MovieWiki</a>
         <button onclick="openNav()" class="navbar-toggler" id="sidenav-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -76,18 +76,18 @@
                 <li class="nav-item">
                     <a href="{{ url_for('get_all_genre') }}">Genres</a>
                 </li>
-                <hr>
+                <hr class="side-nav-hr">
                 <li>
-                    <button class="navbar-button" href="{{ url_for('signup') }}">Sign Up</button>
+                    <button class="navbar-button"><a href="{{ url_for('signup') }}">Sign Up</a></button>
                 </li>
                 <li>
-                    <button class="navbar-button" href="{{ url_for('signin') }}">Sign In</button>
+                    <button class="navbar-button"><a href="{{ url_for('signin') }}">Sign In</a></button>
                 </li>
                 <li>
-                    <button class="navbar-button" href="#"><i class="fas fa-user-circle"></i>Profile</button>
+                    <button class="navbar-button"><a href="#"><i class="fas fa-user-circle"></i>Profile</a></button>
                 </li>
                 <li>
-                    <button class="navbar-button" href="#">Sign Out</button>
+                    <button class="navbar-button"><a href="#">Sign Out</a></button>
                 </li>
             </ul>
     </aside>

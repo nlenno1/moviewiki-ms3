@@ -126,8 +126,8 @@ h1, h2, h3, .navbar-brand, .logo {
     transition: opacity 1s;
 }
 
-.side-nav hr,.form-card hr {
-    height: 5px;
+.side-nav-hr, .form-card hr {
+    height: 5px !important;
     border: none;
     background-color: #EEBC1D;
     margin: 20px 32px;
@@ -137,7 +137,7 @@ h1, h2, h3, .navbar-brand, .logo {
     max-width: 250px;
 }
 
-.sidenav a {
+.sidenav > ul > li > a {
     width: 220px;
     padding: 8px 8px 8px 32px;
     text-decoration: none;
@@ -149,6 +149,11 @@ h1, h2, h3, .navbar-brand, .logo {
 
 .sidenav button {
     margin: 8px 8px 8px 32px;
+}
+
+.sidenav button > a {
+    color: #000;
+    text-decoration: none;
 }
 
 .sidenav .closebtn {
