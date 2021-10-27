@@ -43,7 +43,7 @@ def signup():
 
         if existing_user:
             flash("Username " + requested_username.capitalize() +
-                " already exists")
+                    " already exists")
             return redirect(url_for("signup"))
 
         register = {
