@@ -58,7 +58,7 @@ def signup():
 
         # put the user into session and load profile page
         session['user'] = request.form.get("username").lower()
-        flash("Registration Successful ${session['user']}!")
+        flash("Registration Successful " + session["user"].capitalize() + "!")
         return redirect(url_for('profile', username=session['user']))
 
     genre_list = mongo.db.genre.find()
@@ -77,7 +77,7 @@ def signin():
             if check_password_hash(
               existing_user["password"], request.form.get("password")):
                 session['user'] = request.form.get("username").lower()
-                flash("Welcome ${session['user']}")
+                flash("Welcome " + session["user"].capitalize())
                 return redirect(url_for('profile', username=session['user']))
             else:
                 flash("The information entered is incorrect")
