@@ -345,11 +345,10 @@ footer .logo {
     max-width: 350px;
 }
 
-.input-large select, .input-large textarea, .input-large [type="text"], .input-large [type="list"], .input-large [type="date"]  {
+.input-large select, .input-large textarea, .input-large [type="text"], .input-large [type="list"], .input-large [type="date"], .input-large [type="email"]  {
     width: 100%;
     max-width: 600px;
 }
-
 
 .card-small {
     max-width: 550px;
