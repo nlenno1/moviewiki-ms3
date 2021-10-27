@@ -82,11 +82,11 @@ def signin():
                 return redirect(url_for('profile', username=session['user']))
             else:
                 flash("The information entered is incorrect")
-                return redirect(url_for('login'))
+                return redirect(url_for('signin'))
 
         else:
             flash("The information entered is incorrect")
-            return redirect(url_for('login'))
+            return redirect(url_for('signin'))
 
     return render_template("signin.html")
 
@@ -118,6 +118,11 @@ def create_review():
     movie_title_list = mongo.db.movies.find({}, {"movie_name": 1})
     return render_template(
         "create-review.html", movie_title_list=movie_title_list)
+
+
+@app.route("/about")
+def about():
+    return render_template("about.html")
 
 
 @app.route("/contact", methods=["GET", "POST"])

@@ -33,7 +33,7 @@
                     <a class="nav-link" href="{{ url_for('home') }}">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">About</a>
+                    <a class="nav-link" href="{{ url_for('about') }}">About</a>
                 </li>
                 {% if session["user"] %}
                 <li class="nav-item">
@@ -78,7 +78,7 @@
                     <a href="{{ url_for('home') }}">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a href="#">About</a>
+                    <a href="{{ url_for('about') }}">About</a>
                 </li>
                 {% if session["user"] %}
                 <li class="nav-item">
