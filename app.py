@@ -89,6 +89,13 @@ def signin():
     return render_template("signin.html")
 
 
+@app.route("/signout")
+def signout():
+    flash("You have signed out")
+    session.pop("user")
+    return render_template("home.html")
+
+
 @app.route("/contact", methods=["GET", "POST"])
 def contact():
     return render_template("contact.html")

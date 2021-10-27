@@ -48,12 +48,21 @@
         </div>
         <div class="collapse navbar-collapse navbar-buttons">
             <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="navbar-button" href="{{ url_for('signup') }}">Sign Up</a>
-                </li>
-                <li class="nav-item">
-                    <a class="navbar-button" href="{{ url_for('signin') }}">Sign In</a>
-                </li>
+                {% if session["user"] %}
+                    <li class="nav-item">
+                        <a class="navbar-button" href="#"><i class="fas fa-user-circle"></i>Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="navbar-button" href="{{ url_for('signout') }}">Sign Out</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="navbar-button" href="{{ url_for('signup') }}">Sign Up</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="navbar-button" href="{{ url_for('signin') }}">Sign In</a>
+                    </li>
+                {% endif %}
             </ul>
         </div>
     </nav>
@@ -77,19 +86,22 @@
                     <a href="{{ url_for('get_all_genre') }}">Genres</a>
                 </li>
                 <hr class="side-nav-hr">
-                <li>
-                    <button class="navbar-button"><a href="{{ url_for('signup') }}">Sign Up</a></button>
-                </li>
-                <li>
-                    <button class="navbar-button"><a href="{{ url_for('signin') }}">Sign In</a></button>
-                </li>
-                <li>
-                    <button class="navbar-button"><a href="#"><i class="fas fa-user-circle"></i>Profile</a></button>
-                </li>
-                <li>
-                    <button class="navbar-button"><a href="#">Sign Out</a></button>
-                </li>
-            </ul>
+                {% if session["user"] %}
+                    <li>
+                        <button class="navbar-button"><a href="#"><i class="fas fa-user-circle"></i>Profile</a></button>
+                    </li>
+                    <li>
+                        <button class="navbar-button"><a href="#">Sign Out</a></button>
+                    </li>
+                    {% else %}
+                    <li>
+                        <button class="navbar-button"><a href="{{ url_for('signup') }}">Sign Up</a></button>
+                    </li>
+                    <li>
+                        <button class="navbar-button"><a href="{{ url_for('signin') }}">Sign In</a></button>
+                    </li>
+                    {% endif %}
+                </ul>
     </aside>
     <div>
         <!-- flash messages -->

@@ -21,6 +21,12 @@ h1, h2, h3, .navbar-brand, .logo {
     transition: 0.3s;
 }
 
+.generic-button > a {
+    text-decoration: none;
+    color: inherit;
+}
+
+
 .generic-button:hover {
     color: #fafafa;
 }
