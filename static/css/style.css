@@ -70,7 +70,7 @@ h1, h2, h3, h4, .navbar-brand, .logo {
 }
 
 .navbar-buttons {
-    margin-right: 2rem;
+    margin-right: 1rem;
     justify-content: end !important;
 }
 
@@ -278,6 +278,23 @@ footer .logo {
     position: absolute;
     left: 40px;
     top: 17px;
+}
+
+.genre-container {
+    display: flex;
+    align-content: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin: 5px;
+    border: 1px solid #c4c4c4;
+    border-radius: 5px;
+}
+
+.genre-container h3 {
+    width: 250px;
+    text-align: center;
+    padding-top: 4px;
 }
 
 @media (min-width: 768px) {
