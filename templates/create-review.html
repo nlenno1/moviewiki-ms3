@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <h1 id="header-title">Add Review</h1>
+
+    <div class="container-md text-center">
+        <h3 class="mt-5">Write a Review for any Movie that has a profile</h3>
+        <h5>Type into the Movie Title box to search for the movie you want</h5>
+        <form>
+            <div id="add-review" class="card form-card card-large generic-form input-large shadow">
+                <input type="list" list="movie-titles" class="mt-3 mb-4" placeholder="Movie Title">
+                <datalist id="movie-titles">
+                    {% for movie in movie_title_list %}
+                        <option value="{{ movie.movie_name }}"></option>
+                    {% endfor %}
+                </datalist>
+                <input type="text" name="review-title" id="review-title" class="validate mb-4" placeholder="Review Title" pattern="^[a-zA-Z0-9 ]+{5,100}$" required>
+                <textarea name="movie-review" id="movie-review" rows ="8" cols="100" placeholder="Movie Review" required></textarea>
+                <div class="star-rating-container">
+                    <span id="star-count">Click the stars to choose your</span>
+                    <span>Star Rating: </span>
+                    <i id="1" class="fas fa-star"></i>
+                    <i id="2" class="fas fa-star"></i>
+                    <i id="3" class="fas fa-star"></i>
+                    <i id="4" class="fas fa-star"></i>
+                    <i id="5" class="fas fa-star"></i>
+                </div>
+                <div class="buttons-container mt-4 mb-2">
+                    <button type="submit" class="generic-button button-color-green mt-2"><a href="">Create Movie</a></button>
+                    <button type="submit" class="generic-button button-color-gold mt-2"><a href="">Update Movie</a></button>
+                    <button class="generic-button mt-2"><a href="{{ url_for('home') }}">Cancel</a></button>
+                    <button type="submit" class="generic-button button-color-red mt-2"><a href="">Delete Movie</a></button>
+                </div>
+            </div>
+        </form>
+        <div class="mb-5">
+            <span>If you can't find the Movie you want to review then make its profile page</span>
+            <button type="submit" class="generic-button button-color-gold"><a href="{{ url_for('create_movie') }}">Create Movie</a></button>
+        </div>
+    </div>
+
+
+{% endblock %}

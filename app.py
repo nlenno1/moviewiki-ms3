@@ -113,6 +113,13 @@ def create_movie():
     return render_template("create-movie.html", genre_list=genre_list)
 
 
+@app.route("/create-review", methods=["GET", "POST"])
+def create_review():
+    movie_title_list = mongo.db.movies.find({}, {"movie_name": 1})
+    return render_template(
+        "create-review.html", movie_title_list=movie_title_list)
+
+
 @app.route("/contact", methods=["GET", "POST"])
 def contact():
     return render_template("contact.html")

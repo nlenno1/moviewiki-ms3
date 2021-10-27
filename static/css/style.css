@@ -336,7 +336,7 @@ footer .logo {
 }
 
 .form-card {
-    margin: 30px 0;
+    margin: 30px auto;
     width: 100%;
     padding: 20px 25px;
 }
@@ -345,7 +345,7 @@ footer .logo {
     max-width: 350px;
 }
 
-.input-large select, .input-large textarea, .input-large [type="text"] {
+.input-large select, .input-large textarea, .input-large [type="text"], .input-large [type="list"]  {
     width: 100%;
     max-width: 600px;
 }
