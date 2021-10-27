@@ -5,7 +5,7 @@
 
     <div class="container">
         <div class="card form-card card-small shadow text-center">
-            <form class="generic-form" action="POST">
+            <form class="generic-form" method="POST" action="{{ url_for('signin') }}">
                 <input type="text" name="username" id="username" placeholder="Username" required>
                 <input type="password" name="password" id="password" placeholder="Password" required>
                 <button type="submit" class="generic-button button-color-gold mt-2">Login</button>

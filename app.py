@@ -26,6 +26,7 @@ mongo = PyMongo(app)
 def home():
     return render_template("home.html")
 
+
 @app.route("/get_all_genre")
 def get_all_genre():
     genre_list = mongo.db.genre.find()
@@ -57,13 +58,34 @@ def signup():
 
         # put the user into session
         session['user'] = request.form.get("username").lower()
-        flash("Registration Successful ${session['user]}!")
+        flash("Registration Successful ${session['user']}!")
+
     genre_list = mongo.db.genre.find()
     return render_template("signup.html", genre_list=genre_list)
 
 
-@app.route("/signin")
+@app.route("/signin", methods=["GET", "POST"])
 def signin():
+    if request.method == "POST":
+        # check if username is on the BD
+        existing_user = mongo.db.users.find_one(
+            {"username": request.form.get("username").lower()}
+        )
+
+        if existing_user:
+            if check_password_hash(
+              existing_user["password"], request.form.get("password")):
+                session['user'] = request.form.get("username").lower()
+                flash("Welcome ${session['user']}")
+                return redirect(url_for('home'))
+            else:
+                flash("The information entered is incorrect")
+                return redirect(url_for('login'))
+
+        else:
+            flash("The information entered is incorrect")
+            return redirect(url_for('login'))
+
     return render_template("signin.html")
 
 
