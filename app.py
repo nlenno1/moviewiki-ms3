@@ -107,6 +107,12 @@ def profile(username):
     return render_template("profile.html", user=user)
 
 
+@app.route("/create-movie", methods=["GET", "POST"])
+def create_movie():
+    genre_list = mongo.db.genre.find()
+    return render_template("create-movie.html", genre_list=genre_list)
+
+
 @app.route("/contact", methods=["GET", "POST"])
 def contact():
     return render_template("contact.html")

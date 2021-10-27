@@ -37,7 +37,7 @@
                 </li>
                 {% if session["user"] %}
                 <li class="nav-item">
-                    <a class="nav-link" href="#">New Review</a>
+                    <a class="nav-link" href="{{ url_for('create_movie') }}">New Review</a>
                 </li>
                 {% endif %}
                 <li class="nav-item">
@@ -82,7 +82,7 @@
                 </li>
                 {% if session["user"] %}
                 <li class="nav-item">
-                    <a href="#">New Review</a>
+                    <a href="{{ url_for('create_movie') }}">New Review</a>
                 </li>
                 {% endif %}
                 <li class="nav-item">

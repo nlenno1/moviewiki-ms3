@@ -316,13 +316,17 @@ footer .logo {
 .generic-form input {
     width: 100%;
     margin-bottom: 8px;
+    padding-left: 10px;
 }
 
 .generic-form select {
-    height: 100%;
-    max-height: 120px;
+    padding: 5px 0;
     margin: 8px;
-    width: 200px;
+    width: 100%;
+}
+
+.generic-form textarea, .generic-form select,.generic-form input {
+    padding-left: 10px;
 }
 
 .buttons-container {
@@ -337,9 +341,15 @@ footer .logo {
     padding: 20px 25px;
 }
 
-.form-card input {
+.form-card input  {
     max-width: 350px;
 }
+
+.input-large select, .input-large textarea, .input-large [type="text"] {
+    width: 100%;
+    max-width: 600px;
+}
+
 
 .card-small {
     max-width: 550px;
@@ -368,7 +378,8 @@ p > a:hover {
 /* Contact */
 
 .generic-form textarea {
-    width: 100%
+    width: 100%;
+    height: 200px;
 }
 
 /* Home */
@@ -392,4 +403,46 @@ p > a:hover {
     margin: 2rem auto 4rem;
     opacity: 1;
     width: 75%;
+}
+
+/* Movie Form */
+
+select {
+    color: #8e8e8e;
+}
+
+.text-black {
+    color: #000;
+}
+
+.checkbox-container > .series-checkboxes {
+    width: initial;
+}
+
+.star-rating-container {
+    margin: 10px 0 0 auto;
+}
+
+.star-rating-container i:hover {
+    cursor: pointer;
+    animation: shake 0.75s;
+    animation-iteration-count: 2;
+}
+
+@keyframes shake {
+    0% { transform: translate(1px, 1px) rotate(0deg); }
+    10% { transform: translate(-1px, -2px) rotate(-1deg); }
+    20% { transform: translate(-3px, 0px) rotate(1deg); }
+    30% { transform: translate(3px, 2px) rotate(0deg); }
+    40% { transform: translate(1px, -1px) rotate(1deg); }
+    50% { transform: translate(-1px, 2px) rotate(-1deg); }
+    60% { transform: translate(-3px, 1px) rotate(0deg); }
+    70% { transform: translate(3px, 1px) rotate(-1deg); }
+    80% { transform: translate(-1px, -1px) rotate(1deg); }
+    90% { transform: translate(1px, 2px) rotate(0deg); }
+    100% { transform: translate(1px, -2px) rotate(-1deg); }
+  }
+
+.gold-star {
+    color:#EEBC1D;
 }
