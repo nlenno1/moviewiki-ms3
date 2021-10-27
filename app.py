@@ -56,9 +56,10 @@ def signup():
         }
         mongo.db.users.insert_one(register)
 
-        # put the user into session
+        # put the user into session and load profile page
         session['user'] = request.form.get("username").lower()
         flash("Registration Successful ${session['user']}!")
+        return redirect(url_for('profile', username=session['user']))
 
     genre_list = mongo.db.genre.find()
     return render_template("signup.html", genre_list=genre_list)
@@ -77,7 +78,7 @@ def signin():
               existing_user["password"], request.form.get("password")):
                 session['user'] = request.form.get("username").lower()
                 flash("Welcome ${session['user']}")
-                return redirect(url_for('home'))
+                return redirect(url_for('profile', username=session['user']))
             else:
                 flash("The information entered is incorrect")
                 return redirect(url_for('login'))
@@ -94,6 +95,15 @@ def signout():
     flash("You have signed out")
     session.pop("user")
     return render_template("home.html")
+
+
+@app.route("/profile/<username>", methods=["GET", "POST"])
+def profile(username):
+    user = mongo.db.users.find_one(
+            {"username": username},
+            {"password": 0}
+          )
+    return render_template("profile.html", user=user)
 
 
 @app.route("/contact", methods=["GET", "POST"])

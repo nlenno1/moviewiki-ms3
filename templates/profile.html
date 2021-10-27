@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1 id="header-title">User Profile</h1>
+
+<div class="container">
+    <div class="card form-card shadow">
+        <div class="row">
+            <div class="col-12 col-md-8">
+                <h1 class="ml-5">{{user.username}}</h1>
+                <p class="mb-1">Favourite Genres :
+                    <ul>
+                        {% for genre in user.favourite_genres %}
+                        <li>{{ genre|capitalize }}</li>
+                        {% endfor %}
+                    </ul>
+                    <p>Been a member for : {{user.date_joined}}</p>
+                    <p>Number of Reviews submitted : {{user.reviews_submitted}}</p>
+                    <p>Number of Movies Watched : {{user.numb_movies_watched}}</p>
+            </div>
+            <div class="col-12 col-md-4 text-end">
+                <button class="generic-button button-color-gold"><a href="#">Update Profile</a></button>
+                <button class="generic-button button-color-red mt-1"><a href="#">Delete Profile</a></button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="accordion mt-3" id="user-profile-accordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="to-watch-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#movies-to-watch-collapse" aria-expanded="false"
+                                aria-controls="movies-to-watch-collapse">
+                                Movies You Want to Watch
+                            </button>
+                        </h2>
+                        <div id="movies-to-watch-collapse" class="accordion-collapse collapse"
+                            aria-labelledby="to-watch-heading" data-bs-parent="#user-profile-accordion">
+                            <div class="accordion-body">
+                                {% if user.movies_to_watch|length <= 0 %}
+                                <h5 class="mb-0 mt-1">Choose some movies you want to watch!</h5>
+                                {% else %}
+                                <ul class="mb-0">
+                                    {% for movie in user.movies_to_watch %}
+                                    <li>{{ movie }}</li>
+                                    {% endfor %}
+                                </ul>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="watched-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#movies-watched-collapse" aria-expanded="false"
+                                    aria-controls="movies-watched-collapse">
+                                    Movies You Have Watched
+                                </button>
+                            </h2>
+                            <div id="movies-watched-collapse" class="accordion-collapse collapse"
+                                aria-labelledby="watched-heading" data-bs-parent="#user-profile-accordion">
+                                <div class="accordion-body">
+                                    {% if user.numb_movies_watched == 0 %}
+                                    <h5 class="mb-0 mt-1">You haven't watched any Movies!!!</h5>
+                                    {% else %}
+                                    <ul>
+                                        {% for movie in user.movies_watched %}
+                                        <li>{{ movie|capitalize }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <h3 class="mt-4">{{user.username}}'s Latest Reviews</h3>
+                <div class="card form-card shadow">
+                    <div class="accordion" id="user-review-accordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="user-review-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#user-review-collapse" aria-expanded="false"
+                                    aria-controls="review-collapse">
+                                    User Review 1
+                                </button>
+                            </h2>
+                            <div id="user-review-collapse" class="accordion-collapse collapse"
+                                aria-labelledby="user-review-heading" data-bs-parent="#user-review-accordion">
+                                <div class="accordion-body">
+                                    <h5>You Need to Write Some Reviews!</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    {% endblock %}

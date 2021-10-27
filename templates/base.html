@@ -50,7 +50,7 @@
             <ul class="navbar-nav">
                 {% if session["user"] %}
                     <li class="nav-item">
-                        <a class="navbar-button" href="#"><i class="fas fa-user-circle"></i>Profile</a>
+                        <a class="navbar-button" href="{{ url_for('profile', username=session['user']) }}"><i class="fas fa-user-circle"></i>Profile</a>
                     </li>
                     <li class="nav-item">
                         <a class="navbar-button" href="{{ url_for('signout') }}">Sign Out</a>
@@ -88,7 +88,7 @@
                 <hr class="side-nav-hr">
                 {% if session["user"] %}
                     <li>
-                        <button class="navbar-button"><a href="#"><i class="fas fa-user-circle"></i>Profile</a></button>
+                        <button class="navbar-button"><a href="{{ url_for('profile', username=session['user']) }}"><i class="fas fa-user-circle"></i>Profile</a></button>
                     </li>
                     <li>
                         <button class="navbar-button"><a href="#">Sign Out</a></button>

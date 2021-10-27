@@ -3,7 +3,7 @@ body {
     transition: 0.3s;
 }
 
-h1, h2, h3, .navbar-brand, .logo {
+h1, h2, h3, h4, .navbar-brand, .logo {
     font-family: Bebas Neue, sans-serif;
 }
 
