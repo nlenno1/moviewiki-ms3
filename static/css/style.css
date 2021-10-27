@@ -279,7 +279,7 @@ footer .logo {
     .search-bar-container i {position: absolute; left: 20px; top: 8px;}
 }
 
-/* Sign Up */
+/* Sign Up & Sign In */
 
 .generic-form {
     display: flex;
@@ -329,6 +329,17 @@ footer .logo {
 .checkbox-container {
     width: 100%;
     margin: 25px 0;
+}
+
+p > a {
+    text-decoration: none;
+    color: inherit;
+    transition: 0.3s;
+}
+
+p > a:hover {
+    font-size: 600;
+    color: #EEBC1D;
 }
 
 /* Contact */

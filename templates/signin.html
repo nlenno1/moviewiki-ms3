@@ -4,12 +4,13 @@
     <h1 id="header-title">Sign In</h1>
 
     <div class="container">
-        <div class="card form-card card-small shadow">
+        <div class="card form-card card-small shadow text-center">
             <form class="generic-form" action="POST">
                 <input type="text" name="username" id="username" placeholder="Username" required>
                 <input type="password" name="password" id="password" placeholder="Password" required>
                 <button type="submit" class="generic-button button-color-gold mt-2">Login</button>
             </form>
+            <p class="mt-3 mb-0">Don't have an account? <a href="{{ url_for('signup') }}">Create one here!</a></p>
         </div>
     </div>
 
