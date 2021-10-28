@@ -387,14 +387,6 @@ p > a:hover {
     padding-left: 2rem;
 }
 
-.movie-carousel {
-    height: 195px;
-    width: 100%;
-    overflow-x: scroll;
-    background-color: #c4c4c4;
-    margin-bottom: 2rem;
-}
-
 .generic-divider {
     color: #EEBC1D;
     height: 5px !important;
@@ -402,6 +394,57 @@ p > a:hover {
     margin: 2rem auto 4rem;
     opacity: 1;
     width: 75%;
+}
+
+.movie-carousel {
+    height: 320px;
+    width: 100%;
+    padding: 10px;
+    overflow-x: auto;
+    background-color: #c4c4c4;
+    margin-bottom: 2rem;
+    display: flex;
+    flex-wrap: nowrap;
+    align-content: flex-start;
+}
+
+.movie-picture-display, .placeholder {
+    height: 250px;
+    width: 169px;
+    margin-right: 10px;
+}
+
+.movie-picture-display img {
+    object-fit: fill;
+    height: inherit;
+    width: inherit;
+}
+
+.movie-carousel h4 {
+    text-align: center;
+    margin-bottom: 0;
+    width: 169px;
+    height: 55px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.placeholder {
+    padding: 20px 5px;
+}
+
+.placeholder button {
+    width:100%;
+    margin: 0;
+}
+
+.placeholder p {
+    color: #fafafa;
+    height: 60%;
+    text-align: center;
+    margin: 0;
+    height: 85%
 }
 
 /* Movie Form */
