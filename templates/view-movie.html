@@ -24,9 +24,11 @@
             <div class="col-12 col-md-4">
                 <div class="single-movie-picture-display">
                     <div class="movie-image-continer">
-                        <a href="{{ url_for('view_movie', movie_id=movie._id) }}">
-                                <img src="{{ movie.link_to_movie_image }}" alt="Movie Image">
-                        </a>
+                        {% if movie.image_link == null %}
+                            <img src="static/img/movie-placeholder.png" alt="Movie Image Placeholder Image">
+                        {% else %}
+                            <img src="{{ movie.image_link }}" alt="Movie Image">
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -43,8 +45,46 @@
         </div>
         <div class="row">
             <div class="col-12 text-end">
-                <button class="generic-button button-color-gold"><a href="{{ url_for('create_movie') }}">I Have Watched This</a></button>
-                <button class="generic-button button-color-gold"><a href="{{ url_for('create_movie') }}">View All Reviews</a></button>
+                <button class="generic-button button-color-gold movie-font"><a href="{{ url_for('create_movie') }}">I Have Watched This</a></button>
+                <button class="generic-button button-color-gold movie-font"><a href="{{ url_for('create_movie') }}">View All Reviews</a></button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="accordion mt-3" id="movie-info-accordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="description-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#description-collapse" aria-expanded="false"
+                                aria-controls="description-collapse">
+                                Full Movie Description
+                            </button>
+                        </h2>
+                        <div id="description-collapse" class="accordion-collapse collapse"
+                            aria-labelledby="description-heading" data-bs-parent="#movie-info-accordion">
+                            <div class="accordion-body">
+                                {{ movie.movie_description }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="to-watch-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#movies-to-watch-collapse" aria-expanded="false"
+                                aria-controls="movies-to-watch-collapse">
+                                Trailer
+                            </button>
+                        </h2>
+                        <div id="movies-to-watch-collapse" class="accordion-collapse collapse"
+                            aria-labelledby="to-watch-heading" data-bs-parent="#user-profile-accordion">
+                            <div class="accordion-body">
+                                <iframe id="ytplayer" type="text/html" width="640" height="360"
+                                    src="{{ movie.trailer_link }}"
+                                    frameborder="0"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="row">
@@ -73,29 +113,6 @@
                               </tbody>
                             </table>
                         </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <div class="accordion mt-3" id="user-profile-accordion">
-                    <div class="accordion-item">
-                        <h5 class="accordion-header" id="to-watch-header">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#movies-to-watch-collapse" aria-expanded="false"
-                                aria-controls="movies-to-watch-collapse">
-                                {{ movie.movie_title }} Trailer
-                            </button>
-                        </h5>
-                        <div id="movies-to-watch-collapse" class="accordion-collapse collapse"
-                            aria-labelledby="to-watch-heading" data-bs-parent="#user-profile-accordion">
-                            <div class="accordion-body">
-                                <iframe id="ytplayer" type="text/html" width="640" height="360"
-                                    src="{{ movie.link_to_trailer }}"
-                                    frameborder="0"></iframe>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>

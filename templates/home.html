@@ -23,10 +23,10 @@
                         <div class="movie-picture-display">
                             <div class="movie-image-continer">
                                 <a href="{{ url_for('view_movie', movie_id=movie._id) }}">
-                                    {% if movie.link_to_movie_image == null %}
+                                    {% if movie.image_link == null %}
                                         <img src="static/img/movie-placeholder.png" alt="Movie Image Placeholder Image">
                                     {% else %}
-                                        <img src="{{ movie.link_to_movie_image }}" alt="Movie Image">
+                                        <img src="{{ movie.image_link }}" alt="Movie Image">
                                     {% endif %}
                                 </a>
                             </div>

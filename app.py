@@ -1,4 +1,5 @@
 import os
+from werkzeug.security import generate_password_hash, check_password_hash
 from flask import (
     Flask, flash, render_template,
     redirect, request, session, url_for)
@@ -6,7 +7,7 @@ from flask_pymongo import PyMongo
 from bson.objectid import ObjectId  # to render an object id in a bson format
 if os.path.exists("env.py"):
     import env
-from werkzeug.security import generate_password_hash, check_password_hash
+from datetime import datetime, date
 
 
 # create an instance of Flask called app
@@ -44,7 +45,7 @@ def signup():
 
         if existing_user:
             flash("Username " + requested_username.capitalize() +
-                " already exists")
+                  " already exists")
             return redirect(url_for("signup"))
 
         register = {
@@ -96,7 +97,8 @@ def signin():
 def signout():
     flash("You have signed out")
     session.pop("user")
-    return render_template("home.html")
+    movie_list = mongo.db.movies.find()
+    return render_template("home.html", movies=movie_list)
 
 
 @app.route("/profile/<username>", methods=["GET", "POST"])
@@ -110,6 +112,41 @@ def profile(username):
 
 @app.route("/create-movie", methods=["GET", "POST"])
 def create_movie():
+    if request.method == "POST":
+        # if movie watch switch is active then add to user profile
+        new_movie = {
+            "movie_title": request.form.get("movie-title"),
+            "release_date": request.form.get("release-date"),
+            "age_rating": request.form.get("age-rating"),
+            "genre": request.form.getlist("movie-genre"),
+            "director": request.form.get("director"),
+            "cast_members": request.form.get("cast-members"),
+            "movie_synopsis": request.form.get("movie-synopsis"),
+            "movie_description": request.form.get("movie-description"),
+            "image_link": request.form.get("image-link"),
+            "trailer_link": request.form.get("trailer-link"),
+            "series_position": request.form.get("series-checkboxes"),
+            "series_name": request.form.get("series-name"),
+            "previous_movie_title": request.form.get("previous-movie-name"),
+            "next_movie_title": request.form.get("next-movie-name"),
+            "numb_of_reviews": 0,
+            "reviews": [{
+                "reviewer": session['user'],
+                "review_title": request.form.get("review-title"),
+                "review": request.form.get("movie-review"),
+                "review_date": datetime.now(),
+                "star_rating": request.form.get("star-count")
+            }],
+            "average_rating": 0,
+            "created_by": session['user']
+        }
+        mongo.db.movies.insert_one(new_movie)
+        flash("New Movie Added")
+        brand_new_movie = mongo.db.users.find_one(
+            {"movie_title": request.form.get("movie-title")})
+        return redirect(url_for(
+                        "view_movie", movie_id=ObjectId(brand_new_movie)))
+
     genre_list = mongo.db.genre.find()
     return render_template("create-movie.html", genre_list=genre_list)
 

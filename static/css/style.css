@@ -3,7 +3,7 @@ body {
     transition: 0.3s;
 }
 
-h1, h2, h3, h4, .navbar-brand, .logo {
+h1, h2, h3, h4, .navbar-brand, .logo, .movie-font {
     font-family: Bebas Neue, sans-serif;
 }
 
@@ -15,7 +15,7 @@ h1, h2, h3, h4, .navbar-brand, .logo {
 .generic-button {
     border-radius: 10px;
     background-color: #c4c4c4;
-    font-weight: 600;
+    font-weight: 5S00;
     width: 180px;
     margin: 0 2px;
     transition: 0.3s;

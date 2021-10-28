@@ -6,7 +6,7 @@
     <div class="container">
         <div class="card form-card card-large input-large shadow">
             <h4 class="text-center mt-2 mb-4">Create a new movie profile for any film that you know of by filling in this form!</h4>
-            <form class="generic-form" method="POST" action="{{ url_for('signup') }}" >
+            <form class="generic-form" method="POST" action="{{ url_for('create_movie') }}" >
                 <input type="text" name="movie-title" id="movie-title" placeholder="Movie Title" class="validate" pattern="^[a-zA-Z0-9 ]+$" required>
                 <input placeholder="Release Date" class="textbox-n" type="text" onfocus="(this.type='date')" name="release-date" id="release-date" class="validate">
                 <select id="age-rating" id="age-rating">
@@ -21,16 +21,23 @@
                 </select>
                 </select>
                 <input type="text" name="duration" id="duration" placeholder="Duration (mins)" class="validate" pattern="^[0-9]+$">
-                <select name="movie-genre" id="movie-genre">
-                    <option value="null" class="hidden" selected hidden required>Genre</option>
+                <div class="checkbox-container">
                     {% for genre in genre_list %}
-                        <option value="{{ genre.genre_name }}">{{ genre.genre_name|capitalize }}</option>
+                    <div class="row">
+                        <div class="col-6 text-end">
+                            <label for="{{ genre.genre_name }}">{{ genre.genre_name|capitalize }}</label>
+                        </div>
+                        <div class="col-6 col-sm-2 position-start">
+                            <input type="checkbox" id="{{ genre.genre_name }}" name="movie-genre" value="{{ genre.genre_name|lower }}">
+                        </div>
+                    </div>
                     {% endfor %}
-                </select>
+                </div>
                 <hr class="shadow">
                 <input type="text" name="director" id="director" placeholder="Director" class="validate" pattern="^[a-zA-Z ]+$">
                 <input type="text" name="cast-members" id="cast-members" placeholder="Main Cast Members" class="validate" pattern="^[a-zA-Z ,]+$">
                 <hr class="shadow">
+                <input type="text" name="movie-synopsis" id="movie-synopsis" placeholder="Movie Synopsis" class="validate" pattern="^[a-zA-Z ,.]+$">
                 <textarea name="movie-description" id="movie-description" rows ="8" cols="140" placeholder="Movie Description"></textarea>
                 <hr class="shadow">
                 <input type="text" name="image-link" id="image-link" placeholder="Link to Movie Image">
@@ -67,10 +74,10 @@
                 </div>
                 <div id="add-review" class="card form-card card-small shadow hidden collapse">
                     <p>Write your review of this movie</p>
-                    <input type="text" name="review-title" id="review-title" class="validate mb-4" placeholder="Review Title" pattern="^[a-zA-Z0-9 ]+{5,100}$" required>
+                    <input type="text" name="review-title" id="review-title" class="validate mb-4" placeholder="Review Title" pattern="^[a-zA-Z0-9 ]+$">
                     <textarea name="movie-review" id="movie-review" rows ="8" cols="100" placeholder="Movie Review"></textarea>
                     <div class="star-rating-container">
-                        <span id="star-count">Click the stars to choose your</span>
+                        <span name="star-count" id="star-count">Click the stars to choose your</span>
                         <span>Star Rating: </span>
                         <i id="1" class="fas fa-star"></i>
                         <i id="2" class="fas fa-star"></i>
@@ -80,10 +87,10 @@
                     </div>
                 </div>
                 <div class="buttons-container mt-4">
-                    <button type="submit" class="generic-button button-color-green mt-2"><a href="">Create Movie</a></button>
-                    <button type="submit" class="generic-button button-color-gold mt-2"><a href="">Update Movie</a></button>
+                    <button type="submit" class="generic-button button-color-green mt-2">Create Movie</button>
+                    <button class="generic-button button-color-gold mt-2"><a href="">Update Movie</a></button>
                     <button class="generic-button mt-2"><a href="{{ url_for('home') }}">Cancel</a></button>
-                    <button type="submit" class="generic-button button-color-red mt-2"><a href="">Delete Movie</a></button>
+                    <button class="generic-button button-color-red mt-2"><a href="">Delete Movie</a></button>
                 </div>
             </form>
         </div>
