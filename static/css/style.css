@@ -408,10 +408,18 @@ p > a:hover {
     align-content: flex-start;
 }
 
-.movie-picture-display, .movie-placeholder, .movie-image-continer {
+.movie-picture-display, .movie-placeholder, .movie-image-continer, .single-movie-picture-display {
     height: 250px;
     width: 169px;
+    
+}
+
+.movie-picture-display, .movie-placeholder, .movie-image-continer {
     margin-right: 10px;
+}
+
+.single-movie-picture-display {
+    margin: 0 auto;
 }
 
 .movie-image-continer {

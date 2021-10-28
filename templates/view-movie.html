@@ -5,76 +5,101 @@
 
 <div class="container">
     <div class="card form-card shadow">
-        <div class="row">
-            <div class="col-12 col-md-8">
-                <h1 class="ml-5">{{movie.movie_title}}</h1>
+        <div class="row my-3">
+            <div class="col-12 col-md-7  text-center text-md-start">
+                <div class="row">
+                    <div class="col-12 col-md-11">
+                        <h1 class=" ms-md-5">{{movie.movie_title}}</h1>
+                    </div>
+                    <div class="col-12 col-md-1">
+                        <h3><i class="fas fa-glasses"></i></h3>
+                    </div>
+                </div>
             </div>
-            <div class="col-12 col-md-4 text-end">
-                <button class="generic-button button-color-gold"><a href="#">Update Profile</a></button>
-                <button class="generic-button button-color-red mt-1"><a href="#">Delete Profile</a></button>
+            <div class="col-12 col-md-5 text-center text-md-end pe-md-5">
+                <h3>Age Rating: {{movie.age_rating}}</h3>
+            </div>
+        </div>
+        <div class="row g-0">
+            <div class="col-12 col-md-4">
+                <div class="single-movie-picture-display">
+                    <div class="movie-image-continer">
+                        <a href="{{ url_for('view_movie', movie_id=movie._id) }}">
+                                <img src="{{ movie.link_to_movie_image }}" alt="Movie Image">
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-8">
+                <p>Synopsis: </p>
+                <p>Duration: {{ movie.duration }}</p>
+                <p>Genre: {{ movie.genre }}</p>
+                <p>Release Date: {{ movie.release_date }}</p>
+                <p>Main Cast: </p>
+                <p>Director: </p>
+                <p>Number of Reviews : </p>
+                <p>Average Rating:  out of 5</p>        
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 text-end">
+                <button class="generic-button button-color-gold"><a href="{{ url_for('create_movie') }}">I Have Watched This</a></button>
+                <button class="generic-button button-color-gold"><a href="{{ url_for('create_movie') }}">View All Reviews</a></button>
             </div>
         </div>
         <div class="row">
             <div class="col-12">
+                <h3 class="mt-4 ms-4">Latest Reviews</h3>
+                <div class="accordion mt-3" id="user-profile-accordion">
+                    <div class="card form-card">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Reviewer Name</th>
+                                    <th>Review Title</th>
+                                    <th>Star Rating</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for n in range(4) %}
+                                    {% for review in movie.recent_reviews %}
+                                        <tr>
+                                            <td>review.review_by</td>
+                                            <td>review.review_title</td>
+                                            <td>review.review_rating</td>
+                                        </tr>
+                                    {% endfor %}
+                                {% endfor %}
+                              </tbody>
+                            </table>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
                 <div class="accordion mt-3" id="user-profile-accordion">
                     <div class="accordion-item">
-                        <h2 class="accordion-header" id="to-watch-header">
+                        <h5 class="accordion-header" id="to-watch-header">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#movies-to-watch-collapse" aria-expanded="false"
                                 aria-controls="movies-to-watch-collapse">
-                                Movies You Want to Watch
+                                {{ movie.movie_title }} Trailer
                             </button>
-                        </h2>
+                        </h5>
                         <div id="movies-to-watch-collapse" class="accordion-collapse collapse"
                             aria-labelledby="to-watch-heading" data-bs-parent="#user-profile-accordion">
                             <div class="accordion-body">
-                                
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="watched-header">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#movies-watched-collapse" aria-expanded="false"
-                                    aria-controls="movies-watched-collapse">
-                                    Movies You Have Watched
-                                </button>
-                            </h2>
-                            <div id="movies-watched-collapse" class="accordion-collapse collapse"
-                                aria-labelledby="watched-heading" data-bs-parent="#user-profile-accordion">
-                                <div class="accordion-body">
-                                    
-                                </div>
+                                <iframe id="ytplayer" type="text/html" width="640" height="360"
+                                    src="{{ movie.link_to_trailer }}"
+                                    frameborder="0"></iframe>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-12">
-                <h3 class="mt-4">'s Latest Reviews</h3>
-                <div class="card form-card shadow">
-                    <div class="accordion" id="user-review-accordion">
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="user-review-header">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#user-review-collapse" aria-expanded="false"
-                                    aria-controls="review-collapse">
-                                    User Review 1
-                                </button>
-                            </h2>
-                            <div id="user-review-collapse" class="accordion-collapse collapse"
-                                aria-labelledby="user-review-heading" data-bs-parent="#user-review-accordion">
-                                <div class="accordion-body">
-                                    <h5>You Need to Write Some Reviews!</h5>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </div>
 
     {% endblock %}
