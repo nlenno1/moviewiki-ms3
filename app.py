@@ -6,7 +6,7 @@ from flask_pymongo import PyMongo
 from bson.objectid import ObjectId  # to render an object id in a bson format
 if os.path.exists("env.py"):
     import env
-    from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 # create an instance of Flask called app
