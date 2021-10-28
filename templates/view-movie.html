@@ -7,7 +7,7 @@
     <div class="card form-card shadow">
         <div class="row">
             <div class="col-12 col-md-8">
-                <h1 class="ml-5">{{movie.movie_name}}</h1>
+                <h1 class="ml-5">{{movie.movie_title}}</h1>
             </div>
             <div class="col-12 col-md-4 text-end">
                 <button class="generic-button button-color-gold"><a href="#">Update Profile</a></button>
@@ -28,15 +28,7 @@
                         <div id="movies-to-watch-collapse" class="accordion-collapse collapse"
                             aria-labelledby="to-watch-heading" data-bs-parent="#user-profile-accordion">
                             <div class="accordion-body">
-                                {% if user.movies_to_watch|length <= 0 %}
-                                <h5 class="mb-0 mt-1">Choose some movies you want to watch!</h5>
-                                {% else %}
-                                <ul class="mb-0">
-                                    {% for movie in user.movies_to_watch %}
-                                    <li>{{ movie }}</li>
-                                    {% endfor %}
-                                </ul>
-                                {% endif %}
+                                
                             </div>
                         </div>
                         <div class="accordion-item">
@@ -50,15 +42,7 @@
                             <div id="movies-watched-collapse" class="accordion-collapse collapse"
                                 aria-labelledby="watched-heading" data-bs-parent="#user-profile-accordion">
                                 <div class="accordion-body">
-                                    {% if user.numb_movies_watched == 0 %}
-                                    <h5 class="mb-0 mt-1">You haven't watched any Movies!!!</h5>
-                                    {% else %}
-                                    <ul>
-                                        {% for movie in user.movies_watched %}
-                                        <li>{{ movie|capitalize }}</li>
-                                        {% endfor %}
-                                    </ul>
-                                    {% endif %}
+                                    
                                 </div>
                             </div>
                         </div>
@@ -68,7 +52,7 @@
         </div>
         <div class="row">
             <div class="col-12">
-                <h3 class="mt-4">{{user.username}}'s Latest Reviews</h3>
+                <h3 class="mt-4">'s Latest Reviews</h3>
                 <div class="card form-card shadow">
                     <div class="accordion" id="user-review-accordion">
                         <div class="accordion-item">

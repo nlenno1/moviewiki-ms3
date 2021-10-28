@@ -44,7 +44,7 @@ def signup():
 
         if existing_user:
             flash("Username " + requested_username.capitalize() +
-                    " already exists")
+                " already exists")
             return redirect(url_for("signup"))
 
         register = {
@@ -119,6 +119,13 @@ def create_review():
     movie_title_list = mongo.db.movies.find({}, {"movie_name": 1})
     return render_template(
         "create-review.html", movie_title_list=movie_title_list)
+
+
+@app.route("/view-movie/<movie_id>")
+def view_movie(movie_id):
+    movie = mongo.db.movies.find_one(
+            {'_id': ObjectId(movie_id)})
+    return render_template("view-movie.html", movie=movie)
 
 
 @app.route("/about")
