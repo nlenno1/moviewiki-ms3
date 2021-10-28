@@ -400,7 +400,7 @@ p > a:hover {
     height: 320px;
     width: 100%;
     padding: 10px;
-    overflow-x: auto;
+    overflow-x:auto;
     background-color: #c4c4c4;
     margin-bottom: 2rem;
     display: flex;
@@ -408,16 +408,25 @@ p > a:hover {
     align-content: flex-start;
 }
 
-.movie-picture-display, .placeholder {
+.movie-picture-display, .movie-placeholder, .movie-image-continer {
     height: 250px;
     width: 169px;
     margin-right: 10px;
 }
 
-.movie-picture-display img {
+.movie-image-continer {
+    overflow: hidden;
+}
+
+.movie-picture-display img, .movie-picture-display a {
     object-fit: fill;
     height: inherit;
     width: inherit;
+    transition: all 0.2s ease-in-out;
+}
+
+.movie-picture-display img:hover {
+    transform: scale(1.1)
 }
 
 .movie-carousel h4 {
@@ -430,18 +439,19 @@ p > a:hover {
     align-items: center;
 }
 
-.placeholder {
-    padding: 20px 5px;
+.movie-placeholder {
+    padding: 20px 10px;
+    background-color: currentColor;
+    opacity: .5;
 }
 
-.placeholder button {
+.movie-placeholder button {
     width:100%;
     margin: 0;
 }
 
-.placeholder p {
+.movie-placeholder p {
     color: #fafafa;
-    height: 60%;
     text-align: center;
     margin: 0;
     height: 85%

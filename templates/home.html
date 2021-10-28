@@ -21,26 +21,35 @@
                 <div class="movie-carousel">
                     {% for movie in movies %}
                         <div class="movie-picture-display">
-                            {% if movie.link_to_movie_image == null %}
-                                <img src="static/img/movie-placeholder.png" alt="Movie Image Placeholder Image">
-                            {% elif movie.link_to_movie_image == "placeholder" %}
-                                <div class="placeholder">
-                                    <p>Can't find the film you want then create its profile!</p>
-                                    <button type="submit" class="generic-button button-color-gold"><a href="{{ url_for('create_movie') }}">Create Movie</a></button>
-                                </div>
-                            {% else %}
-                                <img src="{{ movie.link_to_movie_image }}" alt="Movie Image">
-                            {% endif %}
+                            <div class="movie-image-continer">
+                                <a href="{{ url_for('view_movie', movie_id=movie._id) }}">
+                                    {% if movie.link_to_movie_image == null %}
+                                        <img src="static/img/movie-placeholder.png" alt="Movie Image Placeholder Image">
+                                    {% else %}
+                                        <img src="{{ movie.link_to_movie_image }}" alt="Movie Image">
+                                    {% endif %}
+                                </a>
+                            </div>
                             <h4>{{ movie.movie_title }}</h4>
                         </div>
                     {% endfor %}
-                    <div class="movie-picture-display">
-                        <div class="placeholder">
-                            <p>Can't find the film you want then try a different search or create a new profile for it!</p>
-                            <button type="submit" class="generic-button button-color-gold"><a href="/create-movie">Create Movie</a></button>
+                    {% if session['user'] %}
+                        <div class="movie-picture-display">
+                            <div class="movie-placeholder">
+                                <p>Can't find the film you want then try a different search or create a new profile for it!</p>
+                                <button class="generic-button button-color-gold"><a href="{{ url_for('create_movie') }}">Create Movie</a></button>
+                            </div>
+                            <h4>Still Looking?</h4>
                         </div>
-                        <h4>Still Looking?</h4>
-                    </div>
+                    {% else %}
+                        <div class="movie-picture-display">
+                            <div class="movie-placeholder">
+                                <p>Can't find the film you want then try a different search or sign in and create a new profile for it!</p>
+                                <button class="generic-button button-color-gold"><a href="{{ url_for('signin') }}">Sign In</a></button>
+                            </div>
+                            <h4>Still Looking?</h4>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
