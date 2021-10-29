@@ -299,7 +299,7 @@ footer .logo {
 
 @media (min-width: 768px) {
     .search-bar-container input {width: 450px; margin: 0 20px 0 0;}
-    .search-bar-container i {position: absolute; left: 20px; top: 8px;}
+    .search-bar-container i {position: absolute; left: 20px; top: 7px;}
 }
 
 /* Sign Up & Sign In */
@@ -537,6 +537,20 @@ select {
 
 /* Modal */
 
-.hidden {
-    display: none;
+.modal-search-bar-container {
+    
+}
+
+.modal-search-bar-container input {
+    width: 100%;
+    margin-top: 15px;
+    border-radius: 10px;
+    padding-left: 55px;
+    position: relative;
+}
+
+.modal-search-bar-container i {
+    position: absolute;
+    left: 27px;
+    top: 21px;
 }

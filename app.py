@@ -55,6 +55,22 @@ def delete_genre(genre_id):
     return redirect(url_for('get_all_genre'))
 
 
+@app.route("/genre/update/<genre_name>,<genre_id>", methods=["POST"])
+def update_genre(genre_id, genre_name):
+    """
+    function to update a genre name in the DB
+    """
+    # store input data in a variable using the genre_name to make up the input
+    # name value and removing any spaces
+    new_genre_name = request.form.get(genre_name.replace(
+                                        " ", "-") + '-replacement-genre-name')
+    # updating the informatiion in the DB using the _id to find the documnet
+    mongo.db.genre.update({"_id": ObjectId(genre_id)}, {
+                                "genre_name": new_genre_name.lower()})
+    flash("Genre Updated")
+    return redirect(url_for('get_all_genre'))
+
+
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
