@@ -1,4 +1,6 @@
 import os
+from datetime import datetime
+import time
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import (
     Flask, flash, render_template,
@@ -7,8 +9,6 @@ from flask_pymongo import PyMongo
 from bson.objectid import ObjectId  # to render an object id in a bson format
 if os.path.exists("env.py"):
     import env
-from datetime import datetime
-import time
 
 
 # create an instance of Flask called app
@@ -21,6 +21,20 @@ app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
 
 # create instance of pymongo using contructor with app
 mongo = PyMongo(app)
+
+
+# Functions
+
+
+def create_single_review():
+    review = {
+        "reviewer": session['user'],
+        "review_title": request.form.get("review-title").lower(),
+        "review": request.form.get("movie-review"),
+        "review_date": datetime.now(),
+        "star_rating": request.form.get("star-count")
+    }
+    return review
 
 
 @app.route("/")
@@ -183,13 +197,7 @@ def create_movie():
                                             "next-movie-name").lower()
 
         if request.form.get("write-review-switch"):
-            review = {
-                "reviewer": session['user'],
-                "review_title": request.form.get("review-title").lower(),
-                "review": request.form.get("movie-review"),
-                "review_date": datetime.now(),
-                "star_rating": request.form.get("star-count")
-            }
+            review = create_single_review()
             new_movie["reviews"].append(review)
             mongo.db.users.update_one({"username": session["user"]},
                                       {"$inc": {"reviews_submitted": 1}})
@@ -221,6 +229,21 @@ def view_movie(movie_id):
 
 @app.route("/create-review", methods=["GET", "POST"])
 def create_review():
+    if request.method == "POST":
+        requested_movie_name = request.form.get("selected-movie-title").lower()
+        movie_document = mongo.db.movies.find_one({
+                                "movie_title": requested_movie_name}, {"_id":1})
+        if movie_document:
+            new_review = create_single_review()
+            mongo.db.movies.update_one({"_id": ObjectId(
+                                        movie_document["_id"])},
+                                       {"$push": {"reviews": new_review}})
+        else:
+            flash(f"There is no movie called '{requested_movie_name.title()}' "
+                  f"in the database.\nEither create a profile for this movie "
+                  f"or try a different search")
+
+        return redirect(url_for('create_review'))
     movie_title_list = mongo.db.movies.find({}, {"movie_title": 1})
     return render_template(
         "create-review.html", movie_title_list=movie_title_list)
