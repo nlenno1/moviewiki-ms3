@@ -8,6 +8,7 @@ from bson.objectid import ObjectId  # to render an object id in a bson format
 if os.path.exists("env.py"):
     import env
 from datetime import datetime, date
+import time
 
 
 # create an instance of Flask called app
@@ -141,9 +142,10 @@ def create_movie():
             "created_by": session['user']
         }
         mongo.db.movies.insert_one(new_movie)
-        flash("New Movie Added")
+        time.sleep(5)
         brand_new_movie = mongo.db.users.find_one(
             {"movie_title": request.form.get("movie-title")})
+        flash("New Movie Added")
         return redirect(url_for(
                         "view_movie", movie_id=ObjectId(brand_new_movie)))
 

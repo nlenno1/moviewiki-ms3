@@ -183,7 +183,7 @@ h1, h2, h3, h4, .navbar-brand, .logo, .movie-font {
 
 /* base.html .content */
 
-.content {
+.content  {
     min-height: calc(100vh - 237px);
 }
 
@@ -505,4 +505,32 @@ select {
 
 .gold-star {
     color:#EEBC1D;
+}
+
+/* Processing Screen */
+
+#processing {
+    width: 100%;
+    cursor: wait;
+    display: none;
+    min-height: calc(100vh - 237px);
+}
+
+#processing img {
+    width: 100%; 
+    height: auto;
+    overflow: auto;
+}
+
+@media (min-width: 576px) {
+    #processing img {
+        width: 480px; 
+        height: 360px;
+    }
+}
+
+@media (min-width: 768px) {
+    #processing {
+         min-height: calc(100vh - 135px);
+    }
 }

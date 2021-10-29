@@ -62,6 +62,13 @@ function createToastMessage (message) {
 }
 */
 
+// processing page hide/show function
+function processing() {
+    document.querySelector("#content").style.display = "none";
+    document.querySelector("#processing").style.display = "block";
+}
+
+
 document.addEventListener('DOMContentLoaded', () => {
     // changes select element text color to black on change to replicate placeholder being removed
     elementList = document.getElementsByTagName('select')
