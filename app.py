@@ -114,6 +114,10 @@ def profile(username):
 @app.route("/create-movie", methods=["GET", "POST"])
 def create_movie():
     if request.method == "POST":
+        if request.form.get("image-link"):
+            image_link = request.form.get("image-link")
+        else:
+            image_link = "../static/img/movie-placeholder.png"
         # if movie watch switch is active then add to user profile
         new_movie = {
             "movie_title": request.form.get("movie-title"),
@@ -124,24 +128,45 @@ def create_movie():
             "cast_members": request.form.get("cast-members"),
             "movie_synopsis": request.form.get("movie-synopsis"),
             "movie_description": request.form.get("movie-description"),
-            "image_link": request.form.get("image-link"),
+            "image_link": image_link,
             "trailer_link": request.form.get("trailer-link"),
-            "series_position": request.form.get("series-checkboxes"),
-            "series_name": request.form.get("series-name"),
-            "previous_movie_title": request.form.get("previous-movie-name"),
-            "next_movie_title": request.form.get("next-movie-name"),
             "numb_of_reviews": 0,
-            "reviews": [{
+            "reviews": [],
+            "average_rating": 0,
+            "created_by": session['user']
+        }
+
+        if request.form.get("series-switch"):
+            new_movie["is_part_of_series"] = True
+            new_movie["series_position"] = request.form.get(
+                                                "series-checkboxes")
+            new_movie["series_name"] = request.form.get("series-name")
+            new_movie["previous_movie_title"] = request.form.get(
+                                                "previous-movie-name")
+            new_movie["next_movie_title"] = request.form.get("next-movie-name")
+
+        if request.form.get("write-review-switch"):
+            review = {
                 "reviewer": session['user'],
                 "review_title": request.form.get("review-title"),
                 "review": request.form.get("movie-review"),
                 "review_date": datetime.now(),
                 "star_rating": request.form.get("star-count")
-            }],
-            "average_rating": 0,
-            "created_by": session['user']
-        }
+            }
+            new_movie["reviews"].append(review)
+            mongo.db.users.update_one({"username": session["user"]},
+                                      {"$inc": {"reviews_submitted": 1}})
+
         new_id = mongo.db.movies.insert_one(new_movie).inserted_id
+
+        if request.form.get("seen-movie-switch"):
+            mongo.db.users.update_one({"username": session["user"]},
+                                      {"$push": {"movies_watched": new_id}})
+        
+        if request.form.get("write-review-switch"):
+            mongo.db.users.update_one({"username": session["user"]},
+                                      {"$push": {"movies_reviewed": new_id}})
+
         time.sleep(3)
         flash("New Movie Added")
         return redirect(url_for("view_movie", movie_id=new_id))
