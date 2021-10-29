@@ -32,7 +32,7 @@ def home():
 
 @app.route("/genre")
 def get_all_genre():
-    genre_list = mongo.db.genre.find()
+    genre_list = list(mongo.db.genre.find())
     return render_template("genre-management.html", genre_list=genre_list)
 
 
@@ -43,8 +43,6 @@ def add_genre():
         "genre_name": new_genre_name
     })
     flash("Genre " + new_genre_name + " added!")
-
-    genre_list = mongo.db.genre.find()
     return redirect(url_for('get_all_genre'))
 
 
@@ -54,8 +52,6 @@ def delete_genre(genre_id):
         "_id": ObjectId(genre_id)
     })
     flash("Genre Deleted")
-
-    genre_list = mongo.db.genre.find()
     return redirect(url_for('get_all_genre'))
 
 

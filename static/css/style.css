@@ -534,3 +534,9 @@ select {
          min-height: calc(100vh - 135px);
     }
 }
+
+/* Modal */
+
+.hidden {
+    display: none;
+}
