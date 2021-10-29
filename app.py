@@ -30,13 +30,13 @@ def home():
     return render_template("home.html", movies=movie_list)
 
 
-@app.route("/get_all_genre")
+@app.route("/genre")
 def get_all_genre():
     genre_list = mongo.db.genre.find()
     return render_template("genre-management.html", genre_list=genre_list)
 
 
-@app.route("/genre/add-genre", methods=["POST"])
+@app.route("/genre/add", methods=["POST"])
 def add_genre():
     new_genre_name = request.form.get('genre-name')
     mongo.db.genre.insert_one({
@@ -45,7 +45,18 @@ def add_genre():
     flash("Genre " + new_genre_name + " added!")
 
     genre_list = mongo.db.genre.find()
-    return render_template("genre-management.html", genre_list=genre_list)
+    return redirect(url_for('get_all_genre'))
+
+
+@app.route("/genre/delete/<genre_id>")
+def delete_genre(genre_id):
+    mongo.db.genre.remove({
+        "_id": ObjectId(genre_id)
+    })
+    flash("Genre Deleted")
+
+    genre_list = mongo.db.genre.find()
+    return redirect(url_for('get_all_genre'))
 
 
 @app.route("/signup", methods=["GET", "POST"])

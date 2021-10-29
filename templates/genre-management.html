@@ -19,7 +19,7 @@
                             <h3 class="mb-0">{{ genre.genre_name|capitalize }}</h3> 
                             <div class="buttons-container">
                                 <button class="generic-button button-color-gold my-1">Update</button>
-                                <button class="generic-button button-color-red my-1">Delete</button>
+                                <button class="generic-button button-color-red my-1"><a href="{{ url_for('delete_genre', genre_id=genre._id) }}">Delete</a></button>
                             </div>
                         </div>
                     </div>
