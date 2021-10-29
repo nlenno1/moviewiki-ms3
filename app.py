@@ -221,7 +221,7 @@ def view_movie(movie_id):
 
 @app.route("/create-review", methods=["GET", "POST"])
 def create_review():
-    movie_title_list = mongo.db.movies.find({}, {"movie_name": 1})
+    movie_title_list = mongo.db.movies.find({}, {"movie_title": 1})
     return render_template(
         "create-review.html", movie_title_list=movie_title_list)
 
