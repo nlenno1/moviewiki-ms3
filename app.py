@@ -141,23 +141,13 @@ def create_movie():
             "average_rating": 0,
             "created_by": session['user']
         }
-        mongo.db.movies.insert_one(new_movie)
-        time.sleep(5)
-        brand_new_movie = mongo.db.users.find_one(
-            {"movie_title": request.form.get("movie-title")})
+        new_id = mongo.db.movies.insert_one(new_movie).inserted_id
+        time.sleep(3)
         flash("New Movie Added")
-        return redirect(url_for(
-                        "view_movie", movie_id=ObjectId(brand_new_movie)))
+        return redirect(url_for("view_movie", movie_id=new_id))
 
     genre_list = mongo.db.genre.find()
     return render_template("create-movie.html", genre_list=genre_list)
-
-
-@app.route("/create-review", methods=["GET", "POST"])
-def create_review():
-    movie_title_list = mongo.db.movies.find({}, {"movie_name": 1})
-    return render_template(
-        "create-review.html", movie_title_list=movie_title_list)
 
 
 @app.route("/view-movie/<movie_id>")
@@ -165,6 +155,13 @@ def view_movie(movie_id):
     movie = mongo.db.movies.find_one(
             {'_id': ObjectId(movie_id)})
     return render_template("view-movie.html", movie=movie)
+
+
+@app.route("/create-review", methods=["GET", "POST"])
+def create_review():
+    movie_title_list = mongo.db.movies.find({}, {"movie_name": 1})
+    return render_template(
+        "create-review.html", movie_title_list=movie_title_list)
 
 
 @app.route("/about")
