@@ -40,9 +40,9 @@ def get_all_genre():
 def add_genre():
     new_genre_name = request.form.get('genre-name')
     mongo.db.genre.insert_one({
-        "genre_name": new_genre_name
+        "genre_name": new_genre_name.lower()
     })
-    flash("Genre " + new_genre_name + " added!")
+    flash("Genre " + new_genre_name.title() + " added!")
     return redirect(url_for('get_all_genre'))
 
 
@@ -91,7 +91,7 @@ def signup():
             "lastname": request.form.get("lastname").lower(),
             "dob": request.form.get("dob"),
             "email": request.form.get('email'),
-            "favourite-genre": request.form.getlist('favourite-genre')
+            "favourite-genre": request.form.getlist('favourite-genre').lower()
         }
         mongo.db.users.insert_one(register)
 
@@ -155,12 +155,12 @@ def create_movie():
             image_link = "../static/img/movie-placeholder.png"
         # if movie watch switch is active then add to user profile
         new_movie = {
-            "movie_title": request.form.get("movie-title"),
+            "movie_title": request.form.get("movie-title").lower(),
             "release_date": request.form.get("release-date"),
             "age_rating": request.form.get("age-rating"),
             "genre": request.form.getlist("movie-genre"),
-            "director": request.form.get("director"),
-            "cast_members": request.form.get("cast-members"),
+            "director": request.form.get("director").lower(),
+            "cast_members": request.form.getList("cast-members").split(","),
             "movie_synopsis": request.form.get("movie-synopsis"),
             "movie_description": request.form.get("movie-description"),
             "image_link": image_link,
@@ -168,22 +168,24 @@ def create_movie():
             "numb_of_reviews": 0,
             "reviews": [],
             "average_rating": 0,
-            "created_by": session['user']
+            "created_by": session['user'].capitalize(),
+            "is_part_of_series": False
         }
 
         if request.form.get("series-switch"):
             new_movie["is_part_of_series"] = True
             new_movie["series_position"] = request.form.get(
                                                 "series-checkboxes")
-            new_movie["series_name"] = request.form.get("series-name")
+            new_movie["series_name"] = request.form.get("series-name").lower()
             new_movie["previous_movie_title"] = request.form.get(
-                                                "previous-movie-name")
-            new_movie["next_movie_title"] = request.form.get("next-movie-name")
+                                                "previous-movie-name").lower()
+            new_movie["next_movie_title"] = request.form.get(
+                                            "next-movie-name").lower()
 
         if request.form.get("write-review-switch"):
             review = {
                 "reviewer": session['user'],
-                "review_title": request.form.get("review-title"),
+                "review_title": request.form.get("review-title").lower(),
                 "review": request.form.get("movie-review"),
                 "review_date": datetime.now(),
                 "star_rating": request.form.get("star-count")
