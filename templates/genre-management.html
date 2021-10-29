@@ -4,6 +4,13 @@
     <h1 id="header-title">Genres</h1>
 
     <div class="container-md">
+        <form class="search-bar-container" method="POST" action="{{ url_for('add_genre') }}">
+            <div class="input-container">
+                <input type="text" name="genre-name" id="genre-name" placeholder="New Genre Name" required>
+                <i class="fas fa-folder-plus"></i>
+            </div>
+            <button class="generic-button button-color-green" type="submit">Add New Genre</button>
+        </form>
         <div class="card form-card">
             {% for genre in genre_list %}
                 <div class="row g-0">

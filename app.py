@@ -36,6 +36,18 @@ def get_all_genre():
     return render_template("genre-management.html", genre_list=genre_list)
 
 
+@app.route("/genre/add-genre", methods=["POST"])
+def add_genre():
+    new_genre_name = request.form.get('genre-name')
+    mongo.db.genre.insert_one({
+        "genre_name": new_genre_name
+    })
+    flash("Genre " + new_genre_name + " added!")
+
+    genre_list = mongo.db.genre.find()
+    return render_template("genre-management.html", genre_list=genre_list)
+
+
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
