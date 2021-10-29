@@ -22,13 +22,15 @@
         </div>
         <div class="row g-0">
             <div class="col-12 col-md-4">
-                <div class="single-movie-picture-display">
+                <div class="movie-picture-display single-movie-picture-display">
                     <div class="movie-image-continer">
-                        {% if movie.image_link == null %}
-                            <img src="static/img/movie-placeholder.png" alt="Movie Image Placeholder Image">
-                        {% else %}
-                            <img src="{{ movie.image_link }}" alt="Movie Image">
-                        {% endif %}
+                        <a href="{{ url_for('view_movie', movie_id=movie._id) }}">
+                            {% if movie.image_link == null or not movie.image_link %}
+                                <img src="../static/img/movie-placeholder.png" alt="Movie Image Placeholder Image">
+                            {% else %}
+                                <img src="{{ movie.image_link }}" alt="Movie Image">
+                            {% endif %}
+                        </a>
                     </div>
                 </div>
             </div>

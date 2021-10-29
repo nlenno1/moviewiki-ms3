@@ -408,7 +408,7 @@ p > a:hover {
     align-content: flex-start;
 }
 
-.movie-picture-display, .movie-placeholder, .movie-image-continer, .single-movie-picture-display {
+.movie-picture-display, .movie-placeholder, .movie-image-continer {
     height: 250px;
     width: 169px;
     
