@@ -7,7 +7,7 @@ from flask_pymongo import PyMongo
 from bson.objectid import ObjectId  # to render an object id in a bson format
 if os.path.exists("env.py"):
     import env
-from datetime import datetime, date
+from datetime import datetime
 import time
 
 
@@ -162,7 +162,7 @@ def create_movie():
         if request.form.get("seen-movie-switch"):
             mongo.db.users.update_one({"username": session["user"]},
                                       {"$push": {"movies_watched": new_id}})
-        
+
         if request.form.get("write-review-switch"):
             mongo.db.users.update_one({"username": session["user"]},
                                       {"$push": {"movies_reviewed": new_id}})

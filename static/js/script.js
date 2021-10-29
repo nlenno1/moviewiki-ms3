@@ -28,7 +28,7 @@ function backToTop() {
 
 function countStars () {
     stars = document.getElementsByClassName('gold-star').length;
-    document.querySelector("#star-count").innerHTML =  stars
+    document.querySelector("#star-count").value =  stars
 }
 
 function initializeStarRating() {

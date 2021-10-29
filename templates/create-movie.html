@@ -77,7 +77,8 @@
                     <input type="text" name="review-title" id="review-title" class="validate mb-4" placeholder="Review Title" pattern="^[a-zA-Z0-9 ]+$">
                     <textarea name="movie-review" id="movie-review" rows ="8" cols="100" placeholder="Movie Review"></textarea>
                     <div class="star-rating-container">
-                        <span name="star-count" id="star-count">Click the stars to choose your</span>
+                        <span>Click the stars to choose your</span>
+                        <input type="hidden" name="star-count" id="star-count" value="0">
                         <span>Star Rating: </span>
                         <i id="1" class="fas fa-star"></i>
                         <i id="2" class="fas fa-star"></i>
