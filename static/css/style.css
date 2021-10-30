@@ -397,10 +397,10 @@ p > a:hover {
 }
 
 .movie-carousel {
-    height: 320px;
+    height: 330px;
     width: 100%;
     padding: 10px;
-    overflow-x:auto;
+    overflow-x: scroll;
     background-color: #c4c4c4;
     margin-bottom: 2rem;
     display: flex;
