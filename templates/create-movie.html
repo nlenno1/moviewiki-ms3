@@ -7,9 +7,9 @@
         <div class="card form-card card-large input-large shadow">
             <h4 class="text-center mt-2 mb-4">Create a new movie profile for any film that you know of by filling in this form!</h4>
             <form class="generic-form" method="POST" action="{{ url_for('create_movie') }}" >
-                <input type="text" name="movie-title" id="movie-title" placeholder="Movie Title" class="validate" pattern="^[a-zA-Z0-9 ]+$" required>
-                <input placeholder="Release Date" class="textbox-n" type="text" onfocus="(this.type='date')" name="release-date" id="release-date" class="validate">
-                <select id="age-rating" id="age-rating">
+                <input type="text" name="movie-title" id="movie-title" placeholder="Movie Title" class="validate" pattern="^[a-zA-Z0-9 \p{P}]+$" required>
+                <input placeholder="Release Date" type="text" onfocus="(this.type='date')" name="release-date" id="release-date" class="validate">
+                <select id="age-rating" name="age-rating">
                     <option class="hidden" value="null" selected hidden>Age Rating</option>
                     <option value="uc">Pre-School (Uc)</option>
                     <option value="u">Universal (U)</option>
@@ -34,21 +34,21 @@
                     {% endfor %}
                 </div>
                 <hr class="shadow">
-                <input type="text" name="director" id="director" placeholder="Director" class="validate" pattern="^[a-zA-Z ]+$">
-                <input type="text" name="cast-members" id="cast-members" placeholder="Main Cast Members" class="validate" pattern="^[a-zA-Z ,]+$">
+                <input type="text" name="director" id="director" placeholder="Director" class="validate" pattern="^[a-zA-Z \p{P}]+$">
+                <input type="text" name="cast-members" id="cast-members" placeholder="Main Cast Members" >
                 <hr class="shadow">
-                <input type="text" name="movie-synopsis" id="movie-synopsis" placeholder="Movie Synopsis" class="validate" pattern="^[a-zA-Z ,.]+$">
-                <textarea name="movie-description" id="movie-description" rows ="8" cols="140" placeholder="Movie Description"></textarea>
+                <input type="text" name="movie-synopsis" id="movie-synopsis" placeholder="Movie Synopsis" class="validate" pattern="^[a-zA-Z0-9 \p{P}]+$">
+                <textarea name="movie-description" id="movie-description" rows ="8" cols="140" placeholder="Movie Description" class="validate" pattern="^[a-zA-Z0-9 \p{P}]+$"></textarea>
                 <hr class="shadow">
                 <input type="text" name="image-link" id="image-link" placeholder="Link to Movie Image">
                 <input type="text" name="trailer-link" id="trailer-link" placeholder="Link to Trailer Video">
                 <hr class="shadow">
                 <div class="switch-display mb-3">
-                    <p class="text-center">Please use the switches to answer the following questions<br>"On" for Yes and "Off" for No</p>
-                    <div class="form-check form-switch">
-                        <label class="form-check-label" for="seen-movie-switch">Have you seen this Movie?</label>
-                        <input class="form-check-input" type="checkbox" name="seen-movie-switch" id="seen-movie-switch">
+                    <div class="checkbox-container mb-2">
+                        <input class="series-checkboxes" type="checkbox" id="seen-movie-checkbox" name="seen-movie-checkbox" value="seen-movie">
+                        <label class="form-check-label" for="seen-movie-checkbox">Check this box if you have seen this Movie?</label><br>
                     </div>
+                    <p class="text-center">Please use the switches to answer the following questions<br>"On" for Yes and "Off" for No</p>
                     <div class="form-check form-switch">
                         <label class="form-check-label" for="series-switch">Is this Movie part of a series?</label>
                         <input class="form-check-input" type="checkbox" name="series-switch" id="series-switch" data-bs-toggle="collapse" data-bs-target="#series-questions">
@@ -68,13 +68,17 @@
                         <input class="series-checkboxes" type="radio" id="middle-series" name="series-checkboxes" value="middle">
                         <label for="vehicle3"> None of the above</label><br>
                     </div>
-                    <input type="text" name="series-name" id="series-name" placeholder="Series Name" class="validate" pattern="^[a-zA-Z0-9 ]+$">
-                    <input type="text" name="previous-movie-name" id="previous-movie-name" placeholder="Previous Movie in the Series" class="validate" pattern="^[a-zA-Z0-9 ]+$">
-                    <input type="text" name="next-movie-name" id="next-movie-name" placeholder="Next Movie in the Series" class="validate" pattern="^[a-zA-Z0-9 ]+$">
+                    <input type="text" name="series-name" id="series-name" placeholder="Series Name" class="validate" pattern="^[a-zA-Z0-9 \p{P}]+$">
+                    <input type="text" name="previous-movie-name" id="previous-movie-name" placeholder="Previous Movie in the Series" class="validate" pattern="^[a-zA-Z0-9 \p{P}]+$">
+                    <input type="text" name="next-movie-name" id="next-movie-name" placeholder="Next Movie in the Series" class="validate" pattern="^[a-zA-Z0-9 \p{P}]+$">
+                    <div class="checkbox-container mb-2 text-center">
+                        <input class="series-checkboxes" type="checkbox" id="submit-series-info" name="submit-series-info" value="submit">
+                        <label class="form-check-label" for="submit-series-info"> Click this box to submit the Series information</label><br>
+                    </div>
                 </div>
                 <div id="add-review" class="card form-card card-small shadow hidden collapse">
                     <p>Write your review of this movie</p>
-                    <input type="text" name="review-title" id="review-title" class="validate mb-4" placeholder="Review Title" pattern="^[a-zA-Z0-9 ]+$">
+                    <input type="text" name="review-title" id="review-title" class="mb-4" placeholder="Review Title" pattern="^[a-zA-Z0-9 \p{P}]+$">
                     <textarea name="movie-review" id="movie-review" rows ="8" cols="100" placeholder="Movie Review"></textarea>
                     <div class="star-rating-container">
                         <span>Click the stars to choose your</span>
@@ -86,9 +90,13 @@
                         <i id="4" class="fas fa-star"></i>
                         <i id="5" class="fas fa-star"></i>
                     </div>
+                    <div class="checkbox-container mb-2 text-center">
+                        <input class="series-checkboxes" type="checkbox" id="submit-movie-review" name="submit-movie-review" value="submit">
+                        <label class="form-check-label" for="submit-movie-review"> Click this box to submit your Movie Review</label><br>
+                    </div>
                 </div>
                 <div class="buttons-container mt-4">
-                    <button type="submit" onclick="processing();" class="generic-button button-color-green mt-2">Create Movie</button>
+                    <button type="submit" onclick="processing()" class="generic-button button-color-green mt-2">Create Movie</button>
                     <button class="generic-button button-color-gold mt-2"><a href="">Update Movie</a></button>
                     <button class="generic-button mt-2"><a href="{{ url_for('home') }}">Cancel</a></button>
                     <button class="generic-button button-color-red mt-2"><a href="">Delete Movie</a></button>

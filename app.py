@@ -167,36 +167,42 @@ def create_movie():
             image_link = request.form.get("image-link")
         else:
             image_link = "../static/img/movie-placeholder.png"
-        # if movie watch switch is active then add to user profile
+
         new_movie = {
             "movie_title": request.form.get("movie-title").lower(),
             "release_date": request.form.get("release-date"),
             "age_rating": request.form.get("age-rating"),
             "genre": request.form.getlist("movie-genre"),
             "director": request.form.get("director").lower(),
-            "cast_members": request.form.getList("cast-members").split(","),
+            "cast_members": request.form.get("cast-members").lower().split(","),
             "movie_synopsis": request.form.get("movie-synopsis"),
             "movie_description": request.form.get("movie-description"),
             "image_link": image_link,
             "trailer_link": request.form.get("trailer-link"),
-            "numb_of_reviews": 0,
             "reviews": [],
-            "average_rating": 0,
-            "created_by": session['user'].capitalize(),
+            "created_by": session['user'],
             "is_part_of_series": False
         }
 
-        if request.form.get("series-switch"):
+        if request.form.get("submit-series-info"):
             new_movie["is_part_of_series"] = True
             new_movie["series_position"] = request.form.get(
                                                 "series-checkboxes")
             new_movie["series_name"] = request.form.get("series-name").lower()
-            new_movie["previous_movie_title"] = request.form.get(
+
+            if new_movie["series_position"] == "start":
+                new_movie["next_movie_title"] = request.form.get(
+                                            "next-movie-name").lower()
+            elif new_movie["series_position"] == "end":
+                new_movie["previous_movie_title"] = request.form.get(
                                                 "previous-movie-name").lower()
-            new_movie["next_movie_title"] = request.form.get(
+            else:
+                new_movie["previous_movie_title"] = request.form.get(
+                                                "previous-movie-name").lower()
+                new_movie["next_movie_title"] = request.form.get(
                                             "next-movie-name").lower()
 
-        if request.form.get("write-review-switch"):
+        if request.form.get("submit-movie-review"):
             review = create_single_review()
             new_movie["reviews"].append(review)
             mongo.db.users.update_one({"username": session["user"]},
@@ -204,7 +210,7 @@ def create_movie():
 
         new_id = mongo.db.movies.insert_one(new_movie).inserted_id
 
-        if request.form.get("seen-movie-switch"):
+        if request.form.get("seen-movie-checkbox"):
             mongo.db.users.update_one({"username": session["user"]},
                                       {"$push": {"movies_watched": new_id}})
 
@@ -232,7 +238,8 @@ def create_review():
     if request.method == "POST":
         requested_movie_name = request.form.get("selected-movie-title").lower()
         movie_document = mongo.db.movies.find_one({
-                                "movie_title": requested_movie_name}, {"_id":1})
+                                "movie_title": requested_movie_name},
+                                 {"_id": 1})
         if movie_document:
             new_review = create_single_review()
             mongo.db.movies.update_one({"_id": ObjectId(
