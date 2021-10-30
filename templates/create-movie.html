@@ -8,7 +8,7 @@
             <h4 class="text-center mt-2 mb-4">Create a new movie profile for any film that you know of by filling in this form!</h4>
             <form class="generic-form" method="POST" action="{{ url_for('create_movie') }}" >
                 <input type="text" name="movie-title" id="movie-title" placeholder="Movie Title" class="validate" pattern="^[a-zA-Z0-9 \p{P}]+$" required>
-                <input placeholder="Release Date" type="text" onfocus="(this.type='date')" name="release-date" id="release-date" class="validate">
+                <input placeholder="Release Date" type="text" onfocus="(this.type='date')" name="release-date" id="release-date">
                 <select id="age-rating" name="age-rating">
                     <option class="hidden" value="null" selected hidden>Age Rating</option>
                     <option value="uc">Pre-School (Uc)</option>

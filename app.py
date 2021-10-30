@@ -32,7 +32,7 @@ def create_single_review():
         "review_title": request.form.get("review-title").lower(),
         "review": request.form.get("movie-review"),
         "review_date": datetime.now(),
-        "star_rating": request.form.get("star-count")
+        "star_rating": int(request.form.get("star-count"))
     }
     return review
 
@@ -167,19 +167,22 @@ def create_movie():
             image_link = request.form.get("image-link")
         else:
             image_link = "../static/img/movie-placeholder.png"
-
+        release_date = request.form.get("release-date")
         new_movie = {
             "movie_title": request.form.get("movie-title").lower(),
-            "release_date": request.form.get("release-date"),
+            "release_date": datetime.strptime(release_date, '%Y-%m-%d'),
             "age_rating": request.form.get("age-rating"),
+            "duration": request.form.get("duration"),
             "genre": request.form.getlist("movie-genre"),
             "director": request.form.get("director").lower(),
-            "cast_members": request.form.get("cast-members").lower().split(","),
+            "cast_members": request.form.get("cast-members").lower(
+                            ).split(","),
             "movie_synopsis": request.form.get("movie-synopsis"),
             "movie_description": request.form.get("movie-description"),
             "image_link": image_link,
             "trailer_link": request.form.get("trailer-link"),
             "reviews": [],
+            "latest_reviews": [],
             "created_by": session['user'],
             "is_part_of_series": False
         }
@@ -205,6 +208,7 @@ def create_movie():
         if request.form.get("submit-movie-review"):
             review = create_single_review()
             new_movie["reviews"].append(review)
+            new_movie["latest_reviews"].append(review)
             mongo.db.users.update_one({"username": session["user"]},
                                       {"$inc": {"reviews_submitted": 1}})
 
@@ -230,21 +234,52 @@ def create_movie():
 def view_movie(movie_id):
     movie = mongo.db.movies.find_one(
             {'_id': ObjectId(movie_id)})
-    return render_template("view-movie.html", movie=movie)
+    user = mongo.db.users.find_one(
+        {"username": session["user"]},
+        {"_id": 0, "movies_watched": 1}
+    )
+
+    if movie["movie_title"] in user["movies_watched"]:
+        user_watched = True
+    else:
+        user_watched = False
+
+    total_review_score = 0
+    if len(movie["reviews"]):
+        for review in movie["reviews"]:
+            total_review_score += review["star_rating"]
+        movie["average_review_score"] = total_review_score/len(
+                                          movie["reviews"])
+    else:
+        movie["average_review_score"] = 0
+
+    movie__genre_text_list = ', '.join(name.title() for name in movie["genre"])
+    movie["genre"] = movie__genre_text_list
+    return render_template("view-movie.html", movie=movie,
+                           user_watched=user_watched)
 
 
 @app.route("/create-review", methods=["GET", "POST"])
 def create_review():
     if request.method == "POST":
         requested_movie_name = request.form.get("selected-movie-title").lower()
-        movie_document = mongo.db.movies.find_one({
+        movie = mongo.db.movies.find_one({
                                 "movie_title": requested_movie_name},
-                                 {"_id": 1})
-        if movie_document:
+                                 {"_id": 1, "latest_reviews": 1})
+        if movie:
             new_review = create_single_review()
             mongo.db.movies.update_one({"_id": ObjectId(
-                                        movie_document["_id"])},
+                                        movie["_id"])},
                                        {"$push": {"reviews": new_review}})
+            if len(movie["latest_reviews"]) > 2:
+                movie["latest_reviews"].pop()
+            movie["latest_reviews"].append(new_review)
+            mongo.db.movies.update_one({"_id": ObjectId(
+                                    movie["_id"])},
+                                    {"$set": {
+                                      "latest_reviews": movie
+                                      ["latest_reviews"]}})
+
         else:
             flash(f"There is no movie called '{requested_movie_name.title()}' "
                   f"in the database.\nEither create a profile for this movie "
