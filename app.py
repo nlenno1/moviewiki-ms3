@@ -253,7 +253,6 @@ def view_movie(movie_id):
     else:
         user_watched = False
 
-
     movie__genre_text_list = ', '.join(name.title() for name in movie["genre"])
     movie["genre"] = movie__genre_text_list
     return render_template("view-movie.html", movie=movie,
@@ -290,7 +289,7 @@ def create_review(selected_movie_title):
                                         movie["_id"])},
                                        {"$set": {"average_review_score":
                                         new_average_review_score}})
-                    
+
             if len(movie["latest_reviews"]) > 2:
                 movie["latest_reviews"].pop()
             movie["latest_reviews"].append(new_review)
@@ -330,7 +329,8 @@ def find_one_with_key(collection_name, search_key, search_value):
 
 @app.route("/view-reviews/<movie_id>")
 def view_reviews(movie_id):
-    movie = list(find_one_with_key("movies", "_id", ObjectId(movie_id)))
+    movie = find_one_with_key("movies", "_id", ObjectId(movie_id))
+    list(movie)
     return render_template("view-reviews.html", movie=movie)
 
 

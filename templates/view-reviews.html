@@ -26,6 +26,7 @@
             <h5><span id="average_review_score">{{ movie.average_review_score }}</span> / 5 </h5>
         </div>
     </div>
+    <p class="mb-0 mt-3 text-center">Want to add your own review, click here! <button class="generic-button button-color-gold"><a href="{{ url_for('create_review', selected_movie_title=movie.movie_title) }}">Create Review</a></button></p> 
     <div class="row">
         <div class="col-12 reviews-container mt-4">
             {% if movie.reviews|length > 0 %}
