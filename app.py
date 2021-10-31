@@ -37,17 +37,6 @@ def create_single_review():
     return review
 
 
-def generate_average_rating(movie):
-    total_review_score = 0
-    if len(movie["reviews"]):
-        for review in movie["reviews"]:
-            total_review_score += review["star_rating"]
-        movie["average_review_score"] = total_review_score/len(
-                                          movie["reviews"])
-    else:
-        movie["average_review_score"] = 0
-
-
 # app.route
 
 @app.route("/")
@@ -55,8 +44,8 @@ def generate_average_rating(movie):
 def home():
     if len(session) == 0:
         session["user"] = None
-    movie_list = mongo.db.movies.find()
-    return render_template("home.html", movies=movie_list)
+    movies = list(mongo.db.movies.find())
+    return render_template("home.html", movies=movies)
 
 
 @app.route("/genre")
@@ -199,7 +188,8 @@ def create_movie():
             "reviews": [],
             "latest_reviews": [],
             "created_by": session['user'],
-            "is_part_of_series": False
+            "is_part_of_series": False,
+            "average_rating": 0.0
         }
 
         if request.form.get("submit-series-info"):
@@ -224,6 +214,7 @@ def create_movie():
             review = create_single_review()
             new_movie["reviews"].append(review)
             new_movie["latest_reviews"].append(review)
+            new_movie["average_rating"] = review["star_rating"]
             mongo.db.users.update_one({"username": session["user"]},
                                       {"$inc": {"reviews_submitted": 1}})
 
@@ -262,7 +253,6 @@ def view_movie(movie_id):
     else:
         user_watched = False
 
-    generate_average_rating(movie)
 
     movie__genre_text_list = ', '.join(name.title() for name in movie["genre"])
     movie["genre"] = movie__genre_text_list
@@ -283,6 +273,24 @@ def create_review(selected_movie_title):
             mongo.db.movies.update_one({"_id": ObjectId(
                                         movie["_id"])},
                                        {"$push": {"reviews": new_review}})
+            # generate an average reviews score
+            total_review_score = 0
+            # add all the review scores together from the data pulled from
+            # the DB
+            for review in movie["reviews"]:
+                total_review_score += review["star_rating"]
+            # add the review score just pushed to the DB
+            total_review_score += new_review["star_rating"]
+            # divide the result by the amount of old scores plus 1 for the
+            # score just added
+            new_average_review_score = total_review_score/(len(
+                                            movie["reviews"] + 1))
+            # set the variable in the DB to the new value
+            mongo.db.movies.update_one({"_id": ObjectId(
+                                        movie["_id"])},
+                                       {"$set": {"average_review_score":
+                                        new_average_review_score}})
+                    
             if len(movie["latest_reviews"]) > 2:
                 movie["latest_reviews"].pop()
             movie["latest_reviews"].append(new_review)
@@ -322,9 +330,7 @@ def find_one_with_key(collection_name, search_key, search_value):
 
 @app.route("/view-reviews/<movie_id>")
 def view_reviews(movie_id):
-    movie = find_one_with_key("movies", "_id", ObjectId(movie_id))
-    generate_average_rating(movie)
-    list(movie)
+    movie = list(find_one_with_key("movies", "_id", ObjectId(movie_id)))
     return render_template("view-reviews.html", movie=movie)
 
 
