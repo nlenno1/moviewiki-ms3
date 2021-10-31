@@ -605,14 +605,21 @@ select {
     right: 0;
 }
 
-.five-stars-container .mask {
+.five-stars-container .mask  {
     height: 23px;
     width: 100%;
     position: absolute;
     right: 0;
     background-color: #fff;
+    z-index: 3;
+    object-fit: cover;
+    object-position: right;
+}
+
+.five-stars {
     z-index: 2;
 }
+
 
 
 @media(min-width: 993px ){
