@@ -36,7 +36,7 @@ h1, h2, h3, h4, .navbar-brand, .logo, .movie-font {
 }
 
 .button-color-gold {
-    background-color: #EEBC1D;
+    background-color: #ffca18;
 }
 
 .button-color-red {
@@ -46,7 +46,7 @@ h1, h2, h3, h4, .navbar-brand, .logo, .movie-font {
 /*  Navbar */
 
 .navbar {
-    border-bottom: 5px solid #EEBC1D;
+    border-bottom: 5px solid #ffca18;
 }
 
 .navbar-brand, .navbar-dark .navbar-nav .nav-link {
@@ -61,7 +61,7 @@ h1, h2, h3, h4, .navbar-brand, .logo, .movie-font {
 } 
 
 .navbar-dark .navbar-brand:hover, .navbar-dark .navbar-nav .nav-link:hover, .sidenav a:hover, .sidenav .closebtn:hover, .socials i:hover, .logo:hover, .back-to-top-button:hover {
-    color: #EEBC1D;
+    color: #ffca18;
     cursor: pointer;
 }
 
@@ -76,8 +76,8 @@ h1, h2, h3, h4, .navbar-brand, .logo, .movie-font {
 
 .navbar-button {
     width: 100px;
-    background-color: #EEBC1D;
-    border: 2px solid #EEBC1D;
+    background-color: #ffca18;
+    border: 2px solid #ffca18;
     color: #000;
     font-weight: 600;
     margin: .125rem 0.25rem 0;
@@ -111,7 +111,7 @@ h1, h2, h3, h4, .navbar-brand, .logo, .movie-font {
     top: 0; 
     right: 0;
     background-color: #111; 
-    border-left: 0px solid #EEBC1D;
+    border-left: 0px solid #ffca18;
     overflow-x: hidden; 
     padding-top: 60px; 
     transition: 0.5s; 
@@ -135,7 +135,7 @@ h1, h2, h3, h4, .navbar-brand, .logo, .movie-font {
 .side-nav-hr, .form-card hr, .reviews-container hr {
     height: 5px !important;
     border: none;
-    background-color: #EEBC1D;
+    background-color: #ffca18;
     margin: 20px 32px;
     border-radius: 50px;
     width: 75%;
@@ -223,7 +223,7 @@ h1, h2, h3, h4, .navbar-brand, .logo, .movie-font {
 footer {
     background-color: #111;
     color: #fafafa;
-    border-top: 5px solid #EEBC1D;
+    border-top: 5px solid #ffca18;
 }
 
 .socials {
@@ -371,7 +371,7 @@ p > a {
 
 p > a:hover {
     font-size: 600;
-    color: #EEBC1D;
+    color: #ffca18;
 }
 
 /* Contact */
@@ -388,7 +388,7 @@ p > a:hover {
 }
 
 .generic-divider {
-    color: #EEBC1D;
+    color: #ffca18;
     height: 5px !important;
     border-radius: 40px;
     margin: 2rem auto 4rem;
@@ -504,7 +504,7 @@ select {
   }
 
 .gold-star {
-    color:#EEBC1D;
+    color:#ffca18;
 }
 
 /* Processing Screen */
@@ -566,7 +566,7 @@ select {
     padding: 15px 0;
 }
 
-.reviews-header img, .reviews-header a {
+.reviews-header-img, .reviews-header a {
     height: 100px;
     width: auto;
 }
@@ -587,6 +587,33 @@ select {
 .review-card {
     margin: 15px auto;
 }
+
+.five-stars-container {
+    width: 100%;
+    height: 23px;
+    display: flex;
+    justify-content: center;
+}
+
+.five-stars-container img, .five-stars-container div {
+    width: 120px;
+}
+
+.five-stars-container img {
+    height: 23px;
+    position: absolute;
+    right: 0;
+}
+
+.five-stars-container .mask {
+    height: 23px;
+    width: 100%;
+    position: absolute;
+    right: 0;
+    background-color: #fff;
+    z-index: 2;
+}
+
 
 @media(min-width: 993px ){
     .review-card {

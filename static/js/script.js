@@ -68,6 +68,13 @@ function processing() {
     document.querySelector("#processing").style.display = "block";
 }
 
+function displayStarRating () {
+    score = document.querySelector("#average_review_score").innerHTML
+    scorePercentage = (score/5)*100
+    maskPercentage = 100 - scorePercentage
+    document.querySelector("#five_stars_mask").style.width = maskPercentage + "%"
+}
+
 
 document.addEventListener('DOMContentLoaded', () => {
     // changes select element text color to black on change to replicate placeholder being removed
@@ -79,6 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     initializeStarRating()
+    displayStarRating ()
     
     // input disabled control on #series-questions section
     const seriesStartCheckbox = document.querySelector("#start-series")

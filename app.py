@@ -289,7 +289,7 @@ def create_review():
         else:
             flash(f"There is no movie called '{requested_movie_name.title()}' "
                   f"in the database.\nEither create a profile for this movie "
-                  f"or try a different search")
+                  f"or try a different Movie Title")
 
         return redirect(url_for('create_review'))
     movie_title_list = mongo.db.movies.find({}, {"movie_title": 1})
@@ -316,6 +316,7 @@ def find_one_with_key(collection_name, search_key, search_value):
 def view_reviews(movie_id):
     movie = find_one_with_key("movies", "_id", ObjectId(movie_id))
     generate_average_rating(movie)
+    list(movie)
     return render_template("view-reviews.html", movie=movie)
 
 @app.route("/contact", methods=["GET", "POST"])

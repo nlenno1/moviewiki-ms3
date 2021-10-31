@@ -8,7 +8,7 @@
         <div class="col-12 col-sm-6 col-md-3">
             <div class="d-flex justify-content-center">
                 <a href="{{ url_for('view_movie', movie_id=movie._id) }}">
-                    <img src="{{ movie.image_link }}" alt="Movie Image">
+                    <img class="reviews-header-img" src="{{ movie.image_link }}" alt="Movie Image">
                 </a>
             </div>
         </div>
@@ -16,41 +16,59 @@
             <h1>{{ movie.movie_title }}</h1>
         </div>
         <div class="col-12 col-md-3 pt-3 text-center">
-            <h4>Average Star Rating:</h4>
-            <h5> {{ movie.average_review_score }} / 5 </h5>
+            <h4 class="mb-0">Average Star Rating:</h4>
+            <div class="five-stars-container">
+                <div class="position-relative">
+                    <img src="../static/img/5_stars.png" alt="" class="five-stars">
+                    <div class="mask" id="five_stars_mask"></div>
+                </div>
+            </div>
+            <h5><span id="average_review_score">{{ movie.average_review_score }}</span> / 5 </h5>
         </div>
     </div>
     <div class="row">
         <div class="col-12 reviews-container mt-4">
-            {% for review in movie.reviews %}
-                <div class="card form-card card-small review-card shadow">
-                    <div class="review-header">
-                        <div class="row pb-2">
-                            <div class="col-12 col-md-6">
-                                <h4 class="mb-0"> {{ review.review_title }} </h4>
-                                {% for star in range(review.star_rating) %}
-                                    <i id="star" class="fas fa-star gold-star"></i>
-                                {% endfor %}
-                                {% for star in range(5 - review.star_rating) %}
-                                        <i id="star" class="fas fa-star"></i>
-                                {% endfor %}
-                            </div>
-                            <div class="col-12 col-md-6 text-end">
-                                <p class="mb-0 sub-script">
-                                    Reviewer: {{ review.reviewer|title }}
-                                </p>
-                                <p class="mb-0 sub-script">
-                                    Review date: {{ review.review_date.strftime('%d/%m/%Y') }}
-                                </p>
-                                    
+            {% if movie.reviews|length > 0 %}
+                {% for review in movie.reviews %}
+                    <div class="card form-card card-small review-card shadow">
+                        <div class="review-header">
+                            <div class="row pb-2">
+                                <div class="col-12 col-md-6">
+                                    <h4 class="mb-0"> {{ review.review_title }} </h4>
+                                    {% for star in range(review.star_rating) %}
+                                        <i id="star" class="fas fa-star gold-star"></i>
+                                    {% endfor %}
+                                    {% for star in range(5 - review.star_rating) %}
+                                            <i id="star" class="fas fa-star"></i>
+                                    {% endfor %}
+                                </div>
+                                <div class="col-12 col-md-6 text-end">
+                                    <p class="mb-0 sub-script">
+                                        Reviewer: {{ review.reviewer|title }}
+                                    </p>
+                                    <p class="mb-0 sub-script">
+                                        Review date: {{ review.review_date.strftime('%d/%m/%Y') }}
+                                    </p>
+                                        
+                                </div>
                             </div>
                         </div>
+                        <div class="review-body small-text">
+                            <p>{{ review.review }}</p>
+                        </div>
                     </div>
-                    <div class="review-body small-text">
-                        <p>{{ review.review }}</p>
+                {% endfor %}
+            {% else %}
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card form-card card-large text-center shadow">
+                            <h2>No reviews have been written for this movie!</h2>
+                            <p>Be the first and click here to create a review  <button class="generic-button button-color-gold"><a href="{{ url_for('create_review', movie_title=movie.movie_title) }}">Create Review</a></button>
+                        </div>
+                        </p>
                     </div>
                 </div>
-            {% endfor %}
+            {% endif %}
         </div>
     </div>
 
