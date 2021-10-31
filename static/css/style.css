@@ -132,7 +132,7 @@ h1, h2, h3, h4, .navbar-brand, .logo, .movie-font {
     transition: opacity 1s;
 }
 
-.side-nav-hr, .form-card hr {
+.side-nav-hr, .form-card hr, .reviews-container hr {
     height: 5px !important;
     border: none;
     background-color: #EEBC1D;
@@ -428,7 +428,7 @@ p > a:hover {
 
 .movie-picture-display img, .movie-picture-display a {
     object-fit: fill;
-    height: inherit;
+    height: 100%;
     width: inherit;
     transition: all 0.2s ease-in-out;
 }
@@ -551,3 +551,45 @@ select {
     top: 21px;
 }
 
+/* Reviews */
+
+.reviews-container{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.reviews-header {
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: 0.25rem;
+    padding: 15px 0;
+}
+
+.reviews-header img, .reviews-header a {
+    height: 100px;
+    width: auto;
+}
+
+.reviews-header .image-container {
+        margin: 0 auto;
+}
+
+.sub-script {
+    font-size: 0.6rem;
+    font-weight: 200;
+}
+
+.small-text {
+    font-size: 0.85rem;
+}
+
+.review-card {
+    margin: 15px auto;
+}
+
+@media(min-width: 993px ){
+    .review-card {
+        width: 47%;
+    }
+}
