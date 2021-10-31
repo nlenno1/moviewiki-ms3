@@ -264,9 +264,9 @@ def view_movie(movie_id):
     return render_template("view-movie.html", movie=movie,
                            user_watched=user_watched)
 
-
-@app.route("/create-review", methods=["GET", "POST"])
-def create_review():
+@app.route("/create-review", defaults={'selected_movie_title': None})
+@app.route("/create-review/<selected_movie_title>", methods=["GET", "POST"])
+def create_review(selected_movie_title):
     if request.method == "POST":
         requested_movie_name = request.form.get("selected-movie-title").lower()
         movie = mongo.db.movies.find_one({
@@ -290,11 +290,12 @@ def create_review():
             flash(f"There is no movie called '{requested_movie_name.title()}' "
                   f"in the database.\nEither create a profile for this movie "
                   f"or try a different Movie Title")
-
         return redirect(url_for('create_review'))
+
     movie_title_list = mongo.db.movies.find({}, {"movie_title": 1})
     return render_template(
-        "create-review.html", movie_title_list=movie_title_list)
+        "create-review.html", movie_title_list=movie_title_list,
+        selected_movie_title=selected_movie_title)
 
 
 @app.route("/about")
@@ -312,12 +313,14 @@ def find_one_with_key(collection_name, search_key, search_value):
     movie = mongo_prefix.find_one({search_key: search_value})
     return movie
 
+
 @app.route("/view-reviews/<movie_id>")
 def view_reviews(movie_id):
     movie = find_one_with_key("movies", "_id", ObjectId(movie_id))
     generate_average_rating(movie)
     list(movie)
     return render_template("view-reviews.html", movie=movie)
+
 
 @app.route("/contact", methods=["GET", "POST"])
 def contact():

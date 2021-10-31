@@ -8,12 +8,20 @@
         <h5>Type into the Movie Title box to search for the movie you want<br>If the movie you want is not in the dropdown menu then it doesn't have a profile yet!</h5>
         <form method="POST" action="{{ url_for('create_review') }}">
             <div id="add-review" class="card form-card card-large generic-form input-large shadow">
-                <input type="list" name=selected-movie-title list="movie-titles" class="mt-3 mb-4" placeholder="Movie Title">
-                <datalist id="movie-titles">
-                    {% for movie in movie_title_list %}
-                        <option value="{{ movie.movie_title|title }}"></option>
-                    {% endfor %}
-                </datalist>
+                {% if selected_movie_title == 'new' %}   
+                    <input type="list" name=selected-movie-title list="movie-titles" class="mt-3 mb-4" placeholder="Movie Title">
+                    <datalist id="movie-titles">
+                        {% for movie in movie_title_list %}
+                            {% if selected_movie_title == movie.movie_title  %}
+                            <option value="{{ movie.movie_title|title }}" selected></option>
+                            {% else %}
+                            <option value="{{ movie.movie_title|title }}"></option>
+                            {% endif %}
+                        {% endfor %}
+                    </datalist>
+                {% else %}
+                    <input type="text" name="selected-movie-title" id="movie-title" value="{{ selected_movie_title|title }}" readonly>
+                {% endif %}
                 <input type="text" name="review-title" id="review-title" class="validate mb-4" placeholder="Review Title" pattern="^[a-zA-Z0-9 ]+{5,100}$" required>
                 <textarea name="movie-review" id="movie-review" rows ="8" cols="100" placeholder="Movie Review" required></textarea>
                 <div class="star-rating-container">

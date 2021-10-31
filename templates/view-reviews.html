@@ -63,7 +63,7 @@
                     <div class="col-12">
                         <div class="card form-card card-large text-center shadow">
                             <h2>No reviews have been written for this movie!</h2>
-                            <p>Be the first and click here to create a review  <button class="generic-button button-color-gold"><a href="{{ url_for('create_review', movie_title=movie.movie_title) }}">Create Review</a></button>
+                            <p>Be the first and click here to create a review  <button class="generic-button button-color-gold"><a href="{{ url_for('create_review', selected_movie_title=movie.movie_title) }}">Create Review</a></button>
                         </div>
                         </p>
                     </div>
