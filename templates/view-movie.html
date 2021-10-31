@@ -59,7 +59,7 @@
         <div class="row">
             <div class="col-12 text-end">
                 <button class="generic-button button-color-gold movie-font"><a href="{{ url_for('create_movie') }}">I Have Watched This</a></button>
-                <button class="generic-button button-color-gold movie-font"><a href="{{ url_for('create_movie') }}">View All Reviews</a></button>
+                <button class="generic-button button-color-gold movie-font"><a href="{{ url_for('view_reviews', movie_id=movie._id) }}">View All Reviews</a></button>
             </div>
         </div>
         <div class="row">

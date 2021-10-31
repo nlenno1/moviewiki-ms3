@@ -37,6 +37,19 @@ def create_single_review():
     return review
 
 
+def generate_average_rating(movie):
+    total_review_score = 0
+    if len(movie["reviews"]):
+        for review in movie["reviews"]:
+            total_review_score += review["star_rating"]
+        movie["average_review_score"] = total_review_score/len(
+                                          movie["reviews"])
+    else:
+        movie["average_review_score"] = 0
+
+
+# app.route
+
 @app.route("/")
 @app.route("/home", methods=["GET", "POST"])
 def home():
@@ -244,14 +257,7 @@ def view_movie(movie_id):
     else:
         user_watched = False
 
-    total_review_score = 0
-    if len(movie["reviews"]):
-        for review in movie["reviews"]:
-            total_review_score += review["star_rating"]
-        movie["average_review_score"] = total_review_score/len(
-                                          movie["reviews"])
-    else:
-        movie["average_review_score"] = 0
+    generate_average_rating(movie)
 
     movie__genre_text_list = ', '.join(name.title() for name in movie["genre"])
     movie["genre"] = movie__genre_text_list
@@ -295,6 +301,22 @@ def create_review():
 def about():
     return render_template("about.html")
 
+
+def find_one_with_key(collection_name, search_key, search_value):
+    search_prefix = {
+        "users": mongo.db.users,
+        "movies": mongo.db.movies,
+        "genre": mongo.db.genre
+    }
+    mongo_prefix = search_prefix[collection_name]
+    movie = mongo_prefix.find_one({search_key: search_value})
+    return movie
+
+@app.route("/view-reviews/<movie_id>")
+def view_reviews(movie_id):
+    movie = find_one_with_key("movies", "_id", ObjectId(movie_id))
+    generate_average_rating(movie)
+    return render_template("view-reviews.html", movie=movie)
 
 @app.route("/contact", methods=["GET", "POST"])
 def contact():
