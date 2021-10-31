@@ -53,6 +53,8 @@ def generate_average_rating(movie):
 @app.route("/")
 @app.route("/home", methods=["GET", "POST"])
 def home():
+    if len(session) == 0:
+        session["user"] = None
     movie_list = mongo.db.movies.find()
     return render_template("home.html", movies=movie_list)
 
@@ -247,13 +249,16 @@ def create_movie():
 def view_movie(movie_id):
     movie = mongo.db.movies.find_one(
             {'_id': ObjectId(movie_id)})
-    user = mongo.db.users.find_one(
-        {"username": session["user"]},
-        {"_id": 0, "movies_watched": 1}
-    )
+    if session["user"] is not None:
+        user = mongo.db.users.find_one(
+            {"username": session["user"]},
+            {"_id": 0, "movies_watched": 1}
+        )
 
-    if movie["movie_title"] in user["movies_watched"]:
-        user_watched = True
+        if movie["movie_title"] in user["movies_watched"]:
+            user_watched = True
+        else:
+            user_watched = False
     else:
         user_watched = False
 
@@ -263,6 +268,7 @@ def view_movie(movie_id):
     movie["genre"] = movie__genre_text_list
     return render_template("view-movie.html", movie=movie,
                            user_watched=user_watched)
+
 
 @app.route("/create-review", defaults={'selected_movie_title': None})
 @app.route("/create-review/<selected_movie_title>", methods=["GET", "POST"])
