@@ -259,14 +259,14 @@ def view_movie(movie_id):
                            user_watched=user_watched)
 
 
-@app.route("/create-review", defaults={'selected_movie_title': None})
+@app.route("/create-review", defaults={'selected_movie_title': None}, methods=["GET", "POST"])
 @app.route("/create-review/<selected_movie_title>", methods=["GET", "POST"])
 def create_review(selected_movie_title):
     if request.method == "POST":
         requested_movie_name = request.form.get("selected-movie-title").lower()
         movie = mongo.db.movies.find_one({
                                 "movie_title": requested_movie_name},
-                                 {"_id": 1, "latest_reviews": 1})
+                                 {"_id": 1, "latest_reviews": 1, "reviews": 1})
         if movie:
             new_review = create_single_review()
             mongo.db.movies.update_one({"_id": ObjectId(
@@ -277,13 +277,14 @@ def create_review(selected_movie_title):
             # add all the review scores together from the data pulled from
             # the DB
             for review in movie["reviews"]:
-                total_review_score += review["star_rating"]
+                total_review_score += int(review["star_rating"])
             # add the review score just pushed to the DB
             total_review_score += new_review["star_rating"]
             # divide the result by the amount of old scores plus 1 for the
             # score just added
-            new_average_review_score = total_review_score/(len(
-                                            movie["reviews"] + 1))
+            new_average_review_score = round(total_review_score/(len(
+                                            movie["reviews"]) + 1), 2)
+
             # set the variable in the DB to the new value
             mongo.db.movies.update_one({"_id": ObjectId(
                                         movie["_id"])},
@@ -298,6 +299,8 @@ def create_review(selected_movie_title):
                                     {"$set": {
                                       "latest_reviews": movie
                                       ["latest_reviews"]}})
+
+            return redirect(url_for('view_reviews', movie_id=movie["_id"]))
 
         else:
             flash(f"There is no movie called '{requested_movie_name.title()}' "
