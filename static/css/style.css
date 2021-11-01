@@ -553,7 +553,7 @@ select {
 
 /* Reviews */
 
-.reviews-container{
+.reviews-container, .review-footer{
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -619,8 +619,6 @@ select {
 .five-stars {
     z-index: 2;
 }
-
-
 
 @media(min-width: 993px ){
     .review-card {

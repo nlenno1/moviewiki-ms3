@@ -57,6 +57,12 @@
                         <div class="review-body small-text">
                             <p>{{ review.review }}</p>
                         </div>
+                        {% if review.reviewer == session["user"] %}
+                        <div class="review-footer">
+                            <button class="generic-button button-color-gold mt-2"><a href="#">Update Review</a></button>
+                            <button class="generic-button button-color-red mt-2"><a href="#">Delete Review</a></button>
+                        </div>
+                        {% endif %}
                     </div>
                 {% endfor %}
             {% else %}
