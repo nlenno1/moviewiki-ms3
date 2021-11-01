@@ -37,8 +37,38 @@ def create_single_review():
     return review
 
 
-# app.route
+def mongo_prefix_select(collection_name):
+    search_prefix = {
+        "users": mongo.db.users,
+        "movies": mongo.db.movies,
+        "genre": mongo.db.genre
+    }
+    mongo_prefix = search_prefix[collection_name]
+    return mongo_prefix
 
+
+def find_one_with_key(collection_name, search_key, search_value):
+    movie = mongo_prefix_select(collection_name).find_one(
+        {search_key: search_value})
+    return movie
+
+
+def update_collection_item(collection_name, search_key, search_value,
+                           update_operator, key_to_update, new_value):
+    mongo_prefix_select(collection_name).update_one(
+        {search_key: search_value}, {update_operator:
+                                     {key_to_update: new_value}})
+
+
+def remove_collection_item(collection_name, search_key, search_value):
+    mongo_prefix_select(collection_name).delete_one({search_key: search_value})
+
+
+def add_collection_item(collection_name, search_key, search_value):
+    mongo_prefix_select(collection_name).insert_one({search_key: search_value})
+
+
+# app.route
 @app.route("/")
 @app.route("/home", methods=["GET", "POST"])
 def home():
@@ -317,17 +347,6 @@ def create_review(selected_movie_title):
 @app.route("/about")
 def about():
     return render_template("about.html")
-
-
-def find_one_with_key(collection_name, search_key, search_value):
-    search_prefix = {
-        "users": mongo.db.users,
-        "movies": mongo.db.movies,
-        "genre": mongo.db.genre
-    }
-    mongo_prefix = search_prefix[collection_name]
-    movie = mongo_prefix.find_one({search_key: search_value})
-    return movie
 
 
 @app.route("/view-reviews/<movie_id>")
