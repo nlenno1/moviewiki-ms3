@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <h1 id="header-title">MovieWiki</h1>
+
+    <div class="container-md">
+        <div class="row g-0">
+            <div class="col">
+                <form method="POST" action="{{ url_for('movie_title_search') }}" class="search-bar-container">
+                    <div class="input-container">
+                        <input type="text" name="movie_title_search" id="movie_title_search"
+                            placeholder="Search for a Movie Title" required>
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <button class="generic-button button-color-gold" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+        <div class="row g-0">
+            <div class="col">
+                <h3 class="carousel-label">Search Results</h3>
+                <div class="row g-0">
+                    <div class="col-12 search-results-container shadow">
+                        {% for movie in movies %}
+                            <div class="movie-picture-display">
+                                <div class="movie-image-continer">
+                                    <a href="{{ url_for('view_movie', movie_id=movie._id) }}">
+                                        <img src="{{ movie.image_link }}" alt="Movie Image">
+                                    </a>
+                                </div>
+                                <h4>{{ movie.movie_title }}</h4>
+                            </div>
+                        {% endfor %}
+                        {% if session['user'] %}
+                            <div class="movie-picture-display">
+                                <div class="movie-placeholder">
+                                    <p>Can't find the film you want then try a different search or create a new profile for it!</p>
+                                    <button class="generic-button button-color-gold"><a href="{{ url_for('create_movie') }}">Create
+                                            Movie</a></button>
+                                </div>
+                                <h4>Still Looking?</h4>
+                            </div>
+                        {% else %}
+                            <div class="movie-picture-display">
+                                <div class="movie-placeholder">
+                                    <p>Can't find the film you want then try a different search or sign in and create a new profile
+                                        for it!</p>
+                                    <button class="generic-button button-color-gold"><a href="{{ url_for('signin') }}">Sign
+                                            In</a></button>
+                                </div>
+                                <h4>Still Looking?</h4>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

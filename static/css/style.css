@@ -437,7 +437,7 @@ p > a:hover {
     transform: scale(1.04)
 }
 
-.movie-carousel h4 {
+.movie-carousel h4, .search-results-container h4 {
     text-align: center;
     margin-bottom: 0;
     width: 169px;
@@ -623,5 +623,32 @@ select {
 @media(min-width: 993px ){
     .review-card {
         width: 47%;
+    }
+}
+
+
+/* Search */
+
+.search-results-container {
+    height: 100%;
+    min-height: 310px;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: 0.25rem;
+    justify-content: space-evenly;
+}
+
+.search-results-container .movie-picture-display{
+    margin: 0 0 3.5rem;
+}
+
+@media(min-width:768px) {
+    .search-results-container{
+        justify-content: flex-start;
     }
 }

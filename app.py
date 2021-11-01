@@ -1,5 +1,6 @@
 import os
-from datetime import datetime, time
+import time
+from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import (
     Flask, flash, render_template,
@@ -93,6 +94,14 @@ def home():
         session["user"] = None
     movies = list(mongo.db.movies.find())
     return render_template("home.html", movies=movies)
+
+
+@app.route("/movie-title-search", methods=["GET", "POST"])
+def movie_title_search():
+    query = request.form.get("movie_title_search")
+    searched_movies = list(mongo.db.movies.find({"$text": {"$search": query}}))
+    print(searched_movies)
+    return render_template("movie-search.html", movies=searched_movies)
 
 
 @app.route("/genre")
