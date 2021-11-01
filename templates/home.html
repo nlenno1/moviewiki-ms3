@@ -19,20 +19,22 @@
             <div class="col">
                 <h3 class="carousel-label">All Movies</h3>
                 <div class="movie-carousel">
-                    {% for movie in movies %}
-                        <div class="movie-picture-display">
-                            <div class="movie-image-continer">
-                                <a href="{{ url_for('view_movie', movie_id=movie._id) }}">
-                                    <img src="{{ movie.image_link }}" alt="Movie Image">
-                                </a>
+                    {% for movie in movies|sort(attribute="movie_title") %}
+                        {% if loop.index <= 10 %}
+                            <div class="movie-picture-display">
+                                <div class="movie-image-continer">
+                                    <a href="{{ url_for('view_movie', movie_id=movie._id) }}">
+                                        <img src="{{ movie.image_link }}" alt="Movie Image">
+                                    </a>
+                                </div>
+                                <h4>{{ movie.movie_title }}</h4>
                             </div>
-                            <h4>{{ movie.movie_title }}</h4>
-                        </div>
+                        {% endif %}
                     {% endfor %}
                     {% if session['user'] %}
                         <div class="movie-picture-display">
                             <div class="movie-placeholder">
-                                <p>Can't find the film you want then try a different search or create a new profile for it!</p>
+                                <p>Can't find the film you want then try searching or create a new profile for it!</p>
                                 <button class="generic-button button-color-gold"><a href="{{ url_for('create_movie') }}">Create Movie</a></button>
                             </div>
                             <h4>Still Looking?</h4>
@@ -40,7 +42,7 @@
                     {% else %}
                         <div class="movie-picture-display">
                             <div class="movie-placeholder">
-                                <p>Can't find the film you want then try a different search or sign in and create a new profile for it!</p>
+                                <p>Can't find the film you want then try searching or sign in and create a new profile for it!</p>
                                 <button class="generic-button button-color-gold"><a href="{{ url_for('signin') }}">Sign In</a></button>
                             </div>
                             <h4>Still Looking?</h4>
@@ -53,9 +55,43 @@
         <div class="row g-0">
             <div class="col">
                 <h3 class="carousel-label">Highest Rated Movies</h3>
-                <div class="movie-carousel"></div>
+                <div class="movie-carousel">
+                    {% for movie in movies|sort(reverse=true, attribute="average_rating") %}
+                        {% if loop.index <= 10 %}
+                            <div class="movie-picture-display">
+                                <div class="movie-image-continer">
+                                    <a href="{{ url_for('view_movie', movie_id=movie._id) }}">
+                                        <img src="{{ movie.image_link }}" alt="Movie Image">
+                                    </a>
+                                </div>
+                                <h4>{{ movie.movie_title }}</h4>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
             </div>
         </div>
+        <hr class="generic-divider shadow">
+        <div class="row g-0">
+            <div class="col">
+                <h3 class="carousel-label">Latest Releases</h3>
+                <div class="movie-carousel">
+                    {% for movie in movies|sort(reverse=true, attribute="release_date") %}
+                        {% if loop.index <= 10 %}
+                            <div class="movie-picture-display">
+                                <div class="movie-image-continer">
+                                    <a href="{{ url_for('view_movie', movie_id=movie._id) }}">
+                                        <img src="{{ movie.image_link }}" alt="Movie Image">
+                                    </a>
+                                </div>
+                                <h4>{{ movie.movie_title }}</h4>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <hr class="generic-divider shadow">
     </div>
 
 {% endblock %}

@@ -397,7 +397,7 @@ p > a:hover {
 }
 
 .movie-carousel {
-    height: 100%;
+    height: 340px;
     width: 100%;
     padding: 10px;
     overflow-x: scroll;
