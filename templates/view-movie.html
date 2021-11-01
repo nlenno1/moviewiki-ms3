@@ -37,7 +37,7 @@
                             <button class="generic-button button-color-gold movie-font mt-2"><a href="{{ url_for('create_movie') }}">I Want to Watch This</a></button>
                             <button class="generic-button button-color-gold movie-font mt-2"><a href="{{ url_for('add_watched_movie', movie_id=movie._id) }}">I Have Watched This</a></button>
                         {% else %}
-                            <button class="generic-button button-color-gold movie-font mt-2"><a href="{{ url_for('create_movie') }}">I Haven't Watched This</a></button>
+                            <button class="generic-button button-color-gold movie-font mt-2"><a href="{{ url_for('remove_watched_movie', movie_id=movie._id) }}">I Haven't Watched This</a></button>
                         {% endif %}
                         <button class="generic-button button-color-gold movie-font mt-2"><a href="{{ url_for('view_reviews', movie_id=movie._id) }}">View All Reviews</a></button>
                     </div>

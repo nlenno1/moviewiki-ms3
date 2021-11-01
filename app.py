@@ -52,18 +52,21 @@ def find_one_with_key(collection_name, search_key, search_value):
     return movie
 
 
+def update_collection_item_dict(collection_name, search_key, search_value,
+                                update_operator, key_to_update, new_key,
+                                new_value):
+    mongo_prefix_select(collection_name).update_one(
+        {search_key: search_value},
+        {update_operator: {key_to_update:
+                           {new_key: new_value}}})
+
+
 def update_collection_item(collection_name, search_key, search_value,
-                           update_operator, new_key, new_value, key_to_update=None):
-    if update_operator == "$pull":
-        mongo_prefix_select(collection_name).update_one(
-            {search_key: search_value},
-            {update_operator: {key_to_update:
-                               {new_key: new_value}}})
-    else:
-        mongo_prefix_select(collection_name).update_one(
-            {search_key: search_value},
-            {update_operator: {new_key: new_value}})
-    
+                           update_operator, new_key, new_value,
+                           key_to_update=None):
+    mongo_prefix_select(collection_name).update_one(
+        {search_key: search_value},
+        {update_operator: {new_key: new_value}})
 
 
 def delete_collection_item(collection_name, search_key, search_value):
@@ -381,9 +384,9 @@ def delete_review(movie_id, review_date):
     datetime_review_date = datetime.strptime(
         review_date, '%Y-%m-%d %H:%M:%S.%f')
 
-    update_collection_item("movies", "_id", ObjectId(movie_id),
-                           "$pull", datetime_review_date, "review_date",
-                           "reviews")
+    update_collection_item_dict("movies", "_id", ObjectId(movie_id),
+                           "$pull", "reviews", "review_date",
+                           datetime_review_date)
 
     flash("Review deleted")
     movie = find_one_with_key("movies", "_id", ObjectId(movie_id))
@@ -396,6 +399,15 @@ def delete_review(movie_id, review_date):
 def add_watched_movie(movie_id):
     update_collection_item("users", "username", session["user"], "$push",
                            "movies_watched", ObjectId(movie_id))
+    return redirect(url_for("view_movie", movie_id=movie_id))
+
+
+@app.route("/user/remove-watched-movie/<movie_id>")
+def remove_watched_movie(movie_id):
+    print(movie_id)
+    mongo_prefix_select("users").update_one(
+            {"username": session["user"]},
+            {"$pull": {"movies_watched": ObjectId(movie_id)}})
     return redirect(url_for("view_movie", movie_id=movie_id))
 
 
