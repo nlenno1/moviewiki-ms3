@@ -1,6 +1,5 @@
 import os
-from datetime import datetime
-import time
+from datetime import datetime, time
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import (
     Flask, flash, render_template,
@@ -24,8 +23,6 @@ mongo = PyMongo(app)
 
 
 # Functions
-
-
 def create_single_review():
     review = {
         "reviewer": session['user'],
@@ -60,12 +57,31 @@ def update_collection_item(collection_name, search_key, search_value,
                                      {key_to_update: new_value}})
 
 
-def remove_collection_item(collection_name, search_key, search_value):
+def delete_collection_item(collection_name, search_key, search_value):
     mongo_prefix_select(collection_name).delete_one({search_key: search_value})
 
 
 def add_collection_item(collection_name, search_key, search_value):
     mongo_prefix_select(collection_name).insert_one({search_key: search_value})
+
+
+def generate_average_review_score(movie_id):
+    movie = find_one_with_key("movies", "_id", movie_id)
+    # generate an average reviews score
+    total_review_score = 0
+    # add all the review scores together from the data pulled from
+    # the DB
+    for review in movie["reviews"]:
+        total_review_score += int(review["star_rating"])
+    # divide the result by the amount of old scores plus 1 for the
+    # score just added
+    new_average_review_score = round(total_review_score/(len(
+                                    movie["reviews"])), 2)
+    # set the variable in the DB to the new value
+    mongo.db.movies.update_one({"_id": ObjectId(
+                                movie["_id"])},
+                               {"$set": {"average_review_score":
+                                         new_average_review_score}})
 
 
 # app.route
@@ -289,7 +305,8 @@ def view_movie(movie_id):
                            user_watched=user_watched)
 
 
-@app.route("/create-review", defaults={'selected_movie_title': None}, methods=["GET", "POST"])
+@app.route("/create-review", defaults={'selected_movie_title': None}, 
+           methods=["GET", "POST"])
 @app.route("/create-review/<selected_movie_title>", methods=["GET", "POST"])
 def create_review(selected_movie_title):
     if request.method == "POST":
@@ -302,24 +319,8 @@ def create_review(selected_movie_title):
             mongo.db.movies.update_one({"_id": ObjectId(
                                         movie["_id"])},
                                        {"$push": {"reviews": new_review}})
-            # generate an average reviews score
-            total_review_score = 0
-            # add all the review scores together from the data pulled from
-            # the DB
-            for review in movie["reviews"]:
-                total_review_score += int(review["star_rating"])
-            # add the review score just pushed to the DB
-            total_review_score += new_review["star_rating"]
-            # divide the result by the amount of old scores plus 1 for the
-            # score just added
-            new_average_review_score = round(total_review_score/(len(
-                                            movie["reviews"]) + 1), 2)
 
-            # set the variable in the DB to the new value
-            mongo.db.movies.update_one({"_id": ObjectId(
-                                        movie["_id"])},
-                                       {"$set": {"average_review_score":
-                                        new_average_review_score}})
+            generate_average_review_score(ObjectId(movie["_id"]))
 
             if len(movie["latest_reviews"]) > 2:
                 movie["latest_reviews"].pop()
@@ -344,16 +345,33 @@ def create_review(selected_movie_title):
         selected_movie_title=selected_movie_title)
 
 
-@app.route("/about")
-def about():
-    return render_template("about.html")
-
-
 @app.route("/view-reviews/<movie_id>")
 def view_reviews(movie_id):
     movie = find_one_with_key("movies", "_id", ObjectId(movie_id))
     list(movie)
     return render_template("view-reviews.html", movie=movie)
+
+
+@app.route("/delete-review/<movie_id>/<review_date>")
+def delete_review(movie_id, review_date):
+    datetime_review_date = datetime.strptime(
+        review_date, '%Y-%m-%d %H:%M:%S.%f')
+
+    mongo.db.movies.update_one(
+        {"_id": ObjectId(movie_id)},
+        {"$pull": {"reviews":
+                   {"review_date": datetime_review_date}}}
+    )
+    flash("Review deleted")
+    movie = find_one_with_key("movies", "_id", ObjectId(movie_id))
+    generate_average_review_score(ObjectId(movie["_id"]))
+    list(movie)
+    return redirect(url_for('view_reviews', movie_id=movie["_id"]))
+
+
+@app.route("/about")
+def about():
+    return render_template("about.html")
 
 
 @app.route("/contact", methods=["GET", "POST"])

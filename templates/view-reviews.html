@@ -60,7 +60,7 @@
                         {% if review.reviewer == session["user"] %}
                         <div class="review-footer">
                             <button class="generic-button button-color-gold mt-2"><a href="#">Update Review</a></button>
-                            <button class="generic-button button-color-red mt-2"><a href="#">Delete Review</a></button>
+                            <button class="generic-button button-color-red mt-2"><a href="{{ url_for('delete_review', movie_id=movie._id, review_date=review.review_date) }}">Delete Review</a></button>
                         </div>
                         {% endif %}
                     </div>
