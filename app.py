@@ -53,11 +53,17 @@ def find_one_with_key(collection_name, search_key, search_value):
 
 
 def update_collection_item(collection_name, search_key, search_value,
-                           update_operator, key_to_update, new_key, new_value):
-    mongo_prefix_select(collection_name).update_one(
-        {search_key: search_value},
-        {update_operator: {key_to_update:
-                            {new_key: new_value}}})
+                           update_operator, new_key, new_value, key_to_update=None):
+    if update_operator == "$pull":
+        mongo_prefix_select(collection_name).update_one(
+            {search_key: search_value},
+            {update_operator: {key_to_update:
+                               {new_key: new_value}}})
+    else:
+        mongo_prefix_select(collection_name).update_one(
+            {search_key: search_value},
+            {update_operator: {new_key: new_value}})
+    
 
 
 def delete_collection_item(collection_name, search_key, search_value):
@@ -303,7 +309,7 @@ def view_movie(movie_id):
             {"_id": 0, "movies_watched": 1}
         )
 
-        if movie["movie_title"] in user["movies_watched"]:
+        if movie["_id"] in user["movies_watched"]:
             user_watched = True
         else:
             user_watched = False
@@ -376,14 +382,21 @@ def delete_review(movie_id, review_date):
         review_date, '%Y-%m-%d %H:%M:%S.%f')
 
     update_collection_item("movies", "_id", ObjectId(movie_id),
-                           "$pull", "reviews", "review_date",
-                           datetime_review_date)
+                           "$pull", datetime_review_date, "review_date",
+                           "reviews")
 
     flash("Review deleted")
     movie = find_one_with_key("movies", "_id", ObjectId(movie_id))
     generate_average_review_score(ObjectId(movie["_id"]))
     list(movie)
     return redirect(url_for('view_reviews', movie_id=movie["_id"]))
+
+
+@app.route("/user/add-watched-movie/<movie_id>")
+def add_watched_movie(movie_id):
+    update_collection_item("users", "username", session["user"], "$push",
+                           "movies_watched", ObjectId(movie_id))
+    return redirect(url_for("view_movie", movie_id=movie_id))
 
 
 @app.route("/about")
