@@ -1,5 +1,6 @@
 import os
 import time
+import jinja2
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import (
@@ -308,11 +309,18 @@ def view_movie(movie_id):
             user_watched = False
     else:
         user_watched = False
+    # generate similar_movies list
+    similar_movies = []
+    movies = list(mongo.db.movies.find())
+    for item in movies:
+        if set(movie["genre"]).intersection(item["genre"]):
+            similar_movies.append(item)
 
     movie__genre_text_list = ', '.join(name.title() for name in movie["genre"])
     movie["genre"] = movie__genre_text_list
     return render_template("view-movie.html", movie=movie,
-                           user_watched=user_watched)
+                           user_watched=user_watched,
+                           similar_movies=similar_movies)
 
 
 @app.route("/create-review", defaults={'selected_movie_title': None},
