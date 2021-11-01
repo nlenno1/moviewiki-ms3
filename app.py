@@ -51,10 +51,11 @@ def find_one_with_key(collection_name, search_key, search_value):
 
 
 def update_collection_item(collection_name, search_key, search_value,
-                           update_operator, key_to_update, new_value):
+                           update_operator, key_to_update, new_key, new_value):
     mongo_prefix_select(collection_name).update_one(
-        {search_key: search_value}, {update_operator:
-                                     {key_to_update: new_value}})
+        {search_key: search_value},
+        {update_operator: {key_to_update:
+                            {new_key: new_value}}})
 
 
 def delete_collection_item(collection_name, search_key, search_value):
@@ -305,7 +306,7 @@ def view_movie(movie_id):
                            user_watched=user_watched)
 
 
-@app.route("/create-review", defaults={'selected_movie_title': None}, 
+@app.route("/create-review", defaults={'selected_movie_title': None},
            methods=["GET", "POST"])
 @app.route("/create-review/<selected_movie_title>", methods=["GET", "POST"])
 def create_review(selected_movie_title):
@@ -357,11 +358,10 @@ def delete_review(movie_id, review_date):
     datetime_review_date = datetime.strptime(
         review_date, '%Y-%m-%d %H:%M:%S.%f')
 
-    mongo.db.movies.update_one(
-        {"_id": ObjectId(movie_id)},
-        {"$pull": {"reviews":
-                   {"review_date": datetime_review_date}}}
-    )
+    update_collection_item("movies", "_id", ObjectId(movie_id),
+                           "$pull", "reviews", "review_date",
+                           datetime_review_date)
+
     flash("Review deleted")
     movie = find_one_with_key("movies", "_id", ObjectId(movie_id))
     generate_average_review_score(ObjectId(movie["_id"]))
