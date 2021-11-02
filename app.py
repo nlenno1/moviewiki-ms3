@@ -319,9 +319,16 @@ def create_movie():
 @app.route("/edit-movie/<movie_id>", methods=["GET", "POST"])
 def edit_movie(movie_id):
     movie = find_one_with_key("movies", "_id", ObjectId(movie_id))
-    genre_list = mongo.db.genre.find()
+    genre_list = list(mongo.db.genre.find().sort("genre_name"))
+
+    for genre in genre_list:
+        if genre["genre_name"].lower() in movie["genre"]:
+            genre["checked"] = True
+
+    print(genre_list)
     return render_template("edit-movie.html", genre_list=genre_list,
                            movie=movie)
+
 
 @app.route("/view-movie/<movie_id>")
 def view_movie(movie_id):
@@ -412,8 +419,8 @@ def delete_review(movie_id, review_date):
         review_date, '%Y-%m-%d %H:%M:%S.%f')
 
     update_collection_item_dict("movies", "_id", ObjectId(movie_id),
-                           "$pull", "reviews", "review_date",
-                           datetime_review_date)
+                                "$pull", "reviews", "review_date",
+                                datetime_review_date)
 
     flash("Review deleted")
     movie = find_one_with_key("movies", "_id", ObjectId(movie_id))

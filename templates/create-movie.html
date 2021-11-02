@@ -23,14 +23,14 @@
                 <input type="text" name="duration" id="duration" placeholder="Duration (mins)" class="validate" pattern="^[0-9]+$">
                 <div class="checkbox-container">
                     {% for genre in genre_list %}
-                    <div class="row">
-                        <div class="col-6 text-end">
-                            <label for="{{ genre.genre_name }}">{{ genre.genre_name|capitalize }}</label>
+                        <div class="row">
+                            <div class="col-6 text-end">
+                                <label for="{{ genre.genre_name }}">{{ genre.genre_name|capitalize }}</label>
+                            </div>
+                            <div class="col-6 col-sm-2 position-start">
+                                <input type="checkbox" id="{{ genre.genre_name }}" name="movie-genre" value="{{ genre.genre_name|lower }}">
+                            </div>
                         </div>
-                        <div class="col-6 col-sm-2 position-start">
-                            <input type="checkbox" id="{{ genre.genre_name }}" name="movie-genre" value="{{ genre.genre_name|lower }}">
-                        </div>
-                    </div>
                     {% endfor %}
                 </div>
                 <hr class="shadow">
