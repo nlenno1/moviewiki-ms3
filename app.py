@@ -242,17 +242,49 @@ def profile(username):
                            suggested_movies=suggested_movies)
 
 
-@app.route("/create-movie", methods=["GET", "POST"])
-def create_movie():
-    if request.method == "POST":
-        if request.form.get("image-link"):
-            image_link = request.form.get("image-link")
+def generate_movie_image_link():
+    if request.form.get("image-link"):
+        image_link = request.form.get("image-link")
+    else:
+        image_link = "../static/img/movie-placeholder.png"
+    return image_link
+
+
+def add_series_information_to_dict(new_movie):
+    if request.form.get("submit-series-info"):
+        new_movie["is_part_of_series"] = True
+        new_movie["series_position"] = request.form.get(
+                                            "series-checkboxes")
+        new_movie["series_name"] = request.form.get("series-name").lower()
+        if new_movie["series_position"] == "start":
+            new_movie["next_movie_title"] = request.form.get(
+                                        "next-movie-name").lower()
+        elif new_movie["series_position"] == "end":
+            new_movie["previous_movie_title"] = request.form.get(
+                                            "previous-movie-name").lower()
         else:
-            image_link = "../static/img/movie-placeholder.png"
-        release_date = request.form.get("release-date")
-        new_movie = {
+            new_movie["previous_movie_title"] = request.form.get(
+                                            "previous-movie-name").lower()
+            new_movie["next_movie_title"] = request.form.get(
+                                        "next-movie-name").lower()
+
+
+def add_review_to_dict(new_movie):
+    if request.form.get("submit-movie-review"):
+        review = create_single_review()
+        new_movie["reviews"].append(review)
+        new_movie["latest_reviews"].append(review)
+        new_movie["average_rating"] = review["star_rating"]
+        update_collection_item("users", "username", session["user"],
+                               "$push", "movies_reviewed",  new_id)
+        
+
+
+def generate_new_movie_dict():
+    image_link = generate_movie_image_link()
+    new_movie = {
             "movie_title": request.form.get("movie-title").lower(),
-            "release_date": datetime.strptime(release_date, '%Y-%m-%d'),
+            "release_date": datetime.strptime(request.form.get("release-date"), '%Y-%m-%d'),
             "age_rating": request.form.get("age-rating"),
             "duration": request.form.get("duration"),
             "genre": request.form.getlist("movie-genre"),
@@ -269,44 +301,21 @@ def create_movie():
             "is_part_of_series": False,
             "average_rating": 0.0
         }
+    add_series_information_to_dict(new_movie)
+    add_review_to_dict(new_movie)
+    return new_movie
 
-        if request.form.get("submit-series-info"):
-            new_movie["is_part_of_series"] = True
-            new_movie["series_position"] = request.form.get(
-                                                "series-checkboxes")
-            new_movie["series_name"] = request.form.get("series-name").lower()
 
-            if new_movie["series_position"] == "start":
-                new_movie["next_movie_title"] = request.form.get(
-                                            "next-movie-name").lower()
-            elif new_movie["series_position"] == "end":
-                new_movie["previous_movie_title"] = request.form.get(
-                                                "previous-movie-name").lower()
-            else:
-                new_movie["previous_movie_title"] = request.form.get(
-                                                "previous-movie-name").lower()
-                new_movie["next_movie_title"] = request.form.get(
-                                            "next-movie-name").lower()
-
-        if request.form.get("submit-movie-review"):
-            review = create_single_review()
-            new_movie["reviews"].append(review)
-            new_movie["latest_reviews"].append(review)
-            new_movie["average_rating"] = review["star_rating"]
-            mongo.db.users.update_one({"username": session["user"]},
-                                      {"$inc": {"reviews_submitted": 1}})
-
+@app.route("/create-movie", methods=["GET", "POST"])
+def create_movie():
+    if request.method == "POST":
+        new_movie = generate_new_movie_dict()
         new_id = mongo.db.movies.insert_one(new_movie).inserted_id
 
         if request.form.get("seen-movie-checkbox"):
-            mongo.db.users.update_one({"username": session["user"]},
-                                      {"$push": {"movies_watched": new_id}})
+            update_collection_item("users", "username", session["user"],
+                                   "$push", "movies_watched",  new_id)
 
-        if request.form.get("write-review-switch"):
-            mongo.db.users.update_one({"username": session["user"]},
-                                      {"$push": {"movies_reviewed": new_id}})
-
-        time.sleep(3)
         flash("New Movie Added")
         return redirect(url_for("view_movie", movie_id=new_id))
 
@@ -316,6 +325,9 @@ def create_movie():
 
 @app.route("/edit-movie/<movie_id>", methods=["GET", "POST"])
 def edit_movie(movie_id):
+    if request.method == "POST":
+        print("YAY")
+
     movie = find_one_with_key("movies", "_id", ObjectId(movie_id))
     genre_list = list(mongo.db.genre.find().sort("genre_name"))
     age_ratings = mongo.db.uk_age_ratings.find().sort("uk_rating_order")
