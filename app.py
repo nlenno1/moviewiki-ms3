@@ -96,7 +96,7 @@ def generate_average_review_score(movie_id):
 
 # app.route
 @app.route("/")
-@app.route("/home", methods=["GET", "POST"])
+@app.route("/home")
 def home():
     if len(session) == 0:
         session["user"] = None
@@ -330,7 +330,7 @@ def edit_movie(movie_id):
         mongo.db.movies.update({"_id": ObjectId(movie_id)}, updated_movie)
         if request.form.get("submit-movie-review"):
             update_collection_item("users", "username", session["user"],
-                               "$push", "movies_reviewed", movie_id)
+                                   "$push", "movies_reviewed", movie_id)
 
         flash(f"Movie Profile Successfully Updated")
         return redirect(url_for("view_movie", movie_id=movie_id))
@@ -352,6 +352,15 @@ def edit_movie(movie_id):
                            movie=movie, age_ratings=age_ratings,
                            cast_members_string=cast_members_string,
                            movie_reviewers=movie_reviewers)
+
+
+@app.route("/movie/<movie_id>/delete")
+def delete_movie(movie_id):
+    mongo.db.movies.remove({
+        "_id": ObjectId(movie_id)
+    })
+    flash("Movie Deleted")
+    return redirect(url_for('home'))
 
 
 @app.route("/view-movie/<movie_id>")
