@@ -147,24 +147,24 @@
             </div>
         </div>
     </div>
-        <div class="row g-0">
-            <div class="col">
-                <h3 class="carousel-label">Similar Movies</h3>
-                <div class="movie-carousel">
-                    {% for item in similar_movies|sort(attribute="average_rating") %}
-                        {% if loop.index <= 10 and item.movie_title != movie.movie_title %}
-                            <div class="movie-picture-display">
-                                <div class="movie-image-continer">
-                                    <a href="{{ url_for('view_movie', movie_id=item._id) }}">
-                                        <img src="{{ item.image_link }}" alt="Movie Image">
-                                    </a>
-                                </div>
-                                <h4>{{ item.movie_title }}</h4>
+    <div class="row g-0">
+        <div class="col">
+            <h3 class="carousel-label">Similar Movies</h3>
+            <div class="movie-carousel">
+                {% for item in similar_movies|sort(attribute="average_rating") %}
+                    {% if loop.index <= 10 and item.movie_title != movie.movie_title %}
+                        <div class="movie-picture-display">
+                            <div class="movie-image-continer">
+                                <a href="{{ url_for('view_movie', movie_id=item._id) }}">
+                                    <img src="{{ item.image_link }}" alt="Movie Image">
+                                </a>
                             </div>
-                        {% endif %}
-                    {% endfor %}
-                </div>
+                            <h4>{{ item.movie_title }}</h4>
+                        </div>
+                    {% endif %}
+                {% endfor %}
             </div>
         </div>
+    </div>
 
     {% endblock %}

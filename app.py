@@ -232,7 +232,15 @@ def profile(username):
             {"username": username},
             {"password": 0}
           )
-    return render_template("profile.html", user=user)
+
+    # generate suggested_movies list
+    suggested_movies = []
+    movies = list(mongo.db.movies.find())
+    for item in movies:
+        if set(user["favourite_genres"]).intersection(item["genre"]):
+            suggested_movies.append(item)
+
+    return render_template("profile.html", user=user, suggested_movies=suggested_movies)
 
 
 @app.route("/create-movie", methods=["GET", "POST"])
