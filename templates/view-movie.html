@@ -9,7 +9,7 @@
             <div class="col-12 col-md-7  text-center text-md-start">
                 <div class="row">
                     <div class="col-12 col-md-11">
-                        <h1 class=" ms-md-5">{{movie.movie_title}}</h1>
+                        <h1 class=" ms-md-5">{{ movie.movie_title }}</h1>
                     </div>
                     <div class="col-12 col-md-1">
                         {% if user_watched == True %}
@@ -44,7 +44,10 @@
                             <button class="generic-button button-color-gold movie-font mt-2"><a href="{{ url_for('add_want_to_watch_movie', movie_id=movie._id) }}">I Want to Watch This</a></button>
                             <button class="generic-button button-color-gold movie-font mt-2"><a href="{{ url_for('add_watched_movie', movie_id=movie._id) }}">I Have Watched This</a></button>
                         {% endif %}
-                        <button class="generic-button button-color-gold movie-font mt-2"><a href="{{ url_for('view_reviews', movie_id=movie._id) }}">View All Reviews</a></button>
+                            <button class="generic-button button-color-gold movie-font mt-2"><a href="{{ url_for('view_reviews', movie_id=movie._id) }}">View All Reviews</a></button>
+                        {% if movie.created_by == session["user"] %}
+                            <button class="generic-button mt-2"><a href="{{ url_for('edit_movie', movie_id=movie._id) }}">Edit Movie Profile</a></button>
+                        {% endif %}
                     </div>
                 </div>
             </div>

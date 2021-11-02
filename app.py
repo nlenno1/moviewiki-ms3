@@ -240,7 +240,8 @@ def profile(username):
         if set(user["favourite_genres"]).intersection(item["genre"]):
             suggested_movies.append(item)
 
-    return render_template("profile.html", user=user, suggested_movies=suggested_movies)
+    return render_template("profile.html", user=user, 
+                           suggested_movies=suggested_movies)
 
 
 @app.route("/create-movie", methods=["GET", "POST"])
@@ -315,6 +316,13 @@ def create_movie():
     return render_template("create-movie.html", genre_list=genre_list)
 
 
+@app.route("/edit-movie/<movie_id>", methods=["GET", "POST"])
+def edit_movie(movie_id):
+    movie = find_one_with_key("movies", "_id", ObjectId(movie_id))
+    genre_list = mongo.db.genre.find()
+    return render_template("edit-movie.html", genre_list=genre_list,
+                           movie=movie)
+
 @app.route("/view-movie/<movie_id>")
 def view_movie(movie_id):
     movie = mongo.db.movies.find_one(
@@ -344,6 +352,7 @@ def view_movie(movie_id):
 
     movie__genre_text_list = ', '.join(name.title() for name in movie["genre"])
     movie["genre"] = movie__genre_text_list
+    list(movie)
     return render_template("view-movie.html", movie=movie,
                            user_watched=user_watched,
                            user_want_to_watch=user_want_to_watch,

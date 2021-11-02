@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <h1 id="header-title">Edit Movie</h1>
+
+    <div class="container">
+        <div class="card form-card card-large input-large shadow">
+            <h4 class="text-center mt-2 mb-4">Create a new movie profile for any film that you know of by filling in this form!</h4>
+            <form class="generic-form" method="POST" action="{{ url_for('edit_movie', movie_id=movie._id) }}" >
+                <input type="text" name="movie-title" id="movie-title" placeholder="Movie Title" class="validate" pattern="^[a-zA-Z0-9 \p{P}]+$" required>
+                <input placeholder="Release Date" type="text" onfocus="(this.type='date')" name="release-date" id="release-date">
+                <select id="age-rating" name="age-rating">
+                    <option class="hidden" value="null" selected hidden>Age Rating</option>
+                    <option value="uc">Pre-School (Uc)</option>
+                    <option value="u">Universal (U)</option>
+                    <option value="pg">Parental Guidance (PG)</option>
+                    <option value="12">12</option>
+                    <option value="12a">12A</option>
+                    <option value="15">15</option>
+                    <option value="18">18</option>
+                </select>
+                </select>
+                <input type="text" name="duration" id="duration" placeholder="Duration (mins)" class="validate" pattern="^[0-9]+$">
+                <div class="checkbox-container">
+                    {% for genre in genre_list %}
+                    <div class="row">
+                        <div class="col-6 text-end">
+                            <label for="{{ genre.genre_name }}">{{ genre.genre_name|capitalize }}</label>
+                        </div>
+                        <div class="col-6 col-sm-2 position-start">
+                            <input type="checkbox" id="{{ genre.genre_name }}" name="movie-genre" value="{{ genre.genre_name|lower }}">
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <hr class="shadow">
+                <input type="text" name="director" id="director" placeholder="Director" class="validate" pattern="^[a-zA-Z \p{P}]+$">
+                <input type="text" name="cast-members" id="cast-members" placeholder="Main Cast Members" >
+                <hr class="shadow">
+                <input type="text" name="movie-synopsis" id="movie-synopsis" placeholder="Movie Synopsis" class="validate" pattern="^[a-zA-Z0-9 \p{P}]+$">
+                <textarea name="movie-description" id="movie-description" rows ="8" cols="140" placeholder="Movie Description" class="validate" pattern="^[a-zA-Z0-9 \p{P}]+$"></textarea>
+                <hr class="shadow">
+                <input type="text" name="image-link" id="image-link" placeholder="Link to Movie Image">
+                <input type="text" name="trailer-link" id="trailer-link" placeholder="Link to Trailer Video">
+                <hr class="shadow">
+                <div class="switch-display mb-3">
+                    <div class="checkbox-container mb-2">
+                        <input class="series-checkboxes" type="checkbox" id="seen-movie-checkbox" name="seen-movie-checkbox" value="seen-movie">
+                        <label class="form-check-label" for="seen-movie-checkbox">Check this box if you have seen this Movie?</label><br>
+                    </div>
+                    <p class="text-center">Please use the switches to answer the following questions<br>"On" for Yes and "Off" for No</p>
+                    <div class="form-check form-switch">
+                        <label class="form-check-label" for="series-switch">Is this Movie part of a series?</label>
+                        <input class="form-check-input" type="checkbox" name="series-switch" id="series-switch" data-bs-toggle="collapse" data-bs-target="#series-questions">
+                    </div>
+                    <div class="form-check form-switch">
+                        <label class="form-check-label" for="write-review-switch">Do you want to write a Review for this Movie?</label>
+                        <input class="form-check-input" type="checkbox" name="write-review-switch" id="write-review-switch" data-bs-toggle="collapse" data-bs-target="#add-review">
+                    </div>
+                </div>
+                <div id="series-questions" class="card form-card card-small shadow hidden collapse">
+                    <p class="mb-0">Fill out these questions about the series that this movie is part of.<br>This movie is:</p>
+                    <div class="checkbox-container mt-0">
+                        <input class="series-checkboxes" type="radio" id="start-series" name="series-checkboxes" value="start">
+                        <label for="vehicle1"> The Start of a Series</label><br>
+                        <input class="series-checkboxes" type="radio" id="end-series" name="series-checkboxes" value="end">
+                        <label for="vehicle2"> The End of a Series</label><br>
+                        <input class="series-checkboxes" type="radio" id="middle-series" name="series-checkboxes" value="middle">
+                        <label for="vehicle3"> None of the above</label><br>
+                    </div>
+                    <input type="text" name="series-name" id="series-name" placeholder="Series Name" class="validate" pattern="^[a-zA-Z0-9 \p{P}]+$">
+                    <input type="text" name="previous-movie-name" id="previous-movie-name" placeholder="Previous Movie in the Series" class="validate" pattern="^[a-zA-Z0-9 \p{P}]+$">
+                    <input type="text" name="next-movie-name" id="next-movie-name" placeholder="Next Movie in the Series" class="validate" pattern="^[a-zA-Z0-9 \p{P}]+$">
+                    <div class="checkbox-container mb-2 text-center">
+                        <input class="series-checkboxes" type="checkbox" id="submit-series-info" name="submit-series-info" value="submit">
+                        <label class="form-check-label" for="submit-series-info"> Click this box to submit the Series information</label><br>
+                    </div>
+                </div>
+                <div id="add-review" class="card form-card card-small shadow hidden collapse">
+                    <p>Write your review of this movie</p>
+                    <input type="text" name="review-title" id="review-title" class="mb-4" placeholder="Review Title" pattern="^[a-zA-Z0-9 \p{P}]+$">
+                    <textarea name="movie-review" id="movie-review" rows ="8" cols="100" placeholder="Movie Review"></textarea>
+                    <div class="star-rating-container">
+                        <span>Click the stars to choose your</span>
+                        <input type="hidden" name="star-count" id="star-count" value="0">
+                        <span>Star Rating: </span>
+                        <i id="1" class="fas fa-star"></i>
+                        <i id="2" class="fas fa-star"></i>
+                        <i id="3" class="fas fa-star"></i>
+                        <i id="4" class="fas fa-star"></i>
+                        <i id="5" class="fas fa-star"></i>
+                    </div>
+                    <div class="checkbox-container mb-2 text-center">
+                        <input class="series-checkboxes" type="checkbox" id="submit-movie-review" name="submit-movie-review" value="submit">
+                        <label class="form-check-label" for="submit-movie-review"> Click this box to submit your Movie Review</label><br>
+                    </div>
+                </div>
+                <div class="buttons-container mt-4">
+                    <button type="submit" onclick="processing()" class="generic-button button-color-green mt-2">Create Movie</button>
+                    <button class="generic-button button-color-gold mt-2"><a href="">Update Movie</a></button>
+                    <button class="generic-button mt-2"><a href="{{ url_for('home') }}">Cancel</a></button>
+                    <button class="generic-button button-color-red mt-2"><a href="">Delete Movie</a></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+{% endblock %}
