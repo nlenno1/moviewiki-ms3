@@ -175,7 +175,12 @@ def signup():
             "lastname": request.form.get("lastname").lower(),
             "dob": request.form.get("dob"),
             "email": request.form.get('email'),
-            "favourite-genre": request.form.getlist('favourite-genre').lower()
+            "favourite_genres": request.form.getlist('favourite-genre'),
+            "date_joined":  datetime.now(),
+            # unfilled fields
+            "movies_reviewed": [],
+            "movies_watched": [],
+            "movies_to_watch": [],
         }
         mongo.db.users.insert_one(register)
 
@@ -306,10 +311,10 @@ def create_movie():
 def view_movie(movie_id):
     movie = mongo.db.movies.find_one(
             {'_id': ObjectId(movie_id)})
-    
+
     user_want_to_watch = False
     user_watched = False
-    
+
     if session["user"] is not None:
         user = mongo.db.users.find_one(
             {"username": session["user"]},

@@ -20,7 +20,7 @@
                     {% for genre in genre_list %}
                     <div class="row">
                         <div class="col-6 text-end">
-                            <label for="{{ genre.genre_name }}">{{ genre.genre_name|capitalize }}</label>
+                            <label for="{{ genre.genre_name }}">{{ genre.genre_name|title }}</label>
                         </div>
                         <div class="col-6 col-sm-2 position-start">
                             <input type="checkbox" id="{{ genre.genre_name }}" name="favourite-genre" value="{{ genre.genre_name|lower }}">
