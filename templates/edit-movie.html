@@ -19,24 +19,22 @@
                     <option value="15">15</option>
                     <option value="18">18</option>
                 </select>
-                </select>
-                <input type="text" name="duration" id="duration" placeholder="Duration (mins)" class="validate" pattern="^[0-9]+$">
-                <div class="checkbox-container">
-                    {% for genre in genre_list %}
-                        <div class="row">
-                            <div class="col-6 text-end">
-                                <label for="{{ genre.genre_name }}">{{ genre.genre_name|capitalize }}</label>
-                            </div>
-                            <div class="col-6 col-sm-2 position-start">
-                                {% if genre.checked %}
-                                    <input checked type="checkbox" id="{{ genre.genre_name }}" name="movie-genre" value="{{ genre.genre_name|lower }}">
-                                {% else %}
-                                    <input type="checkbox" id="{{ genre.genre_name }}" name="movie-genre" value="{{ genre.genre_name|lower }}">
-                                {% endif %}
-                            </div>
-                        </div>
-                    {% endfor %}
+                
+                <div class="dropdown">
+                    <button class="dropdown-button dropdown-toggle text-start" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                      <span>Movie Genre</span> 
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        {% for genre in genre_list %}
+                            {% if genre.checked %}
+                            <li><input checked id="{{ genre.genre_name }}" name="movie-genre" value="{{ genre.genre_name|lower }}" type="checkbox">{{ genre.genre_name|title }}</li>
+                            {% else %}
+                            <li><input id="{{ genre.genre_name }}" name="movie-genre" value="{{ genre.genre_name|lower }}" type="checkbox">{{ genre.genre_name|title }}</li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
                 </div>
+                
                 <hr class="shadow">
                 <input type="text" name="director" id="director" placeholder="Director" class="validate" pattern="^[a-zA-Z \p{P}]+$">
                 <input type="text" name="cast-members" id="cast-members" placeholder="Main Cast Members" >
@@ -48,7 +46,7 @@
                 <input type="text" name="trailer-link" id="trailer-link" placeholder="Link to Trailer Video">
                 <hr class="shadow">
                 <div class="switch-display mb-3">
-                    <div class="checkbox-container mb-2">
+                    <div class="checkbox-container mb-2 centered-spaced-out-element">
                         <input class="series-checkboxes" type="checkbox" id="seen-movie-checkbox" name="seen-movie-checkbox" value="seen-movie">
                         <label class="form-check-label" for="seen-movie-checkbox">Check this box if you have seen this Movie?</label><br>
                     </div>

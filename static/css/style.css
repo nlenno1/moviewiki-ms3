@@ -302,7 +302,7 @@ footer .logo {
     .search-bar-container i {position: absolute; left: 20px; top: 7px;}
 }
 
-/* Sign Up & Sign In */
+/* Form Elements */
 
 .generic-form {
     display: flex;
@@ -313,20 +313,57 @@ footer .logo {
     align-items: center;
 }
 
-.generic-form input {
+.generic-form input, .generic-form .dropdown-button, .dropdown-menu {
     width: 100%;
     margin-bottom: 8px;
-    padding-left: 10px;
+    padding: 5px 10px;
+}
+
+.generic-form .dropdown-button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: 0.125rem;
+    background-color: #fff;
+    border-color: rgb(118, 118, 118);
+    padding: 5px 13px;
+}
+
+.dropdown-menu {
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: 0.125rem;
+    background-color: #fff;
+    border-color: rgb(118, 118, 118);
+    
+}
+
+.dropdown {
+    transition: 0.3s fade-in-out;
+}
+
+.dropdown-menu{
+    padding: 10px;
+}
+
+input[type="checkbox" i] {
+    width: 20px !important;
+    margin: 3px 3px 3px 4px;
+    box-sizing: border-box;
 }
 
 .generic-form select {
     padding: 5px 0;
-    margin: 8px;
+    margin: 0 8px 8px 8px;
     width: 100%;
 }
 
 .generic-form textarea, .generic-form select,.generic-form input {
     padding-left: 10px;
+}
+
+.form-switch .form-check-input {
+    width: 2em !important;
 }
 
 .buttons-container {
@@ -345,7 +382,7 @@ footer .logo {
     max-width: 350px;
 }
 
-.input-large select, .input-large textarea, .input-large [type="text"], .input-large [type="list"], .input-large [type="date"], .input-large [type="email"]  {
+.input-large select, .input-large textarea, .input-large [type="text"], .input-large [type="list"], .input-large [type="date"], .input-large [type="email"], .dropdown {
     width: 100%;
     max-width: 600px;
 }
@@ -361,6 +398,14 @@ footer .logo {
 .checkbox-container {
     width: 100%;
     margin: 25px 0;
+}
+
+.centered-spaced-out-element {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
 }
 
 p > a {
@@ -680,6 +725,26 @@ select {
     border-color: #000;
     outline: 0;
     box-shadow: 0 0 0 0.25rem rgb(255 202 24 / 25%);
+}
+
+.form-check-input:focus {
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgb(255 202 24 / 25%);
+    border-color: #fff;
+}
+
+.form-check-input:checked {
+    background-color: #ffca18;
+    border-color: #fff;
+    background-image: initial;
+}
+
+.form-switch .form-check-input:focus {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgba%280, 0, 0, 0.25%29'/%3e%3c/svg%3e") !important;
+}
+
+.form-switch .form-check-input:focus-visible, .form-switch .form-check-input:focus {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgba%280, 0, 0, 0.25%29'/%3e%3c/svg%3e") !important;
 }
 
 /* Profile */
