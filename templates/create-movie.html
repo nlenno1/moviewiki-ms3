@@ -8,8 +8,8 @@
             <h4 class="text-center mt-2 mb-4">Create a new movie profile for any film that you know of by filling in this form!</h4>
             <form class="generic-form" method="POST" action="{{ url_for('create_movie') }}" >
                 <input type="text" name="movie-title" id="movie-title" placeholder="Movie Title" class="validate" pattern="^[a-zA-Z0-9 \p{P}]+$" required>
-                <input placeholder="Release Date" type="text" onfocus="(this.type='date')" name="release-date" id="release-date">
-                <select id="age-rating" name="age-rating">
+                <input placeholder="Release Date" type="text" onfocus="(this.type='date')" name="release-date" id="release-date" required>
+                <select id="age-rating" name="age-rating" required>
                     <option class="hidden" value="null" selected hidden>Age Rating</option>
                     <option value="uc">Pre-School (Uc)</option>
                     <option value="u">Universal (U)</option>
@@ -20,7 +20,7 @@
                     <option value="18">18</option>
                 </select>
                 </select>
-                <input type="text" name="duration" id="duration" placeholder="Duration (mins)" class="validate" pattern="^[0-9]+$">
+                <input type="text" name="duration" id="duration" placeholder="Duration (mins)" class="validate" pattern="^[0-9]+$" required>
                 <div class="dropdown">
                     <button class="dropdown-button dropdown-toggle text-start" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                       <span>Movie Genre</span> 
@@ -95,7 +95,7 @@
                     </div>
                 </div>
                 <div class="buttons-container mt-4">
-                    <button type="submit" onclick="processing()" class="generic-button button-color-green mt-2">Create Movie</button>
+                    <button type="submit" class="generic-button button-color-green mt-2">Create Movie</button>
                     <button class="generic-button button-color-gold mt-2"><a href="">Update Movie</a></button>
                     <button class="generic-button mt-2"><a href="{{ url_for('home') }}">Cancel</a></button>
                     <button class="generic-button button-color-red mt-2"><a href="">Delete Movie</a></button>
