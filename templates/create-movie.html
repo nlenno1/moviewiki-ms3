@@ -21,17 +21,15 @@
                 </select>
                 </select>
                 <input type="text" name="duration" id="duration" placeholder="Duration (mins)" class="validate" pattern="^[0-9]+$">
-                <div class="checkbox-container">
-                    {% for genre in genre_list %}
-                        <div class="row">
-                            <div class="col-6 text-end">
-                                <label for="{{ genre.genre_name }}">{{ genre.genre_name|capitalize }}</label>
-                            </div>
-                            <div class="col-6 col-sm-2 position-start">
-                                <input type="checkbox" id="{{ genre.genre_name }}" name="movie-genre" value="{{ genre.genre_name|lower }}">
-                            </div>
-                        </div>
-                    {% endfor %}
+                <div class="dropdown">
+                    <button class="dropdown-button dropdown-toggle text-start" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                      <span>Movie Genre</span> 
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        {% for genre in genre_list %}
+                            <li><input id="{{ genre.genre_name }}" name="movie-genre" value="{{ genre.genre_name|lower }}" type="checkbox">{{ genre.genre_name|title }}</li>
+                        {% endfor %}
+                    </ul>
                 </div>
                 <hr class="shadow">
                 <input type="text" name="director" id="director" placeholder="Director" class="validate" pattern="^[a-zA-Z \p{P}]+$">
@@ -81,14 +79,15 @@
                     <input type="text" name="review-title" id="review-title" class="mb-4" placeholder="Review Title" pattern="^[a-zA-Z0-9 \p{P}]+$">
                     <textarea name="movie-review" id="movie-review" rows ="8" cols="100" placeholder="Movie Review"></textarea>
                     <div class="star-rating-container">
-                        <span>Click the stars to choose your</span>
                         <input type="hidden" name="star-count" id="star-count" value="0">
-                        <span>Star Rating: </span>
-                        <i id="1" class="fas fa-star"></i>
-                        <i id="2" class="fas fa-star"></i>
-                        <i id="3" class="fas fa-star"></i>
-                        <i id="4" class="fas fa-star"></i>
-                        <i id="5" class="fas fa-star"></i>
+                        <span>Click the stars to choose your Star Rating: </span>
+                        <span class="star_container">
+                            <i id="1" class="fas fa-star"></i>
+                            <i id="2" class="fas fa-star"></i>
+                            <i id="3" class="fas fa-star"></i>
+                            <i id="4" class="fas fa-star"></i>
+                            <i id="5" class="fas fa-star"></i>
+                        </span>
                     </div>
                     <div class="checkbox-container mb-2 text-center">
                         <input class="series-checkboxes" type="checkbox" id="submit-movie-review" name="submit-movie-review" value="submit">

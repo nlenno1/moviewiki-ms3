@@ -22,17 +22,18 @@
                 {% else %}
                     <input type="text" name="selected-movie-title" id="movie-title" value="{{ selected_movie_title|title }}" readonly>
                 {% endif %}
-                <input type="text" name="review-title" id="review-title" class="validate mb-4" placeholder="Review Title" pattern="^[a-zA-Z0-9 ]+{5,100}$" required>
-                <textarea name="movie-review" id="movie-review" rows ="8" cols="100" placeholder="Movie Review" required></textarea>
+                <input type="text" name="review-title" id="review-title" class="mb-4" placeholder="Review Title" pattern="^[a-zA-Z0-9 \p{P}]+$">
+                <textarea name="movie-review" id="movie-review" rows ="8" cols="100" placeholder="Movie Review"></textarea>
                 <div class="star-rating-container">
-                    <span>Click the stars to choose your</span>
                     <input type="hidden" name="star-count" id="star-count" value="0">
-                    <span>Star Rating: </span>
-                    <i id="1" class="fas fa-star"></i>
-                    <i id="2" class="fas fa-star"></i>
-                    <i id="3" class="fas fa-star"></i>
-                    <i id="4" class="fas fa-star"></i>
-                    <i id="5" class="fas fa-star"></i>
+                    <span>Click the stars to choose your Star Rating: </span>
+                    <span class="star_container">
+                        <i id="1" class="fas fa-star"></i>
+                        <i id="2" class="fas fa-star"></i>
+                        <i id="3" class="fas fa-star"></i>
+                        <i id="4" class="fas fa-star"></i>
+                        <i id="5" class="fas fa-star"></i>
+                    </span>
                 </div>
                 <div class="buttons-container mt-4 mb-2">
                     <button type="submit" class="generic-button button-color-green mt-2">Create Review</a></button>

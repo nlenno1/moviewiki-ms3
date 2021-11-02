@@ -526,12 +526,21 @@ select {
 
 .star-rating-container {
     margin: 10px 0 0 auto;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    text-align: center;
 }
 
 .star-rating-container i:hover {
     cursor: pointer;
     animation: shake 0.75s;
     animation-iteration-count: 2;
+}
+
+.star-container {
+    width: 108px;
 }
 
 @keyframes shake {
