@@ -41,7 +41,7 @@
                 <input type="text" value="{{ movie.movie_synopsis }}" name="movie-synopsis" id="movie-synopsis" placeholder="Movie Synopsis" class="validate" pattern="^[a-zA-Z0-9 \p{P}]+$">
                 <textarea name="movie-description" id="movie-description" rows ="8" cols="140" placeholder="Movie Description" class="validate" pattern="^[a-zA-Z0-9 \p{P}]+$">{{ movie.movie_description }}</textarea>
                 <hr class="shadow">
-                <input type="text" value="{{ movie.image_link }}" name="image-link" id="image-link" placeholder="Link to Movie Image">
+                <input type="text" {% if movie.image_link != '../static/img/movie-placeholder.png' %} value="{{ movie.image_link }}" {% endif %} name="image-link" id="image-link" placeholder="Link to Movie Image">
                 <input type="text" value="{{ movie.trailer_link }}" name="trailer-link" id="trailer-link" placeholder="Link to Trailer Video">
                 <hr class="shadow">
                 <div class="switch-display mb-3">
@@ -116,7 +116,7 @@
                     </div>
                 </div>
                 <div class="buttons-container mt-4">
-                    <button class="generic-button button-color-gold mt-2"><a href="">Update Movie</a></button>
+                    <button type="submit" class="generic-button button-color-gold mt-2">Update Movie</button>
                     <button class="generic-button mt-2"><a href="{{ url_for('home') }}">Cancel</a></button>
                     <button class="generic-button button-color-red mt-2"><a href="">Delete Movie</a></button>
                 </div>

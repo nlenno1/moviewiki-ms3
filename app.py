@@ -275,9 +275,6 @@ def add_review_to_dict(new_movie):
         new_movie["reviews"].append(review)
         new_movie["latest_reviews"].append(review)
         new_movie["average_rating"] = review["star_rating"]
-        update_collection_item("users", "username", session["user"],
-                               "$push", "movies_reviewed",  new_id)
-        
 
 
 def generate_new_movie_dict():
@@ -315,6 +312,9 @@ def create_movie():
         if request.form.get("seen-movie-checkbox"):
             update_collection_item("users", "username", session["user"],
                                    "$push", "movies_watched",  new_id)
+        if request.form.get("submit-movie-review"):
+            update_collection_item("users", "username", session["user"],
+                               "$push", "movies_reviewed", new_id)
 
         flash("New Movie Added")
         return redirect(url_for("view_movie", movie_id=new_id))
@@ -326,7 +326,14 @@ def create_movie():
 @app.route("/edit-movie/<movie_id>", methods=["GET", "POST"])
 def edit_movie(movie_id):
     if request.method == "POST":
-        print("YAY")
+        updated_movie = generate_new_movie_dict()
+        mongo.db.movies.update({"_id": ObjectId(movie_id)}, updated_movie)
+        if request.form.get("submit-movie-review"):
+            update_collection_item("users", "username", session["user"],
+                               "$push", "movies_reviewed", movie_id)
+
+        flash(f"Movie Profile Successfully Updated")
+        return redirect(url_for("view_movie", movie_id=movie_id))
 
     movie = find_one_with_key("movies", "_id", ObjectId(movie_id))
     genre_list = list(mongo.db.genre.find().sort("genre_name"))
