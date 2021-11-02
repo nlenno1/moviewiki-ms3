@@ -14,6 +14,8 @@
                     <div class="col-12 col-md-1">
                         {% if user_watched == True %}
                             <h3><i class="fas fa-glasses"></i></h3>
+                        {% elif user_want_to_watch == True %}
+                            <h3><i class="fas fa-clipboard-list"></i></i></h3>
                         {% endif %}
                     </div>
                 </div>
@@ -33,11 +35,14 @@
                 </div>
                 <div class="row">
                     <div class="col-12 view-movie-button-container pt-3">
-                        {% if user_watched == False %}
-                            <button class="generic-button button-color-gold movie-font mt-2"><a href="{{ url_for('create_movie') }}">I Want to Watch This</a></button>
+                        {% if user_watched == True %}
+                            <button class="generic-button button-color-gold movie-font mt-2"><a href="{{ url_for('remove_watched_movie', movie_id=movie._id) }}">I Haven't Watched This</a></button>
+                        {% elif user_want_to_watch == True and user_watched == False %}
+                            <button class="generic-button button-color-gold movie-font mt-2"><a href="{{ url_for('remove_want_to_watch_movie', movie_id=movie._id) }}">I Don't Want to Watch This</a></button>
                             <button class="generic-button button-color-gold movie-font mt-2"><a href="{{ url_for('add_watched_movie', movie_id=movie._id) }}">I Have Watched This</a></button>
                         {% else %}
-                            <button class="generic-button button-color-gold movie-font mt-2"><a href="{{ url_for('remove_watched_movie', movie_id=movie._id) }}">I Haven't Watched This</a></button>
+                            <button class="generic-button button-color-gold movie-font mt-2"><a href="{{ url_for('add_want_to_watch_movie', movie_id=movie._id) }}">I Want to Watch This</a></button>
+                            <button class="generic-button button-color-gold movie-font mt-2"><a href="{{ url_for('add_watched_movie', movie_id=movie._id) }}">I Have Watched This</a></button>
                         {% endif %}
                         <button class="generic-button button-color-gold movie-font mt-2"><a href="{{ url_for('view_reviews', movie_id=movie._id) }}">View All Reviews</a></button>
                     </div>

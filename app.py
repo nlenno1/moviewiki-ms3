@@ -306,18 +306,22 @@ def create_movie():
 def view_movie(movie_id):
     movie = mongo.db.movies.find_one(
             {'_id': ObjectId(movie_id)})
+    
+    user_want_to_watch = False
+    user_watched = False
+    
     if session["user"] is not None:
         user = mongo.db.users.find_one(
             {"username": session["user"]},
-            {"_id": 0, "movies_watched": 1}
+            {"_id": 0, "movies_watched": 1, "movies_to_watch": 1}
         )
 
         if movie["_id"] in user["movies_watched"]:
             user_watched = True
-        else:
-            user_watched = False
-    else:
-        user_watched = False
+        
+        if movie["_id"] in user["movies_to_watch"]:
+            user_want_to_watch = True
+
     # generate similar_movies list
     similar_movies = []
     movies = list(mongo.db.movies.find())
@@ -329,6 +333,7 @@ def view_movie(movie_id):
     movie["genre"] = movie__genre_text_list
     return render_template("view-movie.html", movie=movie,
                            user_watched=user_watched,
+                           user_want_to_watch=user_want_to_watch,
                            similar_movies=similar_movies)
 
 
@@ -408,6 +413,22 @@ def remove_watched_movie(movie_id):
     mongo_prefix_select("users").update_one(
             {"username": session["user"]},
             {"$pull": {"movies_watched": ObjectId(movie_id)}})
+    return redirect(url_for("view_movie", movie_id=movie_id))
+
+
+@app.route("/user/add-want-to-watch-movie/<movie_id>")
+def add_want_to_watch_movie(movie_id):
+    update_collection_item("users", "username", session["user"], "$push",
+                           "movies_to_watch", ObjectId(movie_id))
+    return redirect(url_for("view_movie", movie_id=movie_id))
+
+
+@app.route("/user/remove-want-to-watch-movie/<movie_id>")
+def remove_want_to_watch_movie(movie_id):
+    print(movie_id)
+    mongo_prefix_select("users").update_one(
+            {"username": session["user"]},
+            {"$pull": {"movies_to_watch": ObjectId(movie_id)}})
     return redirect(url_for("view_movie", movie_id=movie_id))
 
 
