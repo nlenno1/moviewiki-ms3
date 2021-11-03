@@ -8,10 +8,10 @@
     <div class="container">
         <div class="card form-card card-large input-large shadow">
             <form class="generic-form mt-3" action="{{ url_for('contact') }}" method="POST">
-                <input type="text" {% if session['full-name'] %} value="{{ session['full-name'] }}" {% endif %} name="full-name" id="full-name" placeholder="Full Name"  pattern="^[a-zA-Z0-9]+{5,15}$" class="validate" required>
+                <input type="text" {% if session['full-name'] %} value="{{ session['full-name']|title }}" {% endif %} name="full-name" id="full-name" placeholder="Full Name"  pattern="^[a-zA-Z0-9]+{5,15}$" class="validate" required>
                 <input type="email" {% if session['email'] %} value="{{ session['email'] }}" {% endif %} name="email" id="email" placeholder="Email" required>
                 <textarea rows="6" name="message" id="message" placeholder="Message" required></textarea>
-                <button type="submit" class="generic-button button-color-green mt-4">Send Message</button>
+                <button type="submit" class="generic-button button-color-gold mt-4">Send Message</button>
             </form>
         </div>
     </div>

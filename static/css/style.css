@@ -15,7 +15,7 @@ h1, h2, h3, h4, .navbar-brand, .logo, .movie-font {
 .generic-button {
     border-radius: 10px;
     background-color: #c4c4c4;
-    font-weight: 5S00;
+    font-weight: 600;
     width: 180px;
     margin: 0 2px;
     transition: 0.3s;

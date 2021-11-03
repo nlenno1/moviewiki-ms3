@@ -154,6 +154,14 @@ def delete_genre(genre_id):
     return redirect(url_for('get_all_genre'))
 
 
+def add_data_user_data_to_session_storage(user_dict):
+    session['user'] = user_dict['username']
+    session["id"] = str(user_dict['_id'])
+    session['email'] = user_dict['email']
+    session['full-name'] = user_dict[
+        'firstname'] + " " + user_dict['lastname']
+
+
 @app.route("/genre/update/<genre_name>,<genre_id>", methods=["POST"])
 def update_genre(genre_id, genre_name):
     """
@@ -197,10 +205,10 @@ def signup():
             "movies_watched": [],
             "movies_to_watch": [],
         }
+        add_data_user_data_to_session_storage(register)
         mongo.db.users.insert_one(register)
 
         # put the user into session and load profile page
-        session['user'] = request.form.get("username").lower()
         flash("Registration Successful " + session["user"].capitalize() + "!")
         return redirect(url_for('profile', username=session['user']))
 
@@ -215,12 +223,14 @@ def signin():
         existing_user = mongo.db.users.find_one(
             {"username": request.form.get("username").lower()}
         )
-
         if existing_user:
-            if check_password_hash(
-              existing_user["password"], request.form.get("password")):
-                session['user'] = request.form.get("username").lower()
+            if check_password_hash(existing_user["password"],
+                                   request.form.get("password")):
+
+                add_data_user_data_to_session_storage(existing_user)
+
                 flash("Welcome " + session["user"].capitalize())
+
                 return redirect(url_for('profile', username=session['user']))
             else:
                 flash("The information entered is incorrect")
@@ -236,7 +246,7 @@ def signin():
 @app.route("/signout")
 def signout():
     flash("You have signed out")
-    session.pop("user")
+    session.clear()
     movie_list = mongo.db.movies.find()
     return render_template("home.html", movies=movie_list)
 
