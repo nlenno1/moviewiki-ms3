@@ -716,10 +716,6 @@ select {
     align-content: center;
 }
 
-.accordion-button {
-    padding-left: 2vw;
-}
-
 .accordion-button:not(.collapsed) {
     color: #000;
     background-color: rgba(255,202,24,0.75);

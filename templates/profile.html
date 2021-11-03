@@ -37,7 +37,7 @@
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#movies-to-watch-collapse" aria-expanded="false"
                                     aria-controls="movies-to-watch-collapse">
-                                    Movies You Want to Watch
+                                    <i class="fas fa-clipboard-list ms-4 me-5"></i> Movies You Want to Watch
                                 </button>
                             </h2>
                             <div id="movies-to-watch-collapse" class="accordion-collapse collapse"
@@ -48,7 +48,7 @@
                                             {% for movie in user.movies_to_watch %}
                                                 <div class="col-12 col-md-6 col-lg-4">
                                                     <p class="mb-0">
-                                                        {{ movie|title }}
+                                                        <i class="far fa-caret-square-right me-1 me-sm-3"></i>{{ movie|title }}
                                                     </p>
                                                 </div>
                                             {% endfor %}
@@ -65,7 +65,7 @@
                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                         data-bs-target="#movies-watched-collapse" aria-expanded="false"
                                         aria-controls="movies-watched-collapse">
-                                        Movies You Have Watched
+                                        <i class="fas fa-glasses ms-3 me-5"></i> Movies You Have Watched
                                     </button>
                                 </h2>
                                 <div id="movies-watched-collapse" class="accordion-collapse collapse"
@@ -76,7 +76,7 @@
                                                 {% for movie in user.movies_watched %}
                                                     <div class="col-12 col-md-6 col-lg-4">
                                                         <p class="mb-0">
-                                                            {{ movie|title }}
+                                                            <i class="far fa-caret-square-right me-1 me-sm-3"></i>{{ movie|title }}
                                                         </p>
                                                     </div>
                                                 {% endfor %}
@@ -103,16 +103,16 @@
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="user-review-header">
                                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                                data-bs-target="#user-review-collapse" aria-expanded="false"
+                                                data-bs-target="#review-collapse-{{loop.index}}" aria-expanded="false"
                                                 aria-controls="review-collapse">
-                                                {{ review.review_for|title }} - {{ review.review_title|title }} - {{ review.star_rating }} Stars
+                                                <i class="fas fa-film d-none d-sm-block ms-2 me-2 me-sm-5"></i> {{ review.review_for|title }} - {{ review.review_title|title }} - {{ review.star_rating }} Stars
                                             </button>
                                         </h2>
-                                        <div id="user-review-collapse" class="accordion-collapse collapse"
+                                        <div id="review-collapse-{{loop.index}}" class="accordion-collapse collapse"
                                             aria-labelledby="user-review-heading" data-bs-parent="#user-review-accordion">
                                             <div class="accordion-body">
-                                                <p>{{ review.review }}</p>
-                                                <p class="small-text">{{ review.review_date }}</p>
+                                                <p>{% if review.review %}{{ review.review }}{% else %}There is no text in this review{% endif %}</p>
+                                                <p class="small-text">Reviewed on: {{ review.review_date.strftime('%d %B %Y at %H:%M') }}</p>
                                             </div>
                                         </div>
                                     </div>
