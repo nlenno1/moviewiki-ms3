@@ -222,6 +222,21 @@ def signup():
     return render_template("signup.html", genre_list=genre_list)
 
 
+@app.route("/profile/<user_id>/edit", methods=["GET", "POST"])
+def edit_user_profile(user_id):
+
+    user = find_one_with_key("users", "_id", ObjectId(user_id))
+    user["dob"] = datetime.strptime(user["dob"], '%Y-%m-%d')
+
+    genre_list = mongo.db.genre.find()
+    genre_list = sorted(genre_list, key=lambda d: d['genre_name'])
+    for genre in genre_list:
+        if genre["genre_name"].lower() in user["favourite_genres"]:
+            genre["checked"] = True
+    return render_template("edit-user-profile.html", genre_list=genre_list,
+                           user=user)
+
+
 @app.route("/signin", methods=["GET", "POST"])
 def signin():
     if request.method == "POST":
@@ -270,8 +285,9 @@ def profile(username):
         if set(user["favourite_genres"]).intersection(item["genre"]):
             suggested_movies.append(item)
 
-    user_latest_reviews = sorted(user["user_latest_reviews"], key=lambda d: d['review_date'], reverse=True)
-    
+    user_latest_reviews = sorted(user["user_latest_reviews"], key=lambda d: d[
+                          'review_date'], reverse=True)
+
     return render_template("profile.html", user=user,
                            suggested_movies=suggested_movies,
                            user_latest_reviews=user_latest_reviews)

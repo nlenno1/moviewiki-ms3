@@ -378,7 +378,7 @@ input[type="checkbox" i] {
     padding: 20px 25px;
 }
 
-.form-card input  {
+.form-card input, .form-card .dropdown {
     max-width: 350px;
 }
 
