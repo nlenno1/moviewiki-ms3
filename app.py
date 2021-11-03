@@ -224,6 +224,35 @@ def signup():
 
 @app.route("/profile/<user_id>/edit", methods=["GET", "POST"])
 def edit_user_profile(user_id):
+    if request.method == "POST":
+        user = mongo.db.users.find_one({"_id": ObjectId(session['id'])},
+                                       {"password": 0})
+
+        requested_username = request.form.get("username").lower()
+        existing_user = mongo.db.users.find_one(
+            {"username": requested_username.lower()},
+            {"password": 0})
+
+        if existing_user and existing_user["username"] != user["username"]:
+            flash("Username " + requested_username.capitalize() +
+                  " already exists")
+            return redirect(url_for("edit_user_profile",
+                                    user_id=session['id']))
+
+        updated_profile_dict = {
+            "username": request.form.get("username").lower(),
+            "firstname": request.form.get("firstname").lower(),
+            "lastname": request.form.get("lastname").lower(),
+            "dob": request.form.get("dob"),
+            "email": request.form.get('email'),
+            "favourite_genres": request.form.getlist('movie-genre')
+        }
+
+        mongo.db.users.update_one({"_id": ObjectId(session['id'])},
+                                  {"$set": updated_profile_dict})
+
+        flash(f"Successfully Updated {session['user'].capitalize()} Account!")
+        return redirect(url_for('profile', username=session['user']))
 
     user = find_one_with_key("users", "_id", ObjectId(user_id))
     user["dob"] = datetime.strptime(user["dob"], '%Y-%m-%d')
