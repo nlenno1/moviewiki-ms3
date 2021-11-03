@@ -261,8 +261,7 @@ def signout():
 def profile(username):
     user = mongo.db.users.find_one(
             {"username": username},
-            {"password": 0}
-          )
+            {"password": 0})
 
     # generate suggested_movies list
     suggested_movies = []
@@ -271,8 +270,8 @@ def profile(username):
         if set(user["favourite_genres"]).intersection(item["genre"]):
             suggested_movies.append(item)
 
-    user_latest_reviews = user["user_latest_reviews"]
-
+    user_latest_reviews = sorted(user["user_latest_reviews"], key=lambda d: d['review_date'], reverse=True)
+    
     return render_template("profile.html", user=user,
                            suggested_movies=suggested_movies,
                            user_latest_reviews=user_latest_reviews)
