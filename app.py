@@ -308,6 +308,7 @@ def add_series_information_to_dict(new_movie):
 def add_review_to_dict(new_movie):
     if request.form.get("submit-movie-review"):
         review = create_single_review()
+        review["review_for"] = new_movie["movie_title"]
         new_movie["reviews"].append(review)
         new_movie["latest_reviews"].append(review)
         new_movie["average_rating"] = review["star_rating"]
@@ -450,10 +451,10 @@ def create_review(selected_movie_title):
     if request.method == "POST":
         requested_movie_name = request.form.get("selected-movie-title").lower()
         movie = mongo.db.movies.find_one({
-                                "movie_title": requested_movie_name},
-                                 {"_id": 1, "latest_reviews": 1, "reviews": 1})
+                                "movie_title": requested_movie_name})
         if movie:
             new_review = create_single_review()
+            new_review["review_for"] = movie["movie_title"]
             mongo.db.movies.update_one({"_id": ObjectId(
                                         movie["_id"])},
                                        {"$push": {"reviews": new_review}})
@@ -479,7 +480,11 @@ def create_review(selected_movie_title):
 @app.route("/review/<movie_id>/<review_date>/edit", methods=["GET", "POST"])
 def edit_review(movie_id, review_date):
     if request.method == "POST":
+        movie = find_one_with_key("movies", "_id", movie_id)
+
         updated_review = create_single_review()
+        updated_review["review_for"] = movie["movie_title"].lower
+
         update_collection_item_dict("movies", "_id", ObjectId(movie_id),
                                     "$pull", "reviews", "review_date",
                                     convert_string_to_datetime(review_date))
@@ -488,7 +493,6 @@ def edit_review(movie_id, review_date):
                                               "latest_reviews":
                                               updated_review}})
 
-        movie = find_one_with_key("movies", "_id", movie_id)
         add_review_to_latest_reviews_dicts(movie, updated_review)
 
         return redirect(url_for('view_reviews', movie_id=movie_id))
