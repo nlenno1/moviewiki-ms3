@@ -16,7 +16,7 @@
                     <span>Click the stars to choose your Star Rating: </span>
                     <span class="star_container">
                         {% for i in range(5) %}
-                            {% if i <= movie_review.star_rating %}
+                            {% if (i + 1) <= movie_review.star_rating %}
                                 <i id="{{ i + 1 }}" class="fas fa-star gold-star"></i>
                             {% else %}
                                 <i id="{{ i + 1 }}" class="fas fa-star"></i>

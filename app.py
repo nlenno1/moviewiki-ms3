@@ -447,6 +447,12 @@ def create_review(selected_movie_title):
 
 @app.route("/review/<movie_id>/<review_date>/edit", methods=["GET", "POST"])
 def edit_review(movie_id, review_date):
+    if request.method == "POST":
+        print("Updating")
+        update_collection_item_dict("movies", "_id", movie_id,
+                                    "$push", "reviews", "review_date",
+                                    convert_string_to_datetime(review_date))
+        return redirect(url_for('view_reviews', movie_id=movie_id))
 
     movie = find_one_with_key("movies", "_id", ObjectId(movie_id))
     movie_review = [review for review in movie["reviews"]
