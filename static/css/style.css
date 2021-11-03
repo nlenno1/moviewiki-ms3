@@ -561,13 +561,23 @@ select {
     color:#ffca18;
 }
 
-/* Processing Screen */
+/* Processing & Delete Confirmation Screens */
 
-#processing {
+#processing, #confirm_profile_delete {
     width: 100%;
     cursor: wait;
     display: none;
     min-height: calc(100vh - 237px);
+}
+
+#confirm_profile_delete {
+    cursor: initial;
+    display: none;
+    min-height: calc(100vh - 397px);
+}
+
+#confirm_profile_delete i {
+    font-size: 150px;
 }
 
 #processing img {
@@ -586,6 +596,9 @@ select {
 @media (min-width: 768px) {
     #processing {
          min-height: calc(100vh - 135px);
+    } 
+    #confirm_profile_delete {
+        min-height: calc(100vh - 296px);
     }
 }
 

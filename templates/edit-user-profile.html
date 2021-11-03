@@ -3,7 +3,7 @@
 
     <h1 id="header-title">Edit Account</h1>
 
-    <div class="container">
+    <div id="edit_user_profile-content" class="container">
         <div class="card form-card card-small shadow">
             <form class="generic-form" method="POST" action="{{ url_for('edit_user_profile', user_id=user._id) }}" >
                 <input type="text" name="username" id="username" value="{{ user.username|title }}" minlength="5" maxlength="15" class="validate" pattern="^[a-zA-Z0-9-_]+{5,15}$" required>
@@ -30,10 +30,23 @@
                 </div>
                 <div class="buttons-container mt-4">
                     <button type="submit" class="generic-button button-color-gold mt-2">Update Account</button>
-                    <button class="generic-button mt-2">Cancel</button>
-                    <button class="generic-button button-color-red mt-2">Delete Account</button>
+                    <button type="button" class="generic-button mt-2">Cancel</button>
+                    <button type="button" class="generic-button button-color-red mt-2" onclick="confirm_profile_delete()">Delete Account</button>
                 </div>
             </form>
+        </div>
+    </div>
+    <div id="confirm_profile_delete" class="container card-large">
+        <div class="row g-0">
+            <div class="col-12 px-2 text-center">
+                <h2 class="mt-5">Are you sure you want to delete this user profile?</h2>
+                <i class="fas fa-exclamation-triangle display-1"></i>
+                <p class="px-2 mt-4">Deleting this account will be permenent and you will not be able to modify any reviews or movie profiles created with this account even if you register again</p>
+            </div>
+        </div>
+        <div class="buttons-container mt-4">
+            <button class="generic-button button-color-red mt-2"><a href="{{ url_for('delete_user_profile', user_id=session['id']) }}">Delete Profile</a></button>
+            <button class="generic-button mt-2"><a href="{{ url_for('profile', username=session['user']) }}">Cancel</a></button>
         </div>
     </div>
 

@@ -10,7 +10,6 @@
                     <h1>{{ user.username }}</h1>
                     <div class="my-5 d-none d-md-flex">
                         <button class="generic-button button-color-gold"><a href="{{ url_for('edit_user_profile', user_id=session['id']) }}">Update Profile</a></button>
-                        <button class="generic-button button-color-red mt-1"><a href="#">Delete Profile</a></button>
                     </div>
                 </div>
                 <div class="col-12 col-md-8">

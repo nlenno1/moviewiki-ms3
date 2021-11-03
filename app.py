@@ -160,9 +160,9 @@ def delete_genre(genre_id):
     return redirect(url_for('get_all_genre'))
 
 
-def add_data_user_data_to_session_storage(user_dict):
+def add_data_user_data_to_session_storage(user_dict, user_id="user_dict['_id']"):
     session['user'] = user_dict['username']
-    session["id"] = str(user_dict['_id'])
+    session["id"] = str(user_id)
     session['email'] = user_dict['email']
     session['full-name'] = user_dict[
         'firstname'] + " " + user_dict['lastname']
@@ -210,9 +210,11 @@ def signup():
             "movies_reviewed": [],
             "movies_watched": [],
             "movies_to_watch": [],
+            "user_latest_reviews": [],
         }
-        add_data_user_data_to_session_storage(register)
-        mongo.db.users.insert_one(register)
+
+        new_id = mongo.db.users.insert_one(register).inserted_id
+        add_data_user_data_to_session_storage(register, new_id)
 
         # put the user into session and load profile page
         flash("Registration Successful " + session["user"].capitalize() + "!")
@@ -264,6 +266,17 @@ def edit_user_profile(user_id):
             genre["checked"] = True
     return render_template("edit-user-profile.html", genre_list=genre_list,
                            user=user)
+
+
+@app.route("/profile/<user_id>/delete")
+def delete_user_profile(user_id):
+    mongo.db.users.remove({
+        "_id": ObjectId(user_id)
+    })
+    username = session["user"].title()
+    session.clear()
+    flash(f"User Profile {username} Deleted")
+    return redirect(url_for('home'))
 
 
 @app.route("/signin", methods=["GET", "POST"])
