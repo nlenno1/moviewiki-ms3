@@ -320,7 +320,7 @@ def create_movie():
                                    "$push", "movies_watched",  new_id)
         if request.form.get("submit-movie-review"):
             update_collection_item("users", "username", session["user"],
-                               "$push", "movies_reviewed", new_id)
+                                    "$push", "movies_reviewed", new_id)
 
         flash("New Movie Added")
         return redirect(url_for("view_movie", movie_id=new_id))
@@ -449,9 +449,14 @@ def create_review(selected_movie_title):
 def edit_review(movie_id, review_date):
     if request.method == "POST":
         print("Updating")
-        update_collection_item_dict("movies", "_id", movie_id,
-                                    "$push", "reviews", "review_date",
+        updated_review = create_single_review()
+        print(updated_review)
+        update_collection_item_dict("movies", "_id", ObjectId(movie_id),
+                                    "$pull", "reviews", "review_date",
                                     convert_string_to_datetime(review_date))
+        mongo.db.movies.update_one({"_id": ObjectId(movie_id)},
+                                   {"$push": {"reviews": updated_review}})
+
         return redirect(url_for('view_reviews', movie_id=movie_id))
 
     movie = find_one_with_key("movies", "_id", ObjectId(movie_id))
@@ -473,11 +478,9 @@ def view_reviews(movie_id):
 
 @app.route("/delete-review/<movie_id>/<review_date>")
 def delete_review(movie_id, review_date):
-    datetime_review_date = convert_string_to_datetime(review_date)
-
     update_collection_item_dict("movies", "_id", ObjectId(movie_id),
                                 "$pull", "reviews", "review_date",
-                                datetime_review_date)
+                                convert_string_to_datetime(review_date))
 
     flash("Review deleted")
     movie = find_one_with_key("movies", "_id", ObjectId(movie_id))
