@@ -534,6 +534,15 @@ def about():
 
 @app.route("/contact", methods=["GET", "POST"])
 def contact():
+    if request.method == "POST":
+        mongo.db.messages.insert_one({
+            "sender_name": request.form.get("full-name"),
+            "sender_email": request.form.get("email"),
+            "message": request.form.get("message"),
+            "datetime_sent": datetime.now()
+        })
+        flash("Message Sent Successfully!")
+
     return render_template("contact.html")
 
 
