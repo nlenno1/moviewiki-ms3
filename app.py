@@ -52,12 +52,12 @@ def find_one_with_key(collection_name, search_key, search_value):
 
 
 def update_collection_item_dict(collection_name, search_key, search_value,
-                                update_operator, key_to_update, new_key,
-                                new_value):
+                                update_operator, array_to_update,
+                                array_search_key, array_search_value):
     mongo_prefix_select(collection_name).update_one(
         {search_key: search_value},
-        {update_operator: {key_to_update:
-                           {new_key: new_value}}})
+        {update_operator: {array_to_update:
+                           {array_search_key: array_search_value}}})
 
 
 def update_collection_item(collection_name, search_key, search_value,
@@ -92,6 +92,12 @@ def generate_average_review_score(movie_id):
                                 movie["_id"])},
                                {"$set": {"average_review_score":
                                          new_average_review_score}})
+
+
+def convert_string_to_datetime(string_date):
+    datetime_date = datetime.strptime(
+        string_date, '%Y-%m-%d %H:%M:%S.%f')
+    return datetime_date
 
 
 # app.route
@@ -238,7 +244,7 @@ def profile(username):
         if set(user["favourite_genres"]).intersection(item["genre"]):
             suggested_movies.append(item)
 
-    return render_template("profile.html", user=user, 
+    return render_template("profile.html", user=user,
                            suggested_movies=suggested_movies)
 
 
@@ -379,7 +385,7 @@ def view_movie(movie_id):
 
         if movie["_id"] in user["movies_watched"]:
             user_watched = True
-        
+
         if movie["_id"] in user["movies_to_watch"]:
             user_want_to_watch = True
 
@@ -439,6 +445,17 @@ def create_review(selected_movie_title):
         selected_movie_title=selected_movie_title)
 
 
+@app.route("/review/<movie_id>/<review_date>/edit", methods=["GET", "POST"])
+def edit_review(movie_id, review_date):
+    if request.method == "POST":
+        datetime_review_date = convert_string_to_datetime(review_date)
+        update_collection_item_dict("movies", "_id", movie_id,
+                                    "$push", "reviews", "review_date",
+                                    datetime_review_date)
+        return redirect(url_for('view_reviews', movie_id=movie_id))
+
+
+
 @app.route("/view-reviews/<movie_id>")
 def view_reviews(movie_id):
     movie = find_one_with_key("movies", "_id", ObjectId(movie_id))
@@ -448,8 +465,7 @@ def view_reviews(movie_id):
 
 @app.route("/delete-review/<movie_id>/<review_date>")
 def delete_review(movie_id, review_date):
-    datetime_review_date = datetime.strptime(
-        review_date, '%Y-%m-%d %H:%M:%S.%f')
+    datetime_review_date = convert_string_to_datetime(review_date)
 
     update_collection_item_dict("movies", "_id", ObjectId(movie_id),
                                 "$pull", "reviews", "review_date",
