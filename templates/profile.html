@@ -93,13 +93,13 @@
                     </div>
                 </div>
             </div>
-            {% if user.user_latest_reviews|length > 0 %}
+            {% if user_latest_reviews|length > 0 %}
                 <div class="row">
                     <div class="col-12">
                         <h3 class="mt-4">{{user.username}}'s Latest Reviews</h3>
                         <div class="card form-card shadow">
                             <div class="accordion" id="user-review-accordion">
-                                {% for review in user.user_latest_reviews %}
+                                {% for review in user_latest_reviews %}
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="user-review-header">
                                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"

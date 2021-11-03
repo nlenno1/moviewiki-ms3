@@ -271,8 +271,11 @@ def profile(username):
         if set(user["favourite_genres"]).intersection(item["genre"]):
             suggested_movies.append(item)
 
+    user_latest_reviews = user["user_latest_reviews"]
+
     return render_template("profile.html", user=user,
-                           suggested_movies=suggested_movies)
+                           suggested_movies=suggested_movies,
+                           user_latest_reviews=user_latest_reviews)
 
 
 def generate_movie_image_link():
@@ -511,6 +514,14 @@ def view_reviews(movie_id):
 def delete_review(movie_id, review_date):
     update_collection_item_dict("movies", "_id", ObjectId(movie_id),
                                 "$pull", "reviews", "review_date",
+                                convert_string_to_datetime(review_date))
+
+    update_collection_item_dict("movies", "_id", ObjectId(movie_id),
+                                "$pull", "latest_reviews", "review_date",
+                                convert_string_to_datetime(review_date))
+
+    update_collection_item_dict("users", "_id", ObjectId(session['id']),
+                                "$pull", "user_latest_reviews", "review_date",
                                 convert_string_to_datetime(review_date))
 
     flash("Review deleted")
