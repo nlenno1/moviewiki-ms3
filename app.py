@@ -100,15 +100,21 @@ def convert_string_to_datetime(string_date):
     return datetime_date
 
 
-def add_review_to_latest_reviews(movie, new_review):
-    if len(movie["latest_reviews"]) > 2:
-        movie["latest_reviews"][0:3]
-    movie["latest_reviews"].append(new_review)
-    mongo.db.movies.update_one({"_id": ObjectId(
-                            movie["_id"])},
-                            {"$set": {
-                                      "latest_reviews": movie
-                                      ["latest_reviews"]}})
+def add_review_to_latest_reviews_dicts(movie, new_review_dict):
+    user = find_one_with_key("users", "_id", ObjectId(session["id"]))
+
+    arrays_to_add_review_to = [user["user_latest_reviews"],
+                               movie["latest_reviews"]]
+
+    for array in arrays_to_add_review_to:
+        if len(array) > 2:
+            array[0:2]
+        array.append(new_review_dict)
+
+    update_collection_item("users", '_id', ObjectId(session['id']), "$set",
+                           "user_latest_reviews", arrays_to_add_review_to[0])
+    update_collection_item("movies", '_id', ObjectId(movie['_id']), "$set",
+                           "latest_reviews", arrays_to_add_review_to[1])
 
 
 # app.route
@@ -308,7 +314,8 @@ def generate_new_movie_dict():
     image_link = generate_movie_image_link()
     new_movie = {
             "movie_title": request.form.get("movie-title").lower(),
-            "release_date": datetime.strptime(request.form.get("release-date"), '%Y-%m-%d'),
+            "release_date": datetime.strptime(request.form.get(
+                                              "release-date"), '%Y-%m-%d'),
             "age_rating": request.form.get("age-rating"),
             "duration": request.form.get("duration"),
             "genre": request.form.getlist("movie-genre"),
@@ -342,6 +349,10 @@ def create_movie():
         if request.form.get("submit-movie-review"):
             update_collection_item("users", "username", session["user"],
                                    "$push", "movies_reviewed", new_id)
+
+        update_collection_item("user", '_id', ObjectId(session['id']), "set",
+                               "user_latest_reviews", new_movie[
+                                   "latest_reviews"])
 
         flash("New Movie Added")
         return redirect(url_for("view_movie", movie_id=new_id))
@@ -446,7 +457,7 @@ def create_review(selected_movie_title):
 
             generate_average_review_score(ObjectId(movie["_id"]))
 
-            add_review_to_latest_reviews(movie, new_review)
+            add_review_to_latest_reviews_dicts(movie, new_review)
 
             return redirect(url_for('view_reviews', movie_id=movie["_id"]))
 
@@ -471,7 +482,11 @@ def edit_review(movie_id, review_date):
                                     convert_string_to_datetime(review_date))
         mongo.db.movies.update_one({"_id": ObjectId(movie_id)},
                                    {"$push": {"reviews": updated_review,
-                                              "latest_reviews": updated_review}})
+                                              "latest_reviews":
+                                              updated_review}})
+
+        movie = find_one_with_key("movies", "_id", movie_id)
+        add_review_to_latest_reviews_dicts(movie, updated_review)
 
         return redirect(url_for('view_reviews', movie_id=movie_id))
 

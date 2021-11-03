@@ -72,7 +72,7 @@
                         <p><strong>Director : </strong>{{ movie.director|title }} </p>
                     {% endif %}
                     <p><strong>Number of Reviews :</strong> {{ movie.reviews|length }}</p>
-                    {% if movie.average_review_score and movie.average_review_score|length > 0 %}
+                    {% if movie.average_review_score and movie.average_review_score > 0 %}
                         <p><strong>Average Rating :</strong> {{ movie.average_review_score }} out of 5</p>
                     {% endif %}
                     {% if movie.cast_members|length > 0 %}
