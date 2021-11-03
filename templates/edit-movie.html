@@ -8,7 +8,7 @@
             <h4 class="text-center mt-2 mb-4">Update this movie profile by changing the values in this form!</h4>
             <form class="generic-form" method="POST" action="{{ url_for('edit_movie', movie_id=movie._id) }}" >
                 <input type="text" value="{{ movie.movie_title|title }}" name="movie-title" id="movie-title" placeholder="Movie Title" class="validate" pattern="^[a-zA-Z0-9 \p{P}]+$" required>
-                <input placeholder="Release Date" type="date" value="{{ movie.release_date.strftime('%Y-%m-%d') }}" name="release-date" id="release-date">
+                <input placeholder="Release Date" type="date" value="{{ movie.release_date.strftime('%Y-%m-%d') }}" name="release-date" id="release-date" required>
                 <select id="age-rating" name="age-rating" class="text-body">
                     {% for age_rating in age_ratings %}
                         {% if age_rating.rating_value == movie.age_rating %}
@@ -18,7 +18,8 @@
                         {% endif %}
                     {% endfor %}
                 </select>
-                
+                <input type="text" name="duration" id="duration" placeholder="Duration (mins)" class="validate" pattern="^[0-9]+$" required>
+
                 <div class="dropdown">
                     <button class="dropdown-button dropdown-toggle text-start" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                       <span>Movie Genre Selection</span> 
@@ -33,7 +34,6 @@
                         {% endfor %}
                     </ul>
                 </div>
-                
                 <hr class="shadow">
                 <input type="text" value="{{ movie.director|title }}" name="director" id="director" placeholder="Director" class="validate" pattern="^[a-zA-Z \p{P}]+$">
                 <input type="text" value="{{ cast_members_string|title }}" name="cast-members" id="cast-members" placeholder="Main Cast Members" >

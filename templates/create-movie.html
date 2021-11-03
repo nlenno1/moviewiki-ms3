@@ -19,7 +19,6 @@
                     <option value="15">15</option>
                     <option value="18">18</option>
                 </select>
-                </select>
                 <input type="text" name="duration" id="duration" placeholder="Duration (mins)" class="validate" pattern="^[0-9]+$" required>
                 <div class="dropdown">
                     <button class="dropdown-button dropdown-toggle text-start" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -35,7 +34,7 @@
                 <input type="text" name="director" id="director" placeholder="Director" class="validate" pattern="^[a-zA-Z \p{P}]+$">
                 <input type="text" name="cast-members" id="cast-members" placeholder="Main Cast Members" >
                 <hr class="shadow">
-                <input type="text" name="movie-synopsis" id="movie-synopsis" placeholder="Movie Synopsis" class="validate" pattern="^[a-zA-Z0-9 \p{P}]+$">
+                <input type="text" name="movie-synopsis" id="movie-synopsis" placeholder="Movie Synopsis" class="validate" pattern="^[a-zA-Z0-9 \p{P}]+$" required>
                 <textarea name="movie-description" id="movie-description" rows ="8" cols="140" placeholder="Movie Description" class="validate" pattern="^[a-zA-Z0-9 \p{P}]+$"></textarea>
                 <hr class="shadow">
                 <input type="text" name="image-link" id="image-link" placeholder="Link to Movie Image">

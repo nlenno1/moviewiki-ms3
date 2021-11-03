@@ -4,172 +4,181 @@
 <h1 id="header-title">Movie</h1>
 
 <div class="container-md">
-    <div class="card form-card shadow">
-        <div class="row my-3">
-            <div class="col-12 col-md-7  text-center text-md-start">
-                <div class="row">
-                    <div class="col-12 col-md-11">
-                        <h1 class=" ms-md-5">{{ movie.movie_title }}</h1>
-                    </div>
-                    <div class="col-12 col-md-1">
-                        {% if user_watched == True %}
+        <div class="card form-card shadow">
+            <div class="row my-3">
+                <div class="col-12 col-md-7  text-center text-md-start">
+                    <div class="row">
+                        <div class="col-12 col-md-11">
+                            <h1 class=" ms-md-5">{{ movie.movie_title }}</h1>
+                        </div>
+                        <div class="col-12 col-md-1">
+                            {% if user_watched == True %}
                             <h3><i class="fas fa-glasses"></i></h3>
-                        {% elif user_want_to_watch == True %}
+                            {% elif user_want_to_watch == True %}
                             <h3><i class="fas fa-clipboard-list"></i></i></h3>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-5 text-center text-md-end pe-md-5">
+                    <h3>Age Rating: {{ movie.age_rating|upper }}</h3>
+                </div>
+            </div>
+            <div class="row g-0">
+                <div class="col-12 col-md-4">
+                    <div class="movie-picture-display single-movie-picture-display">
+                        <div class="movie-image-continer">
+                            <a href="{{ url_for('view_movie', movie_id=movie._id) }}">
+                                <img src="{{ movie.image_link }}" alt="Movie Image">
+                            </a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 view-movie-button-container pt-3">
+                            {% if user_watched == True %}
+                                <button class="generic-button button-color-gold movie-font mt-2"><a
+                                        href="{{ url_for('remove_watched_movie', movie_id=movie._id) }}">I Haven't Watched
+                                        This</a></button>
+                            {% elif user_want_to_watch == True and user_watched == False %}
+                                <button class="generic-button button-color-gold movie-font mt-2"><a
+                                        href="{{ url_for('remove_want_to_watch_movie', movie_id=movie._id) }}">I Don't Want to
+                                        Watch This</a></button>
+                                <button class="generic-button button-color-gold movie-font mt-2"><a
+                                        href="{{ url_for('add_watched_movie', movie_id=movie._id) }}">I Have Watched
+                                        This</a></button>
+                            {% else %}
+                                <button class="generic-button button-color-gold movie-font mt-2"><a
+                                        href="{{ url_for('add_want_to_watch_movie', movie_id=movie._id) }}">I Want to Watch
+                                        This</a></button>
+                                <button class="generic-button button-color-gold movie-font mt-2"><a
+                                        href="{{ url_for('add_watched_movie', movie_id=movie._id) }}">I Have Watched
+                                        This</a></button>
+                            {% endif %}
+                            <button class="generic-button button-color-gold movie-font mt-2"><a
+                                    href="{{ url_for('view_reviews', movie_id=movie._id) }}">View All Reviews</a></button>
+                            {% if movie.created_by == session["user"] %}
+                                <button class="generic-button movie-font mt-2"><a
+                                        href="{{ url_for('edit_movie', movie_id=movie._id) }}">Edit Movie Profile</a></button>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-8">
+                    <p>{{ movie.movie_synopsis }}</p>
+                    <p><strong>Duration :</strong> {{ movie.duration }} mins</p>
+                    <p><strong>Genre :</strong> {{ movie.genre }}</p>
+                    <p><strong>Release Date :</strong> {{ movie.release_date.strftime('%d %B %Y') }}</p>
+                    {% if movie.director|length > 0 %}
+                        <p><strong>Director : </strong>{{ movie.director|title }} </p>
+                    {% endif %}
+                    <p><strong>Number of Reviews :</strong> {{ movie.reviews|length }}</p>
+                    {% if movie.average_review_score and movie.average_review_score|length > 0 %}
+                        <p><strong>Average Rating :</strong> {{ movie.average_review_score }} out of 5</p>
+                    {% endif %}
+                    {% if movie.cast_members|length > 0 %}
+                        <div class="row mb-3">
+                            <p class="mb-0"><strong>Main Cast:</strong></p>
+                            {% for member in movie.cast_members %}
+                                <div class="col-12 col-md-6 col-lg-4">
+                                    <p class="mb-0">
+                                        {{ member|title }}
+                                    </p>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="accordion mt-5" id="movie-info-accordion">
+                        {% if movie.movie_description|length > 0 %}
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="description-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#description-collapse" aria-expanded="false"
+                                        aria-controls="description-collapse">
+                                        Full Movie Description
+                                    </button>
+                                </h2>
+                                <div id="description-collapse" class="accordion-collapse collapse"
+                                    aria-labelledby="description-heading" data-bs-parent="#movie-info-accordion">
+                                    <div class="accordion-body">
+                                        {{ movie.movie_description }}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                        {% if movie.trailer_link|length > 0 %}
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="to-watch-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#movies-to-watch-collapse" aria-expanded="false"
+                                        aria-controls="movies-to-watch-collapse">
+                                        Trailer
+                                    </button>
+                                </h2>
+                                <div id="movies-to-watch-collapse" class="accordion-collapse collapse"
+                                    aria-labelledby="to-watch-heading" data-bs-parent="#movie-info-accordion">
+                                    <div class="accordion-body">
+                                        <iframe id="ytplayer" type="text/html" width="640" height="360"
+                                            src="{{ movie.trailer_link }}" frameborder="0"></iframe>
+                                    </div>
+                                </div>
+                            </div>
                         {% endif %}
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-md-5 text-center text-md-end pe-md-5">
-                <h3>Age Rating: {{ movie.age_rating|upper }}</h3>
+            <div class="row">
+                <div class="col-12">
+                    {% if latest_reviews|length > 0 %}
+                        <h3 class="mt-4 ms-4">Latest Reviews</h3>
+                        <div class="card form-card">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Review Date</th>
+                                        <th>Review Title</th>
+                                        <th>Star Rating</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for review in latest_reviews %}
+                                    {% if loop.index < 4 %}
+                                    <tr>
+                                        <td>{{ review.review_date.strftime('%d %b %Y')  }}</td>
+                                        <td>{{ review.review_title|title }}</td>
+                                        <td>{{ review.star_rating }}</td>
+                                    </tr>
+                                    {% endif %}
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            </table>
+                        </div>
+                    {% endif %}
+                </div>
             </div>
         </div>
         <div class="row g-0">
-            <div class="col-12 col-md-4">
-                <div class="movie-picture-display single-movie-picture-display">
-                    <div class="movie-image-continer">
-                        <a href="{{ url_for('view_movie', movie_id=movie._id) }}">
-                            <img src="{{ movie.image_link }}" alt="Movie Image">
-                        </a>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12 view-movie-button-container pt-3">
-                        {% if user_watched == True %}
-                            <button class="generic-button button-color-gold movie-font mt-2"><a href="{{ url_for('remove_watched_movie', movie_id=movie._id) }}">I Haven't Watched This</a></button>
-                        {% elif user_want_to_watch == True and user_watched == False %}
-                            <button class="generic-button button-color-gold movie-font mt-2"><a href="{{ url_for('remove_want_to_watch_movie', movie_id=movie._id) }}">I Don't Want to Watch This</a></button>
-                            <button class="generic-button button-color-gold movie-font mt-2"><a href="{{ url_for('add_watched_movie', movie_id=movie._id) }}">I Have Watched This</a></button>
-                        {% else %}
-                            <button class="generic-button button-color-gold movie-font mt-2"><a href="{{ url_for('add_want_to_watch_movie', movie_id=movie._id) }}">I Want to Watch This</a></button>
-                            <button class="generic-button button-color-gold movie-font mt-2"><a href="{{ url_for('add_watched_movie', movie_id=movie._id) }}">I Have Watched This</a></button>
+            <div class="col">
+                <h3 class="carousel-label">Similar Movies</h3>
+                <div class="movie-carousel">
+                    {% for item in similar_movies|sort(attribute="average_rating") %}
+                        {% if loop.index <= 10 and item.movie_title != movie.movie_title %}
+                            <div class="movie-picture-display">
+                                <div class="movie-image-continer">
+                                    <a href="{{ url_for('view_movie', movie_id=item._id) }}">
+                                        <img src="{{ item.image_link }}" alt="Movie Image">
+                                    </a>
+                                </div>
+                                <h4>{{ item.movie_title }}</h4>
+                            </div>
                         {% endif %}
-                            <button class="generic-button button-color-gold movie-font mt-2"><a href="{{ url_for('view_reviews', movie_id=movie._id) }}">View All Reviews</a></button>
-                        {% if movie.created_by == session["user"] %}
-                            <button class="generic-button mt-2"><a href="{{ url_for('edit_movie', movie_id=movie._id) }}">Edit Movie Profile</a></button>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-md-8">
-                <p>{{ movie.movie_synopsis }}</p>
-                <p><strong>Duration :</strong> {{ movie.duration }} mins</p>
-                <p><strong>Genre :</strong> {{ movie.genre }}</p>
-                <p><strong>Release Date :</strong> {{ movie.release_date.strftime('%d %B %Y') }}</p>
-                <p><strong>Director : </strong>{{ movie.director|title }} </p>
-                <p><strong>Number of Reviews :</strong> {{ movie.reviews|length }}</p>
-                <p><strong>Average Rating :</strong> {{ movie.average_review_score }} out of 5</p>        
-                <div class="row mb-3">
-                    <p class="mb-0"><strong>Main Cast:</strong></p>
-                    {% for member in movie.cast_members %}
-                        <div class="col-12 col-md-6 col-lg-4">
-                            <p class="mb-0">
-                                {{ member|title }}
-                            </p>
-                        </div>
                     {% endfor %}
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col">
-                <div class="accordion mt-3" id="movie-info-accordion">
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="description-header">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#description-collapse" aria-expanded="false"
-                                aria-controls="description-collapse">
-                                Full Movie Description
-                            </button>
-                        </h2>
-                        <div id="description-collapse" class="accordion-collapse collapse"
-                            aria-labelledby="description-heading" data-bs-parent="#movie-info-accordion">
-                            <div class="accordion-body">
-                                {{ movie.movie_description }}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="to-watch-header">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#movies-to-watch-collapse" aria-expanded="false"
-                                aria-controls="movies-to-watch-collapse">
-                                Trailer
-                            </button>
-                        </h2>
-                        <div id="movies-to-watch-collapse" class="accordion-collapse collapse"
-                            aria-labelledby="to-watch-heading" data-bs-parent="#movie-info-accordion">
-                            <div class="accordion-body">
-                                <iframe id="ytplayer" type="text/html" width="640" height="360"
-                                    src="{{ movie.trailer_link }}"
-                                    frameborder="0"></iframe>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="streaming-header">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#movies-streaming-collapse" aria-expanded="false"
-                                aria-controls="movies-streaming-collapse">
-                                Streaming Links
-                            </button>
-                        </h2>
-                        <div id="movies-streaming-collapse" class="accordion-collapse collapse"
-                            aria-labelledby="streaming-heading" data-bs-parent="#movie-info-accordion">
-                            <div class="accordion-body">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12">
-                <h3 class="mt-4 ms-4">Latest Reviews</h3>
-                <div class="card form-card">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Reviewer Name</th>
-                                <th>Review Title</th>
-                                <th>Star Rating</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for review in latest_reviews %}
-                                {% if loop.index < 4 %}
-                                    <tr>
-                                        <td>{{ review.review_date }}</td>
-                                        <td>{{ review.review_title|title }}</td>
-                                        <td>{{ review.star_rating }}</td>
-                                    </tr>
-                                {% endif %}
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row g-0">
-        <div class="col">
-            <h3 class="carousel-label">Similar Movies</h3>
-            <div class="movie-carousel">
-                {% for item in similar_movies|sort(attribute="average_rating") %}
-                    {% if loop.index <= 10 and item.movie_title != movie.movie_title %}
-                        <div class="movie-picture-display">
-                            <div class="movie-image-continer">
-                                <a href="{{ url_for('view_movie', movie_id=item._id) }}">
-                                    <img src="{{ item.image_link }}" alt="Movie Image">
-                                </a>
-                            </div>
-                            <h4>{{ item.movie_title }}</h4>
-                        </div>
-                    {% endif %}
-                {% endfor %}
-            </div>
-        </div>
-    </div>
 
     {% endblock %}

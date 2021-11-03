@@ -331,7 +331,7 @@ def create_movie():
                                    "$push", "movies_watched",  new_id)
         if request.form.get("submit-movie-review"):
             update_collection_item("users", "username", session["user"],
-                                    "$push", "movies_reviewed", new_id)
+                                   "$push", "movies_reviewed", new_id)
 
         flash("New Movie Added")
         return redirect(url_for("view_movie", movie_id=new_id))
@@ -349,7 +349,7 @@ def edit_movie(movie_id):
             update_collection_item("users", "username", session["user"],
                                    "$push", "movies_reviewed", movie_id)
 
-        flash(f"Movie Profile Successfully Updated")
+        flash("Movie Profile Successfully Updated")
         return redirect(url_for("view_movie", movie_id=movie_id))
 
     movie = find_one_with_key("movies", "_id", ObjectId(movie_id))
