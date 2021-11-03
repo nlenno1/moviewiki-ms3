@@ -447,13 +447,15 @@ def create_review(selected_movie_title):
 
 @app.route("/review/<movie_id>/<review_date>/edit", methods=["GET", "POST"])
 def edit_review(movie_id, review_date):
-    if request.method == "POST":
-        datetime_review_date = convert_string_to_datetime(review_date)
-        update_collection_item_dict("movies", "_id", movie_id,
-                                    "$push", "reviews", "review_date",
-                                    datetime_review_date)
-        return redirect(url_for('view_reviews', movie_id=movie_id))
 
+    movie = find_one_with_key("movies", "_id", ObjectId(movie_id))
+    movie_review = [review for review in movie["reviews"]
+                    if review["review_date"] ==
+                    convert_string_to_datetime(review_date)][0]
+    movie_title_list = mongo.db.movies.find({}, {"movie_title": 1})
+    return render_template(
+        "edit-review.html", movie_title_list=movie_title_list,
+        selected_movie=movie, movie_review=movie_review)
 
 
 @app.route("/view-reviews/<movie_id>")
