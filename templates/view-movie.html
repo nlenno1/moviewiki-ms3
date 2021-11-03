@@ -136,12 +136,14 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% for review in movie.latest_reviews %}
-                                <tr>
-                                    <td>{{ review.reviewer|title }}</td>
-                                    <td>{{ review.review_title|title }}</td>
-                                    <td>{{ review.star_rating }}</td>
-                                </tr>
+                            {% for review in latest_reviews %}
+                                {% if loop.index < 4 %}
+                                    <tr>
+                                        <td>{{ review.review_date }}</td>
+                                        <td>{{ review.review_title|title }}</td>
+                                        <td>{{ review.star_rating }}</td>
+                                    </tr>
+                                {% endif %}
                             {% endfor %}
                             </tbody>
                         </table>

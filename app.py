@@ -100,6 +100,17 @@ def convert_string_to_datetime(string_date):
     return datetime_date
 
 
+def add_review_to_latest_reviews(movie, new_review):
+    if len(movie["latest_reviews"]) > 2:
+        movie["latest_reviews"][0:3]
+    movie["latest_reviews"].append(new_review)
+    mongo.db.movies.update_one({"_id": ObjectId(
+                            movie["_id"])},
+                            {"$set": {
+                                      "latest_reviews": movie
+                                      ["latest_reviews"]}})
+
+
 # app.route
 @app.route("/")
 @app.route("/home")
@@ -398,11 +409,14 @@ def view_movie(movie_id):
 
     movie__genre_text_list = ', '.join(name.title() for name in movie["genre"])
     movie["genre"] = movie__genre_text_list
+    print(movie["reviews"])
+    latest_reviews = sorted(movie["latest_reviews"], key=lambda d: d['review_date'], reverse=True)
     list(movie)
     return render_template("view-movie.html", movie=movie,
                            user_watched=user_watched,
                            user_want_to_watch=user_want_to_watch,
-                           similar_movies=similar_movies)
+                           similar_movies=similar_movies,
+                           latest_reviews=latest_reviews)
 
 
 @app.route("/create-review", defaults={'selected_movie_title': None},
@@ -422,14 +436,7 @@ def create_review(selected_movie_title):
 
             generate_average_review_score(ObjectId(movie["_id"]))
 
-            if len(movie["latest_reviews"]) > 2:
-                movie["latest_reviews"].pop()
-            movie["latest_reviews"].append(new_review)
-            mongo.db.movies.update_one({"_id": ObjectId(
-                                    movie["_id"])},
-                                    {"$set": {
-                                      "latest_reviews": movie
-                                      ["latest_reviews"]}})
+            add_review_to_latest_reviews(movie, new_review)
 
             return redirect(url_for('view_reviews', movie_id=movie["_id"]))
 
@@ -448,14 +455,13 @@ def create_review(selected_movie_title):
 @app.route("/review/<movie_id>/<review_date>/edit", methods=["GET", "POST"])
 def edit_review(movie_id, review_date):
     if request.method == "POST":
-        print("Updating")
         updated_review = create_single_review()
-        print(updated_review)
         update_collection_item_dict("movies", "_id", ObjectId(movie_id),
                                     "$pull", "reviews", "review_date",
                                     convert_string_to_datetime(review_date))
         mongo.db.movies.update_one({"_id": ObjectId(movie_id)},
-                                   {"$push": {"reviews": updated_review}})
+                                   {"$push": {"reviews": updated_review,
+                                              "latest_reviews": updated_review}})
 
         return redirect(url_for('view_reviews', movie_id=movie_id))
 
