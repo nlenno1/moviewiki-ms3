@@ -255,6 +255,9 @@ def edit_user_profile(user_id):
 
         mongo.db.users.update_one({"_id": ObjectId(session['id'])},
                                   {"$set": updated_profile_dict})
+        
+        add_data_user_data_to_session_storage(updated_profile_dict,
+                                              ObjectId(session["id"]))
 
         flash(f"Successfully Updated {session['user'].capitalize()} Account!")
         return redirect(url_for('profile', username=session['user']))
