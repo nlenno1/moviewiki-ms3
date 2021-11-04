@@ -160,9 +160,12 @@ def delete_genre(genre_id):
     return redirect(url_for('get_all_genre'))
 
 
-def add_data_user_data_to_session_storage(user_dict, user_id="user_dict['_id']"):
+def add_data_user_data_to_session_storage(user_dict, new_id=None):
+    if new_id == None:
+        session["id"] = str(user_dict['_id'])
+    else:
+        session["id"] = str(new_id)
     session['user'] = user_dict['username']
-    session["id"] = str(user_id)
     session['email'] = user_dict['email']
     session['full-name'] = user_dict[
         'firstname'] + " " + user_dict['lastname']
