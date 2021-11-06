@@ -47,6 +47,10 @@ h1, h2, h3, h4, .navbar-brand, .logo, .movie-font {
     font-weight: 500;
 }
 
+.unselected-text {
+    color: #737374;
+}
+
 /*  Navbar */
 
 .navbar {

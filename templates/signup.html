@@ -5,33 +5,30 @@
 
     <div class="container">
         <div class="card form-card card-small shadow">
-            <form class="generic-form" method="POST" action="{{ url_for('signup') }}" >
+            <form class="generic-form py-4" method="POST" action="{{ url_for('signup') }}" >
                 <input type="text" name="username" id="username" placeholder="Username" minlength="5" maxlength="15" class="validate" pattern="^[a-zA-Z0-9-_]+{5,15}$" required>
                 <input type="password" name="password" id="password" placeholder="Password" minlength="5" maxlength="15" class="validate" pattern="^[a-zA-Z0-9-_]+{5,15}$" required>
                 <input type="password" name="password-confirm" id="password-confirm" minlength="5" maxlength="15" class="validate" placeholder="Confirm Password" pattern="^[a-zA-Z0-9-_]+{5,15}$" required>
                 <hr class="shadow">
                 <input type="text" name="firstname" id="firstname" placeholder="First Name" minlength="2" maxlength="15" class="validate" pattern="^[a-zA-Z0-9]{3,15}$" required>
                 <input type="text" name="lastname" id="lastname" placeholder="Last Name" required>
-                <input type="date" name="dob" id="dob" placeholder="Date of Birth" required>
+                <input type="text" onfocus="(this.type='date')"  name="dob" id="dob" placeholder="Date of Birth" required>
                 <input type="email" name="email" id="email" placeholder="Email Address" required>
                 <hr class="shadow">
-                <label for="favourite-genre" class="text-center">Pick your favourite movie genre. You can choose more than one.</label>
-                <div class="checkbox-container">
-                    {% for genre in genre_list %}
-                    <div class="row">
-                        <div class="col-6 text-end">
-                            <label for="{{ genre.genre_name }}">{{ genre.genre_name|title }}</label>
-                        </div>
-                        <div class="col-6 col-sm-2 position-start">
-                            <input type="checkbox" id="{{ genre.genre_name }}" name="favourite-genre" value="{{ genre.genre_name|lower }}">
-                        </div>
-                    </div>
-                    {% endfor %}
+                <label for="favourite-genre" class="text-center">Pick your favourite movie genres</label>
+                <div class="dropdown">
+                    <button class="dropdown-button dropdown-toggle text-start unselected-text" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                      <span>Movie Genre Selection</span> 
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        {% for genre in genre_list %}
+                            <li><input id="{{ genre.genre_name }}" name="movie-genre" value="{{ genre.genre_name|lower }}" type="checkbox">{{ genre.genre_name|title }}</li>
+                        {% endfor %}
+                    </ul>
                 </div>
                 <div class="buttons-container mt-4">
-                    <button type="submit" class="generic-button button-color-green mt-2">Create Account</button>
+                    <button type="submit" class="generic-button button-color-gold mt-2">Create Account</button>
                     <button class="generic-button mt-2">Cancel</button>
-                    <button type="" class="generic-button button-color-red mt-2">Delete Account</button>
                 </div>
             </form>
         </div>
