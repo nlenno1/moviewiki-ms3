@@ -36,8 +36,14 @@
                     <a class="nav-link" href="{{ url_for('about') }}">About</a>
                 </li>
                 {% if session["user"] %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('create_review') }}">New Review</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      Movies
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                      <li><a class="nav-link" href="{{ url_for('create_review') }}">New Review</a></li>
+                      <li><a class="nav-link" href="{{ url_for('create_movie') }}">New Movie</a></li>
+                    </ul>
                 </li>
                 {% endif %}
                 <li class="nav-item">
@@ -80,14 +86,18 @@
                 <li class="nav-item">
                     <a href="{{ url_for('about') }}">About</a>
                 </li>
-                {% if session["user"] %}
-                <li class="nav-item">
-                    <a href="{{ url_for('create_review') }}">New Review</a>
-                </li>
-                {% endif %}
                 <li class="nav-item">
                     <a href="{{ url_for('contact') }}">Contact</a>
                 </li>
+                {% if session["user"] %}
+                <hr class="side-nav-hr">
+                <li class="nav-item">
+                    <a href="{{ url_for('create_review') }}">New Review</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('create_movie') }}">New Movie</a>
+                </li>
+                {% endif %}
                 {% if session["user"] == "admin" %}
                 <li class="nav-item">
                     <a href="{{ url_for('get_all_genre') }}">Genres</a>

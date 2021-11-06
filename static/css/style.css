@@ -121,6 +121,17 @@ h4,
     margin-right: 2rem;
 }
 
+.navbar-nav .dropdown-menu {
+    margin-top: 19px;
+    background-color:rgba(0, 0, 0, 0.75);
+    border: 2px solid #000;
+    text-align: center;
+}
+
+.navbar-nav .dropdown-menu[data-bs-popper] {
+    left: -58%;
+}
+
 
 /* Side Bar */
 
@@ -416,10 +427,6 @@ select,
 
 }
 
-.dropdown {
-    transition: 0.3s fade-in-out;
-}
-
 .dropdown-menu {
     padding: 10px;
 }
@@ -455,18 +462,13 @@ input[type="checkbox"i] {
     padding: 20px 25px;
 }
 
-/* .form-card input,
-.form-card .dropdown {
-    max-width: 350px;
-} */
-
 .input-large select,
 .input-large textarea,
 .input-large [type="text"],
 .input-large [type="list"],
 .input-large [type="date"],
 .input-large [type="email"],
-.dropdown {
+form .dropdown {
     width: 100%;
     max-width: 600px;
     margin: 0 auto 20px;
