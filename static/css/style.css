@@ -372,6 +372,15 @@ footer .logo {
     align-content: center;
     flex-direction: column;
     margin: 0 auto;
+    width: 85%
+}
+
+.contact-card > .generic-form {
+    width: 100%;
+}
+
+.contact-card > .generic-form > .generic-button {
+    margin: 0 auto;
 }
 
 .generic-form input,

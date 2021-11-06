@@ -6,7 +6,7 @@
     <h5 class="text-center mt-5">If you have any feedback on this website then please fill out this form to get in touch!</h5>
 
     <div class="container">
-        <div class="card form-card card-large input-large shadow">
+        <div class="card form-card contact-card card-large input-large shadow">
             <form class="generic-form mt-3" action="{{ url_for('contact') }}" method="POST">
                 <input type="text" {% if session['full-name'] %} value="{{ session['full-name']|title }}" {% endif %} name="full-name" id="full-name" placeholder="Full Name"  pattern="^[a-zA-Z0-9]+{5,15}$" class="validate" required>
                 <input type="email" {% if session['email'] %} value="{{ session['email'] }}" {% endif %} name="email" id="email" placeholder="Email" required>

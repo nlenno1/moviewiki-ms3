@@ -6,9 +6,9 @@
         <div class="card form-card card-small shadow py-3">
             <form class="generic-form" method="POST" action="{{ url_for('signup') }}" >
                 <div class="generic-form">
-                    <label for="username" class="sub-script unselected-text">Username *</label>
+                    <label for="username" class="sub-script unselected-text">Username</label>
                     <input type="text" name="username" id="username" placeholder="Username" minlength="5" maxlength="15" class="validate" pattern="^[a-zA-Z0-9-_]+{5,15}$" required>
-                    <label for="password" class="sub-script unselected-text">Password *</label>
+                    <label for="password" class="sub-script unselected-text">Password</label>
                     <input type="password" name="password" id="password" placeholder="Password" minlength="5" maxlength="15" class="validate" pattern="^[a-zA-Z0-9-_]+{5,15}$" required>
                     <div class="buttons-container mt-4">
                         <button type="submit" class="generic-button button-color-gold mt-2">Login</button>
