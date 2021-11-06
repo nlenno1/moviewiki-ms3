@@ -54,7 +54,7 @@ h4,
 }
 
 .unselected-text {
-    color: #737374;
+    color: #929292;
 }
 
 /*  Navbar */
@@ -375,11 +375,11 @@ footer .logo {
     width: 85%
 }
 
-.contact-card > .generic-form {
+.contact-card>.generic-form {
     width: 100%;
 }
 
-.contact-card > .generic-form > .generic-button {
+.contact-card>.generic-form>.generic-button {
     margin: 0 auto;
 }
 
@@ -399,13 +399,22 @@ footer .logo {
     border-radius: 0.125rem;
     background-color: #fff;
     border-color: rgb(118, 118, 118);
-    padding: 5px 13px;
+    padding: 5px 0 5px 10px;
 }
 
-input {
+.generic-form .dropdown-button i {
+    font-size: 0.75rem;
+    margin-right: 5px;
+}
+
+input,
+select,
+.generic-form .dropdown-button {
     border: 1px solid #FFF;
     border-bottom: 1px solid rgb(118, 118, 118);
 }
+
+
 
 :focus-visible {
     outline: #fff auto 0px;
@@ -434,9 +443,12 @@ input[type="checkbox"i] {
 }
 
 .generic-form select {
-    padding: 5px 0;
-    margin: 0 8px 8px 8px;
+    padding: 5px 10px;
     width: 100%;
+}
+
+.dropdown-toggle::after {
+    content: none;
 }
 
 .form-switch .form-check-input {
@@ -469,6 +481,7 @@ input[type="checkbox"i] {
 .dropdown {
     width: 100%;
     max-width: 600px;
+    margin: 0 auto 20px;
 }
 
 .card-small {
