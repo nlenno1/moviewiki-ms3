@@ -19,11 +19,11 @@ h4,
 }
 
 .generic-button {
-    border-radius: 10px;
+    border-radius: 5px;
     background-color: #c4c4c4;
     font-weight: 600;
     width: 180px;
-    margin: 0 2px;
+    margin: 0 4px;
     transition: 0.3s;
 }
 
@@ -323,15 +323,9 @@ footer .logo {
     width: 80vw;
     min-width: 180px;
     margin: 10px 20px 30px;
-    border-radius: 10px;
-    padding-left: 55px;
-    position: relative;
-}
-
-.search-bar-container i {
-    position: absolute;
-    left: 40px;
-    top: 17px;
+    border-radius: 3px;
+    text-align: center;
+    border: 2px inset rgb(118, 118, 118);
 }
 
 .genre-container {
@@ -355,12 +349,6 @@ footer .logo {
     .search-bar-container input {
         width: 450px;
         margin: 0 20px 0 0;
-    }
-
-    .search-bar-container i {
-        position: absolute;
-        left: 20px;
-        top: 7px;
     }
 }
 
@@ -742,17 +730,9 @@ select {
 /* Modal */
 
 .modal-search-bar-container input {
-    width: 100%;
+    width: 80%;
     margin-top: 15px;
-    border-radius: 10px;
-    padding-left: 55px;
-    position: relative;
-}
-
-.modal-search-bar-container i {
-    position: absolute;
-    left: 27px;
-    top: 21px;
+    text-align: center;
 }
 
 /* Reviews */

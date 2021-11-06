@@ -7,9 +7,8 @@
         <form class="search-bar-container" method="POST" action="{{ url_for('add_genre') }}">
             <div class="input-container">
                 <input type="text" name="genre-name" id="genre-name" placeholder="New Genre Name" required>
-                <i class="fas fa-folder-plus"></i>
             </div>
-            <button class="generic-button button-color-green" type="submit">Add New Genre</button>
+            <button class="generic-button button-color-gold" type="submit">Add New Genre <i class="fas fa-folder-plus"></i></button>
         </form>
         <div class="card form-card">
             {% for genre in genre_list %}
@@ -38,13 +37,10 @@
                         <div class="modal-body">
                             <div class="modal-body-container text-center">
                                 <h5>What would you like to rename {{ genre.genre_name|title }} to?</h5>
-                                <form class="modal-search-bar-container" method="POST" action="{{ url_for('update_genre', genre_id=genre._id, genre_name=genre.genre_name) }}">
-                                    <div class="input-container">
-                                        <input type="text" name="{{ genre.genre_name|replace(' ', '-') }}-replacement-genre-name" placeholder="Replacement Genre Name" required>
-                                        <i class="fas fa-edit"></i>
-                                    </div>
+                            <form class="modal-search-bar-container" method="POST" action="{{ url_for('update_genre', genre_id=genre._id, genre_name=genre.genre_name) }}">
+                                    <input type="text" name="{{ genre.genre_name|replace(' ', '-') }}-replacement-genre-name" placeholder="Replacement Genre Name" required>
                                     <div class="my-3">
-                                        <button type="submit" class="generic-button button-color-gold mt-3">Rename</button>
+                                        <button type="submit" class="generic-button button-color-gold mt-3">Rename <i class="fas fa-edit"></i></button>
                                         <button type="button" class="generic-button mt-3" data-bs-dismiss="modal">Cancel</button>
                                     </div>
                                 </form>
