@@ -4,7 +4,7 @@
     <h1 id="header-title">Sign In</h1>
     <div class="container">
         <div class="card form-card card-small shadow py-3">
-            <form class="generic-form" method="POST" action="{{ url_for('signup') }}" >
+            <form class="generic-form" method="POST" action="{{ url_for('signin') }}" >
                 <div class="generic-form">
                     <label for="username" class="sub-script unselected-text">Username</label>
                     <input type="text" name="username" id="username" placeholder="Username" minlength="5" maxlength="15" class="validate" pattern="^[a-zA-Z0-9-_]+{5,15}$" required>
