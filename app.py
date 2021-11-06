@@ -392,7 +392,6 @@ def generate_new_movie_dict():
             "movie_synopsis": request.form.get("movie-synopsis"),
             "movie_description": request.form.get("movie-description"),
             "image_link": image_link,
-            "trailer_link": request.form.get("trailer-link"),
             "reviews": [],
             "latest_reviews": [],
             "created_by": session['user'],
