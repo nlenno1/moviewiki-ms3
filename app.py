@@ -544,7 +544,7 @@ def view_movie(movie_id):
     user_want_to_watch = False
     user_watched = False
 
-    if session["user"] is not None:
+    if session and session["user"]:
         user = mongo.db.users.find_one(
             {"username": session["user"]},
             {"_id": 0, "movies_watched": 1, "movies_to_watch": 1}
