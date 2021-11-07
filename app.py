@@ -131,7 +131,6 @@ def home():
 def movie_title_search():
     query = request.form.get("movie_title_search")
     searched_movies = list(mongo.db.movies.find({"$text": {"$search": query}}))
-    print(searched_movies)
     return render_template("movie-search.html", movies=searched_movies)
 
 
@@ -451,7 +450,6 @@ def edit_movie(movie_id):
         movie_reviewers.append(review["reviewer"])
 
     cast_members_string = ', '.join(name.title() for name in movie["cast_members"])
-    print(genre_list)
     return render_template("edit-movie.html", genre_list=genre_list,
                            movie=movie, age_ratings=age_ratings,
                            cast_members_string=cast_members_string,
@@ -496,7 +494,6 @@ def view_movie(movie_id):
 
     movie__genre_text_list = ', '.join(name.title() for name in movie["genre"])
     movie["genre"] = movie__genre_text_list
-    print(movie["reviews"])
     latest_reviews = sorted(movie["latest_reviews"], key=lambda d: d['review_date'], reverse=True)
     list(movie)
     return render_template("view-movie.html", movie=movie,
@@ -606,7 +603,6 @@ def add_watched_movie(movie_id):
 
 @app.route("/user/remove-watched-movie/<movie_id>")
 def remove_watched_movie(movie_id):
-    print(movie_id)
     mongo_prefix_select("users").update_one(
             {"username": session["user"]},
             {"$pull": {"movies_watched": ObjectId(movie_id)}})
@@ -622,7 +618,6 @@ def add_want_to_watch_movie(movie_id):
 
 @app.route("/user/remove-want-to-watch-movie/<movie_id>")
 def remove_want_to_watch_movie(movie_id):
-    print(movie_id)
     mongo_prefix_select("users").update_one(
             {"username": session["user"]},
             {"$pull": {"movies_to_watch": ObjectId(movie_id)}})
