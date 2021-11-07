@@ -549,13 +549,8 @@ p>a:hover {
 .movie-image-continer {
     height: 250px;
     width: 169px;
+    margin-right: 10px !important;
 
-}
-
-.movie-picture-display,
-.movie-placeholder,
-.movie-image-continer {
-    margin-right: 10px;
 }
 
 .single-movie-picture-display {
