@@ -532,10 +532,11 @@ p>a:hover {
 }
 
 .movie-carousel {
-    height: 340px;
+    height: 350px;
     width: 100%;
     padding: 10px;
     overflow-x: scroll;
+    overflow-y: hidden;
     background-color: #c4c4c4;
     margin-bottom: 2rem;
     display: flex;
@@ -577,7 +578,7 @@ p>a:hover {
     transform: scale(1.04)
 }
 
-.movie-carousel h4,
+.movie-carousel .movie-text,
 .search-results-container h4 {
     text-align: center;
     margin-bottom: 0;
@@ -586,6 +587,8 @@ p>a:hover {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
+    flex-wrap: nowrap;
 }
 
 .movie-placeholder {

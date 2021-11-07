@@ -24,11 +24,11 @@ mongo = PyMongo(app)
 
 # Functions
 def is_admin():
-    if session and session["user"] and session["is_superuser"] is "True":
+    if session and session["user"] and session["is_superuser"] == "True":
         return True
     else:
-        flash(f"You need to be an Administrator to access that! \nPlease log into"
-              f"your Admin account and try again")
+        flash(f"You need to be an Administrator to access that! \nPlease sign"
+              f"into your Admin account and try again")
         return redirect(url_for('home'))
 
 
@@ -133,15 +133,54 @@ def add_review_to_latest_reviews_dicts(movie, new_review_dict):
     update_collection_item("movies", '_id', ObjectId(movie['_id']), "$set",
                            "latest_reviews", arrays_to_add_review_to[1])
 
+def consolidate_matching_array_dicts(list_1, list_2):
+    """
+    function to compare 2 lists matching values under append any matching dicts to a new list.
+    """
+    print(list_1, list_2)
+    new_list = set(list_1).intersection(list_2)
+    print(new_list)
+    return new_list
 
 # app.route
 @app.route("/")
 @app.route("/home")
 def home():
-    if len(session) == 0:
-        session["user"] = None
-    movies = list(mongo.db.movies.find())
-    return render_template("home.html", movies=movies)
+    movies = list(mongo.db.movies.find({}, {"movie_title": 1,
+                                            "average_rating": 1,
+                                            "release_date": 1,
+                                            "genre": 1,
+                                            "image_link": 1}))
+    # sorted alphabeticallly by title with max of 15
+    all_movies = sorted(movies, key=lambda d: d['movie_title'])[:15]
+    # sorted by average rating by title with max of 15
+    highest_rated = sorted(movies, key=lambda d: d['average_rating'], reverse=True)[:15]
+    # sorted by release date by title with max of 15
+    latest_releases = sorted(movies, key=lambda d: d['release_date'], reverse=True)[:15]
+
+    if session and session["user"]:
+        user = find_one_with_key("users", "_id", ObjectId(session["id"]))
+        # generate suggested_movies list
+        suggested_movies = []
+        for item in movies:
+            if set(user["favourite_genres"]).intersection(item["genre"]):
+                suggested_movies.append(item)
+        movies_for_you = sorted(suggested_movies, key=lambda d: d[
+                                'average_rating'])[:15]
+        # generate want_to_watch list
+        want_to_watch = []
+        for item in user["movies_to_watch"]:
+            for movie in movies:
+                if movie["movie_title"] == item:
+                    want_to_watch.append(movie)
+        want_to_watch = sorted(want_to_watch, key=lambda d: d[
+                                'average_rating'])[:15]
+
+    return render_template("home.html", all_movies=all_movies,
+                            highest_rated=highest_rated,
+                            latest_releases=latest_releases,
+                            movies_for_you=movies_for_you,
+                            want_to_watch=want_to_watch)
 
 
 @app.route("/movie-title-search", methods=["GET", "POST"])
@@ -177,7 +216,7 @@ def delete_genre(genre_id):
 
 
 def add_data_user_data_to_session_storage(user_dict, new_id=None):
-    if new_id == None:
+    if new_id is None:
         session["id"] = str(user_dict['_id'])
     else:
         session["id"] = str(new_id)
@@ -432,7 +471,7 @@ def create_movie():
             update_collection_item("users", "username", session["user"],
                                    "$push", "movies_reviewed", new_id)
 
-        update_collection_item("user", '_id', ObjectId(session['id']), "set",
+        update_collection_item("users", '_id', ObjectId(session['id']), "$set",
                                "user_latest_reviews", new_movie[
                                    "latest_reviews"])
 
