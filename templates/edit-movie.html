@@ -69,40 +69,36 @@
                 </div>
                 <div id="series-questions" class="card form-card card-small shadow hidden collapse {% if  movie.is_part_of_series == true %}show{% endif %}">
                     <p class="mb-0">Fill out these questions about the series that this movie is part of.<br>This movie is:</p>
-                    {% if  movie.series_position == "end" %}
                         <div class="checkbox-container mt-0">
-                            <input class="series-checkboxes" type="radio" id="start-series" name="series-checkboxes" value="start">
+                            {% if movie.series_position == "start" %}
+                                <input checked class="series-checkboxes" type="radio" id="start-series" name="series-checkboxes" value="start">
+                            {% else %}
+                                <input class="series-checkboxes" type="radio" id="start-series" name="series-checkboxes" value="start">
+                            {% endif %}
                             <label for="start-series"> The Start of a Series</label><br>
-                            <input checked class="series-checkboxes" type="radio" id="end-series" name="series-checkboxes" value="end">
+                            {% if  movie.series_position == "end" %}
+                                <input checked class="series-checkboxes" type="radio" id="end-series" name="series-checkboxes" value="end">
+                            {% else %}
+                                <input  class="series-checkboxes" type="radio" id="end-series" name="series-checkboxes" value="end">
+                            {% endif %}
                             <label for="end-series"> The End of a Series</label><br>
-                            <input class="series-checkboxes" type="radio" id="middle-series" name="series-checkboxes" value="middle">
+                            {% if  movie.series_position == "middle" %}
+                                <input checked class="series-checkboxes" type="radio" id="middle-series" name="series-checkboxes" value="middle">
+                            {% else %}
+                                <input class="series-checkboxes" type="radio" id="middle-series" name="series-checkboxes" value="middle">
+                            {% endif %}
                             <label for="middle-series"> None of the above</label><br>
                         </div>
-                    {% elif movie.series_position == "start" %}
-                        <div class="checkbox-container mt-0">
-                            <input checked class="series-checkboxes" type="radio" id="start-series" name="series-checkboxes" value="start">
-                            <label for="start-series"> The Start of a Series</label><br>
-                            <input class="series-checkboxes" type="radio" id="end-series" name="series-checkboxes" value="end">
-                            <label for="end-series"> The End of a Series</label><br>
-                            <input class="series-checkboxes" type="radio" id="middle-series" name="series-checkboxes" value="middle">
-                            <label for="middle-series"> None of the above</label><br>
-                        </div>
-                    {% else %}
-                        <div class="checkbox-container mt-0">
-                            <input class="series-checkboxes" type="radio" id="start-series" name="series-checkboxes" value="start">
-                            <label for="start-series"> The Start of a Series</label><br>
-                            <input class="series-checkboxes" type="radio" id="end-series" name="series-checkboxes" value="end">
-                            <label for="end-series"> The End of a Series</label><br>
-                            <input checked class="series-checkboxes" type="radio" id="middle-series" name="series-checkboxes" value="middle">
-                            <label for="middle-series"> None of the above</label><br>
-                        </div>
-                    {% endif %}
                     <label for="series-name" class="small-text unselected-text">Series Name</label>
                     <input type="text" value="{{ movie.series_name|title }}" name="series-name" id="series-name" placeholder="Series Name" class="validate" pattern="^[a-zA-Z0-9 \p{P}]+$">
-                    <label for="previous-movie-name" class="small-text unselected-text">Previous Movie Name - Name of the movie before this one in the series</label>
-                    <input type="text" {% if  movie.series_position == 'start' %}disabled{% endif %} value="{{ movie.previous_movie_title|title }}" name="previous-movie-name" id="previous-movie-name" placeholder="Previous Movie in the Series" class="validate" pattern="^[a-zA-Z0-9 \p{P}]+$">
-                    <label for="next-movie-name" class="small-text unselected-text">Next Movie Name - Name of the movie after this one in the series</label>
-                    <input type="text" {% if  movie.series_position == 'end' %}disabled{% endif %} value="{{ movie.next_movie_title|title }}" name="next-movie-name" id="next-movie-name" placeholder="Next Movie in the Series" class="validate" pattern="^[a-zA-Z0-9 \p{P}]+$">
+                    <div {% if  movie.series_position == 'start' %}hidden{% endif %} id="previous-movie-container">
+                        <label for="previous-movie-name" class="small-text unselected-text">Previous Movie Name - Name of the movie before this one in the series</label>
+                        <input type="text" value="{{ movie.previous_movie_title|title }}" name="previous-movie-name" id="previous-movie-name" placeholder="Previous Movie in the Series" class="validate" pattern="^[a-zA-Z0-9 \p{P}]+$">
+                    </div>
+                    <div {% if  movie.series_position == 'end' %}hidden{% endif %} id="next-movie-container">
+                        <label for="next-movie-name" class="small-text unselected-text">Next Movie Name - Name of the movie after this one in the series</label>
+                        <input type="text" value="{{ movie.next_movie_title|title }}" name="next-movie-name" id="next-movie-name" placeholder="Next Movie in the Series" class="validate" pattern="^[a-zA-Z0-9 \p{P}]+$">
+                    </div>
                     <div class="checkbox-container mb-2 text-center">
                         <input class="series-checkboxes" type="checkbox" id="submit-series-info" name="submit-series-info" value="submit">
                         <label class="form-check-label" for="submit-series-info"> Click this box to submit the Series information</label><br>
@@ -139,5 +135,11 @@
         </div>
     </div>
 
+
+{% endblock %}
+
+{% block scripts %}
+
+    <script src="../static/js/series-questions-control.js"></script>
 
 {% endblock %}

@@ -93,24 +93,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
     initializeStarRating()
     displayStarRating ()
-    
-    // input disabled control on #series-questions section
-    const seriesStartCheckbox = document.querySelector("#start-series")
-    const seriesEndCheckbox = document.querySelector("#end-series")
-    const seriesMiddleCheckbox = document.querySelector("#middle-series")
-    const previousMovie = document.querySelector("#previous-movie-name")
-    const nextMovie = document.querySelector("#next-movie-name")
-
-    seriesStartCheckbox.addEventListener ("click", function() {
-        previousMovie.setAttribute('disabled', "")
-        nextMovie.removeAttribute('disabled')
-    })
-    seriesEndCheckbox.addEventListener ("click", function() {
-        previousMovie.removeAttribute('disabled')
-        nextMovie.setAttribute('disabled', "")
-    })
-    seriesMiddleCheckbox.addEventListener ("click", function() {
-        previousMovie.removeAttribute('disabled')
-        nextMovie.removeAttribute('disabled')
-    })
 });

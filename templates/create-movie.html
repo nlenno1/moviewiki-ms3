@@ -78,10 +78,14 @@
                     </div>
                     <label for="series-name" class="small-text unselected-text">Series Name</label>
                     <input type="text" name="series-name" id="series-name" placeholder="Series Name" class="validate" pattern="^[a-zA-Z0-9 \p{P}]+$">
-                    <label for="previous-movie-name" class="small-text unselected-text">Previous Movie Name - Name of the movie before this one in the series</label>
-                    <input type="text" name="previous-movie-name" id="previous-movie-name" placeholder="Previous Movie in the Series" class="validate" pattern="^[a-zA-Z0-9 \p{P}]+$">
-                    <label for="next-movie-name" class="small-text unselected-text">Next Movie Name - Name of the movie after this one in the series</label>
-                    <input type="text" name="next-movie-name" id="next-movie-name" placeholder="Next Movie in the Series" class="validate" pattern="^[a-zA-Z0-9 \p{P}]+$">
+                    <div hidden id="previous-movie-container">
+                        <label for="previous-movie-name" class="small-text unselected-text">Previous Movie Name - Name of the movie before this one in the series</label>
+                        <input type="text" name="previous-movie-name" id="previous-movie-name" placeholder="Previous Movie in the Series" class="validate" pattern="^[a-zA-Z0-9 \p{P}]+$">
+                    </div>
+                    <div hidden id="next-movie-container">
+                        <label for="next-movie-name" class="small-text unselected-text">Next Movie Name - Name of the movie after this one in the series</label>
+                        <input type="text" name="next-movie-name" id="next-movie-name" placeholder="Next Movie in the Series" class="validate" pattern="^[a-zA-Z0-9 \p{P}]+$">
+                    </div>
                     <div class="checkbox-container mb-2 text-center">
                         <input class="series-checkboxes" type="checkbox" id="submit-series-info" name="submit-series-info" value="submit">
                         <label class="form-check-label" for="submit-series-info"> Click this box to submit the Series information</label><br>
@@ -115,5 +119,11 @@
         </div>
     </div>
 
+
+{% endblock %}
+
+{% block scripts %}
+
+    <script src="../static/js/series-questions-control.js"></script>
 
 {% endblock %}
