@@ -1,5 +1,4 @@
 import os
-import time
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import (
@@ -24,6 +23,24 @@ mongo = PyMongo(app)
 
 
 # Functions
+def is_admin():
+    if session and session["user"] and session["is_superuser"] is "True":
+        return True
+    else:
+        flash(f"You need to be an Administrator to access that! \nPlease log into"
+              f"your Admin account and try again")
+        return redirect(url_for('home'))
+
+
+def is_logged_in():
+    if session and session["user"]:
+        return True
+    else:
+        flash(f"You need to be signed in to access that! \n"
+              f"Please create an account or sign in and try again")
+        return redirect(url_for('signin'))
+
+
 def create_single_review():
     review = {
         "reviewer": session['user'],
