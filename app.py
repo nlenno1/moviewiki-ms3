@@ -24,21 +24,16 @@ mongo = PyMongo(app)
 
 # Functions
 def is_admin():
-    if session and session["user"] and session["is_superuser"] == "True":
+    if session and session["is_superuser"] == True:
         return True
-    else:
-        flash(f"You need to be an Administrator to access that! \nPlease sign"
-              f"into your Admin account and try again")
-        return redirect(url_for('home'))
+    return False
 
 
-def is_logged_in():
+def is_signed_in():
     if session and session["user"]:
         return True
     else:
-        flash(f"You need to be signed in to access that! \n"
-              f"Please create an account or sign in and try again")
-        return redirect(url_for('signin'))
+        return False
 
 
 def create_single_review():
@@ -133,14 +128,30 @@ def add_review_to_latest_reviews_dicts(movie, new_review_dict):
     update_collection_item("movies", '_id', ObjectId(movie['_id']), "$set",
                            "latest_reviews", arrays_to_add_review_to[1])
 
+
+def add_user_data_to_session_storage(user_dict, new_id=None):
+    if new_id is None:
+        session["id"] = str(user_dict['_id'])
+    else:
+        session["id"] = str(new_id)
+    session['user'] = user_dict['username']
+    session['email'] = user_dict['email']
+    session['full-name'] = user_dict[
+        'firstname'] + " " + user_dict['lastname']
+    print(user_dict['is_superuser'])
+    session["is_superuser"] = user_dict['is_superuser']
+
+
 def consolidate_matching_array_dicts(list_1, list_2):
     """
-    function to compare 2 lists matching values under append any matching dicts to a new list.
+    function to compare 2 lists matching values under append any matching 
+    dicts to a new list.
     """
     print(list_1, list_2)
     new_list = set(list_1).intersection(list_2)
     print(new_list)
     return new_list
+
 
 # app.route
 @app.route("/")
@@ -154,21 +165,24 @@ def home():
     # sorted alphabeticallly by title with max of 15
     all_movies = sorted(movies, key=lambda d: d['movie_title'])[:15]
     # sorted by average rating by title with max of 15
-    highest_rated = sorted(movies, key=lambda d: d['average_rating'], reverse=True)[:15]
+    highest_rated = sorted(movies, key=lambda d: d['average_rating'],
+                           reverse=True)[:15]
     # sorted by release date by title with max of 15
-    latest_releases = sorted(movies, key=lambda d: d['release_date'], reverse=True)[:15]
+    latest_releases = sorted(movies, key=lambda d: d['release_date'],
+                             reverse=True)[:15]
+    # initialize empty lists for storage
+    movies_for_you = []
+    want_to_watch = []
 
-    if session and session["user"]:
+    if session and session["id"]:
         user = find_one_with_key("users", "_id", ObjectId(session["id"]))
         # generate suggested_movies list
-        suggested_movies = []
         for item in movies:
             if set(user["favourite_genres"]).intersection(item["genre"]):
-                suggested_movies.append(item)
-        movies_for_you = sorted(suggested_movies, key=lambda d: d[
+                movies_for_you.append(item)
+        movies_for_you = sorted(movies_for_you, key=lambda d: d[
                                 'average_rating'])[:15]
         # generate want_to_watch list
-        want_to_watch = []
         for item in user["movies_to_watch"]:
             for movie in movies:
                 if movie["movie_title"] == item:
@@ -177,13 +191,13 @@ def home():
                                 'average_rating'])[:15]
 
     return render_template("home.html", all_movies=all_movies,
-                            highest_rated=highest_rated,
-                            latest_releases=latest_releases,
-                            movies_for_you=movies_for_you,
-                            want_to_watch=want_to_watch)
+                           highest_rated=highest_rated,
+                           latest_releases=latest_releases,
+                           movies_for_you=movies_for_you,
+                           want_to_watch=want_to_watch)
 
 
-@app.route("/movie-title-search", methods=["GET", "POST"])
+@app.route("/search", methods=["GET", "POST"])
 def movie_title_search():
     query = request.form.get("movie_title_search")
     searched_movies = list(mongo.db.movies.find({"$text": {"$search": query}}))
@@ -192,12 +206,18 @@ def movie_title_search():
 
 @app.route("/genre")
 def get_all_genre():
+    is_user_admin = is_admin()
+    if not is_user_admin:
+        return redirect(url_for("home"))
     genre_list = list(mongo.db.genre.find())
     return render_template("genre-management.html", genre_list=genre_list)
 
 
 @app.route("/genre/add", methods=["POST"])
 def add_genre():
+    is_user_admin = is_admin()
+    if not is_user_admin:
+        return redirect(url_for("home"))
     new_genre_name = request.form.get('genre-name')
     mongo.db.genre.insert_one({
         "genre_name": new_genre_name.lower()
@@ -206,8 +226,11 @@ def add_genre():
     return redirect(url_for('get_all_genre'))
 
 
-@app.route("/genre/delete/<genre_id>")
+@app.route("/genre/<genre_id>/delete")
 def delete_genre(genre_id):
+    is_user_admin = is_admin()
+    if not is_user_admin:
+        return redirect(url_for("home"))
     mongo.db.genre.remove({
         "_id": ObjectId(genre_id)
     })
@@ -215,22 +238,14 @@ def delete_genre(genre_id):
     return redirect(url_for('get_all_genre'))
 
 
-def add_data_user_data_to_session_storage(user_dict, new_id=None):
-    if new_id is None:
-        session["id"] = str(user_dict['_id'])
-    else:
-        session["id"] = str(new_id)
-    session['user'] = user_dict['username']
-    session['email'] = user_dict['email']
-    session['full-name'] = user_dict[
-        'firstname'] + " " + user_dict['lastname']
-
-
 @app.route("/genre/update/<genre_name>,<genre_id>", methods=["POST"])
 def update_genre(genre_id, genre_name):
     """
     function to update a genre name in the DB
     """
+    is_user_admin = is_admin()
+    if not is_user_admin:
+        return redirect(url_for("home"))
     # store input data in a variable using the genre_name to make up the input
     # name value and removing any spaces
     new_genre_name = request.form.get(genre_name.replace(
@@ -264,6 +279,7 @@ def signup():
             "email": request.form.get('email'),
             "favourite_genres": request.form.getlist('favourite-genre'),
             "date_joined":  datetime.now(),
+            "is_superuser": False,
             # unfilled fields
             "movies_reviewed": [],
             "movies_watched": [],
@@ -272,7 +288,7 @@ def signup():
         }
 
         new_id = mongo.db.users.insert_one(register).inserted_id
-        add_data_user_data_to_session_storage(register, new_id)
+        add_user_data_to_session_storage(register, new_id)
 
         # put the user into session and load profile page
         flash("Registration Successful " + session["user"].capitalize() + "!")
@@ -311,7 +327,7 @@ def edit_user_profile(user_id):
         mongo.db.users.update_one({"_id": ObjectId(session['id'])},
                                   {"$set": updated_profile_dict})
         
-        add_data_user_data_to_session_storage(updated_profile_dict,
+        add_user_data_to_session_storage(updated_profile_dict,
                                               ObjectId(session["id"]))
 
         flash(f"Successfully Updated {session['user'].capitalize()} Account!")
@@ -351,7 +367,7 @@ def signin():
             if check_password_hash(existing_user["password"],
                                    request.form.get("password")):
 
-                add_data_user_data_to_session_storage(existing_user)
+                add_user_data_to_session_storage(existing_user)
 
                 flash("Welcome " + session["user"].capitalize())
 
@@ -371,8 +387,7 @@ def signin():
 def signout():
     flash("You have signed out")
     session.clear()
-    movie_list = mongo.db.movies.find()
-    return render_template("home.html", movies=movie_list)
+    return redirect(url_for('home'))
 
 
 @app.route("/profile/<username>", methods=["GET", "POST"])
