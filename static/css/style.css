@@ -413,8 +413,6 @@ select,
     border-bottom: 1px solid rgb(118, 118, 118);
 }
 
-
-
 :focus-visible {
     outline: #fff auto 0px;
 }
@@ -440,6 +438,10 @@ input[type="checkbox"i] {
 .generic-form select {
     padding: 5px 10px;
     width: 100%;
+    background-color: #fff;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -o-appearance: none;
 }
 
 .dropdown-toggle::after {
