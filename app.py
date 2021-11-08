@@ -102,12 +102,15 @@ def generate_average_review_score(movie_id):
     total_review_score = 0
     # add all the review scores together from the data pulled from
     # the DB
-    for review in movie["reviews"]:
-        total_review_score += int(review["star_rating"])
-    # divide the result by the amount of old scores plus 1 for the
-    # score just added
-    new_average_review_score = round(total_review_score/(len(
-                                    movie["reviews"])), 2)
+    if len(movie["reviews"]) > 0:
+        for review in movie["reviews"]:
+            total_review_score += int(review["star_rating"])
+        # divide the result by the amount of old scores plus 1 for the
+        # score just added
+        new_average_review_score = round(total_review_score/(len(
+                                        movie["reviews"])), 2)
+    else:
+        new_average_review_score = 0
     # set the variable in the DB to the new value
     mongo.db.movies.update_one({"_id": ObjectId(
                                 movie["_id"])},
@@ -167,8 +170,10 @@ def consolidate_matching_array_dicts(list_1, list_2):
 
 
 def find_review_in_reviews_list(review_list, reviewer_id):
-    movie_review = [review for review in review_list
-                    if review["reviewer_id"] == reviewer_id][0]
+    movie_review = None
+    if len(review_list) > 0:
+        movie_review = [review for review in review_list
+                        if review["reviewer_id"] == reviewer_id][0]
     return movie_review
 
 
@@ -176,6 +181,7 @@ def find_review(movie_id, reviewer_id):
     movie = find_one_with_key("movies", "_id", ObjectId(movie_id))
     movie_review = find_review_in_reviews_list(movie["reviews"], reviewer_id)
     return movie_review
+
 
 # ---------- app.route ----------
 @app.route("/")
@@ -574,15 +580,15 @@ def edit_movie(movie_id):
         if genre["genre_name"].lower() in movie["genre"]:
             genre["checked"] = True
     # make into function - list from array of dicts with key
-    movie_reviewers = []
+    movie_reviewers_id_list = []
     for review in movie["reviews"]:
-        movie_reviewers.append(review["reviewer"])
+        movie_reviewers_id_list.append(review["reviewer_id"])
 
     cast_members_string = ', '.join(name.title() for name in movie["cast_members"])
     return render_template("edit-movie.html", genre_list=genre_list,
                            movie=movie, age_ratings=age_ratings,
                            cast_members_string=cast_members_string,
-                           movie_reviewers=movie_reviewers)
+                           movie_reviewers_id_list=movie_reviewers_id_list)
 
 
 @app.route("/movie/<movie_id>/delete")
@@ -730,16 +736,16 @@ def delete_review(movie_id, user_id):
     review = find_review(movie_id, user_id)
 
     update_collection_item_dict("movies", "_id", ObjectId(movie_id),
-                                "$pull", "reviews", "_id",
-                                ObjectId(user_id))
+                                "$pull", "reviews", "review_date",
+                                review["review_date"])
 
     update_collection_item_dict("movies", "_id", ObjectId(movie_id),
-                                "$pull", "latest_reviews", "_id",
-                                ObjectId(user_id))
+                                "$pull", "latest_reviews", "review_date",
+                                review["review_date"])
     # needs to be changed to a more suitable field
     update_collection_item_dict("users", "_id", ObjectId(session['id']),
                                 "$pull", "user_latest_reviews", "review_date",
-                                convert_string_to_datetime(review["review_date"]))
+                                review["review_date"])
 
     flash("Review deleted")
     movie = find_one_with_key("movies", "_id", ObjectId(movie_id))
