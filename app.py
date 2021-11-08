@@ -37,8 +37,8 @@ def is_signed_in():
 
 
 def is_correct_user(user_id_to_check):
-    if session and session["id"] and (session["id"] is user_id_to_check or
-        session["is_superuser"] is True):
+    if session and session["id"] and (
+      session["id"] is user_id_to_check or session["is_superuser"] is True):
         return True
     else:
         return False
@@ -341,7 +341,8 @@ def edit_user_profile(user_id):
                                        {"password": 0})
 
         requested_username = request.form.get("username").lower()
-        # change into conditional to compare user["username"] and requested_username
+        # change into conditional to compare user["username"] and
+        # requested_username
         existing_user = mongo.db.users.find_one(
             {"username": requested_username.lower()},
             {"password": 0})
@@ -453,6 +454,8 @@ def profile(user_id):
     for item in movies:
         if set(user["favourite_genres"]).intersection(item["genre"]):
             suggested_movies.append(item)
+    suggested_movies = sorted(suggested_movies, key=lambda d: d[
+                                'average_rating'])[:15]
 
     user_latest_reviews = sorted(user["user_latest_reviews"], key=lambda d: d[
                           'review_date'], reverse=True)
@@ -585,7 +588,8 @@ def edit_movie(movie_id):
     for review in movie["reviews"]:
         movie_reviewers_id_list.append(review["reviewer_id"])
 
-    cast_members_string = ', '.join(name.title() for name in movie["cast_members"])
+    cast_members_string = ', '.join(name.title() for name in movie[
+                            "cast_members"])
     return render_template("edit-movie.html", genre_list=genre_list,
                            movie=movie, age_ratings=age_ratings,
                            cast_members_string=cast_members_string,
@@ -638,7 +642,8 @@ def view_movie(movie_id):
 
     movie__genre_text_list = ', '.join(name.title() for name in movie["genre"])
     movie["genre"] = movie__genre_text_list
-    latest_reviews = sorted(movie["latest_reviews"], key=lambda d: d['review_date'], reverse=True)
+    latest_reviews = sorted(movie["latest_reviews"], key=lambda d: d[
+                        'review_date'], reverse=True)
     list(movie)
     return render_template("view-movie.html", movie=movie,
                            user_watched=user_watched,
@@ -672,7 +677,7 @@ def create_review(selected_movie_title):
         if movie:
             new_review = create_single_review()
             # add to create_single_review()
-            new_review["review_for"] = movie["movie_title"] 
+            new_review["review_for"] = movie["movie_title"]
             mongo.db.movies.update_one({"_id": ObjectId(
                                         movie["_id"])},
                                        {"$push": {"reviews": new_review}})
@@ -774,7 +779,7 @@ def remove_watched_movie(movie_id):
         return redirect(url_for("signin"))
 
     mongo_prefix_select("users").update_one(
-            {"_id": ObjectId(session["id"]},
+            {"_id": ObjectId(session["id"])},
             {"$pull": {"movies_watched": ObjectId(movie_id)}})
     return redirect(url_for("view_movie", movie_id=movie_id))
 
@@ -785,7 +790,7 @@ def add_want_to_watch_movie(movie_id):
     if not is_user_signed_in:
         return redirect(url_for("signin"))
 
-    update_collection_item("users", "_id", ObjectId(session["id"], "$push",
+    update_collection_item("users", "_id", ObjectId(session["id"]), "$push",
                            "movies_to_watch", ObjectId(movie_id))
     return redirect(url_for("view_movie", movie_id=movie_id))
 
@@ -797,7 +802,7 @@ def remove_want_to_watch_movie(movie_id):
         return redirect(url_for("signin"))
 
     mongo_prefix_select("users").update_one(
-            {"_id": ObjectId(session["id"]},
+            {"_id": ObjectId(session["id"])},
             {"$pull": {"movies_to_watch": ObjectId(movie_id)}})
     return redirect(url_for("view_movie", movie_id=movie_id))
 
@@ -825,6 +830,7 @@ def contact():
 def view_all_movies():
     movies = mongo.db.movies.find({}, {"movie_title": 1, "image_link": 1})
     return render_template("view-all-movies.html", movies=movies)
+
 
 # application running instructions by retieving hidden env variables
 if __name__ == "__main__":
