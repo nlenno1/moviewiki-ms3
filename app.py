@@ -197,13 +197,14 @@ def home():
                            want_to_watch=want_to_watch)
 
 
-@app.route("/search", methods=["GET", "POST"])
+@app.route("/search")
 def movie_title_search():
     query = request.form.get("movie_title_search")
     searched_movies = list(mongo.db.movies.find({"$text": {"$search": query}}))
     return render_template("movie-search.html", movies=searched_movies)
 
 
+# genre management
 @app.route("/genre")
 def get_all_genre():
     is_user_admin = is_admin()
@@ -226,18 +227,6 @@ def add_genre():
     return redirect(url_for('get_all_genre'))
 
 
-@app.route("/genre/<genre_id>/delete")
-def delete_genre(genre_id):
-    is_user_admin = is_admin()
-    if not is_user_admin:
-        return redirect(url_for("home"))
-    mongo.db.genre.remove({
-        "_id": ObjectId(genre_id)
-    })
-    flash("Genre Deleted")
-    return redirect(url_for('get_all_genre'))
-
-
 @app.route("/genre/update/<genre_name>,<genre_id>", methods=["POST"])
 def update_genre(genre_id, genre_name):
     """
@@ -257,6 +246,19 @@ def update_genre(genre_id, genre_name):
     return redirect(url_for('get_all_genre'))
 
 
+@app.route("/genre/<genre_id>/delete")
+def delete_genre(genre_id):
+    is_user_admin = is_admin()
+    if not is_user_admin:
+        return redirect(url_for("home"))
+    mongo.db.genre.remove({
+        "_id": ObjectId(genre_id)
+    })
+    flash("Genre Deleted")
+    return redirect(url_for('get_all_genre'))
+
+
+# user account management
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
@@ -300,6 +302,10 @@ def signup():
 
 @app.route("/profile/<user_id>/edit", methods=["GET", "POST"])
 def edit_user_profile(user_id):
+    is_user_signed_in = is_signed_in()
+    if not is_user_signed_in:
+        return redirect(url_for("signin"))
+    
     if request.method == "POST":
         user = mongo.db.users.find_one({"_id": ObjectId(session['id'])},
                                        {"password": 0})
@@ -356,6 +362,7 @@ def delete_user_profile(user_id):
     return redirect(url_for('home'))
 
 
+# user account access
 @app.route("/signin", methods=["GET", "POST"])
 def signin():
     if request.method == "POST":
@@ -385,6 +392,10 @@ def signin():
 
 @app.route("/signout")
 def signout():
+    is_user_signed_in = is_signed_in()
+    if not is_user_signed_in:
+        return redirect(url_for("signin"))
+
     flash("You have signed out")
     session.clear()
     return redirect(url_for('home'))
@@ -392,6 +403,10 @@ def signout():
 
 @app.route("/profile/<username>", methods=["GET", "POST"])
 def profile(username):
+    is_user_signed_in = is_signed_in()
+    if not is_user_signed_in:
+        return redirect(url_for("signin"))
+
     user = mongo.db.users.find_one(
             {"username": username},
             {"password": 0})
@@ -477,6 +492,10 @@ def generate_new_movie_dict():
 
 @app.route("/create-movie", methods=["GET", "POST"])
 def create_movie():
+    is_user_signed_in = is_signed_in()
+    if not is_user_signed_in:
+        return redirect(url_for("signin"))
+
     if request.method == "POST":
         new_movie = generate_new_movie_dict()
         new_id = mongo.db.movies.insert_one(new_movie).inserted_id
@@ -501,6 +520,10 @@ def create_movie():
 
 @app.route("/edit-movie/<movie_id>", methods=["GET", "POST"])
 def edit_movie(movie_id):
+    is_user_signed_in = is_signed_in()
+    if not is_user_signed_in:
+        return redirect(url_for("signin"))
+
     if request.method == "POST":
         updated_movie = generate_new_movie_dict()
         mongo.db.movies.update({"_id": ObjectId(movie_id)}, updated_movie)
@@ -531,6 +554,10 @@ def edit_movie(movie_id):
 
 @app.route("/movie/<movie_id>/delete")
 def delete_movie(movie_id):
+    is_user_signed_in = is_signed_in()
+    if not is_user_signed_in:
+        return redirect(url_for("signin"))
+
     mongo.db.movies.remove({
         "_id": ObjectId(movie_id)
     })
@@ -580,6 +607,10 @@ def view_movie(movie_id):
            methods=["GET", "POST"])
 @app.route("/create-review/<selected_movie_title>", methods=["GET", "POST"])
 def create_review(selected_movie_title):
+    is_user_signed_in = is_signed_in()
+    if not is_user_signed_in:
+        return redirect(url_for("signin"))
+
     if request.method == "POST":
         requested_movie_name = request.form.get("selected-movie-title").lower()
         movie = mongo.db.movies.find_one({
@@ -611,6 +642,10 @@ def create_review(selected_movie_title):
 
 @app.route("/review/<movie_id>/<review_date>/edit", methods=["GET", "POST"])
 def edit_review(movie_id, review_date):
+    is_user_signed_in = is_signed_in()
+    if not is_user_signed_in:
+        return redirect(url_for("signin"))
+
     if request.method == "POST":
         movie = find_one_with_key("movies", "_id", movie_id)
 
@@ -648,6 +683,10 @@ def view_reviews(movie_id):
 
 @app.route("/delete-review/<movie_id>/<review_date>")
 def delete_review(movie_id, review_date):
+    is_user_signed_in = is_signed_in()
+    if not is_user_signed_in:
+        return redirect(url_for("signin"))
+
     update_collection_item_dict("movies", "_id", ObjectId(movie_id),
                                 "$pull", "reviews", "review_date",
                                 convert_string_to_datetime(review_date))
@@ -669,6 +708,10 @@ def delete_review(movie_id, review_date):
 
 @app.route("/user/add-watched-movie/<movie_id>")
 def add_watched_movie(movie_id):
+    is_user_signed_in = is_signed_in()
+    if not is_user_signed_in:
+        return redirect(url_for("signin"))
+
     update_collection_item("users", "username", session["user"], "$push",
                            "movies_watched", ObjectId(movie_id))
     return redirect(url_for("view_movie", movie_id=movie_id))
@@ -676,6 +719,10 @@ def add_watched_movie(movie_id):
 
 @app.route("/user/remove-watched-movie/<movie_id>")
 def remove_watched_movie(movie_id):
+    is_user_signed_in = is_signed_in()
+    if not is_user_signed_in:
+        return redirect(url_for("signin"))
+
     mongo_prefix_select("users").update_one(
             {"username": session["user"]},
             {"$pull": {"movies_watched": ObjectId(movie_id)}})
@@ -684,6 +731,10 @@ def remove_watched_movie(movie_id):
 
 @app.route("/user/add-want-to-watch-movie/<movie_id>")
 def add_want_to_watch_movie(movie_id):
+    is_user_signed_in = is_signed_in()
+    if not is_user_signed_in:
+        return redirect(url_for("signin"))
+
     update_collection_item("users", "username", session["user"], "$push",
                            "movies_to_watch", ObjectId(movie_id))
     return redirect(url_for("view_movie", movie_id=movie_id))
@@ -691,6 +742,10 @@ def add_want_to_watch_movie(movie_id):
 
 @app.route("/user/remove-want-to-watch-movie/<movie_id>")
 def remove_want_to_watch_movie(movie_id):
+    is_user_signed_in = is_signed_in()
+    if not is_user_signed_in:
+        return redirect(url_for("signin"))
+
     mongo_prefix_select("users").update_one(
             {"username": session["user"]},
             {"$pull": {"movies_to_watch": ObjectId(movie_id)}})
