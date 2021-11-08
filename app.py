@@ -24,7 +24,7 @@ mongo = PyMongo(app)
 
 # Functions
 def is_admin():
-    if session and session["is_superuser"] == True:
+    if session and session["is_superuser"] is True:
         return True
     return False
 
@@ -326,9 +326,9 @@ def edit_user_profile(user_id):
 
         mongo.db.users.update_one({"_id": ObjectId(session['id'])},
                                   {"$set": updated_profile_dict})
-        
-        add_user_data_to_session_storage(updated_profile_dict,
-                                              ObjectId(session["id"]))
+
+        add_user_data_to_session_storage(updated_profile_dict, ObjectId(
+                                         session["id"]))
 
         flash(f"Successfully Updated {session['user'].capitalize()} Account!")
         return redirect(url_for('profile', username=session['user']))
@@ -715,6 +715,11 @@ def contact():
 
     return render_template("contact.html")
 
+
+@app.route("/movies/view_all")
+def view_all_movies():
+    movies = mongo.db.movies.find({}, {"movie_title": 1, "image_link": 1})
+    return render_template("view-all-movies.html", movies=movies)
 
 # application running instructions by retieving hidden env variables
 if __name__ == "__main__":

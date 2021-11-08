@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 {% block content %}
 
-    <h1 id="header-title">Movie Search</h1>
+    <h1 id="header-title">View All</h1>
 
     <div class="container-md">
-        <div class="row g-0">
+        <div class="row">
             <div class="col">
                 <form method="POST" action="{{ url_for('movie_title_search') }}" class="search-bar-container">
                     <div class="input-container">
@@ -16,7 +16,6 @@
         </div>
         <div class="row g-0">
             <div class="col">
-                <h3 class="carousel-label">Search Results</h3>
                 <div class="row g-0">
                     <div class="col-12 search-results-container shadow">
                         {% for movie in movies %}
@@ -26,7 +25,7 @@
                                         <img src="{{ movie.image_link }}" alt="Movie Image">
                                     </a>
                                 </div>
-                                <h4>{{ movie.movie_title }}</h4>
+                                <h4 class="movie-text">{{ movie.movie_title }}</h4>
                             </div>
                         {% endfor %}
                         {% if session['user'] %}

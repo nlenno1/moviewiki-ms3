@@ -35,17 +35,19 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('about') }}">About</a>
                 </li>
-                {% if session["user"] %}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                       Movies
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                      <li><a class="nav-link" href="{{ url_for('create_review') }}">New Review</a></li>
-                      <li><a class="nav-link" href="{{ url_for('create_movie') }}">New Movie</a></li>
+                        {% if session["user"] %}
+                            <li><a class="nav-link" href="{{ url_for('create_review') }}">New Review</a></li>
+                            <li><a class="nav-link" href="{{ url_for('create_movie') }}">New Movie</a></li>
+                            <hr>
+                        {% endif %}
+                        <li><a class="nav-link" href="{{ url_for('view_all_movies') }}">View All Movies</a></li>
                     </ul>
                 </li>
-                {% endif %}
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('contact') }}">Contact</a>
                 </li>
@@ -89,8 +91,11 @@
                 <li class="nav-item">
                     <a href="{{ url_for('contact') }}">Contact</a>
                 </li>
-                {% if session["user"] %}
                 <hr class="side-nav-hr">
+                <li class="nav-item">
+                    <a href="{{ url_for('view_all_movies') }}">View All Movies</a>
+                </li>
+                {% if session["user"] %}
                 <li class="nav-item">
                     <a href="{{ url_for('create_review') }}">New Review</a>
                 </li>
@@ -98,10 +103,10 @@
                     <a href="{{ url_for('create_movie') }}">New Movie</a>
                 </li>
                 {% endif %}
-                {% if session["user"] == "admin" %}
-                <li class="nav-item">
-                    <a href="{{ url_for('get_all_genre') }}">Genres</a>
-                </li>
+                {% if session["is_superuser"] == True %}
+                    <li class="nav-item">
+                        <a href="{{ url_for('get_all_genre') }}">Genres</a>
+                    </li>
                 {% endif %}
                 <hr class="side-nav-hr">
                 {% if session["user"] %}
@@ -111,14 +116,14 @@
                     <li>
                         <button class="navbar-button"><a href="{{ url_for('signout') }}">Sign Out</a></button>
                     </li>
-                    {% else %}
+                {% else %}
                     <li>
                         <button class="navbar-button"><a href="{{ url_for('signup') }}">Sign Up</a></button>
                     </li>
                     <li>
                         <button class="navbar-button"><a href="{{ url_for('signin') }}">Sign In</a></button>
                     </li>
-                    {% endif %}
+                {% endif %}
                 </ul>
     </aside>
     <div>
