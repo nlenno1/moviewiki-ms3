@@ -6,7 +6,7 @@
     <div class="container-md text-center">
         <h3 class="mt-5">Write a Review for any Movie that has a profile</h3>
         <h5>Type into the Movie Title box to search for the movie you want<br>If the movie you want is not in the dropdown menu then it doesn't have a profile yet!</h5>
-        <form method="POST" action="{{ url_for('edit_review', movie_id=selected_movie._id, review_date=movie_review.review_date) }}">
+        <form method="POST" action="{{ url_for('edit_review', movie_id=selected_movie._id, user_id=movie_review.reviewer_id) }}">
             <div id="add-review" class="card form-card card-large generic-form input-large shadow">
                 <input value="{{ selected_movie.movie_title|title }}" type="text" name="selected-movie-title" id="movie-title" readonly>
                 <input value="{{ movie_review.review_title|title }}" type="text" name="review-title" id="review-title" class="mb-4" placeholder="Review Title" pattern="^[a-zA-Z0-9 \p{P}]+$">

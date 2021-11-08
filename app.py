@@ -121,21 +121,25 @@ def convert_string_to_datetime(string_date):
     return datetime_date
 
 
+def create_new_latest_reviews(review_list, new_review_dict):
+    if len(review_list) > 2:
+        review_list = review_list[0:2]
+    review_list.append(new_review_dict)
+    return review_list
+
+
 def add_review_to_latest_reviews_dicts(movie, new_review_dict):
     user = find_one_with_key("users", "_id", ObjectId(session["id"]))
 
-    arrays_to_add_review_to = [user["user_latest_reviews"],
-                               movie["latest_reviews"]]
-
-    for array in arrays_to_add_review_to:
-        if len(array) > 2:
-            array[0:2]
-        array.append(new_review_dict)
+    user["user_latest_reviews"] = create_new_latest_reviews(
+        user["user_latest_reviews"], new_review_dict)
+    movie["latest_reviews"] = create_new_latest_reviews(
+        movie["latest_reviews"], new_review_dict)
 
     update_collection_item("users", '_id', ObjectId(session['id']), "$set",
-                           "user_latest_reviews", arrays_to_add_review_to[0])
+                           "user_latest_reviews", user["user_latest_reviews"])
     update_collection_item("movies", '_id', ObjectId(movie['_id']), "$set",
-                           "latest_reviews", arrays_to_add_review_to[1])
+                           "latest_reviews", movie["latest_reviews"])
 
 
 def add_user_data_to_session_storage(user_dict, new_id=None):
@@ -161,6 +165,17 @@ def consolidate_matching_array_dicts(list_1, list_2):
     print(new_list)
     return new_list
 
+
+def find_review_in_reviews_list(review_list, reviewer_id):
+    movie_review = [review for review in review_list
+                    if review["reviewer_id"] == reviewer_id][0]
+    return movie_review
+
+
+def find_review(movie_id, reviewer_id):
+    movie = find_one_with_key("movies", "_id", ObjectId(movie_id))
+    movie_review = find_review_in_reviews_list(movie["reviews"], reviewer_id)
+    return movie_review
 
 # ---------- app.route ----------
 @app.route("/")
@@ -534,7 +549,7 @@ def create_movie():
 
 @app.route("/edit-movie/<movie_id>", methods=["GET", "POST"])
 def edit_movie(movie_id):
-    # movie = mongo.bd.movies.find_one({"_id": ObjectId(movie_id)}, 
+    # movie = mongo.bd.movies.find_one({"_id": ObjectId(movie_id)},
     #                                  {"created_by": 1})
 
     # use user id for movie["created_by"] field rather than usernames
@@ -641,13 +656,16 @@ def create_review(selected_movie_title):
     if not is_user_signed_in:
         return redirect(url_for("signin"))
 
+    # double user review check
+
     if request.method == "POST":
         requested_movie_name = request.form.get("selected-movie-title").lower()
         movie = mongo.db.movies.find_one({
                                 "movie_title": requested_movie_name})
         if movie:
             new_review = create_single_review()
-            new_review["review_for"] = movie["movie_title"]
+            # add to create_single_review()
+            new_review["review_for"] = movie["movie_title"] 
             mongo.db.movies.update_one({"_id": ObjectId(
                                         movie["_id"])},
                                        {"$push": {"reviews": new_review}})
@@ -670,46 +688,31 @@ def create_review(selected_movie_title):
         selected_movie_title=selected_movie_title)
 
 
-def find_review_in_reviews_list(review_list, review_date):
-    movie_review = [review for review in review_list
-                    if review["review_date"] ==
-                    convert_string_to_datetime(review_date)][0]
-    return movie_review
-
-
-def find_review(movie_id, review_date):
-    movie = find_one_with_key("movies", "_id", ObjectId(movie_id))
-    movie_review = find_review_in_reviews_list(movie["reviews"], review_date)
-    return movie_review
-
-
-@app.route("/review/<movie_id>/<review_date>/edit", methods=["GET", "POST"])
-def edit_review(movie_id, review_date):
-    movie = find_one_with_key("movies", "_id", ObjectId(movie_id))
-    review = find_review_in_reviews_list(movie["reviews"], review_date)
-
-    # add reviewer_id to movie review fields
-    # is_user_allowed = is_correct_user(review["reviewer_id"])
-    # if not is_user_allowed:
-    #    return redirect(url_for('view_reviews', movie["_id"]=movie_id))
+@app.route("/review/<movie_id>/<user_id>/edit", methods=["GET", "POST"])
+def edit_review(movie_id, user_id):
+    is_user_allowed = is_correct_user(user_id)
+    if not is_user_allowed:
+        return redirect(url_for('view_reviews', movie_id=movie_id))
 
     if request.method == "POST":
-        movie = find_one_with_key("movies", "_id", movie_id)
+        movie = find_one_with_key("movies", "_id", ObjectId(movie_id))
 
         updated_review = create_single_review()
-        updated_review["review_for"] = movie["movie_title"].lower
+        updated_review["review_for"] = movie["movie_title"].lower()
 
         update_collection_item_dict("movies", "_id", ObjectId(movie_id),
-                                    "$pull", "reviews", "review_date",
-                                    convert_string_to_datetime(review_date))
+                                    "$pull", "reviews", "reviewer_id",
+                                    user_id)
+
         mongo.db.movies.update_one({"_id": ObjectId(movie_id)},
-                                   {"$push": {"reviews": updated_review,
-                                              "latest_reviews":
-                                              updated_review}})
+                                   {"$push": {"reviews": updated_review}})
 
         add_review_to_latest_reviews_dicts(movie, updated_review)
 
         return redirect(url_for('view_reviews', movie_id=movie_id))
+
+    movie = find_one_with_key("movies", "_id", ObjectId(movie_id))
+    review = find_review_in_reviews_list(movie["reviews"], user_id)
 
     movie_title_list = mongo.db.movies.find({}, {"movie_title": 1})
     return render_template(
@@ -717,25 +720,26 @@ def edit_review(movie_id, review_date):
         selected_movie=movie, movie_review=review)
 
 
-@app.route("/delete-review/<movie_id>/<review_date>")
-def delete_review(movie_id, review_date):
-    review = find_review(movie_id, review_date)
-    # add reviewer_id to movie review fields
-    # is_user_allowed = is_correct_user(review["reviewer_id"])
-    # if not is_user_allowed:
-    #    return redirect(url_for('view_reviews', movie["_id"]=movie_id))
+@app.route("/review/<movie_id>/<user_id>/delete")
+def delete_review(movie_id, user_id):
+
+    is_user_allowed = is_correct_user(user_id)
+    if not is_user_allowed:
+        return redirect(url_for('view_reviews', movie_id=movie_id))
+
+    review = find_review(movie_id, user_id)
 
     update_collection_item_dict("movies", "_id", ObjectId(movie_id),
-                                "$pull", "reviews", "review_date",
-                                convert_string_to_datetime(review_date))
+                                "$pull", "reviews", "_id",
+                                ObjectId(user_id))
 
     update_collection_item_dict("movies", "_id", ObjectId(movie_id),
-                                "$pull", "latest_reviews", "review_date",
-                                convert_string_to_datetime(review_date))
-
+                                "$pull", "latest_reviews", "_id",
+                                ObjectId(user_id))
+    # needs to be changed to a more suitable field
     update_collection_item_dict("users", "_id", ObjectId(session['id']),
                                 "$pull", "user_latest_reviews", "review_date",
-                                convert_string_to_datetime(review_date))
+                                convert_string_to_datetime(review["review_date"]))
 
     flash("Review deleted")
     movie = find_one_with_key("movies", "_id", ObjectId(movie_id))
