@@ -12,7 +12,7 @@
                 <input value="{{ movie_review.review_title|title }}" type="text" name="review-title" id="review-title" class="mb-4" placeholder="Review Title" pattern="^[a-zA-Z0-9 \p{P}]+$">
                 <textarea name="movie-review" id="movie-review" rows ="8" cols="100" placeholder="Movie Review">{{ movie_review.review }}</textarea>
                 <div class="star-rating-container">
-                    <input type="hidden" name="star-count" id="star-count" value="0">
+                    <input type="hidden" name="star-count" id="star-count" value="{{ movie_review.star_rating }}">
                     <span>Click the stars to choose your Star Rating: </span>
                     <span class="star_container">
                         {% for i in range(1,6) %}
