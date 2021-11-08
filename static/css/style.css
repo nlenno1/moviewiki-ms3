@@ -549,7 +549,8 @@ p>a:hover {
 }
 
 .single-movie-picture-display {
-    margin: 0 auto;
+    display: flex;
+    justify-content: center;
 }
 
 .movie-image-continer {
