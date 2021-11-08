@@ -22,7 +22,7 @@ app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
 mongo = PyMongo(app)
 
 
-# Functions
+# ---------- Functions ----------
 def is_admin():
     if session and session["is_superuser"] is True:
         return True
@@ -138,13 +138,13 @@ def add_user_data_to_session_storage(user_dict, new_id=None):
     session['email'] = user_dict['email']
     session['full-name'] = user_dict[
         'firstname'] + " " + user_dict['lastname']
-    print(user_dict['is_superuser'])
-    session["is_superuser"] = user_dict['is_superuser']
+    if "is_superuser" in user_dict:
+        session['is_superuser'] = user_dict['is_superuser']
 
 
 def consolidate_matching_array_dicts(list_1, list_2):
     """
-    function to compare 2 lists matching values under append any matching 
+    function to compare 2 lists matching values under append any matching
     dicts to a new list.
     """
     print(list_1, list_2)
@@ -153,7 +153,7 @@ def consolidate_matching_array_dicts(list_1, list_2):
     return new_list
 
 
-# app.route
+# ---------- app.route ----------
 @app.route("/")
 @app.route("/home")
 def home():
