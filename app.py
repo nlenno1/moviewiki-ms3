@@ -47,6 +47,7 @@ def is_correct_user(user_id_to_check):
 def create_single_review():
     review = {
         "reviewer": session['user'],
+        "reviewer_id": session["id"],
         "review_title": request.form.get("review-title").lower(),
         "review": request.form.get("movie-review"),
         "review_date": datetime.now(),
