@@ -435,15 +435,15 @@ def signout():
     return redirect(url_for('home'))
 
 
-@app.route("/profile/<username>", methods=["GET", "POST"])
-def profile(username):
-    # need to use id rather than username
-    # is_user_allowed = is_correct_user(user_id)
-    # if not is_user_allowed:
-    #     return redirect(url_for("home"))
+@app.route("/profile/<user_id>", methods=["GET", "POST"])
+def profile(user_id):
+
+    is_user_allowed = is_correct_user(user_id)
+    if not is_user_allowed:
+        return redirect(url_for("home"))
 
     user = mongo.db.users.find_one(
-            {"username": username},
+            {"_id": ObjectId(user_id)},
             {"password": 0})
 
     # generate suggested_movies list
