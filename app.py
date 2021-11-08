@@ -36,6 +36,14 @@ def is_signed_in():
         return False
 
 
+def is_correct_user(user_id_to_check):
+    if session and session["id"] and (session["id"] is user_id_to_check or
+        session["is_superuser"] is True):
+        return True
+    else:
+        return False
+
+
 def create_single_review():
     review = {
         "reviewer": session['user'],
@@ -302,10 +310,10 @@ def signup():
 
 @app.route("/profile/<user_id>/edit", methods=["GET", "POST"])
 def edit_user_profile(user_id):
-    is_user_signed_in = is_signed_in()
-    if not is_user_signed_in:
-        return redirect(url_for("signin"))
-    
+    is_user_allowed = is_correct_user(user_id)
+    if not is_user_allowed:
+        return redirect(url_for("home"))
+
     if request.method == "POST":
         user = mongo.db.users.find_one({"_id": ObjectId(session['id'])},
                                        {"password": 0})
@@ -353,6 +361,10 @@ def edit_user_profile(user_id):
 
 @app.route("/profile/<user_id>/delete")
 def delete_user_profile(user_id):
+    is_user_allowed = is_correct_user(user_id)
+    if not is_user_allowed:
+        return redirect(url_for("home"))
+
     mongo.db.users.remove({
         "_id": ObjectId(user_id)
     })
@@ -403,9 +415,10 @@ def signout():
 
 @app.route("/profile/<username>", methods=["GET", "POST"])
 def profile(username):
-    is_user_signed_in = is_signed_in()
-    if not is_user_signed_in:
-        return redirect(url_for("signin"))
+    # need to use id rather than username
+    # is_user_allowed = is_correct_user(user_id)
+    # if not is_user_allowed:
+    #     return redirect(url_for("home"))
 
     user = mongo.db.users.find_one(
             {"username": username},
@@ -520,9 +533,13 @@ def create_movie():
 
 @app.route("/edit-movie/<movie_id>", methods=["GET", "POST"])
 def edit_movie(movie_id):
-    is_user_signed_in = is_signed_in()
-    if not is_user_signed_in:
-        return redirect(url_for("signin"))
+    # movie = mongo.bd.movies.find_one({"_id": ObjectId(movie_id)}, 
+    #                                  {"created_by": 1})
+
+    # use user id for movie["created_by"] field rather than usernames
+    # is_user_allowed = is_correct_user(movie["created_by"])
+    # if not is_user_allowed:
+    #    return redirect(url_for("home"))
 
     if request.method == "POST":
         updated_movie = generate_new_movie_dict()
@@ -554,9 +571,13 @@ def edit_movie(movie_id):
 
 @app.route("/movie/<movie_id>/delete")
 def delete_movie(movie_id):
-    is_user_signed_in = is_signed_in()
-    if not is_user_signed_in:
-        return redirect(url_for("signin"))
+    # movie = mongo.bd.movies.find_one({"_id": ObjectId(movie_id)},
+    #                                  {"created_by": 1})
+
+    # use user id for movie["created_by"] field rather than usernames
+    # is_user_allowed = is_correct_user(movie["created_by"])
+    # if not is_user_allowed:
+    #    return redirect(url_for("home"))
 
     mongo.db.movies.remove({
         "_id": ObjectId(movie_id)
@@ -573,7 +594,7 @@ def view_movie(movie_id):
     user_want_to_watch = False
     user_watched = False
 
-    if session and session["user"]:
+    if is_signed_in():
         user = mongo.db.users.find_one(
             {"username": session["user"]},
             {"_id": 0, "movies_watched": 1, "movies_to_watch": 1}
@@ -585,7 +606,7 @@ def view_movie(movie_id):
         if movie["_id"] in user["movies_to_watch"]:
             user_want_to_watch = True
 
-    # generate similar_movies list
+    # generate similar_movies list - make into function
     similar_movies = []
     movies = list(mongo.db.movies.find())
     for item in movies:
@@ -601,6 +622,14 @@ def view_movie(movie_id):
                            user_want_to_watch=user_want_to_watch,
                            similar_movies=similar_movies,
                            latest_reviews=latest_reviews)
+
+
+# review management
+@app.route("/view-reviews/<movie_id>")
+def view_reviews(movie_id):
+    movie = find_one_with_key("movies", "_id", ObjectId(movie_id))
+    list(movie)
+    return render_template("view-reviews.html", movie=movie)
 
 
 @app.route("/create-review", defaults={'selected_movie_title': None},
@@ -640,11 +669,28 @@ def create_review(selected_movie_title):
         selected_movie_title=selected_movie_title)
 
 
+def find_review_in_reviews_list(review_list, review_date):
+    movie_review = [review for review in review_list
+                    if review["review_date"] ==
+                    convert_string_to_datetime(review_date)][0]
+    return movie_review
+
+
+def find_review(movie_id, review_date):
+    movie = find_one_with_key("movies", "_id", ObjectId(movie_id))
+    movie_review = find_review_in_reviews_list(movie["reviews"], review_date)
+    return movie_review
+
+
 @app.route("/review/<movie_id>/<review_date>/edit", methods=["GET", "POST"])
 def edit_review(movie_id, review_date):
-    is_user_signed_in = is_signed_in()
-    if not is_user_signed_in:
-        return redirect(url_for("signin"))
+    movie = find_one_with_key("movies", "_id", ObjectId(movie_id))
+    review = find_review_in_reviews_list(movie["reviews"], review_date)
+
+    # add reviewer_id to movie review fields
+    # is_user_allowed = is_correct_user(review["reviewer_id"])
+    # if not is_user_allowed:
+    #    return redirect(url_for('view_reviews', movie["_id"]=movie_id))
 
     if request.method == "POST":
         movie = find_one_with_key("movies", "_id", movie_id)
@@ -664,28 +710,19 @@ def edit_review(movie_id, review_date):
 
         return redirect(url_for('view_reviews', movie_id=movie_id))
 
-    movie = find_one_with_key("movies", "_id", ObjectId(movie_id))
-    movie_review = [review for review in movie["reviews"]
-                    if review["review_date"] ==
-                    convert_string_to_datetime(review_date)][0]
     movie_title_list = mongo.db.movies.find({}, {"movie_title": 1})
     return render_template(
         "edit-review.html", movie_title_list=movie_title_list,
-        selected_movie=movie, movie_review=movie_review)
-
-
-@app.route("/view-reviews/<movie_id>")
-def view_reviews(movie_id):
-    movie = find_one_with_key("movies", "_id", ObjectId(movie_id))
-    list(movie)
-    return render_template("view-reviews.html", movie=movie)
+        selected_movie=movie, movie_review=review)
 
 
 @app.route("/delete-review/<movie_id>/<review_date>")
 def delete_review(movie_id, review_date):
-    is_user_signed_in = is_signed_in()
-    if not is_user_signed_in:
-        return redirect(url_for("signin"))
+    review = find_review(movie_id, review_date)
+    # add reviewer_id to movie review fields
+    # is_user_allowed = is_correct_user(review["reviewer_id"])
+    # if not is_user_allowed:
+    #    return redirect(url_for('view_reviews', movie["_id"]=movie_id))
 
     update_collection_item_dict("movies", "_id", ObjectId(movie_id),
                                 "$pull", "reviews", "review_date",
@@ -706,6 +743,7 @@ def delete_review(movie_id, review_date):
     return redirect(url_for('view_reviews', movie_id=movie["_id"]))
 
 
+# watched & want to watch list control
 @app.route("/user/add-watched-movie/<movie_id>")
 def add_watched_movie(movie_id):
     is_user_signed_in = is_signed_in()
