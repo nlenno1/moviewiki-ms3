@@ -656,8 +656,11 @@ def view_movie(movie_id):
 @app.route("/view-reviews/<movie_id>")
 def view_reviews(movie_id):
     movie = find_one_with_key("movies", "_id", ObjectId(movie_id))
+    movie_reviews = sorted(movie["reviews"], key=lambda d: d[
+                                'review_date'], reverse=True)
     list(movie)
-    return render_template("view-reviews.html", movie=movie)
+    return render_template("view-reviews.html", movie=movie,
+                           movie_reviews=movie_reviews)
 
 
 @app.route("/create-review", defaults={'selected_movie_title': None},

@@ -34,8 +34,8 @@
         {% endif %}
     <div class="row">
         <div class="col-12 reviews-container mt-4">
-            {% if movie.reviews|length > 0 %}
-                {% for review in movie.reviews %}
+            {% if movie_reviews|length > 0 %}
+                {% for review in movie_reviews %}
                     <div class="card form-card card-small review-card shadow">
                         <div class="review-header">
                             <div class="row pb-2">
