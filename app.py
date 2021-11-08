@@ -30,7 +30,7 @@ def is_admin():
 
 
 def is_signed_in():
-    if session and session["user"]:
+    if session and session["id"]:
         return True
     else:
         return False
@@ -341,6 +341,7 @@ def edit_user_profile(user_id):
                                        {"password": 0})
 
         requested_username = request.form.get("username").lower()
+        # change into conditional to compare user["username"] and requested_username
         existing_user = mongo.db.users.find_one(
             {"username": requested_username.lower()},
             {"password": 0})
@@ -412,7 +413,7 @@ def signin():
 
                 flash("Welcome " + session["user"].capitalize())
 
-                return redirect(url_for('profile', username=session['user']))
+                return redirect(url_for('profile', user_id=session['id']))
             else:
                 flash("The information entered is incorrect")
                 return redirect(url_for('signin'))
@@ -536,10 +537,10 @@ def create_movie():
         new_id = mongo.db.movies.insert_one(new_movie).inserted_id
 
         if request.form.get("seen-movie-checkbox"):
-            update_collection_item("users", "username", session["user"],
+            update_collection_item("users", "_id", ObjectId(session["id"]),
                                    "$push", "movies_watched",  new_id)
         if request.form.get("submit-movie-review"):
-            update_collection_item("users", "username", session["user"],
+            update_collection_item("users", "_id", ObjectId(session["id"]),
                                    "$push", "movies_reviewed", new_id)
 
         update_collection_item("users", '_id', ObjectId(session['id']), "$set",
@@ -567,7 +568,7 @@ def edit_movie(movie_id):
         updated_movie = generate_new_movie_dict()
         mongo.db.movies.update({"_id": ObjectId(movie_id)}, updated_movie)
         if request.form.get("submit-movie-review"):
-            update_collection_item("users", "username", session["user"],
+            update_collection_item("users", "_id", ObjectId(session["id"]),
                                    "$push", "movies_reviewed", movie_id)
 
         flash("Movie Profile Successfully Updated")
@@ -618,7 +619,7 @@ def view_movie(movie_id):
 
     if is_signed_in():
         user = mongo.db.users.find_one(
-            {"username": session["user"]},
+            {"_id": ObjectId(session["id"])},
             {"_id": 0, "movies_watched": 1, "movies_to_watch": 1}
         )
 
@@ -761,7 +762,7 @@ def add_watched_movie(movie_id):
     if not is_user_signed_in:
         return redirect(url_for("signin"))
 
-    update_collection_item("users", "username", session["user"], "$push",
+    update_collection_item("users", "_id", ObjectId(session["id"]), "$push",
                            "movies_watched", ObjectId(movie_id))
     return redirect(url_for("view_movie", movie_id=movie_id))
 
@@ -773,7 +774,7 @@ def remove_watched_movie(movie_id):
         return redirect(url_for("signin"))
 
     mongo_prefix_select("users").update_one(
-            {"username": session["user"]},
+            {"_id": ObjectId(session["id"]},
             {"$pull": {"movies_watched": ObjectId(movie_id)}})
     return redirect(url_for("view_movie", movie_id=movie_id))
 
@@ -784,7 +785,7 @@ def add_want_to_watch_movie(movie_id):
     if not is_user_signed_in:
         return redirect(url_for("signin"))
 
-    update_collection_item("users", "username", session["user"], "$push",
+    update_collection_item("users", "_id", ObjectId(session["id"], "$push",
                            "movies_to_watch", ObjectId(movie_id))
     return redirect(url_for("view_movie", movie_id=movie_id))
 
@@ -796,7 +797,7 @@ def remove_want_to_watch_movie(movie_id):
         return redirect(url_for("signin"))
 
     mongo_prefix_select("users").update_one(
-            {"username": session["user"]},
+            {"_id": ObjectId(session["id"]},
             {"$pull": {"movies_to_watch": ObjectId(movie_id)}})
     return redirect(url_for("view_movie", movie_id=movie_id))
 
