@@ -51,7 +51,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('contact') }}">Contact</a>
                 </li>
-                {% if session["user"] == "admin" %}
+                {% if session["is_superuser"] == True %}
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('get_all_genre') }}">Genres</a>
                 </li>
