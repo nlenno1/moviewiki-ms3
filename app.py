@@ -510,7 +510,7 @@ def generate_new_movie_dict():
             "image_link": image_link,
             "reviews": [],
             "latest_reviews": [],
-            "created_by": session['user'],
+            "created_by": session['id'],
             "is_part_of_series": False,
             "average_rating": 0.0
         }
