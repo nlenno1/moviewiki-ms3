@@ -44,14 +44,16 @@ def is_correct_user(user_id_to_check):
         return False
 
 
-def create_single_review():
+def create_single_review(movie):
     review = {
         "reviewer": session['user'],
         "reviewer_id": session["id"],
         "review_title": request.form.get("review-title").lower(),
         "review": request.form.get("movie-review"),
         "review_date": datetime.now(),
-        "star_rating": int(request.form.get("star-count"))
+        "star_rating": int(request.form.get("star-count")),
+        "review_for": movie["movie_title"],
+        "review_for_id": movie["_id"]
     }
     return review
 
@@ -494,7 +496,7 @@ def add_series_information_to_dict(new_movie):
 
 def add_review_to_dict(new_movie):
     if request.form.get("submit-movie-review"):
-        review = create_single_review()
+        review = create_single_review(new_movie)
         review["review_for"] = new_movie["movie_title"]
         new_movie["reviews"].append(review)
         new_movie["latest_reviews"].append(review)
@@ -688,9 +690,7 @@ def create_review(selected_movie_title):
         movie = mongo.db.movies.find_one({
                                 "movie_title": requested_movie_name})
         if movie:
-            new_review = create_single_review()
-            # add to create_single_review()
-            new_review["review_for"] = movie["movie_title"]
+            new_review = create_single_review(movie)
             mongo.db.movies.update_one({"_id": ObjectId(
                                         movie["_id"])},
                                        {"$push": {"reviews": new_review}})
@@ -725,8 +725,7 @@ def edit_review(movie_id, user_id):
     if request.method == "POST":
         movie = find_one_with_key("movies", "_id", ObjectId(movie_id))
 
-        updated_review = create_single_review()
-        updated_review["review_for"] = movie["movie_title"].lower()
+        updated_review = create_single_review(movie)
 
         update_collection_item_dict("movies", "_id", ObjectId(movie_id),
                                     "$pull", "reviews", "reviewer_id",
@@ -757,18 +756,22 @@ def delete_review(movie_id, user_id):
         return redirect(url_for('view_reviews', movie_id=movie_id))
 
     review = find_review(movie_id, user_id)
-
+    # remove review from movie profile reviews list
     update_collection_item_dict("movies", "_id", ObjectId(movie_id),
                                 "$pull", "reviews", "review_date",
                                 review["review_date"])
-
+    # remove review from movie profile latest reviews list
     update_collection_item_dict("movies", "_id", ObjectId(movie_id),
                                 "$pull", "latest_reviews", "review_date",
                                 review["review_date"])
+    # remove review from movie profile latest reviews list
+    update_collection_item("users", "_id", ObjectId(session['id']),
+                           "$pull", "movies_reviewed", ObjectId(movie_id))
+
     # needs to be changed to a more suitable field
     update_collection_item_dict("users", "_id", ObjectId(session['id']),
-                                "$pull", "user_latest_reviews", "review_date",
-                                review["review_date"])
+                                "$pull", "user_latest_reviews", "reviewed_for",
+                                movie_id)
 
     flash("Review deleted")
     movie = find_one_with_key("movies", "_id", ObjectId(movie_id))
