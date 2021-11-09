@@ -13,42 +13,18 @@
         <div class="card form-card">
             {% for genre in genre_list %}
                 <div class="row g-0">
-                    <div class="col">
+                    <div class="col-12">
                         <div class="genre-container">
                             <h3 class="mb-0">{{ genre.genre_name|title }}</h3> 
-                            <div class="buttons-container">
-                                <button class="generic-button button-color-gold my-1" on data-bs-toggle="modal" data-bs-target="#{{ genre.genre_name|replace(' ','-') }}-modal">Rename</button>
-                                <button class="generic-button button-color-red my-1"><a href="{{ url_for('delete_genre', genre_id=genre._id) }}">Delete</a></button>
-                            </div>
+                            <form method="POST" action="{{ url_for('update_genre', genre_id=genre._id) }}">
+                                <input class="text-center" type="text" name="replacement-genre-name" placeholder="Replacement Name" required>
+                                <button type="submit" class="generic-button button-color-gold">Rename <i class="fas fa-edit"></i></button>
+                                <button class="generic-button button-color-red"><a href="{{ url_for('delete_genre', genre_id=genre._id) }}">Delete</a></button>
+                            </form>
                         </div>
                     </div>
                 </div>                
             {% endfor %}
         </div>
-
-        {% for genre in genre_list %}
-            <div class="modal fade" id="{{ genre.genre_name|replace(' ','-') }}-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header px-5">
-                                <h2 class="modal-title" id="staticBackdropLabel">{{ genre.genre_name|title }}</h2>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="modal-body-container text-center">
-                                <h5>What would you like to rename {{ genre.genre_name|title }} to?</h5>
-                            <form class="modal-search-bar-container" method="POST" action="{{ url_for('update_genre', genre_id=genre._id, genre_name=genre.genre_name) }}">
-                                    <input type="text" name="{{ genre.genre_name|replace(' ', '-') }}-replacement-genre-name" placeholder="Replacement Genre Name" required>
-                                    <div class="my-3">
-                                        <button type="submit" class="generic-button button-color-gold mt-3">Rename <i class="fas fa-edit"></i></button>
-                                        <button type="button" class="generic-button mt-3" data-bs-dismiss="modal">Cancel</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        {% endfor %}
 
 {% endblock %}

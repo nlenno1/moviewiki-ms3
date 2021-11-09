@@ -349,15 +349,24 @@ footer .logo {
     border: 2px inset rgb(118, 118, 118);
 }
 
-.genre-container {
+.genre-container, .genre-container form {
     display: flex;
     align-content: center;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-around;
+    align-items: center;
+}
+
+.genre-container {
     margin: 5px;
     border: 1px solid #c4c4c4;
     border-radius: 5px;
+    padding: 10px;
+}
+
+.genre-container form button, .genre-container form input {
+    margin: 10px auto;
 }
 
 .genre-container h3 {
@@ -370,6 +379,9 @@ footer .logo {
     .search-bar-container input {
         width: 450px;
         margin: 0 20px 0 0;
+    }
+    .genre-container form button, .genre-container form input {
+        margin: 0.25rem 4px;
     }
 }
 
