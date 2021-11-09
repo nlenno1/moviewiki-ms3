@@ -29,13 +29,6 @@ def is_admin():
     return False
 
 
-def is_signed_in():
-    if session and session["id"]:
-        return True
-    else:
-        return False
-
-
 def is_correct_user(user_id_to_check):
     if session and session["id"] and (
       session["id"] == user_id_to_check or session["is_superuser"] is True):
@@ -141,7 +134,8 @@ def add_review_to_latest_reviews_dicts(movie, new_review_dict):
     user = find_one_with_key("users", "_id", ObjectId(session["id"]))
 
     user["user_latest_reviews"] = create_new_latest_reviews(
-        user["user_latest_reviews"], new_review_dict, "review_for_id", movie["_id"])
+        user["user_latest_reviews"], new_review_dict, "review_for_id",
+        movie["_id"])
     movie["latest_reviews"] = create_new_latest_reviews(
         movie["latest_reviews"], new_review_dict, "reviewer_id", session["id"])
 
@@ -169,9 +163,7 @@ def consolidate_matching_array_dicts(list_1, list_2):
     function to compare 2 lists matching values under append any matching
     dicts to a new list.
     """
-    print(list_1, list_2)
     new_list = set(list_1).intersection(list_2)
-    print(new_list)
     return new_list
 
 
@@ -187,6 +179,70 @@ def find_review(movie_id, reviewer_id):
     movie = find_one_with_key("movies", "_id", ObjectId(movie_id))
     movie_review = find_review_in_reviews_list(movie["reviews"], reviewer_id)
     return movie_review
+
+
+def add_review_to_dict(new_movie):
+    if request.form.get("submit-movie-review"):
+        review = create_single_review(new_movie)
+        review["review_for"] = new_movie["movie_title"]
+        new_movie["reviews"].append(review)
+        new_movie["latest_reviews"].append(review)
+        new_movie["average_rating"] = review["star_rating"]
+
+
+def generate_new_movie_dict():
+    image_link = generate_movie_image_link()
+    cast_members = request.form.get("cast-members").lower().split(","),
+    if cast_members == "":
+        cast_members = []
+    new_movie = {
+            "movie_title": request.form.get("movie-title").lower(),
+            "release_date": datetime.strptime(request.form.get(
+                                              "release-date"), '%Y-%m-%d'),
+            "age_rating": request.form.get("age-rating"),
+            "duration": request.form.get("duration"),
+            "genre": request.form.getlist("movie-genre"),
+            "director": request.form.get("director").lower(),
+            "cast_members": cast_members,
+            "movie_synopsis": request.form.get("movie-synopsis"),
+            "movie_description": request.form.get("movie-description"),
+            "image_link": image_link,
+            "reviews": [],
+            "latest_reviews": [],
+            "created_by": session['id'],
+            "is_part_of_series": False,
+            "average_rating": 0.0
+        }
+    add_series_information_to_dict(new_movie)
+    add_review_to_dict(new_movie)
+    return new_movie
+
+
+def generate_movie_image_link():
+    if request.form.get("image-link"):
+        image_link = request.form.get("image-link")
+    else:
+        image_link = "../static/img/movie-placeholder.png"
+    return image_link
+
+
+def add_series_information_to_dict(new_movie):
+    if request.form.get("submit-series-info"):
+        new_movie["is_part_of_series"] = True
+        new_movie["series_position"] = request.form.get(
+                                            "series-checkboxes")
+        new_movie["series_name"] = request.form.get("series-name").lower()
+        if new_movie["series_position"] == "start":
+            new_movie["next_movie_title"] = request.form.get(
+                                        "next-movie-name").lower()
+        elif new_movie["series_position"] == "end":
+            new_movie["previous_movie_title"] = request.form.get(
+                                            "previous-movie-name").lower()
+        else:
+            new_movie["previous_movie_title"] = request.form.get(
+                                            "previous-movie-name").lower()
+            new_movie["next_movie_title"] = request.form.get(
+                                        "next-movie-name").lower()
 
 
 # ---------- app.route ----------
@@ -255,6 +311,7 @@ def add_genre():
     is_user_admin = is_admin()
     if not is_user_admin:
         return redirect(url_for("home"))
+
     new_genre_name = request.form.get('genre-name')
     mongo.db.genre.insert_one({
         "genre_name": new_genre_name.lower()
@@ -263,23 +320,27 @@ def add_genre():
     return redirect(url_for('get_all_genre'))
 
 
-@app.route("/genre/update/<genre_name>,<genre_id>", methods=["POST"])
-def update_genre(genre_id, genre_name):
+@app.route("/genre/<genre_id>/update", methods=["POST"])
+def update_genre(genre_id):
     """
     function to update a genre name in the DB
     """
     is_user_admin = is_admin()
     if not is_user_admin:
         return redirect(url_for("home"))
-    # store input data in a variable using the genre_name to make up the input
-    # name value and removing any spaces
-    new_genre_name = request.form.get(genre_name.replace(
-                                        " ", "-") + '-replacement-genre-name')
+
+    new_genre_name = request.form.get("replacement-genre-name")
     # updating the informatiion in the DB using the _id to find the documnet
-    mongo.db.genre.update({"_id": ObjectId(genre_id)}, {
-                                "genre_name": new_genre_name.lower()})
-    flash("Genre Updated")
-    return redirect(url_for('get_all_genre'))
+    try:
+        genre = mongo.db.genres.find_one({'_id': ObjectId(genre_id)})
+
+        mongo.db.genre.update({"_id": ObjectId(genre_id)}, {
+                                    "genre_name": new_genre_name.lower()})
+        flash("Genre Updated")
+        return redirect(url_for('get_all_genre'))
+    except:
+        flash("An Error Occured")
+        return redirect(url_for('get_all_genre'))
 
 
 @app.route("/genre/<genre_id>/delete")
@@ -295,6 +356,7 @@ def delete_genre(genre_id):
 
 
 # user account management
+# create user profile
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
@@ -310,7 +372,8 @@ def signup():
 
         register = {
             "username": request.form.get("username").lower(),
-            "password": generate_password_hash(request.form.get("password")),
+            "password_hash": generate_password_hash(
+                              request.form.get("password")),
             "firstname": request.form.get("firstname").lower(),
             "lastname": request.form.get("lastname").lower(),
             "dob": request.form.get("dob"),
@@ -330,12 +393,42 @@ def signup():
 
         # put the user into session and load profile page
         flash("Registration Successful " + session["user"].capitalize() + "!")
-        return redirect(url_for('profile', username=session['user']))
+        return redirect(url_for('profile', user_id=session['id']))
 
     genre_list = mongo.db.genre.find()
     return render_template("signup.html", genre_list=genre_list)
 
 
+# view/read user profile
+@app.route("/profile/<user_id>", methods=["GET", "POST"])
+def profile(user_id):
+
+    is_user_allowed = is_correct_user(user_id)
+    if not is_user_allowed:
+        return redirect(url_for("home"))
+
+    user = mongo.db.users.find_one(
+            {"_id": ObjectId(user_id)},
+            {"password_hash": 0})
+
+    # generate suggested_movies list
+    suggested_movies = []
+    movies = list(mongo.db.movies.find())
+    for item in movies:
+        if set(user["favourite_genres"]).intersection(item["genre"]):
+            suggested_movies.append(item)
+    suggested_movies = sorted(suggested_movies, key=lambda d: d[
+                                'average_rating'])[:15]
+
+    user_latest_reviews = sorted(user["user_latest_reviews"], key=lambda d: d[
+                          'review_date'], reverse=True)
+
+    return render_template("profile.html", user=user,
+                           suggested_movies=suggested_movies,
+                           user_latest_reviews=user_latest_reviews)
+
+
+# edit user profile
 @app.route("/profile/<user_id>/edit", methods=["GET", "POST"])
 def edit_user_profile(user_id):
     is_user_allowed = is_correct_user(user_id)
@@ -344,14 +437,14 @@ def edit_user_profile(user_id):
 
     if request.method == "POST":
         user = mongo.db.users.find_one({"_id": ObjectId(session['id'])},
-                                       {"password": 0})
+                                       {"password_hash": 0})
 
         requested_username = request.form.get("username").lower()
         # change into conditional to compare user["username"] and
         # requested_username
         existing_user = mongo.db.users.find_one(
             {"username": requested_username.lower()},
-            {"password": 0})
+            {"password_hash": 0})
 
         if existing_user and existing_user["username"] != user["username"]:
             flash("Username " + requested_username.capitalize() +
@@ -375,7 +468,7 @@ def edit_user_profile(user_id):
                                          session["id"]))
 
         flash(f"Successfully Updated {session['user'].capitalize()} Account!")
-        return redirect(url_for('profile', username=session['user']))
+        return redirect(url_for('profile', user_id=session['id']))
 
     user = find_one_with_key("users", "_id", ObjectId(user_id))
     user["dob"] = datetime.strptime(user["dob"], '%Y-%m-%d')
@@ -389,6 +482,7 @@ def edit_user_profile(user_id):
                            user=user)
 
 
+# delete user profile
 @app.route("/profile/<user_id>/delete")
 def delete_user_profile(user_id):
     is_user_allowed = is_correct_user(user_id)
@@ -413,7 +507,7 @@ def signin():
             {"username": request.form.get("username").lower()}
         )
         if existing_user:
-            if check_password_hash(existing_user["password"],
+            if check_password_hash(existing_user["password_hash"],
                                    request.form.get("password")):
 
                 add_user_data_to_session_storage(existing_user)
@@ -434,8 +528,8 @@ def signin():
 
 @app.route("/signout")
 def signout():
-    is_user_signed_in = is_signed_in()
-    if not is_user_signed_in:
+    
+    if not session["user"]:
         return redirect(url_for("signin"))
 
     flash("You have signed out")
@@ -443,102 +537,10 @@ def signout():
     return redirect(url_for('home'))
 
 
-@app.route("/profile/<user_id>", methods=["GET", "POST"])
-def profile(user_id):
-
-    is_user_allowed = is_correct_user(user_id)
-    if not is_user_allowed:
-        return redirect(url_for("home"))
-
-    user = mongo.db.users.find_one(
-            {"_id": ObjectId(user_id)},
-            {"password": 0})
-
-    # generate suggested_movies list
-    suggested_movies = []
-    movies = list(mongo.db.movies.find())
-    for item in movies:
-        if set(user["favourite_genres"]).intersection(item["genre"]):
-            suggested_movies.append(item)
-    suggested_movies = sorted(suggested_movies, key=lambda d: d[
-                                'average_rating'])[:15]
-
-    user_latest_reviews = sorted(user["user_latest_reviews"], key=lambda d: d[
-                          'review_date'], reverse=True)
-
-    return render_template("profile.html", user=user,
-                           suggested_movies=suggested_movies,
-                           user_latest_reviews=user_latest_reviews)
-
-
-def generate_movie_image_link():
-    if request.form.get("image-link"):
-        image_link = request.form.get("image-link")
-    else:
-        image_link = "../static/img/movie-placeholder.png"
-    return image_link
-
-
-def add_series_information_to_dict(new_movie):
-    if request.form.get("submit-series-info"):
-        new_movie["is_part_of_series"] = True
-        new_movie["series_position"] = request.form.get(
-                                            "series-checkboxes")
-        new_movie["series_name"] = request.form.get("series-name").lower()
-        if new_movie["series_position"] == "start":
-            new_movie["next_movie_title"] = request.form.get(
-                                        "next-movie-name").lower()
-        elif new_movie["series_position"] == "end":
-            new_movie["previous_movie_title"] = request.form.get(
-                                            "previous-movie-name").lower()
-        else:
-            new_movie["previous_movie_title"] = request.form.get(
-                                            "previous-movie-name").lower()
-            new_movie["next_movie_title"] = request.form.get(
-                                        "next-movie-name").lower()
-
-
-def add_review_to_dict(new_movie):
-    if request.form.get("submit-movie-review"):
-        review = create_single_review(new_movie)
-        review["review_for"] = new_movie["movie_title"]
-        new_movie["reviews"].append(review)
-        new_movie["latest_reviews"].append(review)
-        new_movie["average_rating"] = review["star_rating"]
-
-
-def generate_new_movie_dict():
-    image_link = generate_movie_image_link()
-    cast_members = request.form.get("cast-members").lower().split(","),
-    if cast_members == "":
-        cast_members = []
-    new_movie = {
-            "movie_title": request.form.get("movie-title").lower(),
-            "release_date": datetime.strptime(request.form.get(
-                                              "release-date"), '%Y-%m-%d'),
-            "age_rating": request.form.get("age-rating"),
-            "duration": request.form.get("duration"),
-            "genre": request.form.getlist("movie-genre"),
-            "director": request.form.get("director").lower(),
-            "cast_members": cast_members,
-            "movie_synopsis": request.form.get("movie-synopsis"),
-            "movie_description": request.form.get("movie-description"),
-            "image_link": image_link,
-            "reviews": [],
-            "latest_reviews": [],
-            "created_by": session['id'],
-            "is_part_of_series": False,
-            "average_rating": 0.0
-        }
-    add_series_information_to_dict(new_movie)
-    add_review_to_dict(new_movie)
-    return new_movie
-
-
-@app.route("/create-movie", methods=["GET", "POST"])
+@app.route("/movie/add", methods=["GET", "POST"])
 def create_movie():
-    is_user_signed_in = is_signed_in()
-    if not is_user_signed_in:
+    
+    if not session["user"]:
         return redirect(url_for("signin"))
 
     if request.method == "POST":
@@ -565,8 +567,56 @@ def create_movie():
     return render_template("create-movie.html", genre_list=genre_list)
 
 
-@app.route("/edit-movie/<movie_id>", methods=["GET", "POST"])
+@app.route("/movie/<movie_id>/view")
+def view_movie(movie_id):
+    # add try except
+    movie = mongo.db.movies.find_one(
+            {'_id': ObjectId(movie_id)})
+
+    user_want_to_watch = False
+    user_watched = False
+    user_reviewed = False
+
+    if session["user"]:
+        user = mongo.db.users.find_one(
+            {"_id": ObjectId(session["id"])},
+            {"_id": 0, "movies_watched": 1, "movies_to_watch": 1,
+             "movies_reviewed": 1})
+
+        if movie["_id"] in user["movies_reviewed"]:
+            user_reviewed = True
+
+        if movie["_id"] in user["movies_watched"]:
+            user_watched = True
+
+        if movie["_id"] in user["movies_to_watch"]:
+            user_want_to_watch = True
+
+    # generate similar_movies list - make into function
+    similar_movies = []
+    movies = list(mongo.db.movies.find())
+    for item in movies:
+        if set(movie["genre"]).intersection(item["genre"]):
+            similar_movies.append(item)
+    similar_movies = sorted(similar_movies, key=lambda d: d[
+                        'average_rating'], reverse=True)[:15]
+
+    movie__genre_text_list = ', '.join(name.title() for name in movie["genre"])
+    movie["genre"] = movie__genre_text_list
+    latest_reviews = sorted(movie["latest_reviews"], key=lambda d: d[
+                        'review_date'], reverse=True)
+
+    return render_template("view-movie.html", movie=movie,
+                           user_watched=user_watched,
+                           user_want_to_watch=user_want_to_watch,
+                           similar_movies=similar_movies,
+                           latest_reviews=latest_reviews,
+                           user_reviewed=user_reviewed)
+
+
+@app.route("/movie/<movie_id>/edit", methods=["GET", "POST"])
 def edit_movie(movie_id):
+    # add try except
     # movie = mongo.bd.movies.find_one({"_id": ObjectId(movie_id)},
     #                                  {"created_by": 1})
 
@@ -622,55 +672,10 @@ def delete_movie(movie_id):
     return redirect(url_for('home'))
 
 
-@app.route("/view-movie/<movie_id>")
-def view_movie(movie_id):
-    movie = mongo.db.movies.find_one(
-            {'_id': ObjectId(movie_id)})
-
-    user_want_to_watch = False
-    user_watched = False
-    user_reviewed = False
-
-    if is_signed_in():
-        user = mongo.db.users.find_one(
-            {"_id": ObjectId(session["id"])},
-            {"_id": 0, "movies_watched": 1, "movies_to_watch": 1,
-             "movies_reviewed": 1})
-
-        if movie["_id"] in user["movies_reviewed"]:
-            user_reviewed = True
-
-        if movie["_id"] in user["movies_watched"]:
-            user_watched = True
-
-        if movie["_id"] in user["movies_to_watch"]:
-            user_want_to_watch = True
-
-    # generate similar_movies list - make into function
-    similar_movies = []
-    movies = list(mongo.db.movies.find())
-    for item in movies:
-        if set(movie["genre"]).intersection(item["genre"]):
-            similar_movies.append(item)
-    similar_movies = sorted(similar_movies, key=lambda d: d[
-                        'average_rating'], reverse=True)[:15]
-
-    movie__genre_text_list = ', '.join(name.title() for name in movie["genre"])
-    movie["genre"] = movie__genre_text_list
-    latest_reviews = sorted(movie["latest_reviews"], key=lambda d: d[
-                        'review_date'], reverse=True)
-    list(movie)
-    return render_template("view-movie.html", movie=movie,
-                           user_watched=user_watched,
-                           user_want_to_watch=user_want_to_watch,
-                           similar_movies=similar_movies,
-                           latest_reviews=latest_reviews,
-                           user_reviewed=user_reviewed)
-
-
 # review management
-@app.route("/view-reviews/<movie_id>")
+@app.route("/reviews/<movie_id>/view")
 def view_reviews(movie_id):
+    # add try except
     movie = find_one_with_key("movies", "_id", ObjectId(movie_id))
     movie_reviews = sorted(movie["reviews"], key=lambda d: d[
                                 'review_date'], reverse=True)
@@ -679,19 +684,21 @@ def view_reviews(movie_id):
                            movie_reviews=movie_reviews)
 
 
-@app.route("/create-review", defaults={'selected_movie_title': None},
-           methods=["GET", "POST"])
-@app.route("/create-review/<selected_movie_title>", methods=["GET", "POST"])
+# use movie_if for this app.route not movie_title - request args **!
+@app.route("/review/add", methods=["GET", "POST"])
 def create_review(selected_movie_title):
-    is_user_signed_in = is_signed_in()
-    if not is_user_signed_in:
+
+    if not session["user"]:
         return redirect(url_for("signin"))
 
     if request.method == "POST":
-        requested_movie_name = request.form.get("selected-movie-title").lower()
-        movie = mongo.db.movies.find_one({
-                                "movie_title": requested_movie_name})
-        if movie:
+        movie_id = request.args.get('movie_id')
+
+        if movie_id:
+            movie = mongo.db.movies.find_one({"_id": ObjectId(movie_id)},
+                                             {"latest_reviews": 1, 
+                                              "reviews": 1,
+                                              "movie_title": 1})
             # check for previous review from user
             for review in movie["reviews"]:
                 if review["reviewer_id"] == session["id"]:
@@ -699,6 +706,7 @@ def create_review(selected_movie_title):
                     return redirect(url_for('edit_review',
                                     movie_id=movie["_id"],
                                     user_id=session["id"]))
+
             new_review = create_single_review(movie)
             mongo.db.movies.update_one({"_id": ObjectId(
                                         movie["_id"])},
@@ -714,6 +722,8 @@ def create_review(selected_movie_title):
             return redirect(url_for('view_reviews', movie_id=movie["_id"]))
 
         else:
+            requested_movie_name = request.form.get("selected-movie-title")
+
             flash(f"There is no movie called '{requested_movie_name.title()}' "
                   f"in the database.\nEither create a profile for this movie "
                   f"or try a different Movie Title")
@@ -760,7 +770,6 @@ def edit_review(movie_id, user_id):
 def delete_review(movie_id, user_id):
 
     is_user_allowed = is_correct_user(user_id)
-    print(is_user_allowed)
     if not is_user_allowed:
         return redirect(url_for('view_reviews', movie_id=movie_id))
 
@@ -790,10 +799,10 @@ def delete_review(movie_id, user_id):
 
 
 # watched & want to watch list control
-@app.route("/user/add-watched-movie/<movie_id>")
+@app.route("/user/watched-movie/<movie_id>/add")
 def add_watched_movie(movie_id):
-    is_user_signed_in = is_signed_in()
-    if not is_user_signed_in:
+
+    if not session["user"]:
         return redirect(url_for("signin"))
 
     update_collection_item("users", "_id", ObjectId(session["id"]), "$push",
@@ -801,10 +810,10 @@ def add_watched_movie(movie_id):
     return redirect(url_for("view_movie", movie_id=movie_id))
 
 
-@app.route("/user/remove-watched-movie/<movie_id>")
+@app.route("/user/watched-movie/<movie_id>/remove")
 def remove_watched_movie(movie_id):
-    is_user_signed_in = is_signed_in()
-    if not is_user_signed_in:
+
+    if not session["user"]:
         return redirect(url_for("signin"))
 
     mongo_prefix_select("users").update_one(
@@ -813,10 +822,10 @@ def remove_watched_movie(movie_id):
     return redirect(url_for("view_movie", movie_id=movie_id))
 
 
-@app.route("/user/add-want-to-watch-movie/<movie_id>")
+@app.route("/user/want-to-watch/<movie_id>/add")
 def add_want_to_watch_movie(movie_id):
-    is_user_signed_in = is_signed_in()
-    if not is_user_signed_in:
+
+    if not session["user"]:
         return redirect(url_for("signin"))
 
     update_collection_item("users", "_id", ObjectId(session["id"]), "$push",
@@ -824,10 +833,10 @@ def add_want_to_watch_movie(movie_id):
     return redirect(url_for("view_movie", movie_id=movie_id))
 
 
-@app.route("/user/remove-want-to-watch-movie/<movie_id>")
+@app.route("/user/want-to-watch/<movie_id>/remove")
 def remove_want_to_watch_movie(movie_id):
-    is_user_signed_in = is_signed_in()
-    if not is_user_signed_in:
+    
+    if not session["user"]:
         return redirect(url_for("signin"))
 
     mongo_prefix_select("users").update_one(
