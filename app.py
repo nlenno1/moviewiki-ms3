@@ -333,11 +333,11 @@ def update_genre(genre_id):
     # updating the informatiion in the DB using the _id to find the documnet
     try:
         genre = mongo.db.genres.find_one({'_id': ObjectId(genre_id)})
-
-        mongo.db.genre.update({"_id": ObjectId(genre_id)}, {
-                                    "genre_name": new_genre_name.lower()})
-        flash("Genre Updated")
-        return redirect(url_for('get_all_genre'))
+        if genre:
+            mongo.db.genre.update({"_id": ObjectId(genre_id)}, {
+                                        "genre_name": new_genre_name.lower()})
+            flash("Genre Updated")
+            return redirect(url_for('get_all_genre'))
     except:
         flash("An Error Occured")
         return redirect(url_for('get_all_genre'))
@@ -539,12 +539,27 @@ def signout():
 
 @app.route("/movie/add", methods=["GET", "POST"])
 def create_movie():
-    
+
     if not session["user"]:
         return redirect(url_for("signin"))
 
     if request.method == "POST":
         new_movie = generate_new_movie_dict()
+
+        existing_movies = mongo.db.movies.find(
+                          {"movie_title": new_movie["movie_title"]})
+        if existing_movies:
+            for movie in existing_movies:
+                if movie["release_date"].strftime(
+                  '%Y') == new_movie["release_date"].strftime('%Y'):
+                    flash(f"There is already a movie called "
+                          f"{new_movie['movie_title'].title()} which was "
+                          f"released in "
+                          f"{new_movie['release_date'].strftime('%Y')}")
+                    flash("Either use the existing movie profile or change"
+                          " the release year")
+                    return redirect(url_for('view_all_movies'))
+
         new_id = mongo.db.movies.insert_one(new_movie).inserted_id
 
         if request.form.get("seen-movie-checkbox"):
@@ -731,7 +746,8 @@ def create_review(selected_movie_title):
                   f"or try a different Movie Title")
         return redirect(url_for('create_review'))
 
-    movie_title_list = mongo.db.movies.find({}, {"movie_title": 1, "release_date": 1})
+    movie_title_list = mongo.db.movies.find({}, {"movie_title": 1, 
+                                                 "release_date": 1})
     return render_template(
         "create-review.html", movie_title_list=movie_title_list,
         selected_movie_title=selected_movie_title)
