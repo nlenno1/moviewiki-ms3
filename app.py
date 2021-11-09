@@ -126,20 +126,24 @@ def convert_string_to_datetime(string_date):
     return datetime_date
 
 
-def create_new_latest_reviews(review_list, new_review_dict):
-    if len(review_list) > 2:
-        review_list = review_list[0:2]
-    review_list.append(new_review_dict)
-    return review_list
+def create_new_latest_reviews(review_list, new_review_dict,
+                              to_compare_1, to_compare_2):
+    new_review_list = [review for review in review_list if
+                       review[to_compare_1] != to_compare_2]
+
+    if len(new_review_list) > 2:
+        new_review_list = new_review_list[0:2]
+    new_review_list.append(new_review_dict)
+    return new_review_list
 
 
 def add_review_to_latest_reviews_dicts(movie, new_review_dict):
     user = find_one_with_key("users", "_id", ObjectId(session["id"]))
 
     user["user_latest_reviews"] = create_new_latest_reviews(
-        user["user_latest_reviews"], new_review_dict)
+        user["user_latest_reviews"], new_review_dict, "review_for_id", movie["_id"])
     movie["latest_reviews"] = create_new_latest_reviews(
-        movie["latest_reviews"], new_review_dict)
+        movie["latest_reviews"], new_review_dict, "reviewer_id", session["id"])
 
     update_collection_item("users", '_id', ObjectId(session['id']), "$set",
                            "user_latest_reviews", user["user_latest_reviews"])
