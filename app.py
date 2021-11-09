@@ -685,7 +685,9 @@ def view_reviews(movie_id):
 
 
 # use movie_if for this app.route not movie_title - request args **!
-@app.route("/review/add", methods=["GET", "POST"])
+@app.route("/review/add", defaults={'selected_movie_title': None},
+           methods=["GET", "POST"])
+@app.route("/review/<selected_movie_title>/add", methods=["GET", "POST"])
 def create_review(selected_movie_title):
 
     if not session["user"]:
@@ -696,7 +698,7 @@ def create_review(selected_movie_title):
 
         if movie_id:
             movie = mongo.db.movies.find_one({"_id": ObjectId(movie_id)},
-                                             {"latest_reviews": 1, 
+                                             {"latest_reviews": 1,
                                               "reviews": 1,
                                               "movie_title": 1})
             # check for previous review from user
@@ -729,7 +731,7 @@ def create_review(selected_movie_title):
                   f"or try a different Movie Title")
         return redirect(url_for('create_review'))
 
-    movie_title_list = mongo.db.movies.find({}, {"movie_title": 1})
+    movie_title_list = mongo.db.movies.find({}, {"movie_title": 1, "release_date": 1})
     return render_template(
         "create-review.html", movie_title_list=movie_title_list,
         selected_movie_title=selected_movie_title)

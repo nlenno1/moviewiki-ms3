@@ -13,9 +13,9 @@
                     <datalist id="movie-titles">
                         {% for movie in movie_title_list %}
                             {% if selected_movie_title == movie.movie_title  %}
-                            <option value="{{ movie.movie_title|title }}" selected></option>
+                            <option value="{{ movie.movie_title|title }} ({{ movie.release_date.strftime('%Y') }}) " selected></option>
                             {% else %}
-                            <option value="{{ movie.movie_title|title }}"></option>
+                            <option value="{{ movie.movie_title|title }} ({{ movie.release_date.strftime('%Y') }})"></option>
                             {% endif %}
                         {% endfor %}
                     </datalist>
