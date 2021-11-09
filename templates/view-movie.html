@@ -3,7 +3,15 @@
 
 <h1 id="header-title">Movie</h1>
 
-<div class="container-md">
+    <div class="container-md">
+        {% if user_reviewed == False %}
+            <p class="mb-0 mt-4 text-center">Want to add your review of this movie? Click here! 
+            {% if session["user"] %}
+                <button class="generic-button button-color-gold"><a href="{{ url_for('create_review', selected_movie_title=movie.movie_title) }}">Create Review</a></button></p> 
+            {% else %}
+                <button class="generic-button button-color-gold"><a href="{{ url_for('signin') }}">Sign In</a></button></p> 
+            {% endif %}
+        {% endif %}
         <div class="card form-card shadow">
             <div class="row my-3">
                 <div class="col-12 col-md-7  text-center text-md-start">
@@ -147,13 +155,11 @@
                                 </thead>
                                 <tbody>
                                     {% for review in latest_reviews %}
-                                    {% if loop.index < 4 %}
                                     <tr>
                                         <td>{{ review.review_date.strftime('%d %b %Y')  }}</td>
                                         <td>{{ review.review_title|title }}</td>
                                         <td>{{ review.star_rating }}</td>
                                     </tr>
-                                    {% endif %}
                                     {% endfor %}
                                 </tbody>
                             </table>
@@ -167,17 +173,15 @@
             <div class="col">
                 <h3 class="carousel-label">Similar Movies</h3>
                 <div class="movie-carousel">
-                    {% for item in similar_movies|sort(attribute="average_rating") %}
-                        {% if loop.index <= 10 and item.movie_title != movie.movie_title %}
-                            <div class="movie-picture-display">
-                                <div class="movie-image-continer">
-                                    <a href="{{ url_for('view_movie', movie_id=item._id) }}">
-                                        <img src="{{ item.image_link }}" alt="Movie Image">
-                                    </a>
-                                </div>
-                                <h4>{{ item.movie_title }}</h4>
+                    {% for item in similar_movies %}
+                        <div class="movie-picture-display">
+                            <div class="movie-image-continer">
+                                <a href="{{ url_for('view_movie', movie_id=item._id) }}">
+                                    <img src="{{ item.image_link }}" alt="Movie Image">
+                                </a>
                             </div>
-                        {% endif %}
+                            <h4 class="movie-text">{{ item.movie_title }}</h4>
+                        </div>
                     {% endfor %}
                 </div>
             </div>

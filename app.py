@@ -38,7 +38,7 @@ def is_signed_in():
 
 def is_correct_user(user_id_to_check):
     if session and session["id"] and (
-      session["id"] is user_id_to_check or session["is_superuser"] is True):
+      session["id"] == user_id_to_check or session["is_superuser"] is True):
         return True
     else:
         return False
@@ -542,9 +542,11 @@ def create_movie():
         if request.form.get("seen-movie-checkbox"):
             update_collection_item("users", "_id", ObjectId(session["id"]),
                                    "$push", "movies_watched",  new_id)
+
         if request.form.get("submit-movie-review"):
             update_collection_item("users", "_id", ObjectId(session["id"]),
-                                   "$push", "movies_reviewed", new_id)
+                                   "$push", "movies_reviewed",
+                                   ObjectId(new_id))
 
         update_collection_item("users", '_id', ObjectId(session['id']), "$set",
                                "user_latest_reviews", new_movie[
@@ -572,7 +574,8 @@ def edit_movie(movie_id):
         mongo.db.movies.update({"_id": ObjectId(movie_id)}, updated_movie)
         if request.form.get("submit-movie-review"):
             update_collection_item("users", "_id", ObjectId(session["id"]),
-                                   "$push", "movies_reviewed", movie_id)
+                                   "$push", "movies_reviewed",
+                                   ObjectId(movie_id))
 
         flash("Movie Profile Successfully Updated")
         return redirect(url_for("view_movie", movie_id=movie_id))
@@ -620,12 +623,16 @@ def view_movie(movie_id):
 
     user_want_to_watch = False
     user_watched = False
+    user_reviewed = False
 
     if is_signed_in():
         user = mongo.db.users.find_one(
             {"_id": ObjectId(session["id"])},
-            {"_id": 0, "movies_watched": 1, "movies_to_watch": 1}
-        )
+            {"_id": 0, "movies_watched": 1, "movies_to_watch": 1,
+             "movies_reviewed": 1})
+
+        if movie["_id"] in user["movies_reviewed"]:
+            user_reviewed = True
 
         if movie["_id"] in user["movies_watched"]:
             user_watched = True
@@ -639,6 +646,8 @@ def view_movie(movie_id):
     for item in movies:
         if set(movie["genre"]).intersection(item["genre"]):
             similar_movies.append(item)
+    similar_movies = sorted(similar_movies, key=lambda d: d[
+                        'average_rating'], reverse=True)[:15]
 
     movie__genre_text_list = ', '.join(name.title() for name in movie["genre"])
     movie["genre"] = movie__genre_text_list
@@ -649,7 +658,8 @@ def view_movie(movie_id):
                            user_watched=user_watched,
                            user_want_to_watch=user_want_to_watch,
                            similar_movies=similar_movies,
-                           latest_reviews=latest_reviews)
+                           latest_reviews=latest_reviews,
+                           user_reviewed=user_reviewed)
 
 
 # review management
@@ -684,6 +694,9 @@ def create_review(selected_movie_title):
             mongo.db.movies.update_one({"_id": ObjectId(
                                         movie["_id"])},
                                        {"$push": {"reviews": new_review}})
+
+            update_collection_item("users", "_id", ObjectId(session["id"]),
+                                   "$push", "movies_reviewed", movie["_id"])
 
             generate_average_review_score(ObjectId(movie["_id"]))
 
@@ -739,6 +752,7 @@ def edit_review(movie_id, user_id):
 def delete_review(movie_id, user_id):
 
     is_user_allowed = is_correct_user(user_id)
+    print(is_user_allowed)
     if not is_user_allowed:
         return redirect(url_for('view_reviews', movie_id=movie_id))
 
