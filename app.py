@@ -683,13 +683,18 @@ def create_review(selected_movie_title):
     if not is_user_signed_in:
         return redirect(url_for("signin"))
 
-    # double user review check
-
     if request.method == "POST":
         requested_movie_name = request.form.get("selected-movie-title").lower()
         movie = mongo.db.movies.find_one({
                                 "movie_title": requested_movie_name})
         if movie:
+            # check for previous review from user
+            for review in movie["reviews"]:
+                if review["reviewer_id"] == session["id"]:
+                    flash("You have already created a review for this movie")
+                    return redirect(url_for('edit_review',
+                                    movie_id=movie["_id"],
+                                    user_id=session["id"]))
             new_review = create_single_review(movie)
             mongo.db.movies.update_one({"_id": ObjectId(
                                         movie["_id"])},
