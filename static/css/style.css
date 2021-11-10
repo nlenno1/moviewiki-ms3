@@ -123,7 +123,7 @@ h4,
 
 .navbar-nav .dropdown-menu {
     margin-top: 19px;
-    background-color:rgba(0, 0, 0, 0.75);
+    background-color: rgba(0, 0, 0, 0.75);
     border: 2px solid #000;
     text-align: center;
 }
@@ -349,7 +349,8 @@ footer .logo {
     border: 2px inset rgb(118, 118, 118);
 }
 
-.genre-container, .genre-container form {
+.genre-container,
+.genre-container form {
     display: flex;
     align-content: center;
     flex-direction: row;
@@ -365,7 +366,8 @@ footer .logo {
     padding: 10px;
 }
 
-.genre-container form button, .genre-container form input {
+.genre-container form button,
+.genre-container form input {
     margin: 10px auto;
 }
 
@@ -380,7 +382,9 @@ footer .logo {
         width: 450px;
         margin: 0 20px 0 0;
     }
-    .genre-container form button, .genre-container form input {
+
+    .genre-container form button,
+    .genre-container form input {
         margin: 0.25rem 4px;
     }
 }
@@ -632,7 +636,7 @@ select {
     color: #8e8e8e;
 }
 
-select > .text-black {
+select>.text-black {
     color: #000 !important;
 }
 
@@ -922,4 +926,45 @@ select > .text-black {
     flex-wrap: nowrap;
     flex-direction: column;
     align-items: center;
+}
+
+/* Tooltips - example taken from W3 (https://www.w3schools.com/css/css_tooltip.asp)*/
+
+.tooltip-custom {
+    position: relative;
+}
+
+.tooltip-custom .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+    position: absolute;
+    z-index: 1;
+    top: -5px;
+    left: 105%;
+}
+
+.tooltip-custom .tooltiptext-icon {
+    visibility: hidden;
+    width: max-content;
+    line-height: 1.25rem;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    border-radius: 6px;
+    position: absolute;
+    z-index: 1;
+    top: -4px;
+    left: 115%;
+    font-size: 1rem;
+}
+
+.tooltip-custom:hover .tooltiptext-icon,
+.tooltip-custom:focus .tooltiptext-icon {
+    visibility: visible;
 }
