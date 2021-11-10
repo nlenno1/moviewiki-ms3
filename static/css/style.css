@@ -397,7 +397,7 @@ footer .logo {
     align-content: center;
     flex-direction: column;
     margin: 0 auto;
-    width: 85%
+    /* width: 85% */
 }
 
 .contact-card>.generic-form {
@@ -934,20 +934,6 @@ select>.text-black {
     position: relative;
 }
 
-.tooltip-custom .tooltiptext {
-    visibility: hidden;
-    width: 120px;
-    background-color: black;
-    color: #fff;
-    text-align: center;
-    padding: 5px 0;
-    border-radius: 6px;
-    position: absolute;
-    z-index: 1;
-    top: -5px;
-    left: 105%;
-}
-
 .tooltip-custom .tooltiptext-icon {
     visibility: hidden;
     width: max-content;
@@ -964,7 +950,51 @@ select>.text-black {
     font-size: 1rem;
 }
 
+.tooltip-custom .tooltiptext-input {
+    visibility: hidden;
+    width: max-content;
+    background-color: black;
+    border: 2px solid #ffca18;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    border-radius: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 100%;
+    left: 2px;
+    line-height: .25rem;
+}
+
 .tooltip-custom:hover .tooltiptext-icon,
-.tooltip-custom:focus .tooltiptext-icon {
+.tooltip-custom:focus .tooltiptext-icon,
+.tooltip-custom:focus-within .tooltiptext-input {
     visibility: visible;
+}
+
+/* Form validation */
+
+
+input:valid {
+    border-bottom: 2px solid #000;
+}
+
+input:invalid {
+    border-bottom: 2px solid rgb(200, 0, 0);
+}
+
+.invalid-message {
+    color:rgb(200, 0, 0);
+    margin-bottom: 0;
+    text-align: center;
+    font-size: 0.6rem;
+}
+
+input:invalid + p{
+    opacity: 1 !important;
+}
+
+input:valid + p {
+    opacity: 0 !important;
+    color: #fff;
 }
