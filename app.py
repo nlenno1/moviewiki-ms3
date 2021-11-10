@@ -605,8 +605,8 @@ def view_movie(movie_id):
             {"_id": 0, "movies_watched": 1, "movies_to_watch": 1,
              "movies_reviewed": 1})
 
-        if movie["_id"] in user["movies_reviewed"]:
-            user_reviewed = True
+        user_reviewed = check_key_in_array_of_dicts(user["movies_reviewed"],
+                                                   "movie_id", movie["_id"])
 
         user_watched = check_key_in_array_of_dicts(user["movies_watched"],
                                                    "movie_id", movie["_id"])
@@ -736,8 +736,7 @@ def create_review(selected_movie_title):
                                         movie["_id"])},
                                        {"$push": {"reviews": new_review}})
 
-            update_collection_item("users", "_id", ObjectId(session["id"]),
-                                   "$push", "movies_reviewed", movie["_id"])
+            create_and_add_mini_movie_dict(movie_id, "movies_reviewed", movie)
 
             generate_average_review_score(ObjectId(movie["_id"]))
 
@@ -800,9 +799,9 @@ def delete_review(movie_id, user_id):
 
     review = find_review(movie_id, user_id)
     # remove review from movie profile reviews list
-    update_collection_item_dict("movies", "_id", ObjectId(movie_id),
-                                "$pull", "reviews", "review_date",
-                                review["review_date"])
+    update_collection_item_dict("users", "_id", ObjectId(session["id"]),
+                                "$pull", "movies_reviewed", "movie_id",
+                                ObjectId(movie_id))
     # remove review from movie profile latest reviews list
     update_collection_item_dict("movies", "_id", ObjectId(movie_id),
                                 "$pull", "latest_reviews", "review_date",

@@ -11,6 +11,8 @@
             {% else %}
                 <button class="generic-button button-color-gold"><a href="{{ url_for('signin') }}">Sign In</a></button></p> 
             {% endif %}
+        {% else %}
+            <p class="mb-0 mt-4 text-center">You have reviewed this movie</p>
         {% endif %}
         <div class="card form-card shadow">
             <div class="row my-3">
