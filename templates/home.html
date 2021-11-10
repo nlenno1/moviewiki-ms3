@@ -13,7 +13,7 @@
                 <form method="POST" action="{{ url_for('movie_title_search') }}" class="search-bar-container">
                     <div class="input-container">
                         <div>
-                            <input type="text" name="movie_title_search" id="movie_title_search" placeholder="Search for a Movie" minlength="3" maxlength="30" class="validate" pattern="^^(?!.*[ -]{2})[a-zA-Z0-9- ]{3,30}$" required>
+                            <input type="text" name="movie_title_search" id="movie_title_search" placeholder="Search for a Movie" minlength="3" maxlength="30" class="validate" pattern="^(?!.*[ -]{2})[a-zA-Z0-9- ]{3,30}$" required>
                             <p class="invalid-message">3 to 30 characters long using letters, numbers and only 1 space or dash consecutively</p>
                         </div>
                     </div>

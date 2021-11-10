@@ -9,17 +9,32 @@
                 <div class="text-end small-text unselected-text">
                     * required
                 </div>
-                <label for="username" class="sub-script unselected-text">Username *</label>
-                <input type="text" name="username" id="username" value="{{ user.username|title }}" minlength="5" maxlength="15" class="validate" pattern="^[a-zA-Z0-9-_]+{5,15}$" required>
+                <label for="username" class="small-text unselected-text">Username *</label>
+                <div>
+                    <input type="text" value="{{ user.username }}" name="username" id="username" placeholder="Username" minlength="4" maxlength="15" class="validate" pattern="^(?!.*[-_]{2})[a-zA-Z][a-zA-Z0-9-_]{4,15}$" required>
+                    <p class="invalid-message">4 to 15 characters long, start with a letter, using letters, numbers and only 1 underscore or dash consecutively</p>
+                </div>
                 <hr class="shadow">
-                <label for="firstname" class="sub-script unselected-text">First Name *</label>
-                <input type="text" value="{{ user.firstname|title }}" name="firstname" id="firstname" placeholder="First Name" minlength="1" maxlength="15" class="validate" pattern="^[a-zA-Z0-9]{1,15}$" required>
-                <label for="lastname" class="sub-script unselected-text">Last Name *</label>
-                <input type="text" value="{{ user.lastname|title }}" name="lastname" id="lastname" placeholder="Last Name" required>
-                <label for="dob" class="sub-script unselected-text">Date Of Birth *</label>
-                <input type="date" value="{{ user.dob.strftime('%Y-%m-%d') }}" name="dob" id="dob" placeholder="Date of Birth" required>
-                <label for="email" class="sub-script unselected-text">Email Address *</label>
-                <input type="email" value="{{ user.email }}" name="email" id="email" placeholder="Email Address" required>
+                <label for="firstname" class="small-text unselected-text">First Name *</label>
+                    <div>
+                        <input type="text" value="{{ user.firstname }}" name="firstname" id="firstname" placeholder="First Name" minlength="2" maxlength="25" class="validate" pattern="^(?!.*[ -]{2})[a-zA-Z- ]{2,25}$" required>
+                        <p class="invalid-message">2 to 25 characters long using letters and only 1 space or dash consecutively</p>
+                    </div>
+                    <label for="lastname" class="small-text unselected-text">Last Name *</label>
+                    <div>
+                        <input type="text" value="{{ user.lastname }}" name="lastname" id="lastname" placeholder="Last Name" minlength="2" maxlength="25" class="validate" pattern="^(?!.*[ -]{2})[a-zA-Z- ]{2,25}$" required>
+                        <p class="invalid-message">2 to 25 characters long using letters and only 1 space or dash consecutively</p>
+                    </div> 
+                    <label for="dob" class="small-text unselected-text">Date Of Birth *</label>
+                    <div>
+                        <input onkeydown="return false" type='date' value="{{ user.dob.strftime('%Y-%m-%d') }}" name="dob" id="dob" placeholder="Date of Birth" class="validate" required>
+                        <p class="invalid-message">Use the date picker to select your date of birth</p>
+                    </div>
+                    <label for="email" class="small-text unselected-text">Email Address *</label>
+                    <div>
+                        <input type="email" value="{{ user.email }}" name="email" id="email" placeholder="Email Address" minlength="6" maxlength="40" class="validate" required>
+                        <p class="invalid-message">Email address up to 40 characters which must have @ and a domain extension</p>
+                    </div>
                 <hr class="shadow">
                 <p class="text-center small-text">Pick your favourite movie genre.</p>
                 <div class="dropdown">
@@ -59,4 +74,8 @@
     </div>
 
 
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{url_for('static', filename='js/genre-validation.js')}}"></script>
 {% endblock %}
