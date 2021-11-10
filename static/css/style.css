@@ -24,6 +24,7 @@ h4,
     font-weight: 600;
     width: 180px;
     margin: 0 4px;
+    height: 30px;
     transition: 0.3s;
 }
 
@@ -974,13 +975,12 @@ select>.text-black {
 
 /* Form validation */
 
-
-input:valid {
-    border-bottom: 2px solid #000;
+input:invalid {
+    border-bottom: 1px solid rgb(200, 0, 0);
 }
 
-input:invalid {
-    border-bottom: 2px solid rgb(200, 0, 0);
+input:valid, input:placeholder-shown {
+    border-bottom: 1px solid #000;
 }
 
 .invalid-message {
@@ -994,7 +994,17 @@ input:invalid + p{
     opacity: 1 !important;
 }
 
-input:valid + p {
+input:valid + p, input:placeholder-shown + p {
     opacity: 0 !important;
     color: #fff;
 }
+
+.input-container input:invalid {
+    border-bottom: 2px solid rgb(200, 0, 0);
+}
+
+.input-container input:valid, .input-container input:placeholder-shown {
+    border-bottom: 2px solid #000;
+}
+
+

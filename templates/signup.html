@@ -22,8 +22,8 @@
                     </div>
                     <label for="password-confirm" class="small-text unselected-text">Confirm Password *</label>
                     <div>
-                        <input type="password" name="password-confirm" id="password-confirm"  minlength="5" maxlength="15" class="validate" pattern="^[a-zA-Z0-9-_!?/\]{5,15}$" required>
-                        <p class="invalid-message">Must Match Password above</p>
+                        <input type="password" name="password-confirm" id="password-confirm" placeholder="Confirm Password"  minlength="5" maxlength="15" class="validate" pattern="^[a-zA-Z0-9-_!?/\]{5,15}$" required>
+                        <p class="invalid-message">5 to 20 characters long with letters, numbers and these symbols -_!?/\ only</p>
                     </div>
                     <p id="password-feedback" class="small-text pb-0 text-center">&nbsp</p>
                     <hr class="shadow">
@@ -75,5 +75,5 @@
 
 {% block scripts %}
     <script src="{{url_for('static', filename='js/genre-validation.js')}}"></script>
-    <script src="{{url_for('static', filename='js/password-check.js')}}"></script>
+    <script src="{{url_for('static', filename='js/password-validation.js')}}"></script>
 {% endblock %}
