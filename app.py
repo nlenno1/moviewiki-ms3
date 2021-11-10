@@ -582,6 +582,13 @@ def create_movie():
     return render_template("create-movie.html", genre_list=genre_list)
 
 
+def check_key_in_array_of_dicts(array_to_check, key, value_to_check_against):
+    for item in array_to_check:
+        if value_to_check_against == item[key]:
+            return True
+    return False
+
+
 @app.route("/movie/<movie_id>/view")
 def view_movie(movie_id):
     # add try except
@@ -601,11 +608,11 @@ def view_movie(movie_id):
         if movie["_id"] in user["movies_reviewed"]:
             user_reviewed = True
 
-        if movie["_id"] in user["movies_watched"]:
-            user_watched = True
+        user_watched = check_key_in_array_of_dicts(user["movies_watched"],
+                                                   "movie_id", movie["_id"])
 
-        if movie["_id"] in user["movies_to_watch"]:
-            user_want_to_watch = True
+        user_want_to_watch = check_key_in_array_of_dicts(
+                            user["movies_to_watch"], "movie_id", movie["_id"])
 
     # generate similar_movies list - make into function
     similar_movies = []
@@ -746,7 +753,7 @@ def create_review(selected_movie_title):
                   f"or try a different Movie Title")
         return redirect(url_for('create_review'))
 
-    movie_title_list = mongo.db.movies.find({}, {"movie_title": 1, 
+    movie_title_list = mongo.db.movies.find({}, {"movie_title": 1,
                                                  "release_date": 1})
     return render_template(
         "create-review.html", movie_title_list=movie_title_list,
@@ -812,8 +819,18 @@ def delete_review(movie_id, user_id):
     flash("Review deleted")
     movie = find_one_with_key("movies", "_id", ObjectId(movie_id))
     generate_average_review_score(ObjectId(movie["_id"]))
-    list(movie)
     return redirect(url_for('view_reviews', movie_id=movie["_id"]))
+
+
+def create_mini_movie_dict(movie_id):
+    movie = find_one_with_key("movies", "_id", ObjectId(movie_id))
+
+    new_dict = {
+        "movie_id": movie["_id"],
+        "movie_title": movie["movie_title"],
+        "release_year": movie["release_date"].strftime('%Y')
+    }
+    return new_dict
 
 
 # watched & want to watch list control
@@ -823,8 +840,10 @@ def add_watched_movie(movie_id):
     if not session["user"]:
         return redirect(url_for("signin"))
 
+    new_mini_movie_dict = create_mini_movie_dict(movie_id)
+
     update_collection_item("users", "_id", ObjectId(session["id"]), "$push",
-                           "movies_watched", ObjectId(movie_id))
+                           "movies_watched", new_mini_movie_dict)
     return redirect(url_for("view_movie", movie_id=movie_id))
 
 
@@ -834,9 +853,10 @@ def remove_watched_movie(movie_id):
     if not session["user"]:
         return redirect(url_for("signin"))
 
-    mongo_prefix_select("users").update_one(
-            {"_id": ObjectId(session["id"])},
-            {"$pull": {"movies_watched": ObjectId(movie_id)}})
+    update_collection_item_dict("users", "_id", ObjectId(session["id"]),
+                                "$pull", "movies_watched", "movie_id",
+                                ObjectId(movie_id))
+
     return redirect(url_for("view_movie", movie_id=movie_id))
 
 
@@ -846,20 +866,23 @@ def add_want_to_watch_movie(movie_id):
     if not session["user"]:
         return redirect(url_for("signin"))
 
+    new_mini_movie_dict = create_mini_movie_dict(movie_id)
+
     update_collection_item("users", "_id", ObjectId(session["id"]), "$push",
-                           "movies_to_watch", ObjectId(movie_id))
+                           "movies_to_watch", new_mini_movie_dict)
     return redirect(url_for("view_movie", movie_id=movie_id))
 
 
 @app.route("/user/want-to-watch/<movie_id>/remove")
 def remove_want_to_watch_movie(movie_id):
-    
+
     if not session["user"]:
         return redirect(url_for("signin"))
 
-    mongo_prefix_select("users").update_one(
-            {"_id": ObjectId(session["id"])},
-            {"$pull": {"movies_to_watch": ObjectId(movie_id)}})
+    update_collection_item_dict("users", "_id", ObjectId(session["id"]),
+                                "$pull", "movies_to_watch", "movie_id",
+                                ObjectId(movie_id))
+
     return redirect(url_for("view_movie", movie_id=movie_id))
 
 
