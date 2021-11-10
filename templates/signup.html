@@ -11,11 +11,12 @@
                 </div>
                 <div class="generic-form">
                     <label for="username" class="sub-script unselected-text">Username *</label>
-                    <input type="text" name="username" id="username" placeholder="Username" minlength="5" maxlength="15" class="validate" pattern="^[a-zA-Z0-9-_]+{5,15}$" required>
+                    <input type="text" name="username" id="username" placeholder="Username" minlength="5" maxlength="15" class="validate" pattern="^[a-zA-Z0-9]$" required>
                     <label for="password" class="sub-script unselected-text">Password *</label>
-                    <input type="password" name="password" id="password" placeholder="Password" minlength="5" maxlength="15" class="validate" pattern="^[a-zA-Z0-9-_]+{5,15}$" required>
+                    <input type="password" name="password" id="password" placeholder="Password" minlength="5" maxlength="15" class="validate" pattern="^[a-zA-Z0-9]+{5,15}$" required>
                     <label for="password-confirm" class="sub-script unselected-text">Password *</label>
-                    <input type="password" name="password-confirm" id="password-confirm" minlength="5" maxlength="15" class="validate" placeholder="Confirm Password" pattern="^[a-zA-Z0-9-_]+{5,15}$" required>
+                    <input type="password" name="password-confirm" id="password-confirm" minlength="5" maxlength="15" class="validate" placeholder="Confirm Password" pattern="^[a-zA-Z0-9]+{5,15}$" required>
+                    <p id="password-feedback" class="small-text pb-0 text-center">&nbsp</p>
                     <hr class="shadow">
                     <label for="firstname" class="sub-script unselected-text">First Name *</label>
                     <input type="text" name="firstname" id="firstname" placeholder="First Name" minlength="2" maxlength="15" class="validate" pattern="^[a-zA-Z0-9]{3,15}$" required>
@@ -47,4 +48,8 @@
     </div>
 
 
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{url_for('static', filename='js/password-check.js')}}"></script>
 {% endblock %}
