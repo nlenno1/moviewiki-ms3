@@ -632,8 +632,8 @@ select {
     color: #8e8e8e;
 }
 
-.text-black {
-    color: #000;
+select > .text-black {
+    color: #000 !important;
 }
 
 .checkbox-container>.series-checkboxes {

@@ -528,7 +528,7 @@ def signin():
 
 @app.route("/signout")
 def signout():
-    
+
     if not session["user"]:
         return redirect(url_for("signin"))
 
@@ -707,22 +707,22 @@ def view_reviews(movie_id):
 
 
 # use movie_if for this app.route not movie_title - request args **!
-@app.route("/review/add", defaults={'selected_movie_title': None},
-           methods=["GET", "POST"])
-@app.route("/review/<selected_movie_title>/add", methods=["GET", "POST"])
-def create_review(selected_movie_title):
+@app.route("/review/add", methods=["GET", "POST"])
+def create_review():
 
     if not session["user"]:
         return redirect(url_for("signin"))
 
     if request.method == "POST":
-        movie_id = request.args.get('movie_id')
+        movie_id = request.form.get('selected-movie-id')
 
         if movie_id:
             movie = mongo.db.movies.find_one({"_id": ObjectId(movie_id)},
                                              {"latest_reviews": 1,
                                               "reviews": 1,
-                                              "movie_title": 1})
+                                              "movie_title": 1,
+                                              "release_date": 1})
+
             # check for previous review from user
             for review in movie["reviews"]:
                 if review["reviewer_id"] == session["id"]:
@@ -752,14 +752,25 @@ def create_review(selected_movie_title):
                   f"or try a different Movie Title")
         return redirect(url_for('create_review'))
 
+    movie_id = request.args.get("movie_id")
+    movie = mongo.db.movies.find_one({"_id": ObjectId(movie_id)},
+                                     {"reviews": 1})
+    # check for previous review from user
+    for review in movie["reviews"]:
+        if review["reviewer_id"] == session["id"]:
+            flash("You have already created a review for this movie")
+            return redirect(url_for('edit_review',
+                            movie_id=movie["_id"],
+                            user_id=session["id"]))
     movie_title_list = mongo.db.movies.find({}, {"movie_title": 1,
                                                  "release_date": 1})
+
     return render_template(
         "create-review.html", movie_title_list=movie_title_list,
-        selected_movie_title=selected_movie_title)
+        selected_movie_id=movie_id)
 
 
-@app.route("/review/<movie_id>/<user_id>/edit", methods=["GET", "POST"])
+@app.route("/movie/<movie_id>/review/<user_id>/edit", methods=["GET", "POST"])
 def edit_review(movie_id, user_id):
     is_user_allowed = is_correct_user(user_id)
     if not is_user_allowed:
@@ -780,17 +791,16 @@ def edit_review(movie_id, user_id):
         add_review_to_latest_reviews_dicts(movie, updated_review)
 
         return redirect(url_for('view_reviews', movie_id=movie_id))
-
+    # condense this to one process
     movie = find_one_with_key("movies", "_id", ObjectId(movie_id))
     review = find_review_in_reviews_list(movie["reviews"], user_id)
 
-    movie_title_list = mongo.db.movies.find({}, {"movie_title": 1})
     return render_template(
-        "edit-review.html", movie_title_list=movie_title_list,
+        "edit-review.html",
         selected_movie=movie, movie_review=review)
 
 
-@app.route("/review/<movie_id>/<user_id>/delete")
+@app.route("/movie/<movie_id>/review/<user_id>/delete")
 def delete_review(movie_id, user_id):
 
     is_user_allowed = is_correct_user(user_id)

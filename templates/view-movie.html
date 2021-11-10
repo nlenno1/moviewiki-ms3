@@ -7,7 +7,7 @@
         {% if user_reviewed == False %}
             <p class="mb-0 mt-4 text-center">Want to add your review of this movie? Click here! 
             {% if session["user"] %}
-                <button class="generic-button button-color-gold"><a href="{{ url_for('create_review', selected_movie_title=movie.movie_title) }}">Create Review</a></button></p> 
+                <button class="generic-button button-color-gold"><a href="{{ url_for('create_review', movie_id=movie._id) }}">Create Review</a></button></p> 
             {% else %}
                 <button class="generic-button button-color-gold"><a href="{{ url_for('signin') }}">Sign In</a></button></p> 
             {% endif %}
