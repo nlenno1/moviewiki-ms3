@@ -822,15 +822,18 @@ def delete_review(movie_id, user_id):
     return redirect(url_for('view_reviews', movie_id=movie["_id"]))
 
 
-def create_mini_movie_dict(movie_id):
-    movie = find_one_with_key("movies", "_id", ObjectId(movie_id))
+def create_and_add_mini_movie_dict(movie_id, array_name, movie=None):
+    if movie is None:
+        movie = find_one_with_key("movies", "_id", ObjectId(movie_id))
 
-    new_dict = {
+    new_mini_movie_dict = {
         "movie_id": movie["_id"],
         "movie_title": movie["movie_title"],
         "release_year": movie["release_date"].strftime('%Y')
     }
-    return new_dict
+
+    update_collection_item("users", "_id", ObjectId(session["id"]), "$push",
+                           array_name, new_mini_movie_dict)
 
 
 # watched & want to watch list control
@@ -840,10 +843,8 @@ def add_watched_movie(movie_id):
     if not session["user"]:
         return redirect(url_for("signin"))
 
-    new_mini_movie_dict = create_mini_movie_dict(movie_id)
+    create_and_add_mini_movie_dict(movie_id, "movies_watched")
 
-    update_collection_item("users", "_id", ObjectId(session["id"]), "$push",
-                           "movies_watched", new_mini_movie_dict)
     return redirect(url_for("view_movie", movie_id=movie_id))
 
 
@@ -866,10 +867,8 @@ def add_want_to_watch_movie(movie_id):
     if not session["user"]:
         return redirect(url_for("signin"))
 
-    new_mini_movie_dict = create_mini_movie_dict(movie_id)
+    create_and_add_mini_movie_dict(movie_id, "movies_to_watch")
 
-    update_collection_item("users", "_id", ObjectId(session["id"]), "$push",
-                           "movies_to_watch", new_mini_movie_dict)
     return redirect(url_for("view_movie", movie_id=movie_id))
 
 
