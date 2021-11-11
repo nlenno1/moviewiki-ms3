@@ -500,7 +500,7 @@ input[type="checkbox"i] {
 form .dropdown {
     width: 100%;
     max-width: 600px;
-    margin: 0 auto 20px;
+    margin: 0 auto 8px;
 }
 
 .card-small {
@@ -975,11 +975,11 @@ select>.text-black {
 
 /* Form validation */
 
-input:invalid {
+input:invalid, textarea:invalid {
     border-bottom: 1px solid rgb(200, 0, 0);
 }
 
-input:valid, input:placeholder-shown {
+input:placeholder-shown, textarea:placeholder-shown {
     border-bottom: 1px solid #000;
 }
 
@@ -994,9 +994,8 @@ input:invalid + p{
     opacity: 1 !important;
 }
 
-input:valid + p, input:placeholder-shown + p {
+input:valid + p, input:placeholder-shown + p, textarea:valid + p, textarea:placeholder-shown + p {
     opacity: 0 !important;
-    color: #fff;
 }
 
 .input-container input:invalid {

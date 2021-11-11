@@ -12,11 +12,19 @@
                     * required
                 </div>
                 <label for="full-name" class="small-text unselected-text">Full Name *</label>
-                <input type="text" {% if session['full-name'] %} value="{{ session['full-name']|title }}" {% endif %} name="full-name" id="full-name" placeholder="Full Name"  pattern="^[a-zA-Z0-9]+{5,15}$" class="validate" required>
+                <div>
+                    <input type="text" {% if session['full-name'] %} value="{{ session['full-name']|title }}" {% endif %} name="full-name" id="full-name" placeholder="Full Name" minlength="2" maxlength="25" class="validate" pattern="^(?!.*[ -]{2})[a-zA-Z- ]{2,25}$" required>
+                    <p class="invalid-message">2 to 25 characters long using letters and only 1 space or dash consecutively</p>
+                </div>
+                
                 <label for="email" class="small-text unselected-text">Email Address *</label>
-                <input type="email" {% if session['email'] %} value="{{ session['email'] }}" {% endif %} name="email" id="email" placeholder="Email" required>
+                <div>
+                    <input type="email" {% if session['email'] %} value="{{ session['email'] }}" {% endif %} name="email" id="email" placeholder="Email Address" minlength="6" maxlength="40" class="validate" required>
+                    <p class="invalid-message">Email address up to 40 characters which must have @ and a domain extension</p>
+                </div>
                 <label for="message" class="small-text unselected-text pb-2">Message *</label>
-                <textarea rows="6" name="message" id="message" placeholder="Message" required></textarea>
+                <textarea rows="6" name="message" id="message" placeholder="Message" minlength="10" maxlength="500" class="validate" pattern='^(?!.*[ ]{2})[a-zA-Z0-9 !-.,?:/;"()]{10,500}$' required></textarea>
+                <p class="invalid-message">Message from 10 to 500 characters with these punctionation symbols !-.,?:/;"()' non consecutively</p>
                 <button type="submit" class="generic-button button-color-gold mt-4">Send Message</button>
             </form>
         </div>

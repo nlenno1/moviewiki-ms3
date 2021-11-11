@@ -14,7 +14,8 @@
                 <input type="text" value="{{ movie.movie_title|title }}" name="movie-title" id="movie-title" placeholder="Movie Title" class="validate" pattern="^[a-zA-Z0-9 \p{P}]+$" required>
                 <label for="release-date" class="small-text unselected-text">Release Date *</label>
                 <input placeholder="Release Date" type="date" value="{{ movie.release_date.strftime('%Y-%m-%d') }}" name="release-date" id="release-date" required>
-                <label for="age-rating" class="small-text unselected-text">Age Rating*</label>
+                <label for="age-rating" class="small-text 
+                unselected-text">Age Rating*</label>
                 <select id="age-rating" name="age-rating" class="text-body">
                     {% for age_rating in age_ratings %}
                         {% if age_rating.rating_value == movie.age_rating %}
