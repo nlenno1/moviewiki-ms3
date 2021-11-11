@@ -565,7 +565,9 @@ def create_movie():
         return redirect(url_for("view_movie", movie_id=new_id))
 
     genre_list = mongo.db.genre.find()
-    return render_template("create-movie.html", genre_list=genre_list)
+    age_ratings = mongo.db.age_ratings.find().sort("uk_rating_order")
+    return render_template("create-movie.html", genre_list=genre_list,
+                            age_ratings=age_ratings)
 
 
 def check_key_in_array_of_dicts(array_to_check, key, value_to_check_against):
@@ -649,7 +651,7 @@ def edit_movie(movie_id):
 
     movie = find_one_with_key("movies", "_id", ObjectId(movie_id))
     genre_list = list(mongo.db.genre.find().sort("genre_name"))
-    age_ratings = mongo.db.uk_age_ratings.find().sort("uk_rating_order")
+    age_ratings = mongo.db.age_ratings.find().sort("uk_rating_order")
     for genre in genre_list:
         if genre["genre_name"].lower() in movie["genre"]:
             genre["checked"] = True
@@ -663,7 +665,8 @@ def edit_movie(movie_id):
     return render_template("edit-movie.html", genre_list=genre_list,
                            movie=movie, age_ratings=age_ratings,
                            cast_members_string=cast_members_string,
-                           movie_reviewers_id_list=movie_reviewers_id_list)
+                           movie_reviewers_id_list=movie_reviewers_id_list,
+                           age_rating_list=age_rating_list)
 
 
 @app.route("/movie/<movie_id>/delete")

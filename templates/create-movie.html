@@ -19,13 +19,9 @@
                 <label for="age-rating" class="small-text unselected-text">Age Rating*</label>
                 <select id="age-rating" name="age-rating" required>
                     <option class="hidden" value="null" selected hidden>Age Rating *</option>
-                    <option value="uc">Pre-School (Uc)</option>
-                    <option value="u">Universal (U)</option>
-                    <option value="pg">Parental Guidance (PG)</option>
-                    <option value="12">12</option>
-                    <option value="12a">12A</option>
-                    <option value="15">15</option>
-                    <option value="18">18</option>
+                    {% for age_rating in age_ratings %}
+                        <option value="{{ age_rating.rating_value }}">{{ age_rating.rating_name }}</option>
+                    {% endfor %}
                 </select>
                 
                 <label for="duration" class="small-text unselected-text">Duration (mins) *</label>
