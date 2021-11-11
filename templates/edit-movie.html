@@ -11,9 +11,11 @@
                     * required
                 </div>
                 <label for="movie-title" class="small-text unselected-text">Movie Title *</label>
-                <input type="text" value="{{ movie.movie_title|title }}" name="movie-title" id="movie-title" placeholder="Movie Title" class="validate" pattern="^[a-zA-Z0-9 \p{P}]+$" required>
+                <input type="text" value="{{ movie.movie_title|title }}" name="movie-title" id="movie-title" placeholder="Movie Title" minlength="2" maxlength="30" class="validate" pattern="^(?!.*[\p{P} ]{2})[a-zA-Z0-9\p{P} ]{2,30}$" required>
+                <p class="invalid-message">2 to 30 characters long using letters, numbers and only 1 space or symbol consecutively</p>
                 <label for="release-date" class="small-text unselected-text">Release Date *</label>
                 <input placeholder="Release Date" type="date" value="{{ movie.release_date.strftime('%Y-%m-%d') }}" name="release-date" id="release-date" required>
+                <p class="invalid-message">2 to 30 characters long, start with a letter, using letters, numbers and only 1 space or dash consecutively</p>
                 <label for="age-rating" class="small-text 
                 unselected-text">Age Rating*</label>
                 <select id="age-rating" name="age-rating" class="text-body">
@@ -141,6 +143,6 @@
 
 {% block scripts %}
 
-    <script src="../static/js/series-questions-control.js"></script>
+    <script src="{{url_for('static', filename='js/series-questions-control.js')}}"></script>
 
 {% endblock %}
