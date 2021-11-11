@@ -37,7 +37,7 @@ def is_correct_user(user_id_to_check):
         return False
 
 
-def create_single_review(movie):
+def create_single_review(movie, movie_id=None):
     review = {
         "reviewer": session['user'],
         "reviewer_id": session["id"],
@@ -46,7 +46,7 @@ def create_single_review(movie):
         "review_date": datetime.now(),
         "star_rating": int(request.form.get("star-count")),
         "review_for": movie["movie_title"],
-        "review_for_id": movie["_id"]
+        "review_for_id": ObjectId(movie_id)
     }
     return review
 
@@ -181,16 +181,16 @@ def find_review(movie_id, reviewer_id):
     return movie_review
 
 
-def add_review_to_dict(new_movie):
+def add_review_to_dict(new_movie, movie_id=None):
     if request.form.get("submit-movie-review"):
-        review = create_single_review(new_movie)
+        review = create_single_review(new_movie, movie_id)
         review["review_for"] = new_movie["movie_title"]
         new_movie["reviews"].append(review)
         new_movie["latest_reviews"].append(review)
         new_movie["average_rating"] = review["star_rating"]
 
 
-def generate_new_movie_dict():
+def generate_new_movie_dict(movie_id=None):
     image_link = generate_movie_image_link()
     new_movie = {
             "movie_title": request.form.get("movie-title").lower(),
@@ -200,7 +200,8 @@ def generate_new_movie_dict():
             "duration": request.form.get("duration"),
             "genre": request.form.getlist("movie-genre"),
             "director": request.form.get("director").lower(),
-            "cast_members": request.form.get("cast-members").lower().split(","),
+            "cast_members": request.form.get(
+                "cast-members").lower().split(","),
             "movie_synopsis": request.form.get("movie-synopsis"),
             "movie_description": request.form.get("movie-description"),
             "image_link": image_link,
@@ -211,7 +212,7 @@ def generate_new_movie_dict():
             "average_rating": 0.0
         }
     add_series_information_to_dict(new_movie)
-    add_review_to_dict(new_movie)
+    add_review_to_dict(new_movie, movie_id)
     return new_movie
 
 
@@ -603,7 +604,7 @@ def view_movie(movie_id):
              "movies_reviewed": 1})
 
         user_reviewed = check_key_in_array_of_dicts(user["movies_reviewed"],
-                                                   "movie_id", movie["_id"])
+                                                    "movie_id", movie["_id"])
 
         user_watched = check_key_in_array_of_dicts(user["movies_watched"],
                                                    "movie_id", movie["_id"])
@@ -645,7 +646,7 @@ def edit_movie(movie_id):
     #    return redirect(url_for("home"))
 
     if request.method == "POST":
-        updated_movie = generate_new_movie_dict()
+        updated_movie = generate_new_movie_dict(movie_id)
         mongo.db.movies.update({"_id": ObjectId(movie_id)}, updated_movie)
         if request.form.get("submit-movie-review"):
             update_collection_item("users", "_id", ObjectId(session["id"]),
@@ -750,15 +751,19 @@ def create_review():
         return redirect(url_for('create_review'))
 
     movie_id = request.args.get("movie_id")
-    movie = mongo.db.movies.find_one({"_id": ObjectId(movie_id)},
-                                     {"reviews": 1})
-    # check for previous review from user
-    for review in movie["reviews"]:
-        if review["reviewer_id"] == session["id"]:
-            flash("You have already created a review for this movie")
-            return redirect(url_for('edit_review',
-                            movie_id=movie["_id"],
-                            user_id=session["id"]))
+    if movie_id:
+        movie = mongo.db.movies.find_one({"_id": ObjectId(movie_id)},
+                                         {"reviews": 1})
+        # check for previous review from user
+        if len(movie["reviews"]) > 0:
+            for review in movie["reviews"]:
+                if review["reviewer_id"] == session["id"]:
+                    flash("You have already created a review for this movie")
+                    return redirect(url_for('edit_review',
+                                    movie_id=movie["_id"],
+                                    user_id=session["id"]))
+    else:
+        movie_id = None
     movie_title_list = mongo.db.movies.find({}, {"movie_title": 1,
                                                  "release_date": 1})
 
