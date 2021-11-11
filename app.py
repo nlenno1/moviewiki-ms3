@@ -649,9 +649,7 @@ def edit_movie(movie_id):
         updated_movie = generate_new_movie_dict(movie_id)
         mongo.db.movies.update({"_id": ObjectId(movie_id)}, updated_movie)
         if request.form.get("submit-movie-review"):
-            update_collection_item("users", "_id", ObjectId(session["id"]),
-                                   "$push", "movies_reviewed",
-                                   ObjectId(movie_id))
+            create_and_add_mini_movie_dict(movie_id, "movies_reviewed")
 
         flash("Movie Profile Successfully Updated")
         return redirect(url_for("view_movie", movie_id=movie_id))
