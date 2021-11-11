@@ -36,6 +36,7 @@ $('document').ready (function () {
             $("#start-series").prop('checked', false);
             $("#middle-series").prop('checked', false);
             $("#end-series").prop('checked', false);
+            $("#submit-series-info").prop('checked', false);
             $("#series-name").val("");
             $("#next-movie-name").val("");
             $("#previous-movie-name").val("");
@@ -43,7 +44,6 @@ $('document').ready (function () {
             $("#previous-movie-container").attr('hidden', "")
         } else {
             $("#series-name").attr('required', "")
-            console.log("Required Added")
         }
     })
 })
