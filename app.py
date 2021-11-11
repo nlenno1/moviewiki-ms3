@@ -192,9 +192,6 @@ def add_review_to_dict(new_movie):
 
 def generate_new_movie_dict():
     image_link = generate_movie_image_link()
-    cast_members = request.form.get("cast-members").lower().split(","),
-    if cast_members == "":
-        cast_members = []
     new_movie = {
             "movie_title": request.form.get("movie-title").lower(),
             "release_date": datetime.strptime(request.form.get(
@@ -203,7 +200,7 @@ def generate_new_movie_dict():
             "duration": request.form.get("duration"),
             "genre": request.form.getlist("movie-genre"),
             "director": request.form.get("director").lower(),
-            "cast_members": cast_members,
+            "cast_members": request.form.get("cast-members").lower().split(","),
             "movie_synopsis": request.form.get("movie-synopsis"),
             "movie_description": request.form.get("movie-description"),
             "image_link": image_link,
@@ -669,7 +666,7 @@ def edit_movie(movie_id):
     for review in movie["reviews"]:
         movie_reviewers_id_list.append(review["reviewer_id"])
 
-    cast_members_string = ', '.join(name.title() for name in movie[
+    cast_members_string = ','.join(name.title() for name in movie[
                             "cast_members"])
     return render_template("edit-movie.html", genre_list=genre_list,
                            movie=movie, age_ratings=age_ratings,

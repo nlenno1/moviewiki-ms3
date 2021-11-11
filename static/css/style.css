@@ -996,6 +996,8 @@ input:placeholder-shown{
     margin-bottom: 0;
     text-align: center;
     font-size: 0.6rem;
+    width: 80%;
+    margin: 0 auto;
 }
 
 input:invalid + p{
@@ -1013,5 +1015,4 @@ input:valid + p, input:placeholder-shown + p, textarea:valid + p, textarea:place
 .input-container input:valid, .input-container input:placeholder-shown {
     border-bottom: 2px solid #000;
 }
-
 

@@ -35,13 +35,15 @@
                       <span>Movie Genre Selection</span><i class="fas fa-angle-down"></i>
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdown-genre-menu">
-                        {% for genre in genre_list %}
-                            {% if genre.checked %}
-                            <li><input checked id="{{ genre.genre_name }}" name="movie-genre" value="{{ genre.genre_name|lower }}" type="checkbox">{{ genre.genre_name|title }}</li>
-                            {% else %}
-                            <li><input id="{{ genre.genre_name }}" name="movie-genre" value="{{ genre.genre_name|lower }}" type="checkbox">{{ genre.genre_name|title }}</li>
-                            {% endif %}
-                        {% endfor %}
+                        <div class="checkbox-group required">
+                            {% for genre in genre_list %}
+                                {% if genre.checked %}
+                                    <li><input checked id="{{ genre.genre_name }}" name="movie-genre" value="{{ genre.genre_name|lower }}" type="checkbox">{{ genre.genre_name|title }}</li>
+                                {% else %}
+                                    <li><input id="{{ genre.genre_name }}" name="movie-genre" value="{{ genre.genre_name|lower }}" type="checkbox">{{ genre.genre_name|title }}</li>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
                     </ul>
                 </div>
                 <hr class="shadow">
@@ -49,8 +51,8 @@
                 <input value="{{ movie.director|title }}" type="text" name="director" id="director" placeholder="Director Name" minlength="2" maxlength="30" class="validate" pattern="^(?!.*[- ]{2})[a-zA-Z- ]{2,30}$">
                 <p class="invalid-message">2 to 30 characters long using letters and only 1 space and/or dash consecutively</p>
                 <label for="cast-members" class="small-text unselected-text">Cast Members - Write a list of cast members with all names seperated with a comma (,)</label>
-                <input value="{{ cast_members_string|title }}" type="text" name="cast-members" id="cast-members" placeholder="Main Cast Members" minlength="5" maxlength="300" class="validate" pattern="^(?!.*[- ]{2})[a-zA-Z- ]{2,30}$">
-                <p class="invalid-message">A list of names seperated with a comma, 5 to 500 characters long, using letters and only 1 space, comma and/or dash consecutively</p>
+                <input value="{{ cast_members_string|title }}" type="text" name="cast-members" id="cast-members" placeholder="Main Cast Members" minlength="5" maxlength="300" class="validate" pattern="^(?!.*[, ]{2})[a-zA-Z- ,]{5,300}$">
+                <p class="invalid-message">A list of names seperated with a comma, 5 to 500 characters long, using letters and only 1 space, comma and/or dash consecutively (no spaces after the commas)</p>
                 <hr class="shadow">
                 <label for="movie-synopsis" class="small-text unselected-text">Movie Synopsis * - Write a short description of the movie</label>
                 <input value="{{ movie.movie_synopsis }}" type="text" name="movie-synopsis" id="movie-synopsis" placeholder="Movie Synopsis *" minlength="10" maxlength="200" class="validate" pattern="^(?!.*[\p{P} ]{2})[a-zA-Z0-9\p{P} ]{10,200}$" required>
@@ -103,12 +105,12 @@
                     <p class="invalid-message">3 to 30 characters long using letters,numbers and only 1 space and/or symbol consecutively</p>
                     <div {% if  movie.series_position == 'start' %}hidden{% endif %} id="previous-movie-container">
                         <label for="previous-movie-name" class="small-text unselected-text">Previous Movie Name - Name of the movie before this one in the series</label>
-                        <input {% if  movie.series_position != 'start' %}required{% endif %} type="text" value="{{ movie.previous_movie_title|title }}" name="previous-movie-name" id="previous-movie-name" placeholder="Previous Movie in the Series" minlength="3" maxlength="30" class="validate" pattern="^(?!.*[\p{P} ]{2})[a-zA-Z0-9\p{P} ]{3,30}$">
+                        <input {% if movie.series_position and movie.series_position != 'start' %}required{% endif %} type="text" value="{{ movie.previous_movie_title|title }}" name="previous-movie-name" id="previous-movie-name" placeholder="Previous Movie in the Series" minlength="3" maxlength="30" class="validate" pattern="^(?!.*[\p{P} ]{2})[a-zA-Z0-9\p{P} ]{3,30}$">
                         <p class="invalid-message">3 to 30 characters long using letters, numbers and only 1 space and/or symbol consecutively</p>
                     </div>
-                    <div {% if  movie.series_position == 'end' %}hidden{% endif %} id="next-movie-container">
+                    <div {% if movie.series_position == 'end' %}hidden{% endif %} id="next-movie-container">
                         <label for="next-movie-name" class="small-text unselected-text">Next Movie Name - Name of the movie after this one in the series</label>
-                        <input {% if  movie.series_position != 'end' %}required{% endif %} type="text" value="{{ movie.next_movie_title|title }}" name="next-movie-name" id="next-movie-name" placeholder="Next Movie in the Series" minlength="3" maxlength="30" class="validate" pattern="^(?!.*[\p{P} ]{2})[a-zA-Z0-9\p{P} ]{3,30}$">
+                        <input {% if movie.series_position and movie.series_position != 'end' %}required{% endif %} type="text" value="{{ movie.next_movie_title|title }}" name="next-movie-name" id="next-movie-name" placeholder="Next Movie in the Series" minlength="3" maxlength="30" class="validate" pattern="^(?!.*[\p{P} ]{2})[a-zA-Z0-9\p{P} ]{3,30}$">
                         <p class="invalid-message">3 to 30 characters long using letters, numbers and only 1 space and/or symbol consecutively</p>
                     </div>
                     <div class="checkbox-container mb-2 text-center">
@@ -154,8 +156,10 @@
 
 {% block scripts %}
 
-    <script src="{{url_for('static', filename='js/genre-validation.js')}}"></script>
+    <script src="{{url_for('static', filename='js/validation-functions.js')}}"></script>
+    <script src="{{url_for('static', filename='js/review-star-control.js')}}"></script>
     <script src="{{url_for('static', filename='js/series-questions-control.js')}}"></script>
     <script src="{{url_for('static', filename='js/review-questions-control.js')}}"></script>
+    <script src="{{url_for('static', filename='js/create-edit-movie-validation.js')}}"></script>
 
 {% endblock %}

@@ -46,28 +46,6 @@ function initializeStarRating() {
     }
 }
 
-/* 
-function createToastMessage (message) {
-    new_toast = document.querySelector("#toast-container").append(`
-    <div role="alert" aria-live="assertive" aria-atomic="true" class="toast" data-bs-autohide="false">
-        <div class="toast-header">
-            <strong class="me-auto">MovieWiki</strong>
-            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-        <div class="toast-body">
-            "${message}"
-        </div>
-    </div>
-    `)
-}
-*/
-
-// processing page hide/show function
-function processing() {
-    document.querySelector("#content").style.display = "none";
-    document.querySelector("#processing").style.display = "block";
-}
-
 function confirm_profile_delete() {
     document.querySelector("#edit_user_profile-content").style.display = "none";
     document.querySelector("#confirm_profile_delete").style.display = "block";
@@ -90,7 +68,5 @@ document.addEventListener('DOMContentLoaded', () => {
             this.classList.add("text-black");
         })
     }
-
-    initializeStarRating()
     displayStarRating ()
 });

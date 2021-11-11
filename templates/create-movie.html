@@ -37,9 +37,11 @@
                       <span>Movie Genre *</span><i class="fas fa-angle-down"></i>
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                        {% for genre in genre_list %}
-                            <li><input id="{{ genre.genre_name }}" name="movie-genre" value="{{ genre.genre_name|lower }}" type="checkbox">{{ genre.genre_name|title }}</li>
-                        {% endfor %}
+                        <div class="checkbox-group required">
+                            {% for genre in genre_list %}
+                                <li><input id="{{ genre.genre_name }}" name="movie-genre" value="{{ genre.genre_name|lower }}" type="checkbox">{{ genre.genre_name|title }}</li>
+                            {% endfor %}
+                        </div>
                     </ul>
                 </div>
                 <hr class="shadow">
@@ -47,7 +49,7 @@
                 <input type="text" name="director" id="director" placeholder="Director Name" minlength="2" maxlength="30" class="validate" pattern="^(?!.*[- ]{2})[a-zA-Z- ]{2,30}$">
                 <p class="invalid-message">2 to 30 characters long using letters and only 1 space and/or dash consecutively</p>
                 <label for="cast-members" class="small-text unselected-text">Cast Members - Write a list of cast members with all names seperated with a comma (,)</label>
-                <input type="text" name="cast-members" id="cast-members" placeholder="Main Cast Members" minlength="5" maxlength="300" class="validate" pattern="^(?!.*[- ]{2})[a-zA-Z- ]{2,30}$">
+                <input type="text" name="cast-members" id="cast-members" placeholder="Main Cast Members" minlength="5" maxlength="300" class="validate" pattern="^(?!.*[, ]{2})[a-zA-Z- ,]{5,300}$">
                 <p class="invalid-message">A list of names seperated with a comma, 5 to 500 characters long, using letters and only 1 space, comma and/or dash consecutively</p>
                 <hr class="shadow">
                 <label for="movie-synopsis" class="small-text unselected-text">Movie Synopsis * - Write a short description of the movie</label>
@@ -139,8 +141,10 @@
 
 {% block scripts %}
 
-    <script src="{{url_for('static', filename='js/genre-validation.js')}}"></script>
+    <script src="{{url_for('static', filename='js/validation-functions.js')}}"></script>
+    <script src="{{url_for('static', filename='js/review-star-control.js')}}"></script>
     <script src="{{url_for('static', filename='js/series-questions-control.js')}}"></script>
     <script src="{{url_for('static', filename='js/review-questions-control.js')}}"></script>
+    <script src="{{url_for('static', filename='js/create-edit-movie-validation.js')}}"></script>
 
 {% endblock %}
