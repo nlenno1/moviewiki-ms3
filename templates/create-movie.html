@@ -15,7 +15,7 @@
                 <p class="invalid-message">2 to 30 characters long using letters, numbers and only 1 space and/or symbol consecutively</p>
                 <label for="release-date" class="small-text unselected-text">Release Date *</label>
                 <input onkeydown="return false" placeholder="Release Date *" type="text" onfocus="(this.type='date')" name="release-date" id="release-date" required>
-                <p class="invalid-message">Use the date picker to select your date of birth</p>
+                <p class="invalid-message">Use the date picker to select the release date</p>
                 <label for="age-rating" class="small-text unselected-text">Age Rating*</label>
                 <select id="age-rating" name="age-rating" required>
                     <option class="hidden" value="null" selected hidden>Age Rating *</option>
@@ -27,6 +27,7 @@
                     <option value="15">15</option>
                     <option value="18">18</option>
                 </select>
+                
                 <label for="duration" class="small-text unselected-text">Duration (mins) *</label>
                 <input type="text" name="duration" id="duration" placeholder="Duration (mins) *" minlength="2" maxlength="3" class="validate" pattern="^[0-9]{2,3}$" required>
                 <p class="invalid-message">Enter a number either 2 or 3 characters long</p>
@@ -50,10 +51,10 @@
                 <p class="invalid-message">A list of names seperated with a comma, 5 to 500 characters long, using letters and only 1 space, comma and/or dash consecutively</p>
                 <hr class="shadow">
                 <label for="movie-synopsis" class="small-text unselected-text">Movie Synopsis * - Write a short description of the movie</label>
-                <input type="text" name="movie-synopsis" id="movie-synopsis" placeholder="Movie Synopsis *" minlength="10" maxlength="100" class="validate" pattern="^(?!.*[\p{P} ]{2})[a-zA-Z0-9\p{P} ]{10,100}$" required>
-                <p class="invalid-message">10 to 100 characters long using letters, numbers and only 1 space and/or symbol consecutively</p>
+                <input type="text" name="movie-synopsis" id="movie-synopsis" placeholder="Movie Synopsis *" minlength="10" maxlength="200" class="validate" pattern="^(?!.*[\p{P} ]{2})[a-zA-Z0-9\p{P} ]{10,200}$" required>
+                <p class="invalid-message">10 to 200 characters long using letters, numbers and only 1 space and/or symbol consecutively</p>
                 <label for="movie-description" class="small-text unselected-text pb-2">Movie Description - Write a longer description of the Movie</label>
-                <textarea name="movie-description" id="movie-description" rows ="8" cols="140" placeholder="Movie Description" minlength="10" maxlength="500" class="validate" pattern="^(?!.*[\p{P} ]{2})[a-zA-Z\p{P} ]{10,100}$"></textarea>
+                <textarea name="movie-description" id="movie-description" rows ="8" cols="140" placeholder="Movie Description" minlength="10" maxlength="500" class="validate" pattern="^(?!.*[\p{P} ]{2})[a-zA-Z\p{P} ]{10,500}$"></textarea>
                 <p class="invalid-message">10 to 500 characters long using letters and only 1 space and/or symbol consecutively</p>
                 <label for="image-link" class="small-text unselected-text">Image Link - Provide an image URL from a hosting website to display</label>
                 <!-- Regex taken from https://stackoverflow.com/questions/169625/regex-to-check-if-valid-url-that-ends-in-jpg-png-or-gif/169631 -->
@@ -86,16 +87,16 @@
                         <label for="middle-series"> None of the above</label><br>
                     </div>
                     <label for="series-name" class="small-text unselected-text">Series Name</label>
-                    <input type="text" name="series-name" id="series-name" placeholder="Series Name" minlength="3" maxlength="30" class="validate" pattern="^(?!.*[\p{P} ]{2})[a-zA-Z\p{P} ]{3,30}$">
-                    <p class="invalid-message">3 to 30 characters long using letters and only 1 space and/or symbol consecutively</p>
+                    <input type="text" name="series-name" id="series-name" placeholder="Series Name" minlength="3" maxlength="30" class="validate" pattern="^(?!.*[\p{P} ]{2})[a-zA-Z0-9\p{P} ]{3,30}$">
+                    <p class="invalid-message">3 to 30 characters long using letters, numbers and only 1 space and/or symbol consecutively</p>
                     <div hidden id="previous-movie-container">
                         <label for="previous-movie-name" class="small-text unselected-text">Previous Movie Name - Name of the movie before this one in the series</label>
-                        <input type="text" name="previous-movie-name" id="previous-movie-name" placeholder="Previous Movie in the Series" minlength="3" maxlength="30" class="validate" pattern="^(?!.*[\p{P} ]{2})[a-zA-Z\p{P} ]{3,30}$">
-                        <p class="invalid-message">3 to 30 characters long using letters and only 1 space and/or symbol consecutively</p>
+                        <input type="text" name="previous-movie-name" id="previous-movie-name" placeholder="Previous Movie in the Series" minlength="3" maxlength="30" class="validate" pattern="^(?!.*[\p{P} ]{2})[a-zA-Z0-9\p{P} ]{3,30}$">
+                        <p class="invalid-message">3 to 30 characters long using letters, numbers and only 1 space and/or symbol consecutively</p>
                     </div>
                     <div hidden id="next-movie-container">
                         <label for="next-movie-name" class="small-text unselected-text">Next Movie Name - Name of the movie after this one in the series</label>
-                        <input type="text" name="next-movie-name" id="next-movie-name" placeholder="Next Movie in the Series" minlength="3" maxlength="30" class="validate" pattern="^(?!.*[\p{P} ]{2})[a-zA-Z\p{P} ]{3,30}$">
+                        <input type="text" name="next-movie-name" id="next-movie-name" placeholder="Next Movie in the Series" minlength="3" maxlength="30" class="validate" pattern="^(?!.*[\p{P} ]{2})[a-zA-Z0-9\p{P} ]{3,30}$">
                         <p class="invalid-message">3 to 30 characters long using letters and only 1 space and/or symbol consecutively</p>
                     </div>
                     <div class="checkbox-container mb-2 text-center">
