@@ -33,6 +33,7 @@ $('document').ready (function () {
             $("#series-name").removeAttr('required')
             $("#previous-movie-name").removeAttr('required')
             $("#next-movie-name").removeAttr('required')
+            $("#start-series").removeAttr('required')
             $("#start-series").prop('checked', false);
             $("#middle-series").prop('checked', false);
             $("#end-series").prop('checked', false);
@@ -44,6 +45,7 @@ $('document').ready (function () {
             $("#previous-movie-container").attr('hidden', "")
         } else {
             $("#series-name").attr('required', "")
+            $("#start-series").attr('required', "")
         }
     })
 })

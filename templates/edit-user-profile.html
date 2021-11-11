@@ -17,12 +17,12 @@
                 <hr class="shadow">
                 <label for="firstname" class="small-text unselected-text">First Name *</label>
                     <div>
-                        <input type="text" value="{{ user.firstname }}" name="firstname" id="firstname" placeholder="First Name" minlength="2" maxlength="25" class="validate" pattern="^(?!.*[ -]{2})[a-zA-Z- ]{2,25}$" required>
+                        <input type="text" value="{{ user.firstname|title }}" name="firstname" id="firstname" placeholder="First Name" minlength="2" maxlength="25" class="validate" pattern="^(?!.*[ -]{2})[a-zA-Z- ]{2,25}$" required>
                         <p class="invalid-message">2 to 25 characters long using letters and only 1 space or dash consecutively</p>
                     </div>
                     <label for="lastname" class="small-text unselected-text">Last Name *</label>
                     <div>
-                        <input type="text" value="{{ user.lastname }}" name="lastname" id="lastname" placeholder="Last Name" minlength="2" maxlength="25" class="validate" pattern="^(?!.*[ -]{2})[a-zA-Z- ]{2,25}$" required>
+                        <input type="text" value="{{ user.lastname|title }}" name="lastname" id="lastname" placeholder="Last Name" minlength="2" maxlength="25" class="validate" pattern="^(?!.*[ -]{2})[a-zA-Z- ]{2,25}$" required>
                         <p class="invalid-message">2 to 25 characters long using letters and only 1 space or dash consecutively</p>
                     </div> 
                     <label for="dob" class="small-text unselected-text">Date Of Birth *</label>
@@ -53,7 +53,7 @@
                 </div>
                 <div class="buttons-container mt-4">
                     <button type="submit" class="generic-button button-color-gold mt-2">Update Account</button>
-                    <button type="button" class="generic-button mt-2">Cancel</button>
+                    <button class="generic-button mt-2"><a href="{{ url_for('profile', user_id=session['id']) }}">Cancel</a></button>
                     <button type="button" class="generic-button button-color-red mt-2" onclick="confirm_profile_delete()">Delete Account</button>
                 </div>
             </form>
@@ -77,5 +77,9 @@
 {% endblock %}
 
 {% block scripts %}
-    <script src="{{url_for('static', filename='js/genre-validation.js')}}"></script>
+
+    <script src="{{url_for('static', filename='js/profile-delete.js')}}"></script>
+    <script src="{{url_for('static', filename='js/dropdown-color-change.js')}}"></script>
+    <script src="{{url_for('static', filename='js/genre-selected-check.js')}}"></script>
+
 {% endblock %}

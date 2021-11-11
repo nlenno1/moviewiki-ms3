@@ -86,4 +86,10 @@
         </div>
     </div>
 
-    {% endblock %}
+{% endblock %}
+
+{% block scripts %}
+
+    <script src="{{url_for('static', filename='js/display-star-rating.js')}}"></script>
+
+{% endblock %}
