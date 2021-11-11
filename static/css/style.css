@@ -975,11 +975,19 @@ select>.text-black {
 
 /* Form validation */
 
-input:invalid, textarea:invalid {
+input:invalid {
     border-bottom: 1px solid rgb(200, 0, 0);
 }
 
-input:placeholder-shown, textarea:placeholder-shown {
+textarea:invalid {
+    border: 1px solid rgb(200, 0, 0);
+}
+
+textarea:placeholder-shown {
+    border: 1px solid #000;
+}
+
+input:placeholder-shown{
     border-bottom: 1px solid #000;
 }
 

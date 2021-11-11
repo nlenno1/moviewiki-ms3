@@ -11,9 +11,11 @@
                     * required
                 </div>
                 <label for="movie-title" class="small-text unselected-text">Movie Title *</label>
-                <input type="text" name="movie-title" id="movie-title" placeholder="Movie Title *" class="validate" pattern="^[a-zA-Z0-9 \p{P}]+$" required>
+                <input type="text" name="movie-title" id="movie-title" placeholder="Movie Title" minlength="2" maxlength="30" class="validate" pattern="^(?!.*[\p{P} ]{2})[a-zA-Z0-9\p{P} ]{2,30}$" required>
+                <p class="invalid-message">2 to 30 characters long using letters, numbers and only 1 space and/or symbol consecutively</p>
                 <label for="release-date" class="small-text unselected-text">Release Date *</label>
-                <input placeholder="Release Date *" type="text" onfocus="(this.type='date')" name="release-date" id="release-date" required>
+                <input onkeydown="return false" placeholder="Release Date *" type="text" onfocus="(this.type='date')" name="release-date" id="release-date" required>
+                <p class="invalid-message">Use the date picker to select your date of birth</p>
                 <label for="age-rating" class="small-text unselected-text">Age Rating*</label>
                 <select id="age-rating" name="age-rating" required>
                     <option class="hidden" value="null" selected hidden>Age Rating *</option>
@@ -26,11 +28,12 @@
                     <option value="18">18</option>
                 </select>
                 <label for="duration" class="small-text unselected-text">Duration (mins) *</label>
-                <input type="text" name="duration" id="duration" placeholder="Duration (mins) *" class="validate" pattern="^[0-9]+$" required>
-                <label for="dropdown-genre-menu" class="small-text unselected-text">Movie Genre - Select as many as needed</label>
+                <input type="text" name="duration" id="duration" placeholder="Duration (mins) *" minlength="2" maxlength="3" class="validate" pattern="^[0-9]{2,3}$" required>
+                <p class="invalid-message">Enter a number either 2 or 3 characters long</p>
+                <label for="dropdown-genre-menu" class="small-text unselected-text">Select as many as needed</label>
                 <div class="dropdown">
                     <button class="dropdown-button dropdown-toggle text-start unselected-text" type="button" id="dropdown-genre-menu" data-bs-toggle="dropdown" aria-expanded="false">
-                      <span>Movie Genre</span><i class="fas fa-angle-down"></i>
+                      <span>Movie Genre *</span><i class="fas fa-angle-down"></i>
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                         {% for genre in genre_list %}
@@ -40,16 +43,22 @@
                 </div>
                 <hr class="shadow">
                 <label for="director" class="small-text unselected-text">Director Name</label>
-                <input type="text" name="director" id="director" placeholder="Director Name" class="validate" pattern="^[a-zA-Z \p{P}]+$">
+                <input type="text" name="director" id="director" placeholder="Director Name" minlength="2" maxlength="30" class="validate" pattern="^(?!.*[- ]{2})[a-zA-Z- ]{2,30}$">
+                <p class="invalid-message">2 to 30 characters long using letters and only 1 space and/or dash consecutively</p>
                 <label for="cast-members" class="small-text unselected-text">Cast Members - Write a list of cast members with all names seperated with a comma (,)</label>
-                <input type="text" name="cast-members" id="cast-members" placeholder="Main Cast Members" >
+                <input type="text" name="cast-members" id="cast-members" placeholder="Main Cast Members" minlength="5" maxlength="300" class="validate" pattern="^(?!.*[- ]{2})[a-zA-Z- ]{2,30}$">
+                <p class="invalid-message">A list of names seperated with a comma, 5 to 500 characters long, using letters and only 1 space, comma and/or dash consecutively</p>
                 <hr class="shadow">
                 <label for="movie-synopsis" class="small-text unselected-text">Movie Synopsis * - Write a short description of the movie</label>
-                <input type="text" name="movie-synopsis" id="movie-synopsis" placeholder="Movie Synopsis *" class="validate" pattern="^[a-zA-Z0-9 \p{P}]+$" required>
+                <input type="text" name="movie-synopsis" id="movie-synopsis" placeholder="Movie Synopsis *" minlength="10" maxlength="100" class="validate" pattern="^(?!.*[\p{P} ]{2})[a-zA-Z0-9\p{P} ]{10,100}$" required>
+                <p class="invalid-message">10 to 100 characters long using letters, numbers and only 1 space and/or symbol consecutively</p>
                 <label for="movie-description" class="small-text unselected-text pb-2">Movie Description - Write a longer description of the Movie</label>
-                <textarea name="movie-description" id="movie-description" rows ="8" cols="140" placeholder="Movie Description" class="validate" pattern="^[a-zA-Z0-9 \p{P}]+$"></textarea>
+                <textarea name="movie-description" id="movie-description" rows ="8" cols="140" placeholder="Movie Description" minlength="10" maxlength="500" class="validate" pattern="^(?!.*[\p{P} ]{2})[a-zA-Z\p{P} ]{10,100}$"></textarea>
+                <p class="invalid-message">10 to 500 characters long using letters and only 1 space and/or symbol consecutively</p>
                 <label for="image-link" class="small-text unselected-text">Image Link - Provide an image URL from a hosting website to display</label>
-                <input type="text" name="image-link" id="image-link" placeholder="Link to Movie Image">
+                <!-- Regex taken from https://stackoverflow.com/questions/169625/regex-to-check-if-valid-url-that-ends-in-jpg-png-or-gif/169631 -->
+                <input type="text" name="image-link" id="image-link" placeholder="Link to Movie Image" class="validate" pattern="^https?://(?:[a-z0-9\-]+\.)+[a-z]{2,6}(?:/[^/#?]+)+\.(?:jpg|png)$">
+                <p class="invalid-message">URL link starting with https:// and ending with either jpg/png<p>
                 <hr class="shadow">
                 <div class="switch-display mb-3">
                     <div class="checkbox-container mb-2">
@@ -77,14 +86,17 @@
                         <label for="middle-series"> None of the above</label><br>
                     </div>
                     <label for="series-name" class="small-text unselected-text">Series Name</label>
-                    <input type="text" name="series-name" id="series-name" placeholder="Series Name" class="validate" pattern="^[a-zA-Z0-9 \p{P}]+$">
+                    <input type="text" name="series-name" id="series-name" placeholder="Series Name" minlength="3" maxlength="30" class="validate" pattern="^(?!.*[\p{P} ]{2})[a-zA-Z\p{P} ]{3,30}$">
+                    <p class="invalid-message">3 to 30 characters long using letters and only 1 space and/or symbol consecutively</p>
                     <div hidden id="previous-movie-container">
                         <label for="previous-movie-name" class="small-text unselected-text">Previous Movie Name - Name of the movie before this one in the series</label>
-                        <input type="text" name="previous-movie-name" id="previous-movie-name" placeholder="Previous Movie in the Series" class="validate" pattern="^[a-zA-Z0-9 \p{P}]+$">
+                        <input type="text" name="previous-movie-name" id="previous-movie-name" placeholder="Previous Movie in the Series" minlength="3" maxlength="30" class="validate" pattern="^(?!.*[\p{P} ]{2})[a-zA-Z\p{P} ]{3,30}$">
+                        <p class="invalid-message">3 to 30 characters long using letters and only 1 space and/or symbol consecutively</p>
                     </div>
                     <div hidden id="next-movie-container">
                         <label for="next-movie-name" class="small-text unselected-text">Next Movie Name - Name of the movie after this one in the series</label>
-                        <input type="text" name="next-movie-name" id="next-movie-name" placeholder="Next Movie in the Series" class="validate" pattern="^[a-zA-Z0-9 \p{P}]+$">
+                        <input type="text" name="next-movie-name" id="next-movie-name" placeholder="Next Movie in the Series" minlength="3" maxlength="30" class="validate" pattern="^(?!.*[\p{P} ]{2})[a-zA-Z\p{P} ]{3,30}$">
+                        <p class="invalid-message">3 to 30 characters long using letters and only 1 space and/or symbol consecutively</p>
                     </div>
                     <div class="checkbox-container mb-2 text-center">
                         <input class="series-checkboxes" type="checkbox" id="submit-series-info" name="submit-series-info" value="submit">
@@ -93,8 +105,10 @@
                 </div>
                 <div id="add-review" class="card form-card card-small shadow hidden collapse">
                     <p>Write your review of this movie</p>
-                    <input type="text" name="review-title" id="review-title" class="mb-4" placeholder="Review Title" pattern="^[a-zA-Z0-9 \p{P}]+$">
-                    <textarea name="movie-review" id="movie-review" rows ="8" cols="100" placeholder="Movie Review"></textarea>
+                    <input type="text" name="review-title" id="review-title" placeholder="Review Title" minlength="2" maxlength="75" class="validate" pattern="^(?!.*[\p{P} ]{2})[a-zA-Z0-9\p{P} ]{2,75}$">
+                    <p class="invalid-message mb-2">2 to 75 characters long using letters, numbers and only 1 space and/or symbol consecutively</p>
+                    <textarea name="movie-review" id="movie-review" rows ="8" cols="100" placeholder="Movie Review" minlength="10" maxlength="500" class="validate" pattern='^(?!.*[ ]{2})[a-zA-Z0-9 !-.,?:/;"()]{10,500}$'></textarea>
+                    <p class="invalid-message">Message from 10 to 500 characters with these punctionation symbols !-.,?:/;"()' non consecutively</p>
                     <div class="star-rating-container">
                         <input type="hidden" name="star-count" id="star-count" value="0">
                         <span>Click the stars to choose your Star Rating: </span>
@@ -124,6 +138,7 @@
 
 {% block scripts %}
 
+    <script src="{{url_for('static', filename='js/genre-validation.js')}}"></script>
     <script src="{{url_for('static', filename='js/series-questions-control.js')}}"></script>
 
 {% endblock %}
