@@ -91,8 +91,9 @@ def add_collection_item(collection_name, search_key, search_value):
     mongo_prefix_select(collection_name).insert_one({search_key: search_value})
 
 
-def generate_average_review_score(movie_id):
-    movie = find_one_with_key("movies", "_id", movie_id)
+def generate_average_review_score(movie_id, movie=None):
+    if movie is None:
+        movie = find_one_with_key("movies", "_id", movie_id)
     # generate an average reviews score
     total_review_score = 0
     # add all the review scores together from the data pulled from
@@ -184,10 +185,7 @@ def find_review(movie_id, reviewer_id):
 def add_review_to_dict(new_movie, movie_id=None):
     if request.form.get("submit-movie-review"):
         review = create_single_review(new_movie, movie_id)
-        review["review_for"] = new_movie["movie_title"]
         new_movie["reviews"].append(review)
-        new_movie["latest_reviews"].append(review)
-        new_movie["average_rating"] = review["star_rating"]
 
 
 def generate_new_movie_dict(movie_id=None):
@@ -207,7 +205,7 @@ def generate_new_movie_dict(movie_id=None):
             "image_link": image_link,
             "reviews": [],
             "latest_reviews": [],
-            "created_by": session['id'],
+            "created_by": ObjectId(session['id']),
             "is_part_of_series": False,
             "average_rating": 0.0
         }
@@ -556,18 +554,12 @@ def create_movie():
 
         new_id = mongo.db.movies.insert_one(new_movie).inserted_id
 
-        if request.form.get("seen-movie-checkbox"):
-            update_collection_item("users", "_id", ObjectId(session["id"]),
-                                   "$push", "movies_watched",  new_id)
-
         if request.form.get("submit-movie-review"):
-            update_collection_item("users", "_id", ObjectId(session["id"]),
-                                   "$push", "movies_reviewed",
-                                   ObjectId(new_id))
-
-        update_collection_item("users", '_id', ObjectId(session['id']), "$set",
-                               "user_latest_reviews", new_movie[
-                                   "latest_reviews"])
+            movie = find_one_with_key("movies", "_id", ObjectId(new_id))
+            create_and_add_mini_movie_dict(new_id, "movies_reviewed", movie)
+            add_review_to_latest_reviews_dicts(
+                movie, create_single_review(movie, movie["_id"]))
+        generate_average_review_score(ObjectId(new_id), movie)
 
         flash("New Movie Added")
         return redirect(url_for("view_movie", movie_id=new_id))
@@ -644,8 +636,13 @@ def edit_movie(movie_id):
     if request.method == "POST":
         updated_movie = generate_new_movie_dict(movie_id)
         mongo.db.movies.update({"_id": ObjectId(movie_id)}, updated_movie)
+
         if request.form.get("submit-movie-review"):
-            create_and_add_mini_movie_dict(movie_id, "movies_reviewed")
+            movie = find_one_with_key("movies", "_id", ObjectId(movie_id))
+            create_and_add_mini_movie_dict(movie_id, "movies_reviewed", movie)
+            add_review_to_latest_reviews_dicts(
+                movie, create_single_review(movie, movie["_id"]))
+        generate_average_review_score(ObjectId(movie_id), movie)
 
         flash("Movie Profile Successfully Updated")
         return redirect(url_for("view_movie", movie_id=movie_id))
@@ -828,6 +825,9 @@ def delete_review(movie_id, user_id):
 
 
 def create_and_add_mini_movie_dict(movie_id, array_name, movie=None):
+    """
+    generate mini movie dict and add to session user profile array
+    """
     if movie is None:
         movie = find_one_with_key("movies", "_id", ObjectId(movie_id))
 

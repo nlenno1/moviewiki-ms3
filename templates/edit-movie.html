@@ -81,19 +81,19 @@
                 <div id="series-questions" class="card form-card card-small shadow hidden collapse {% if  movie.is_part_of_series == true %}show{% endif %}">
                     <p class="mb-0">Fill out these questions about the series that this movie is part of.<br>This movie is:</p>
                         <div class="checkbox-container mt-0">
-                            {% if movie.series_position == "start" %}
+                            {% if movie.movie_series_info.series_position == "start" %}
                                 <input checked class="series-checkboxes" type="radio" id="start-series" name="series-checkboxes" value="start">
                             {% else %}
                                 <input class="series-checkboxes" type="radio" id="start-series" name="series-checkboxes" value="start">
                             {% endif %}
                             <label for="start-series"> The Start of a Series</label><br>
-                            {% if  movie.series_position == "end" %}
+                            {% if  movie.movie_series_info.series_position == "end" %}
                                 <input checked class="series-checkboxes" type="radio" id="end-series" name="series-checkboxes" value="end">
                             {% else %}
                                 <input  class="series-checkboxes" type="radio" id="end-series" name="series-checkboxes" value="end">
                             {% endif %}
                             <label for="end-series"> The End of a Series</label><br>
-                            {% if  movie.series_position == "middle" %}
+                            {% if  movie.movie_series_info.series_position == "middle" %}
                                 <input checked class="series-checkboxes" type="radio" id="middle-series" name="series-checkboxes" value="middle">
                             {% else %}
                                 <input class="series-checkboxes" type="radio" id="middle-series" name="series-checkboxes" value="middle">
@@ -101,16 +101,16 @@
                             <label for="middle-series"> None of the above</label><br>
                         </div>
                     <label for="series-name" class="small-text unselected-text">Series Name</label>
-                    <input {% if  movie.is_part_of_series == True %}required{% endif %} type="text" value="{{ movie.series_name|title }}" name="series-name" id="series-name" placeholder="Series Name" minlength="3" maxlength="30" class="validate" pattern="^(?!.*[\p{P} ]{2})[a-zA-Z0-9\p{P} ]{3,30}$">
+                    <input {% if  movie.is_part_of_series == True %}required{% endif %} type="text" value="{{ movie.movie_series_info.series_name|title }}" name="series-name" id="series-name" placeholder="Series Name" minlength="3" maxlength="30" class="validate" pattern="^(?!.*[\p{P} ]{2})[a-zA-Z0-9\p{P} ]{3,30}$">
                     <p class="invalid-message">3 to 30 characters long using letters,numbers and only 1 space and/or symbol consecutively</p>
-                    <div {% if  movie.series_position != 'end' or movie.series_position != 'middle' %}hidden{% endif %} id="previous-movie-container">
+                    <div {% if  movie.movie_series_info.series_position != 'end' or movie.movie_series_info.series_position != 'middle' %}hidden{% endif %} id="previous-movie-container">
                         <label for="previous-movie-name" class="small-text unselected-text">Previous Movie Name - Name of the movie before this one in the series</label>
-                        <input {% if movie.series_position and movie.series_position != 'start' %}required{% endif %} type="text" value="{{ movie.previous_movie_title|title }}" name="previous-movie-name" id="previous-movie-name" placeholder="Previous Movie in the Series" minlength="3" maxlength="30" class="validate" pattern="^(?!.*[\p{P} ]{2})[a-zA-Z0-9\p{P} ]{3,30}$">
+                        <input {% if movie.movie_series_info.series_position and movie.movie_series_info.series_position != 'start' %}required{% endif %} type="text" value="{{ movie.movie_series_info.previous_movie_title|title }}" name="previous-movie-name" id="previous-movie-name" placeholder="Previous Movie in the Series" minlength="3" maxlength="30" class="validate" pattern="^(?!.*[\p{P} ]{2})[a-zA-Z0-9\p{P} ]{3,30}$">
                         <p class="invalid-message">3 to 30 characters long using letters, numbers and only 1 space and/or symbol consecutively</p>
                     </div>
-                    <div {% if movie.series_position != 'start' or movie.series_position != 'middle' %}hidden{% endif %} id="next-movie-container">
+                    <div {% if movie.movie_series_info.series_position != 'start' or movie.movie_series_info.series_position != 'middle' %}hidden{% endif %} id="next-movie-container">
                         <label for="next-movie-name" class="small-text unselected-text">Next Movie Name - Name of the movie after this one in the series</label>
-                        <input {% if movie.series_position and movie.series_position != 'end' %}required{% endif %} type="text" value="{{ movie.next_movie_title|title }}" name="next-movie-name" id="next-movie-name" placeholder="Next Movie in the Series" minlength="3" maxlength="30" class="validate" pattern="^(?!.*[\p{P} ]{2})[a-zA-Z0-9\p{P} ]{3,30}$">
+                        <input {% if movie.movie_series_info.series_position and movie.movie_series_info.series_position != 'end' %}required{% endif %} type="text" value="{{ movie.movie_series_info.next_movie_title|title }}" name="next-movie-name" id="next-movie-name" placeholder="Next Movie in the Series" minlength="3" maxlength="30" class="validate" pattern="^(?!.*[\p{P} ]{2})[a-zA-Z0-9\p{P} ]{3,30}$">
                         <p class="invalid-message">3 to 30 characters long using letters, numbers and only 1 space and/or symbol consecutively</p>
                     </div>
                     <div class="checkbox-container mb-2 text-center">

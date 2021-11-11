@@ -29,6 +29,5 @@ $('document').ready (function () {
         check_star_count_has_been_entered(event)
         checkIfReviewWasMeantToBeSubmitted(event)
         checkIfSeriesInformationWasMeantToBeSubmitted(event)
-        
     });
 })
