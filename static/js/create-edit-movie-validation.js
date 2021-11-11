@@ -1,4 +1,4 @@
-function check_star_count_has_been_entered(event) {
+function checkStarCountHasBeenEntered(event) {
     if ($('#star-count').val() == 0 && $('#review-title').prop('required')) {
         alert('Please make sure that you have selected a star rating amount!');
         event.preventDefault(event);
@@ -26,7 +26,7 @@ function checkIfSeriesInformationWasMeantToBeSubmitted(event) {
 $('document').ready (function () {
     initializeSelectElementColorChange();
     $("form").submit(function(event){
-        check_star_count_has_been_entered(event)
+        checkStarCountHasBeenEntered(event)
         checkIfReviewWasMeantToBeSubmitted(event)
         checkIfSeriesInformationWasMeantToBeSubmitted(event)
     });
