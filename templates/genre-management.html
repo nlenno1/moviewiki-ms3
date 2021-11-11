@@ -8,19 +8,19 @@
             <div class="input-container">
                 <div>
                     <input type="text" name="genre-name" id="genre-name" placeholder="New Genre Name" minlength="3" maxlength="20" class="validate" pattern="^(?!.*[ -/]{2})[a-zA-Z0-9-/ ]{3,20}$"  required>
-                    <p class="invalid-message">3 to 20 characters long using letters and only 1 space, slash or dash consecutively</p>
                 </div>
             </div>
             <button class="generic-button button-color-gold" type="submit">Add New Genre <i class="fas fa-folder-plus"></i></button>
         </form>
         <div class="card form-card">
+            <p class="small-text unselected text-center">All Genre names should be 3 to 20 characters long using letters and only 1 space, slash or dash consecutively</p>
             {% for genre in genre_list %}
                 <div class="row g-0">
                     <div class="col-12">
                         <div class="genre-container">
                             <h3 class="mb-0">{{ genre.genre_name|title }}</h3> 
                             <form method="POST" action="{{ url_for('update_genre', genre_id=genre._id) }}">
-                                <input class="text-center" type="text" name="replacement-genre-name" placeholder="Replacement Name" required>
+                                <input class="text-center" type="text" name="replacement-genre-name" placeholder="Replacement Name" minlength="3" maxlength="20" class="validate" pattern="^(?!.*[ -/]{2})[a-zA-Z0-9-/ ]{3,20}$" required>
                                 <button type="submit" class="generic-button button-color-gold">Rename <i class="fas fa-edit"></i></button>
                                 <button class="generic-button button-color-red"><a href="{{ url_for('delete_genre', genre_id=genre._id) }}">Delete</a></button>
                             </form>
