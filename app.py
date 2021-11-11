@@ -227,20 +227,16 @@ def generate_movie_image_link():
 def add_series_information_to_dict(new_movie):
     if request.form.get("submit-series-info"):
         new_movie["is_part_of_series"] = True
-        new_movie["series_position"] = request.form.get(
-                                            "series-checkboxes")
-        new_movie["series_name"] = request.form.get("series-name").lower()
-        if new_movie["series_position"] == "start":
-            new_movie["next_movie_title"] = request.form.get(
-                                        "next-movie-name").lower()
-        elif new_movie["series_position"] == "end":
-            new_movie["previous_movie_title"] = request.form.get(
-                                            "previous-movie-name").lower()
-        else:
-            new_movie["previous_movie_title"] = request.form.get(
-                                            "previous-movie-name").lower()
-            new_movie["next_movie_title"] = request.form.get(
-                                        "next-movie-name").lower()
+    else:
+        new_movie["is_part_of_series"] = False
+
+    new_movie["movie_series_info"] = {
+        "series_name": request.form.get("series-name").lower(),
+        "series_position": request.form.get("series-checkboxes"),
+        "previous_movie_title": request.form.get(
+                               "previous-movie-name").lower(),
+        "next_movie_title": request.form.get("next-movie-name").lower(),
+    }
 
 
 # ---------- app.route ----------
