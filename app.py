@@ -189,7 +189,6 @@ def add_review_to_dict(new_movie, movie_id=None):
 
 
 def generate_new_movie_dict(movie_id=None):
-    image_link = generate_movie_image_link()
     new_movie = {
             "movie_title": request.form.get("movie-title").lower(),
             "release_date": datetime.strptime(request.form.get(
@@ -202,7 +201,7 @@ def generate_new_movie_dict(movie_id=None):
                 "cast-members").lower().split(","),
             "movie_synopsis": request.form.get("movie-synopsis"),
             "movie_description": request.form.get("movie-description"),
-            "image_link": image_link,
+            "image_link": request.form.get("image-link"),
             "reviews": [],
             "latest_reviews": [],
             "created_by": ObjectId(session['id']),
@@ -212,14 +211,6 @@ def generate_new_movie_dict(movie_id=None):
     add_series_information_to_dict(new_movie)
     add_review_to_dict(new_movie, movie_id)
     return new_movie
-
-
-def generate_movie_image_link():
-    if request.form.get("image-link"):
-        image_link = request.form.get("image-link")
-    else:
-        image_link = "../static/img/movie-placeholder.png"
-    return image_link
 
 
 def add_series_information_to_dict(new_movie):
@@ -553,9 +544,9 @@ def create_movie():
                     return redirect(url_for('view_all_movies'))
 
         new_id = mongo.db.movies.insert_one(new_movie).inserted_id
+        movie = find_one_with_key("movies", "_id", ObjectId(new_id))
 
         if request.form.get("submit-movie-review"):
-            movie = find_one_with_key("movies", "_id", ObjectId(new_id))
             create_and_add_mini_movie_dict(new_id, "movies_reviewed", movie)
             add_review_to_latest_reviews_dicts(
                 movie, create_single_review(movie, movie["_id"]))

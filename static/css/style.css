@@ -9,7 +9,8 @@ h3,
 h4,
 .navbar-brand,
 .logo,
-.movie-font {
+.movie-font,
+.movie-image-continer {
     font-family: Bebas Neue, sans-serif;
 }
 
@@ -572,17 +573,18 @@ p>a:hover {
 
 .movie-image-continer {
     overflow: hidden;
+    background-color: #737577;
+    border-radius: 3px;
 }
 
-.movie-picture-display img,
-.movie-picture-display a {
+.movie-picture-display img {
     object-fit: fill;
     height: 100%;
-    width: inherit;
+    width: 100%;
     transition: all 0.2s ease-in-out;
 }
 
-.movie-picture-display img:hover {
+.movie-picture-display a:hover img {
     transform: scale(1.04)
 }
 
@@ -617,6 +619,7 @@ p>a:hover {
     padding: 20px 10px;
     background-color: currentColor;
     opacity: .5;
+    border-radius: 3px;
 }
 
 .movie-placeholder button {
@@ -714,9 +717,8 @@ select>.text-black {
     color: #ffca18;
 }
 
-/* Processing & Delete Confirmation Screens */
+/* Delete Confirmation Screen */
 
-#processing,
 #confirm_profile_delete {
     width: 100%;
     cursor: wait;
@@ -734,18 +736,6 @@ select>.text-black {
     font-size: 150px;
 }
 
-#processing img {
-    width: 100%;
-    height: auto;
-    overflow: auto;
-}
-
-@media (min-width: 576px) {
-    #processing img {
-        width: 480px;
-        height: 360px;
-    }
-}
 
 @media (min-width: 768px) {
     #processing {

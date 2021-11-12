@@ -131,7 +131,7 @@
                             <div class="movie-picture-display">
                                 <div class="movie-image-continer">
                                     <a href="{{ url_for('view_movie', movie_id=item._id) }}">
-                                        <img src="{{ item.image_link }}" alt="Movie Image">
+                                        <img src="{{ item.image_link }}" onerror="this.onerror=null;this.src='{{ url_for('static', filename='img/movie_placeholder.png') }}'" alt="Movie Image">
                                     </a>
                                 </div>
                                 <h4 class="movie-text">{{ item.movie_title }}</h4>
