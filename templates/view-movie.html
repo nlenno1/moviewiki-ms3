@@ -12,7 +12,7 @@
                 <button class="generic-button button-color-gold"><a href="{{ url_for('signin') }}">Sign In</a></button></p> 
             {% endif %}
         {% else %}
-            <p class="mb-0 mt-4 text-center">You have reviewed this movie</p>
+            <p class="mb-0 mt-4 text-center">You have reviewed this movie<button class="generic-button button-color-gold mt-2"><a href="{{ url_for('edit_review', movie_id=movie._id, user_id=session['id']) }}">Update Review</a></button></p>
         {% endif %}
         <div class="card form-card shadow">
             <div class="row my-3">
@@ -93,7 +93,7 @@
                     {% if movie.average_review_score and movie.average_review_score > 0 %}
                         <p><strong>Average Rating :</strong> {{ movie.average_review_score }} out of 5</p>
                     {% endif %}
-                    {% if movie.cast_members|length > 0 %}
+                    {% if movie.cast_members|length > 0 and movie.cast_members != [""] %}
                         <div class="row mb-3">
                             <p class="mb-0"><strong>Main Cast:</strong></p>
                             {% for member in movie.cast_members %}
@@ -104,6 +104,23 @@
                                 </div>
                             {% endfor %}
                         </div>
+                    {% endif %}
+                    {% if movie.is_part_of_series == True %}
+                        <p class="mb-0"><strong>This Movie is part of a Series of Movies</strong></p>
+                        {% if movie.movie_series_info.series_name and movie.movie_series_info.series_name != "" %}
+                            <p class="mb-0">The series is called {{ movie.movie_series_info.series_name|title }}</p>
+                        {% endif %}
+                        {% if movie.movie_series_info.series_position == "start" or movie.movie_series_info.series_position == "end" %}
+                            <p class="mb-0">This movie is the {{movie.movie_series_info.series_position}} of the series</p>
+                        {% elif movie.movie_series_info.series_position == "middle" %}
+                            <p class="mb-0">This movie is part of the way through the series</p>
+                        {% endif %}
+                        {% if movie.movie_series_info.series_position == "end" or "middle" %}
+                            <p class="mb-0">Next Movie Title: {{ movie.movie_series_info.previous_movie_title|title }}</p>
+                        {% endif %}
+                        {% if movie.movie_series_info.series_position == "start" or "middle" %}
+                            <p class="mb-0">Previous Movie Title: {{ movie.movie_series_info.next_movie_title|title }}</p>
+                        {% endif %}
                     {% endif %}
                 </div>
             </div>
