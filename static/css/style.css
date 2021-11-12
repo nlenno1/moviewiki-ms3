@@ -919,6 +919,23 @@ select>.text-black {
     align-items: center;
 }
 
+.user-info {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+
+@media (min-width: 768px) {
+    .user-info {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        align-items: flex-start !important;
+        justify-content: space-evenly;
+    }
+}
+
 /* Tooltips - example taken from W3 (https://www.w3schools.com/css/css_tooltip.asp)*/
 
 .tooltip-custom {

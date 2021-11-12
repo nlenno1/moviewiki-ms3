@@ -249,7 +249,7 @@ def home():
     movies_for_you = []
     want_to_watch = []
 
-    if session and session["id"]:
+    if len(session) > 1 and session["id"]:
         user = find_one_with_key("users", "_id", ObjectId(session["id"]))
         # generate suggested_movies list
         for item in movies:

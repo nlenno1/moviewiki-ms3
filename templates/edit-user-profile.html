@@ -42,13 +42,15 @@
                       <span>Movie Genre Selection</span><i class="fas fa-angle-down"></i>
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                        {% for genre in genre_list %}
-                            {% if genre.checked %}
-                            <li><input checked id="{{ genre.genre_name }}" name="movie-genre" value="{{ genre.genre_name|lower }}" type="checkbox">{{ genre.genre_name|title }}</li>
-                            {% else %}
-                            <li><input id="{{ genre.genre_name }}" name="movie-genre" value="{{ genre.genre_name|lower }}" type="checkbox">{{ genre.genre_name|title }}</li>
-                            {% endif %}
-                        {% endfor %}
+                        <div class="checkbox-group required">
+                            {% for genre in genre_list %}
+                                {% if genre.checked %}
+                                <li><input checked id="{{ genre.genre_name }}" name="movie-genre" value="{{ genre.genre_name|lower }}" type="checkbox">{{ genre.genre_name|title }}</li>
+                                {% else %}
+                                <li><input id="{{ genre.genre_name }}" name="movie-genre" value="{{ genre.genre_name|lower }}" type="checkbox">{{ genre.genre_name|title }}</li>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
                     </ul>
                 </div>
                 <div class="buttons-container mt-4">
