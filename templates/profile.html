@@ -123,22 +123,24 @@
                 </div>
             {% endif %}
         </div>
-        <div class="row g-0">
-            <div class="col">
-                <h3 class="carousel-label">Movies Recommended For You</h3>
-                <div class="movie-carousel">
-                    {% for item in suggested_movies %}
-                            <div class="movie-picture-display">
-                                <div class="movie-image-continer">
-                                    <a href="{{ url_for('view_movie', movie_id=item._id) }}">
-                                        <img src="{{ item.image_link }}" onerror="this.onerror=null;this.src='{{ url_for('static', filename='img/movie_placeholder.png') }}'" alt="Movie Image">
-                                    </a>
+        {% if suggested_movies|length > 0 %}
+            <div class="row g-0">
+                <div class="col">
+                    <h3 class="carousel-label">Movies Recommended For You</h3>
+                    <div class="movie-carousel">
+                        {% for item in suggested_movies %}
+                                <div class="movie-picture-display">
+                                    <div class="movie-image-continer">
+                                        <a href="{{ url_for('view_movie', movie_id=item._id) }}">
+                                            <img src="{{ item.image_link }}" onerror="this.onerror=null;this.src='{{ url_for('static', filename='img/movie_placeholder.png') }}'" alt="Movie Image">
+                                        </a>
+                                    </div>
+                                    <h4 class="movie-text">{{ item.movie_title }}</h4>
                                 </div>
-                                <h4 class="movie-text">{{ item.movie_title }}</h4>
-                            </div>
-                    {% endfor %}
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
-        </div>
+        {% endif %}
     </div>
 {% endblock %}
