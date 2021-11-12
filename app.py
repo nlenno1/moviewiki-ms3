@@ -285,7 +285,7 @@ def get_all_genre():
     is_user_admin = is_admin()
     if not is_user_admin:
         return redirect(url_for("home"))
-    genre_list = list(mongo.db.genre.find())
+    genre_list = list(mongo.db.genre.find().sort("genre_name"))
     return render_template("genre-management.html", genre_list=genre_list)
 
 
@@ -378,7 +378,7 @@ def signup():
         flash("Registration Successful " + session["user"].capitalize() + "!")
         return redirect(url_for('profile', user_id=session['id']))
 
-    genre_list = mongo.db.genre.find()
+    genre_list = list(mongo.db.genre.find().sort("genre_name"))
     return render_template("signup.html", genre_list=genre_list)
 
 
@@ -456,8 +456,7 @@ def edit_user_profile(user_id):
     user = find_one_with_key("users", "_id", ObjectId(user_id))
     user["dob"] = datetime.strptime(user["dob"], '%Y-%m-%d')
 
-    genre_list = mongo.db.genre.find()
-    genre_list = sorted(genre_list, key=lambda d: d['genre_name'])
+    genre_list = list(mongo.db.genre.find().sort("genre_name"))
     for genre in genre_list:
         if genre["genre_name"].lower() in user["favourite_genres"]:
             genre["checked"] = True
@@ -555,7 +554,7 @@ def create_movie():
         flash("New Movie Added")
         return redirect(url_for("view_movie", movie_id=new_id))
 
-    genre_list = mongo.db.genre.find()
+    genre_list = list(mongo.db.genre.find().sort("genre_name"))
     age_ratings = mongo.db.age_ratings.find().sort("uk_rating_order")
     return render_template("create-movie.html", genre_list=genre_list,
                             age_ratings=age_ratings)
@@ -656,8 +655,7 @@ def edit_movie(movie_id):
     return render_template("edit-movie.html", genre_list=genre_list,
                            movie=movie, age_ratings=age_ratings,
                            cast_members_string=cast_members_string,
-                           movie_reviewers_id_list=movie_reviewers_id_list,
-                           age_rating_list=age_rating_list)
+                           movie_reviewers_id_list=movie_reviewers_id_list)
 
 
 @app.route("/movie/<movie_id>/delete")
@@ -749,9 +747,9 @@ def create_review():
                                     user_id=session["id"]))
     else:
         movie_id = None
-    movie_title_list = mongo.db.movies.find({}, {"movie_title": 1,
-                                                 "release_date": 1})
-
+    movie_title_list = sorted(mongo.db.movies.find({},
+                              {"movie_title": 1, "release_date": 1}),
+                              key=lambda d: d['movie_title'])[:15]
     return render_template(
         "create-review.html", movie_title_list=movie_title_list,
         selected_movie_id=movie_id)

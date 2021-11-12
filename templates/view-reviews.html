@@ -8,7 +8,7 @@
         <div class="col-12 col-sm-6 col-md-3">
             <div class="d-flex justify-content-center">
                 <a href="{{ url_for('view_movie', movie_id=movie._id) }}">
-                    <img class="reviews-header-img" src="{{ movie.image_link }}" alt="Movie Image">
+                    <img class="reviews-header-img" onerror="this.onerror=null;this.src='{{ url_for('static', filename='img/movie_placeholder.png') }}'" src="{{ movie.image_link }}" alt="Movie Image">
                 </a>
             </div>
         </div>
@@ -19,11 +19,11 @@
             <h4 class="mb-0">Average Star Rating:</h4>
             <div class="five-stars-container">
                 <div class="position-relative">
-                    <img src="../static/img/5-black_stars.png" alt="" class="mask" id="five_stars_mask">
-                    <img src="../static/img/5_stars.png" alt="" class="five-stars">
+                    <img src="{{ url_for('static', filename='img/5_black_stars.png') }}" alt="" class="mask" id="five_stars_mask">
+                    <img src="{{ url_for('static', filename='img/5_stars.png') }}" alt="" class="five-stars">
                 </div>
             </div>
-            <h5><span id="average_review_score">{{ movie.average_review_score }}</span> / 5 </h5>
+            <h5><span id="average_review_score">{% if movie.average_review_score %}{{ movie.average_review_score }}{% else %}0{% endif %}</span> / 5 </h5>
         </div>
     </div>
     <p class="mb-0 mt-3 text-center">Want to add your own review, click here! 
