@@ -619,7 +619,7 @@ def edit_movie(movie_id):
     # add try except
     movie = mongo.db.movies.find_one({"_id": ObjectId(movie_id)})
 
-    # use user id for movie["created_by"] field rather than usernames
+    # use id from movie["created_by"] field to check if user created the profile
     is_user_allowed = is_correct_user(movie["created_by"])
     if not is_user_allowed:
         return redirect(url_for("home"))
@@ -658,16 +658,17 @@ def edit_movie(movie_id):
 
 @app.route("/movie/<movie_id>/delete")
 def delete_movie(movie_id):
-    # movie = mongo.bd.movies.find_one({"_id": ObjectId(movie_id)},
-    #                                  {"created_by": 1})
+    # add try except
+    movie = mongo.db.movies.find_one({"_id": ObjectId(movie_id)},
+                                     {"created_by": 1})
 
-    # use user id for movie["created_by"] field rather than usernames
-    # is_user_allowed = is_correct_user(movie["created_by"])
-    # if not is_user_allowed:
-    #    return redirect(url_for("home"))
+    # use id from movie["created_by"] field to check if user created the profile
+    is_user_allowed = is_correct_user(movie["created_by"])
+    if not is_user_allowed:
+        return redirect(url_for("home"))
 
     mongo.db.movies.remove({
-        "_id": ObjectId(movie_id)
+        "_id": movie["_id"]
     })
     flash("Movie Deleted")
     return redirect(url_for('home'))
