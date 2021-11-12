@@ -55,7 +55,7 @@
                 </div>
                 <div class="buttons-container mt-4">
                     <button type="submit" class="generic-button button-color-gold mt-2">Update Account</button>
-                    <button class="generic-button mt-2"><a href="{{ url_for('profile', user_id=session['id']) }}">Cancel</a></button>
+                    <button class="generic-button mt-2"><a href="{{ url_for('profile') }}">Cancel</a></button>
                     <button type="button" class="generic-button button-color-red mt-2" onclick="confirmProfileDelete()">Delete Account</button>
                 </div>
             </form>
@@ -71,7 +71,7 @@
         </div>
         <div class="buttons-container mt-4">
             <button class="generic-button button-color-red mt-2"><a href="{{ url_for('delete_user_profile', user_id=session['id']) }}">Delete Profile</a></button>
-            <button class="generic-button mt-2"><a href="{{ url_for('profile', user_id=session['id']) }}">Cancel</a></button>
+            <button class="generic-button mt-2"><a href="{{ url_for('profile') }}">Cancel</a></button>
         </div>
     </div>
 

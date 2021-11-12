@@ -40,7 +40,7 @@
                             <div class="movie-picture-display">
                                 <div class="movie-placeholder">
                                     <p>Add some genres to your profile for more recomendations here!</p>
-                                    <button class="generic-button button-color-gold"><a href="{{ url_for('edit_user_profile', user_id=session['id']) }}">Update Profile</a></button>
+                                    <button class="generic-button button-color-gold"><a href="{{ url_for('edit_user_profile') }}">Update Profile</a></button>
                                 </div>
                                 <h4 class="movie-text">Still Looking?</h4>
                             </div>
@@ -67,7 +67,7 @@
                             <div class="movie-picture-display">
                                 <div class="movie-placeholder">
                                     <p>Go to your profile for a full list of the films you Want to Watch!</p>
-                                    <button class="generic-button button-color-gold"><a href="{{ url_for('profile', user_id=session['id']) }}">Your Profile</a></button>
+                                    <button class="generic-button button-color-gold"><a href="{{ url_for('profile') }}">Your Profile</a></button>
                                 </div>
                                 <h4 class="movie-text">Still Looking?</h4>
                             </div>
