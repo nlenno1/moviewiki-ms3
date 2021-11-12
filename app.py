@@ -420,107 +420,107 @@ def signup():
 
 
 # view/read user profile
-@app.route("/profile/<user_id>", methods=["GET", "POST"])
-def profile(user_id):
+@app.route("/profile", methods=["GET", "POST"])
+def profile():
 
-    is_user_allowed = is_correct_user(user_id)
-    if not is_user_allowed:
-        return redirect(url_for("home"))
+    if session and session["id"]:
+        try:
+            user = mongo.db.users.find_one(
+                    {"_id": ObjectId(session["id"])},
+                    {"password_hash": 0})
 
-    try:
-        user = mongo.db.users.find_one(
-                {"_id": ObjectId(user_id)},
-                {"password_hash": 0})
+            # generate suggested_movies list
+            suggested_movies = []
+            movies = list(mongo.db.movies.find())
+            for item in movies:
+                if set(user["favourite_genres"]).intersection(item["genre"]):
+                    suggested_movies.append(item)
+            suggested_movies = sorted(suggested_movies, key=lambda d: d[
+                                      'average_rating'])[:15]
 
-        # generate suggested_movies list
-        suggested_movies = []
-        movies = list(mongo.db.movies.find())
-        for item in movies:
-            if set(user["favourite_genres"]).intersection(item["genre"]):
-                suggested_movies.append(item)
-        suggested_movies = sorted(suggested_movies, key=lambda d: d[
-                                    'average_rating'])[:15]
+            user_latest_reviews = sorted(user["user_latest_reviews"],
+                                         key=lambda d: d['review_date'],
+                                         reverse=True)
 
-        user_latest_reviews = sorted(user["user_latest_reviews"],
-                                     key=lambda d: d['review_date'],
-                                     reverse=True)
-
-        return render_template("profile.html", user=user,
-                               suggested_movies=suggested_movies,
-                               user_latest_reviews=user_latest_reviews)
-    except Exception as e:
-        flash("User profile was not found")
-        flash(str(e))
-        flash("Please try again or get in touch to report a"
-              " reoccurring problem")
-        return redirect(url_for("home"))
+            return render_template("profile.html", user=user,
+                                   suggested_movies=suggested_movies,
+                                   user_latest_reviews=user_latest_reviews)
+        except Exception as e:
+            flash("User profile was not found")
+            flash(str(e))
+            flash("Please try again or get in touch to report a"
+                  " reoccurring problem")
+            return redirect(url_for("home"))
+    else:
+        flash("Please sign in to access that User Profile")
+        return redirect(url_for("signin"))
 
 
 # edit user profile
-@app.route("/profile/<user_id>/edit", methods=["GET", "POST"])
-def edit_user_profile(user_id):
-    is_user_allowed = is_correct_user(user_id)
-    if not is_user_allowed:
-        return redirect(url_for("home"))
+@app.route("/profile/edit", methods=["GET", "POST"])
+def edit_user_profile():
+    if session and session["id"]:
+        if request.method == "POST":
+            try:
+                user = mongo.db.users.find_one(
+                       {"_id": ObjectId(session['id'])},
+                       {"password_hash": 0})
 
-    if request.method == "POST":
+                requested_username = request.form.get("username").lower()
+
+                existing_user = mongo.db.users.find_one(
+                                {"username": requested_username.lower()},
+                                {"password_hash": 0})
+
+                if existing_user and requested_username != user["username"]:
+                    flash("Username " + requested_username.capitalize() +
+                          " already exists")
+                    return redirect(url_for("edit_user_profile",
+                                            user_id=session['id']))
+
+                updated_profile_dict = {
+                    "username": request.form.get("username").lower(),
+                    "firstname": request.form.get("firstname").lower(),
+                    "lastname": request.form.get("lastname").lower(),
+                    "dob": request.form.get("dob"),
+                    "email": request.form.get('email'),
+                    "favourite_genres": request.form.getlist('movie-genre')
+                }
+
+                mongo.db.users.update_one({"_id": ObjectId(session['id'])},
+                                          {"$set": updated_profile_dict})
+
+                add_user_data_to_session_storage(updated_profile_dict,
+                                                 ObjectId(session["id"]))
+
+                flash(f"Updated {session['user'].capitalize()} Account!")
+                return redirect(url_for('profile', user_id=session['id']))
+
+            except Exception as e:
+                print("User not Found")
+                flash(str(e))
+                flash("Please try again or get in touch to report"
+                      " a reoccurring problem")
+                return redirect(url_for('home'))
         try:
-            user = mongo.db.users.find_one({"_id": ObjectId(session['id'])},
-                                           {"password_hash": 0})
-
-            requested_username = request.form.get("username").lower()
-            # change into conditional to compare user["username"] and
-            # requested_username
-            existing_user = mongo.db.users.find_one(
-                {"username": requested_username.lower()},
-                {"password_hash": 0})
-
-            if requested_username and requested_username != user["username"]:
-                flash("Username " + requested_username.capitalize() +
-                      " already exists")
-                return redirect(url_for("edit_user_profile",
-                                        user_id=session['id']))
-
-            updated_profile_dict = {
-                "username": request.form.get("username").lower(),
-                "firstname": request.form.get("firstname").lower(),
-                "lastname": request.form.get("lastname").lower(),
-                "dob": request.form.get("dob"),
-                "email": request.form.get('email'),
-                "favourite_genres": request.form.getlist('movie-genre')
-            }
-
-            mongo.db.users.update_one({"_id": ObjectId(session['id'])},
-                                      {"$set": updated_profile_dict})
-
-            add_user_data_to_session_storage(updated_profile_dict, ObjectId(
-                                            session["id"]))
-
-            flash(f"Updated {session['user'].capitalize()} Account!")
-            return redirect(url_for('profile', user_id=session['id']))
-
+            user = find_one_with_key("users", "_id", ObjectId(session["id"]))
+            user["dob"] = datetime.strptime(user["dob"], '%Y-%m-%d')
         except Exception as e:
             print("User not Found")
             flash(str(e))
-            flash("Please try again or get in touch to report"
-                  " a reoccurring problem")
+            flash("Please try again or get in touch to report "
+                  "a reoccurring problem")
             return redirect(url_for('home'))
-    try:
-        user = find_one_with_key("users", "_id", ObjectId(user_id))
-        user["dob"] = datetime.strptime(user["dob"], '%Y-%m-%d')
-    except Exception as e:
-        print("User not Found")
-        flash(str(e))
-        flash("Please try again or get in touch to report "
-              "a reoccurring problem")
-        return redirect(url_for('home'))
 
-    genre_list = list(mongo.db.genre.find().sort("genre_name"))
-    for genre in genre_list:
-        if genre["genre_name"].lower() in user["favourite_genres"]:
-            genre["checked"] = True
-    return render_template("edit-user-profile.html", genre_list=genre_list,
-                           suser=user)
+        genre_list = list(mongo.db.genre.find().sort("genre_name"))
+        for genre in genre_list:
+            if genre["genre_name"].lower() in user["favourite_genres"]:
+                genre["checked"] = True
+        return render_template("edit-user-profile.html", genre_list=genre_list,
+                               user=user)
+    else:
+        flash("Please sign in to Edit that User Profile")
+        return redirect(url_for("signin"))
 
 
 # delete user profile
