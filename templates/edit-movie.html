@@ -71,7 +71,7 @@
                         <label class="form-check-label" for="series-switch">Is this Movie part of a series?</label>
                         <input {% if  movie.is_part_of_series == true %}checked{% endif %} class="form-check-input" type="checkbox" name="series-switch" id="series-switch" data-bs-toggle="collapse" data-bs-target="#series-questions">
                     </div>
-                    {% if session["id"] not in movie_reviewers_id_list %}
+                    {% if user_has_reviewed == False %}
                         <div class="form-check form-switch">
                             <label class="form-check-label" for="write-review-switch">Do you want to write a Review for this Movie?</label>
                             <input class="form-check-input" type="checkbox" name="write-review-switch" id="write-review-switch" data-bs-toggle="collapse" data-bs-target="#add-review">
@@ -118,7 +118,7 @@
                         <label class="form-check-label" for="submit-series-info"> Click this box to submit the Series information</label><br>
                     </div>
                 </div>
-                {% if session["id"] not in movie_reviewers_id_list %}
+                {% if user_has_reviewed == False %}
                     <div id="add-review" class="card form-card card-small shadow hidden collapse">
                         <p>Write your review of this movie</p>
                         <input type="text" name="review-title" id="review-title" placeholder="Review Title" minlength="2" maxlength="75" class="validate" pattern="^(?!.*[\p{P} ]{2})[a-zA-Z0-9\p{P} ]{2,75}$">

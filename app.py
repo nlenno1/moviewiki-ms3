@@ -617,13 +617,12 @@ def view_movie(movie_id):
 @app.route("/movie/<movie_id>/edit", methods=["GET", "POST"])
 def edit_movie(movie_id):
     # add try except
-    # movie = mongo.bd.movies.find_one({"_id": ObjectId(movie_id)},
-    #                                  {"created_by": 1})
+    movie = mongo.db.movies.find_one({"_id": ObjectId(movie_id)})
 
     # use user id for movie["created_by"] field rather than usernames
-    # is_user_allowed = is_correct_user(movie["created_by"])
-    # if not is_user_allowed:
-    #    return redirect(url_for("home"))
+    is_user_allowed = is_correct_user(movie["created_by"])
+    if not is_user_allowed:
+        return redirect(url_for("home"))
 
     if request.method == "POST":
         updated_movie = generate_new_movie_dict(movie_id)
@@ -639,23 +638,22 @@ def edit_movie(movie_id):
         flash("Movie Profile Successfully Updated")
         return redirect(url_for("view_movie", movie_id=movie_id))
 
-    movie = find_one_with_key("movies", "_id", ObjectId(movie_id))
     genre_list = list(mongo.db.genre.find().sort("genre_name"))
-    age_ratings = mongo.db.age_ratings.find().sort("uk_rating_order")
     for genre in genre_list:
         if genre["genre_name"].lower() in movie["genre"]:
             genre["checked"] = True
-    # make into function - list from array of dicts with key
-    movie_reviewers_id_list = []
-    for review in movie["reviews"]:
-        movie_reviewers_id_list.append(review["reviewer_id"])
+    age_ratings = mongo.db.age_ratings.find().sort("uk_rating_order")
+    # make into function??
+    matching_ids = [review["reviewer_id"] for review in movie["reviews"]
+                    if review["reviewer_id"] == session["id"]]
+    user_has_reviewed = True if matching_ids else False
 
     cast_members_string = ','.join(name.title() for name in movie[
                             "cast_members"])
     return render_template("edit-movie.html", genre_list=genre_list,
                            movie=movie, age_ratings=age_ratings,
                            cast_members_string=cast_members_string,
-                           movie_reviewers_id_list=movie_reviewers_id_list)
+                           user_has_reviewed=user_has_reviewed)
 
 
 @app.route("/movie/<movie_id>/delete")
