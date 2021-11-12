@@ -5,23 +5,30 @@
 
     <div class="container-md">
         <div class="card form-card shadow">
-            <div class="row">
+            <div class="row g-0">
                 <div class="col-12 col-md-4 profile_controls_container">
                     <h1>{{ user.username }}</h1>
+                    <div class="mt-3">
+                        <p><strong>First Name:</strong> {{ user.firstname|title }}</p>
+                        <p><strong>Last Name:</strong> {{ user.lastname|title }}</p>
+                        <p><strong>Email Address:</strong> {{ user.email }}</p>
+                    </div>
                     <div class="my-5 d-none d-md-flex">
                         <button class="generic-button button-color-gold"><a href="{{ url_for('edit_user_profile', user_id=session['id']) }}">Update Profile</a></button>
                     </div>
                 </div>
-                <div class="col-12 col-md-8">
-                    <p class="mb-1">Favourite Genres :
+                <div class="col-12 col-md-8 user-info">
+                    <div>
+                        <p class="mb-1"><strong>Favourite Genres :</strong></p>
                         <ul>
                             {% for genre in user.favourite_genres %}
                             <li>{{ genre|capitalize }}</li>
                             {% endfor %}
                         </ul>
-                        <p>Been a member since : {{ user.date_joined.strftime('%d %B %Y') }}</p>
-                        <p>Number of Reviews submitted : {{ user.movies_reviewed|length }}</p>
-                        <p>Number of Movies Watched : {{ user.movies_watched|length }}</p>
+                    </div>
+                    <p><strong>Been a member since :</strong> {{ user.date_joined.strftime('%d %B %Y') }}</p>
+                    <p><strong>Number of Reviews submitted :</strong> {{ user.movies_reviewed|length }}</p>
+                    <p><strong>Number of Movies Watched :</strong> {{ user.movies_watched|length }}</p>
                 </div>
                 <div class="col-12 d-md-none text-center">
                     <button class="generic-button button-color-gold"><a href="{{ url_for('edit_user_profile', user_id=session['id']) }}">Update Profile</a></button>
