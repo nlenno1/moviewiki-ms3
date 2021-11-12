@@ -49,11 +49,11 @@
                                 aria-labelledby="to-watch-heading" data-bs-parent="#user-profile-accordion">
                                 <div class="accordion-body">
                                     <div class="row g-0">
-                                        {% if user.movies_to_watch|length > 0 %}
-                                            {% for movie in user.movies_to_watch %}
+                                        {% if movies_to_watch|length > 0 %}
+                                            {% for movie in movies_to_watch %}
                                                 <div class="col-12 col-md-6 col-lg-4">
                                                     <p class="mb-0">
-                                                        <i class="far fa-caret-square-right me-1 me-sm-3"></i>{{ movie|title }}
+                                                        <i class="far fa-caret-square-right me-1 me-sm-3"></i>{{ movie.movie_title|title }} - {{ movie.release_year }} 
                                                     </p>
                                                 </div>
                                             {% endfor %}
@@ -77,11 +77,11 @@
                                     aria-labelledby="watched-heading" data-bs-parent="#user-profile-accordion">
                                     <div class="accordion-body">
                                         <div class="row g-0">
-                                            {% if user.movies_watched|length > 0 %}
-                                                {% for movie in user.movies_watched %}
+                                            {% if movies_watched|length > 0 %}
+                                                {% for movie in movies_watched %}
                                                     <div class="col-12 col-md-6 col-lg-4">
                                                         <p class="mb-0">
-                                                            <i class="far fa-caret-square-right me-1 me-sm-3"></i>{{ movie|title }}
+                                                            <i class="far fa-caret-square-right me-1 me-sm-3"></i>{{ movie.movie_title|title }} - {{ movie.release_year }} 
                                                         </p>
                                                     </div>
                                                 {% endfor %}

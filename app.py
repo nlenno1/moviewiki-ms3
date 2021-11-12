@@ -419,7 +419,7 @@ def signup():
     return render_template("signup.html", genre_list=genre_list)
 
 
-# view/read user profile
+# view user profile
 @app.route("/profile", methods=["GET", "POST"])
 def profile():
 
@@ -442,9 +442,19 @@ def profile():
                                          key=lambda d: d['review_date'],
                                          reverse=True)
 
+            movies_to_watch = sorted(user["movies_to_watch"],
+                                     key=lambda d: d['movie_title'],
+                                     reverse=True)
+
+            movies_watched = sorted(user["movies_watched"],
+                                    key=lambda d: d['movie_title'],
+                                    reverse=True)
+
             return render_template("profile.html", user=user,
                                    suggested_movies=suggested_movies,
-                                   user_latest_reviews=user_latest_reviews)
+                                   user_latest_reviews=user_latest_reviews,
+                                   movies_to_watch=movies_to_watch,
+                                   movies_watched=movies_watched)
         except Exception as e:
             flash("User profile was not found")
             flash(str(e))
