@@ -450,11 +450,16 @@ def profile():
                                     key=lambda d: d['movie_title'],
                                     reverse=True)
 
+            movies_reviewed = sorted(user["movies_reviewed"],
+                                     key=lambda d: d['movie_title'],
+                                     reverse=True)
+
             return render_template("profile.html", user=user,
                                    suggested_movies=suggested_movies,
                                    user_latest_reviews=user_latest_reviews,
                                    movies_to_watch=movies_to_watch,
-                                   movies_watched=movies_watched)
+                                   movies_watched=movies_watched,
+                                   movies_reviewed=movies_reviewed)
         except Exception as e:
             flash("User profile was not found")
             flash(str(e))
@@ -633,7 +638,7 @@ def create_movie():
             create_and_add_mini_movie_dict(new_id, "movies_reviewed", movie)
             add_review_to_latest_reviews_dicts(
                 movie, create_single_review(movie, movie["_id"]))
-        generate_average_review_score(ObjectId(new_id), movie)
+            generate_average_review_score(ObjectId(new_id), movie)
 
         flash("New Movie Added")
         return redirect(url_for("view_movie", movie_id=new_id))
@@ -737,7 +742,7 @@ def edit_movie(movie_id):
                                                movie)
                 add_review_to_latest_reviews_dicts(
                     movie, create_single_review(movie, movie["_id"]))
-            generate_average_review_score(ObjectId(movie_id), movie)
+                generate_average_review_score(ObjectId(movie_id), movie)
 
             flash("Movie Profile Successfully Updated")
             return redirect(url_for("view_movie", movie_id=movie_id))
@@ -844,7 +849,7 @@ def create_review():
                                         movie_id=movie["_id"],
                                         user_id=session["id"]))
                 try:
-                    user = find_one_with_key("users", ["_id"],
+                    user = find_one_with_key("users", "_id",
                                              ObjectId(session["id"]))
                 except Exception as e:
                     flash("User Not Found")
@@ -861,7 +866,8 @@ def create_review():
                                                 "reviews": new_review}})
                     create_and_add_mini_movie_dict(movie_id, "movies_reviewed",
                                                    movie)
-                    generate_average_review_score(ObjectId(movie["_id"]))
+                    generate_average_review_score(ObjectId(movie["_id"]),
+                                                  movie)
                     add_review_to_latest_reviews_dicts(movie, new_review)
                 else:
                     flash("No User was found so your review was not submitted")
