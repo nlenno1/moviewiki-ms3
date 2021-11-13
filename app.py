@@ -294,7 +294,7 @@ def home():
                            want_to_watch=want_to_watch)
 
 
-@app.route("/search")
+@app.route("/search", methods=["POST"])
 def movie_title_search():
     query = request.form.get("movie_title_search")
     searched_movies = list(mongo.db.movies.find({"$text": {"$search": query}}))
