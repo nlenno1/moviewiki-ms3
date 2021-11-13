@@ -26,7 +26,7 @@
                 </div>
                 <div class="buttons-container mt-4 mb-2">
                     <button type="submit" class="generic-button button-color-gold mt-2">Update Review</a></button>
-                    <button class="generic-button mt-2"><a href="{{ url_for('view_movie', movie_id=movie_review.review_for_id) }}">Cancel</a></button>
+                    <button class="generic-button mt-2"><a href="{{ url_for('view_reviews', movie_id=movie_review.review_for_id) }}">Cancel</a></button>
                 </div>
             </div>
         </form>

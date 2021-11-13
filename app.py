@@ -45,6 +45,7 @@ def create_single_review(movie, movie_id=None):
         "review": request.form.get("movie-review"),
         "review_date": datetime.now(),
         "star_rating": int(request.form.get("star-count")),
+        "review_for": movie["movie_title"],
         "review_for_id": movie["_id"]
     }
     # set movie_id conditional as when creating movie it
@@ -976,23 +977,23 @@ def delete_review(movie_id, user_id):
         return redirect(url_for('home'))
 
     if review:
-        # remove review from movie profile reviews list
-        update_collection_item_dict("users", "_id", ObjectId(user_id),
-                                    "$pull", "movies_reviewed", "movie_id",
-                                    ObjectId(movie_id))
-        # remove review from movie profile latest reviews list
+        # remove review from movie profile reviews list using review_date
+        update_collection_item_dict("movies", "_id", ObjectId(movie_id),
+                                    "$pull", "reviews",
+                                    "review_date",
+                                    review["review_date"])
+        # remove review from movie profile latest reviews list using review_date
         update_collection_item_dict("movies", "_id", ObjectId(movie_id),
                                     "$pull", "latest_reviews", "review_date",
                                     review["review_date"])
-        # remove review from movie profile latest reviews list
-        update_collection_item("users", "_id", ObjectId(user_id),
-                               "$pull", "movies_reviewed",
-                               ObjectId(movie_id))
-        # needs to be changed to a more suitable field
+        # remove review from user profile reviews list
+        update_collection_item_dict("users", "_id", ObjectId(user_id),
+                                    "$pull", "movies_reviewed",
+                                    "movie_id", ObjectId(movie_id))
+        # remove review from user profile latest reviews list
         update_collection_item_dict("users", "_id", ObjectId(user_id),
                                     "$pull", "user_latest_reviews",
-                                    "reviewed_for", movie_id)
-
+                                    "review_for_id", ObjectId(movie_id))
         flash("Review deleted")
         generate_average_review_score(ObjectId(movie_id))
         return redirect(url_for('view_reviews', movie_id=movie_id))
