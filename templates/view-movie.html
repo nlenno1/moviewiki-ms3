@@ -115,11 +115,11 @@
                         {% elif movie.movie_series_info.series_position == "middle" %}
                             <p class="mb-0">This movie is part of the way through the series</p>
                         {% endif %}
-                        {% if movie.movie_series_info.series_position == "end" or "middle" %}
-                            <p class="mb-0">Next Movie Title: {{ movie.movie_series_info.previous_movie_title|title }}</p>
+                        {% if movie.movie_series_info.series_position == "end" or movie.movie_series_info.series_position == "middle" %}
+                            <p class="mb-0">Previous Movie Title: {{ movie.movie_series_info.previous_movie_title|title }}</p>
                         {% endif %}
-                        {% if movie.movie_series_info.series_position == "start" or "middle" %}
-                            <p class="mb-0">Previous Movie Title: {{ movie.movie_series_info.next_movie_title|title }}</p>
+                        {% if movie.movie_series_info.series_position == "start" or movie.movie_series_info.series_position == "middle" %}
+                            <p class="mb-0">Next Movie Title: {{ movie.movie_series_info.next_movie_title|title }}</p>
                         {% endif %}
                     {% endif %}
                 </div>
