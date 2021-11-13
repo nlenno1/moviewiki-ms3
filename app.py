@@ -116,7 +116,7 @@ def generate_average_review_score(movie_id, movie=None):
     # set the variable in the DB to the new value
     mongo.db.movies.update_one({"_id": ObjectId(
                                 movie["_id"])},
-                               {"$set": {"average_review_score":
+                               {"$set": {"average_rating":
                                          new_average_review_score}})
 
 
