@@ -11,8 +11,8 @@
                     * required
                 </div>
                 <label for="movie-title" class="small-text unselected-text">Movie Title *</label>
-                <input type="text" value="{{ movie.movie_title|title }}" name="movie-title" id="movie-title" placeholder="Movie Title" minlength="2" maxlength="30" class="validate" pattern="^(?!.*[\p{P} ]{2})[a-zA-Z0-9\p{P} ]{2,30}$" required>
-                <p class="invalid-message">2 to 30 characters long using letters, numbers and only 1 space and/or symbol consecutively</p>
+                <input type="text" value="{{ movie.movie_title|title }}" name="movie-title" id="movie-title" placeholder="Movie Title" minlength="2" maxlength="30" class="validate" pattern="^(?!.*[\p{P} ]{3})[a-zA-ZÀ-ÿ0-9\p{P} ]{2,30}$" required>
+                <p class="invalid-message">2 to 30 characters long using letters, numbers and only 2 spaces and/or symbols consecutively</p>
                 <label for="release-date" class="small-text unselected-text">Release Date *</label>
                 <input placeholder="Release Date *" type="date" value="{{ movie.release_date.strftime('%Y-%m-%d') }}" name="release-date" id="release-date" required>
                 <p class="invalid-message">Use the date picker to select the release date</p>
@@ -48,18 +48,18 @@
                 </div>
                 <hr class="shadow">
                 <label for="director" class="small-text unselected-text">Director Name</label>
-                <input value="{{ movie.director|title }}" type="text" name="director" id="director" placeholder="Director Name" minlength="2" maxlength="30" class="validate" pattern="^(?!.*[- ]{2})[a-zA-Z- ]{2,30}$">
-                <p class="invalid-message">2 to 30 characters long using letters and only 1 space and/or dash consecutively</p>
+                <input value="{{ movie.director|title }}" type="text" name="director" id="director" placeholder="Director Name" minlength="2" maxlength="30" class="validate" pattern="^(?!.*[- ]{3})[a-zA-ZÀ-ÿ- ]{2,30}$">
+                <p class="invalid-message">2 to 30 characters long using letters and only 2 spaces and/or dashes consecutively</p>
                 <label for="cast-members" class="small-text unselected-text">Cast Members - Write a list of cast members with all names seperated with a comma (,)</label>
-                <input value="{{ cast_members_string|title }}" type="text" name="cast-members" id="cast-members" placeholder="Main Cast Members" minlength="5" maxlength="300" class="validate" pattern="^(?!.*[, ]{2})[a-zA-Z- ,]{5,300}$">
-                <p class="invalid-message">A list of names seperated with a comma, 5 to 500 characters long, using letters and only 1 space, comma and/or dash consecutively (no spaces after the commas)</p>
+                <input value="{{ cast_members_string|title }}" type="text" name="cast-members" id="cast-members" placeholder="Main Cast Members" minlength="5" maxlength="300" class="validate" pattern="^(?!.*[\p{P} ]{4})[a-zA-ZÀ-ÿ0-9\p{P} ]{10,300}$">
+                <p class="invalid-message">A list of names seperated with a comma, 5 to 300 characters long, using letters and only 3 spaces and/or symbols consecutively (no spaces after the commas)</p>
                 <hr class="shadow">
                 <label for="movie-synopsis" class="small-text unselected-text">Movie Synopsis * - Write a short description of the movie</label>
-                <input value="{{ movie.movie_synopsis }}" type="text" name="movie-synopsis" id="movie-synopsis" placeholder="Movie Synopsis *" minlength="10" maxlength="200" class="validate" pattern="^(?!.*[\p{P} ]{2})[a-zA-Z0-9\p{P} ]{10,200}$" required>
-                <p class="invalid-message">10 to 200 characters long using letters, numbers and only 1 space and/or symbol consecutively</p>
+                <input value="{{ movie.movie_synopsis }}" type="text" name="movie-synopsis" id="movie-synopsis" placeholder="Movie Synopsis *" minlength="10" maxlength="200" class="validate" pattern="^(?!.*[\p{P} ]{4})[a-zA-ZÀ-ÿ0-9\p{P} ]{10,200}$" required>
+                <p class="invalid-message">10 to 200 characters long using letters, numbers and only 3 spaces and/or symbols consecutively</p>
                 <label for="movie-description" class="small-text unselected-text pb-2">Movie Description - Write a longer description of the Movie</label>
-                <textarea name="movie-description" id="movie-description" rows ="8" cols="140" placeholder="Movie Description" minlength="10" maxlength="100" class="validate" pattern="^(?!.*[\p{P} ]{2})[a-zA-Z\p{P} ]{10,100}$">{{ movie.movie_description }}</textarea>
-                <p class="invalid-message">10 to 500 characters long using letters and only 1 space and/or symbol consecutively</p>
+                <textarea name="movie-description" id="movie-description" rows ="8" cols="140" placeholder="Movie Description" minlength="10" maxlength="100" class="validate" pattern="^(?!.*[\p{P} ]{3})[a-zA-ZÀ-ÿ\p{P} ]{10,100}$">{{ movie.movie_description }}</textarea>
+                <p class="invalid-message">10 to 500 characters long using letters and only 2 spaces and/or symbols consecutively</p>
                 <label for="image-link" class="small-text unselected-text">Image Link - Provide an image URL from a hosting website to display</label>
                 <!-- Regex taken from https://stackoverflow.com/questions/169625/regex-to-check-if-valid-url-that-ends-in-jpg-png-or-gif/169631 -->
                 <input value="{{ movie.image_link }}" type="text" name="image-link" id="image-link" placeholder="Link to Movie Image" class="validate" pattern="^https?://(?:[a-z0-9\-]+\.)+[a-z]{2,6}(?:/[^/#?]+)+\.(?:jpg|png)$">
@@ -101,17 +101,17 @@
                             <label for="middle-series"> None of the above</label><br>
                         </div>
                     <label for="series-name" class="small-text unselected-text">Series Name</label>
-                    <input {% if  movie.is_part_of_series == True %}required{% endif %} type="text" value="{{ movie.movie_series_info.series_name|title }}" name="series-name" id="series-name" placeholder="Series Name" minlength="3" maxlength="30" class="validate" pattern="^(?!.*[\p{P} ]{2})[a-zA-Z0-9\p{P} ]{3,30}$">
-                    <p class="invalid-message">3 to 30 characters long using letters,numbers and only 1 space and/or symbol consecutively</p>
+                    <input {% if  movie.is_part_of_series == True %}required{% endif %} type="text" value="{{ movie.movie_series_info.series_name|title }}" name="series-name" id="series-name" placeholder="Series Name" minlength="3" maxlength="30" class="validate" pattern="^(?!.*[\p{P} ]{3})[a-zA-ZÀ-ÿ0-9\p{P} ]{3,30}$">
+                    <p class="invalid-message">3 to 30 characters long using letters,numbers and only 2 spaces and/or symbols consecutively</p>
                     <div {% if  movie.movie_series_info.series_position != 'end' or movie.movie_series_info.series_position != 'middle' %}hidden{% endif %} id="previous-movie-container">
                         <label for="previous-movie-name" class="small-text unselected-text">Previous Movie Name - Name of the movie before this one in the series</label>
-                        <input {% if movie.movie_series_info.series_position and movie.movie_series_info.series_position != 'start' %}required{% endif %} type="text" value="{{ movie.movie_series_info.previous_movie_title|title }}" name="previous-movie-name" id="previous-movie-name" placeholder="Previous Movie in the Series" minlength="3" maxlength="30" class="validate" pattern="^(?!.*[\p{P} ]{2})[a-zA-Z0-9\p{P} ]{3,30}$">
-                        <p class="invalid-message">3 to 30 characters long using letters, numbers and only 1 space and/or symbol consecutively</p>
+                        <input {% if movie.movie_series_info.series_position and movie.movie_series_info.series_position != 'start' %}required{% endif %} type="text" value="{{ movie.movie_series_info.previous_movie_title|title }}" name="previous-movie-name" id="previous-movie-name" placeholder="Previous Movie in the Series" minlength="3" maxlength="30" class="validate" pattern="^(?!.*[\p{P} ]{3})[a-zA-ZÀ-ÿ0-9\p{P} ]{3,30}$">
+                        <p class="invalid-message">3 to 30 characters long using letters, numbers and only 2 spaces and/or symbols consecutively</p>
                     </div>
                     <div {% if movie.movie_series_info.series_position != 'start' or movie.movie_series_info.series_position != 'middle' %}hidden{% endif %} id="next-movie-container">
                         <label for="next-movie-name" class="small-text unselected-text">Next Movie Name - Name of the movie after this one in the series</label>
-                        <input {% if movie.movie_series_info.series_position and movie.movie_series_info.series_position != 'end' %}required{% endif %} type="text" value="{{ movie.movie_series_info.next_movie_title|title }}" name="next-movie-name" id="next-movie-name" placeholder="Next Movie in the Series" minlength="3" maxlength="30" class="validate" pattern="^(?!.*[\p{P} ]{2})[a-zA-Z0-9\p{P} ]{3,30}$">
-                        <p class="invalid-message">3 to 30 characters long using letters, numbers and only 1 space and/or symbol consecutively</p>
+                        <input {% if movie.movie_series_info.series_position and movie.movie_series_info.series_position != 'end' %}required{% endif %} type="text" value="{{ movie.movie_series_info.next_movie_title|title }}" name="next-movie-name" id="next-movie-name" placeholder="Next Movie in the Series" minlength="3" maxlength="30" class="validate" pattern="^(?!.*[\p{P} ]{3})[a-zA-ZÀ-ÿ0-9\p{P} ]{3,30}$">
+                        <p class="invalid-message">3 to 30 characters long using letters, numbers and only 2 spaces and/or symbols consecutively</p>
                     </div>
                     <div class="checkbox-container mb-2 text-center">
                         <input class="series-checkboxes" type="checkbox" id="submit-series-info" name="submit-series-info" value="submit">
@@ -121,9 +121,9 @@
                 {% if user_has_reviewed == False %}
                     <div id="add-review" class="card form-card card-small shadow hidden collapse">
                         <p>Write your review of this movie</p>
-                        <input type="text" name="review-title" id="review-title" placeholder="Review Title" minlength="2" maxlength="75" class="validate" pattern="^(?!.*[\p{P} ]{2})[a-zA-Z0-9\p{P} ]{2,75}$">
-                        <p class="invalid-message mb-2">2 to 75 characters long using letters, numbers and only 1 space and/or symbol consecutively</p>
-                        <textarea name="movie-review" id="movie-review" rows ="8" cols="100" placeholder="Movie Review" minlength="10" maxlength="500" class="validate" pattern='^(?!.*[ ]{2})[a-zA-Z0-9 !-.,?:/;"()]{10,500}$'></textarea>
+                        <input type="text" name="review-title" id="review-title" placeholder="Review Title" minlength="2" maxlength="75" class="validate" pattern="^(?!.*[\p{P} ]{3})[a-zA-ZÀ-ÿ0-9\p{P} ]{2,75}$">
+                        <p class="invalid-message mb-2">2 to 75 characters long using letters, numbers and only 2 spaces and/or symbols consecutively</p>
+                        <textarea name="movie-review" id="movie-review" rows ="8" cols="100" placeholder="Movie Review" minlength="10" maxlength="500" class="validate" pattern='^(?!.*[ ]{3})[a-zA-ZÀ-ÿ0-9 !-.,?:/;"()]{10,500}$'></textarea>
                         <p class="invalid-message">Message from 10 to 500 characters with these punctionation symbols !-.,?:/;"()' non consecutively</p>
                         <div class="star-rating-container">
                             <input type="hidden" name="star-count" id="star-count" value="0">
