@@ -18,8 +18,10 @@ function checkIfSeriesInformationWasMeantToBeSubmitted(event) {
 
 $('document').ready (function () {
     initializeSelectElementColorChange();
+    initializeStarRating()
     $("form").submit(function(event){
         checkIfReviewWasMeantToBeSubmitted(event)
         checkIfSeriesInformationWasMeantToBeSubmitted(event)
+        checkStarCountHasBeenEntered(event)
     });
 })
