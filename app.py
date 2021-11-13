@@ -204,7 +204,7 @@ def generate_new_movie_dict(movie_id=None):
             "image_link": request.form.get("image-link"),
             "reviews": [],
             "latest_reviews": [],
-            "created_by": ObjectId(session['id']),
+            "created_by": session['id'],
             "is_part_of_series": False,
             "average_rating": 0.0
         }
@@ -1085,10 +1085,12 @@ def contact():
     return render_template("contact.html")
 
 
-@app.route("/movies/view_all")
+@app.route("/movie/view_all")
 def view_all_movies():
-    movies = mongo.db.movies.find({}, {"movie_title": 1, "image_link": 1})
-    return render_template("view-all-movies.html", movies=movies)
+    movies = mongo.db.movies.find({}, {"movie_title": 1, "image_link": 1,
+                                       "release_date": 1})
+    all_movies = sorted(movies, key=lambda d: d['movie_title'])
+    return render_template("view-all-movies.html", movies=all_movies)
 
 
 # application running instructions by retieving hidden env variables
