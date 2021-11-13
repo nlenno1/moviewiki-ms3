@@ -803,11 +803,20 @@ def delete_movie(movie_id):
         if not is_user_allowed:
             flash("You are not allowed to delete this movie")
             return redirect(url_for("home"))
+        # remove movie from all users movies_reviewed, watched and to watch arrays
+        mongo.db.users.update_many({}, {"$pull": {"movies_reviewed": {"movie_id": movie["_id"]}}})
+
+        mongo.db.users.update_many({}, {"$pull": {"movies_watched": {"movie_id": movie["_id"]}}})
+
+        mongo.db.users.update_many({}, {"$pull": {"movies_to_watch": {"movie_id": movie["_id"]}}})
+        # remove movie from all users latest_reviews array
+        mongo.db.users.update_many({}, {"$pull": {"user_latest_reviews": {"review_for_id": movie["_id"]}}})
 
         mongo.db.movies.remove({
             "_id": movie["_id"]
         })
         flash("Movie Deleted")
+
     else:
         flash("Movie Not Found So Not Deleted")
 
