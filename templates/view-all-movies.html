@@ -28,7 +28,10 @@
                                         <img src="{{ movie.image_link }}" onerror="this.onerror=null;this.src='{{ url_for('static', filename='img/movie_placeholder.png') }}'" alt="Movie Image">
                                     </a>
                                 </div>
-                                <h4 class="movie-text">{{ movie.movie_title }}</h4>
+                                <div class="movie-text">
+                                    <h4>{{ movie.movie_title }}</h4>
+                                    <p class="mb-0 small-text">{{ movie.release_date.strftime("%Y") }}</p>
+                                </div>
                             </div>
                         {% endfor %}
                         {% if session['user'] %}
