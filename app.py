@@ -619,7 +619,7 @@ def signin():
 @app.route("/signout")
 def signout():
 
-    if not session["user"]:
+    if len(session) == 0:
         return redirect(url_for("signin"))
 
     flash("You have signed out")
@@ -630,7 +630,7 @@ def signout():
 @app.route("/movie/add", methods=["GET", "POST"])
 def create_movie():
 
-    if not session["id"]:
+    if len(session) == 0:
         return redirect(url_for("signin"))
 
     if request.method == "POST":
@@ -856,7 +856,7 @@ def view_reviews(movie_id):
 @app.route("/review/add", methods=["GET", "POST"])
 def create_review():
 
-    if not session["user"]:
+    if len(session) == 0:
         return redirect(url_for("signin"))
 
     if request.method == "POST":
@@ -1037,7 +1037,7 @@ def delete_review(movie_id, user_id):
 @app.route("/user/watched-movie/<movie_id>/add")
 def add_watched_movie(movie_id):
 
-    if not session["user"]:
+    if len(session) == 0:
         return redirect(url_for("signin"))
     try:
         create_and_add_mini_movie_dict(movie_id, "movies_watched")
@@ -1054,7 +1054,7 @@ def add_watched_movie(movie_id):
 @app.route("/user/watched-movie/<movie_id>/remove")
 def remove_watched_movie(movie_id):
 
-    if not session["user"]:
+    if len(session) == 0:
         return redirect(url_for("signin"))
     try:
         update_collection_item_dict("users", "_id", ObjectId(session["id"]),
@@ -1074,7 +1074,7 @@ def remove_watched_movie(movie_id):
 @app.route("/user/want-to-watch/<movie_id>/add")
 def add_want_to_watch_movie(movie_id):
 
-    if not session["user"]:
+    if len(session) == 0:
         return redirect(url_for("signin"))
     try:
         create_and_add_mini_movie_dict(movie_id, "movies_to_watch")
@@ -1092,7 +1092,7 @@ def add_want_to_watch_movie(movie_id):
 @app.route("/user/want-to-watch/<movie_id>/remove")
 def remove_want_to_watch_movie(movie_id):
 
-    if not session["user"]:
+    if len(session) == 0:
         return redirect(url_for("signin"))
     try:
         update_collection_item_dict("users", "_id", ObjectId(session["id"]),
