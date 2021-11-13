@@ -18,7 +18,17 @@ function initializeStarRating() {
     }
 }
 
+function checkStarCountHasBeenEntered(event) {
+    if ($('#star-count').val() == 0 || $('#star-count').val() == "" && $('#review-title').prop('required')) {
+        alert('Please make sure that you have selected a star rating amount!');
+        event.preventDefault(event);
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     // changes select element text color to black on change to replicate placeholder being removed
     initializeStarRating()
+    $("form").submit(function(event){
+        checkStarCountHasBeenEntered(event)
+    });
 });

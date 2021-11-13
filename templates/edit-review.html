@@ -3,14 +3,23 @@
 
     <h1 id="header-title">Edit Review</h1>
 
-    <div class="container-md text-center">
-        <h3 class="mt-5">Write a Review for any Movie that has a profile</h3>
-        <h5>Type into the Movie Title box to search for the movie you want<br>If the movie you want is not in the dropdown menu then it doesn't have a profile yet!</h5>
-        <form method="POST" action="{{ url_for('edit_review', movie_id=selected_movie._id, user_id=movie_review.reviewer_id) }}">
-            <div id="add-review" class="card form-card card-large generic-form input-large shadow">
+    <div class="container-md">
+        <h3 class="mt-5 text-center">Write a Review for any Movie that has a profile</h3>
+        <h5 class="text-center">Type into the Movie Title box to search for the movie you want<br>If the movie you want is not in the dropdown menu then it doesn't have a profile yet!</h5>
+        <form class="generic-form" method="POST" action="{{ url_for('edit_review', movie_id=selected_movie._id, user_id=movie_review.reviewer_id) }}">
+            <div id="add-review" class="card form-card card-small shadow">
+                <div class="text-end small-text unselected-text">
+                    * required
+                </div>
+                <label for="movie-title-list" class="small-text unselected-text">Movie Title *</label>
                 <input value="{{ selected_movie.movie_title|title }}" type="text" name="selected-movie-title" id="movie-title" readonly>
-                <input value="{{ movie_review.review_title|title }}" type="text" name="review-title" id="review-title" class="mb-4" placeholder="Review Title" pattern="^[a-zA-Z0-9 \p{P}]+$">
-                <textarea name="movie-review" id="movie-review" rows ="8" cols="100" placeholder="Movie Review">{{ movie_review.review }}</textarea>
+                <p class="invalid-message mb-2">&nbsp;</p>
+                <label for="review-title" class="small-text unselected-text">Review Title *</label>
+                <input value="{{ movie_review.review_title|title }}" type="text" name="review-title" id="review-title" placeholder="Review Title" minlength="2" maxlength="75" class="validate" pattern='^(?!.*[  !-.,?:/;"(]{3})[a-zA-Z0-9 !-.,?:/;"(]{2,75}$' required>
+                <p class="invalid-message">2 to 75 characters long using letters, numbers and only 2 spaces and/or symbols consecutively</p>
+                <label for="movie-review" class="small-text unselected-text">Movie Review *</label>
+                <textarea name="movie-review" id="movie-review" rows ="8" cols="100" placeholder="Movie Review" minlength="10" maxlength="500" class="validate" pattern='^{10,500}$' required>{{ movie_review.review }}</textarea>
+                <p class="invalid-message">Review from 10 to 500 characters in length</p>
                 <div class="star-rating-container">
                     <input type="hidden" name="star-count" id="star-count" value="{{ movie_review.star_rating }}">
                     <span>Click the stars to choose your Star Rating: </span>
@@ -30,8 +39,6 @@
                 </div>
             </div>
         </form>
-    </div>
-
 
 {% endblock %}
 
