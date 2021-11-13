@@ -29,11 +29,11 @@
                         <div class="movie-carousel">
                             {% for movie in movies_for_you %}
                                 <div class="movie-picture-display">
-                                    <div class="movie-image-continer">
-                                        <a href="{{ url_for('view_movie', movie_id=movie._id) }}">
+                                    <a href="{{ url_for('view_movie', movie_id=movie._id) }}">
+                                        <div class="movie-image-continer">
                                             <img src="{{ movie.image_link }}" onerror="this.onerror=null;this.src='{{ url_for('static', filename='img/movie_placeholder.png') }}'" alt="Movie Image">
-                                        </a>
-                                    </div>
+                                        </div>
+                                    </a>
                                     <h4 class="movie-text">{{ movie.movie_title }}</h4>
                                 </div>
                             {% endfor %}
@@ -56,11 +56,11 @@
                         <div class="movie-carousel">
                             {% for movie in want_to_watch %}
                                 <div class="movie-picture-display">
-                                    <div class="movie-image-continer">
-                                        <a href="{{ url_for('view_movie', movie_id=movie._id) }}">
+                                    <a href="{{ url_for('view_movie', movie_id=movie._id) }}">
+                                        <div class="movie-image-continer">
                                             <img src="{{ movie.image_link }}" onerror="this.onerror=null;this.src='{{ url_for('static', filename='img/movie_placeholder.png') }}'" alt="Movie Image">
-                                        </a>
-                                    </div>
+                                        </div>
+                                    </a>
                                     <h4 class="movie-text">{{ movie.movie_title }}</h4>
                                 </div>
                             {% endfor %}
@@ -82,17 +82,17 @@
                 <h3 class="carousel-label">Highest Rated Movies</h3>
                 <div class="movie-carousel">
                     {% for movie in highest_rated %}
-                    <div class="movie-picture-display">
-                        <a href="{{ url_for('view_movie', movie_id=movie._id) }}">
-                            <div class="movie-image-continer">
-                                <img src="{{ movie.image_link }}" onerror="this.onerror=null;this.src='{{ url_for('static', filename='img/movie_placeholder.png') }}'" alt="Movie Image">
+                        <div class="movie-picture-display">
+                            <a href="{{ url_for('view_movie', movie_id=movie._id) }}">
+                                <div class="movie-image-continer">
+                                    <img src="{{ movie.image_link }}" onerror="this.onerror=null;this.src='{{ url_for('static', filename='img/movie_placeholder.png') }}'" alt="Movie Image">
+                                </div>
+                            </a>
+                            <div class="movie-text">
+                                <h4>{{ movie.movie_title }}</h4>
+                                <p class="mb-0 small-text">{{movie.average_rating}} Stars</p>
                             </div>
-                        </a>
-                        <div class="movie-text">
-                            <h4>{{ movie.movie_title }}</h4>
-                            <p class="mb-0 small-text">{{movie.average_rating}} Stars</p>
                         </div>
-                    </div>
                     {% endfor %}
                     {% if session['user'] %}
                         <div class="movie-picture-display">
@@ -121,11 +121,11 @@
                 <div class="movie-carousel">
                     {% for movie in latest_releases %}
                     <div class="movie-picture-display">
-                        <div class="movie-image-continer">
-                            <a href="{{ url_for('view_movie', movie_id=movie._id) }}">
+                        <a href="{{ url_for('view_movie', movie_id=movie._id) }}">
+                            <div class="movie-image-continer">
                                 <img src="{{ movie.image_link }}" onerror="this.onerror=null;this.src='{{ url_for('static', filename='img/movie_placeholder.png') }}'" alt="Movie Image">
-                            </a>
-                        </div>
+                            </div>
+                        </a>
                         <div class="movie-text">
                             <h4>{{ movie.movie_title }}</h4>
                             <p class="mb-0 small-text">{{ movie.release_date.strftime("%B %Y") }}</p>
@@ -159,11 +159,11 @@
                 <div class="movie-carousel">
                     {% for movie in all_movies %}
                         <div class="movie-picture-display">
-                            <div class="movie-image-continer">
-                                <a href="{{ url_for('view_movie', movie_id=movie._id) }}">
+                            <a href="{{ url_for('view_movie', movie_id=movie._id) }}">
+                                <div class="movie-image-continer">
                                     <img src="{{ movie.image_link }}" onerror="this.onerror=null;this.src='{{ url_for('static', filename='img/movie_placeholder.png') }}'" alt="Movie Image">
-                                </a>
-                            </div>
+                                </div>
+                            </a>
                             <h4 class="movie-text">{{ movie.movie_title }}</h4>
                         </div>
                     {% endfor %}
