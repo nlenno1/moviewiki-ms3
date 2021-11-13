@@ -50,8 +50,8 @@
                             </a>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-12 view-movie-button-container pt-3">
+                    <div class="row g-0">
+                        <div class="col-12 view-movie-button-container mt-3 mb-5">
                             {% if session["user"] %}
                                 {% if user_watched == True %}
                                     <button class="generic-button button-color-gold movie-font mt-2"><a
@@ -173,7 +173,8 @@
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>Review Date</th>
+                                        <th class="d-none d-lg-table-cell">Review Date</th>
+                                        <th class="d-none d-md-table-cell">Reviewer</th>
                                         <th>Review Title</th>
                                         <th>Star Rating</th>
                                     </tr>
@@ -181,13 +182,19 @@
                                 <tbody>
                                     {% for review in latest_reviews %}
                                     <tr>
-                                        <td>{{ review.review_date.strftime('%d %b %Y')  }}</td>
+                                        <td class="d-none d-lg-table-cell">{{ review.review_date.strftime('%d/%m/%Y')  }}</td>
+                                        <td class="d-none d-md-table-cell">{{ review.reviewer|title }}</td>
                                         <td>{{ review.review_title|title }}</td>
-                                        <td>{{ review.star_rating }}</td>
+                                        <td>
+                                            {% for i in range(0,5)%}
+                                                {% if i < review.star_rating %}
+                                                    <i class="fas fa-star gold-star"></i>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </td>
                                     </tr>
                                     {% endfor %}
                                 </tbody>
-                            </table>
                             </table>
                         </div>
                     {% endif %}
