@@ -3,7 +3,7 @@ $('document').ready (function () {
     $("#start-series").on("click", function() {
         //remove previous movie
         $("#previous-movie-container").attr('hidden', "")
-        $("#next-movie-name").removeAttr('required')
+        $("#previous-movie-name").removeAttr('required')
         $("#previous-movie-name").val("");
         // add next movie and make it required
         $("#next-movie-container").removeAttr('hidden')
@@ -13,7 +13,7 @@ $('document').ready (function () {
     $("#end-series").on("click", function() {
         // remove next movie
         $("#next-movie-container").attr('hidden', "")
-        $("#previous-movie-name").removeAttr('required')
+        $("#next-movie-name").removeAttr('required')
         $("#next-movie-name").val("");
         // add previous movie and make required
         $("#previous-movie-container").removeAttr('hidden')
