@@ -94,6 +94,33 @@
                                     </div>
                                 </div>
                             </div>
+                            <h2 class="accordion-header" id="reviewed-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#movies-reviewed-collapse" aria-expanded="false"
+                                    aria-controls="movies-reviewed-collapse">
+                                    <i class="fas fa-star ms-4 me-5"></i> Movies You Have Reviewed
+                                </button>
+                            </h2>
+                            <div id="movies-reviewed-collapse" class="accordion-collapse collapse"
+                                aria-labelledby="reviewed-heading" data-bs-parent="#user-profile-accordion">
+                                <div class="accordion-body">
+                                    <div class="row g-0">
+                                        {% if movies_reviewed|length > 0 %}
+                                            {% for movie in movies_reviewed %}
+                                                <div class="col-12 col-md-6 col-lg-4">
+                                                    <p class="mb-0">
+                                                        <i class="far fa-caret-square-right me-1 me-sm-3"></i>{{ movie.movie_title|title }} - {{ movie.release_year }} 
+                                                    </p>
+                                                </div>
+                                            {% endfor %}
+                                        {% else %}
+                                            <div class="col-12">
+                                                <h5 class="mb-0 mt-1">Better get out there and start <strong>Reviewing Some Movies!!</strong></h5>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
