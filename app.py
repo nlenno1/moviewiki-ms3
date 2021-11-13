@@ -45,9 +45,14 @@ def create_single_review(movie, movie_id=None):
         "review": request.form.get("movie-review"),
         "review_date": datetime.now(),
         "star_rating": int(request.form.get("star-count")),
-        "review_for": movie["movie_title"],
-        "review_for_id": ObjectId(movie_id)
+        "review_for_id": movie["_id"]
     }
+    # set movie_id conditional as when creating movie it
+    # doesn't have a MongoDb _id yet
+    if movie_id is None:
+        review["review_for_id"]: movie["_id"]
+    else:
+        review["review_for_id"]: movie_id
     return review
 
 
@@ -638,7 +643,7 @@ def create_movie():
             create_and_add_mini_movie_dict(new_id, "movies_reviewed", movie)
             add_review_to_latest_reviews_dicts(
                 movie, create_single_review(movie, movie["_id"]))
-            generate_average_review_score(ObjectId(new_id), movie)
+            generate_average_review_score(ObjectId(new_id))
 
         flash("New Movie Added")
         return redirect(url_for("view_movie", movie_id=new_id))
@@ -742,7 +747,7 @@ def edit_movie(movie_id):
                                                movie)
                 add_review_to_latest_reviews_dicts(
                     movie, create_single_review(movie, movie["_id"]))
-                generate_average_review_score(ObjectId(movie_id), movie)
+                generate_average_review_score(ObjectId(movie_id))
 
             flash("Movie Profile Successfully Updated")
             return redirect(url_for("view_movie", movie_id=movie_id))
@@ -866,8 +871,7 @@ def create_review():
                                                 "reviews": new_review}})
                     create_and_add_mini_movie_dict(movie_id, "movies_reviewed",
                                                    movie)
-                    generate_average_review_score(ObjectId(movie["_id"]),
-                                                  movie)
+                    generate_average_review_score(ObjectId(movie["_id"]))
                     add_review_to_latest_reviews_dicts(movie, new_review)
                 else:
                     flash("No User was found so your review was not submitted")
@@ -943,12 +947,13 @@ def edit_review(movie_id, user_id):
                                        {"$push": {"reviews": updated_review}})
 
             add_review_to_latest_reviews_dicts(movie, updated_review)
+            generate_average_review_score(ObjectId(movie["_id"]))
 
             return redirect(url_for('view_reviews', movie_id=movie_id))
     # condense this to one process
     movie = find_one_with_key("movies", "_id", ObjectId(movie_id))
     review = find_review_in_reviews_list(movie["reviews"], user_id)
-
+    
     return render_template(
         "edit-review.html",
         selected_movie=movie, movie_review=review)
