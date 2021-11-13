@@ -324,7 +324,12 @@ def add_genre():
     if not is_user_admin:
         return redirect(url_for("home"))
 
-    new_genre_name = request.form.get('genre-name')
+    new_genre_name = request.form.get('genre-name').lower()
+    # check if genre name already exists
+    existing_name = mongo.db.genre.find_one({"genre_name": new_genre_name})
+    if existing_name:
+        flash("There is a Genre with this name already")
+        return redirect(url_for('get_all_genre'))
     mongo.db.genre.insert_one({
         "genre_name": new_genre_name.lower()
     })
@@ -342,20 +347,27 @@ def update_genre(genre_id):
         return redirect(url_for("home"))
 
     new_genre_name = request.form.get("replacement-genre-name")
+    # check if genre name already exists
+    existing_name = mongo.db.genre.find_one({"genre_name": new_genre_name})
+    if existing_name:
+        flash("There is a Genre with this name already")
+        return redirect(url_for('get_all_genre'))
     # updating the informatiion in the DB using the _id to find the documnet
     try:
-        genre = mongo.db.genres.find_one({'_id': ObjectId(genre_id)})
+        genre = mongo.db.genre.find_one({'_id': ObjectId(genre_id)})
         if genre:
             mongo.db.genre.update({"_id": ObjectId(genre_id)}, {
                                         "genre_name": new_genre_name.lower()})
             flash("Genre Updated")
-            return redirect(url_for('get_all_genre'))
+        else:
+            flash("Genre Not Found to Update")
+        return redirect(url_for('get_all_genre'))
     except Exception as e:
         flash("Genre Not Found")
         flash(str(e))
         flash("Please try again or get in touch to report a "
               "reoccurring problem")
-        return redirect(url_for('get_all_genre'))
+    return redirect(url_for('get_all_genre'))
 
 
 @app.route("/genre/<genre_id>/delete")
@@ -367,7 +379,7 @@ def delete_genre(genre_id):
         genre = find_one_with_key("genre", "_id", ObjectId(genre_id))
 
         if genre:
-            mongo.db.genre.remove({
+            mongo.db.genre.remove_one({
                 "_id": genre["_id"]
             })
             flash("Genre Deleted")
