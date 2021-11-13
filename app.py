@@ -215,7 +215,8 @@ def generate_new_movie_dict(movie_id=None):
             "average_rating": 0.0
         }
     add_series_information_to_dict(new_movie)
-    add_review_to_dict(new_movie, movie_id)
+    if movie_id:
+        add_review_to_dict(new_movie, movie_id)
     return new_movie
 
 
@@ -639,15 +640,24 @@ def create_movie():
 
         new_id = mongo.db.movies.insert_one(new_movie).inserted_id
         movie = find_one_with_key("movies", "_id", ObjectId(new_id))
+        if movie:
+            flash(f"Movie {movie['movie_title'].title()} Created")
+            if request.form.get("submit-movie-review"):
+                new_review = create_single_review(movie)
+                mongo.db.movies.update_one({"_id": ObjectId(movie["_id"])},
+                                           {"$push": {"reviews": new_review}})
+                create_and_add_mini_movie_dict(new_id, "movies_reviewed",
+                                               movie)
+                add_review_to_latest_reviews_dicts(
+                    movie, create_single_review(movie, movie["_id"]))
+                generate_average_review_score(ObjectId(new_id))
+                flash("with your Review Added")
+            return redirect(url_for("view_movie", movie_id=new_id))
+        else:
+            flash("An error occured and the Movie was not created")
+        return redirect(url_for("create_movie"))
 
-        if request.form.get("submit-movie-review"):
-            create_and_add_mini_movie_dict(new_id, "movies_reviewed", movie)
-            add_review_to_latest_reviews_dicts(
-                movie, create_single_review(movie, movie["_id"]))
-            generate_average_review_score(ObjectId(new_id))
 
-        flash("New Movie Added")
-        return redirect(url_for("view_movie", movie_id=new_id))
 
     genre_list = list(mongo.db.genre.find().sort("genre_name"))
     age_ratings = mongo.db.age_ratings.find().sort("uk_rating_order")
