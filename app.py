@@ -97,7 +97,7 @@ def add_collection_item(collection_name, search_key, search_value):
     mongo_prefix_select(collection_name).insert_one({search_key: search_value})
 
 
-def generate_average_review_score(movie_id, movie=None):
+def generate_average_rating(movie_id, movie=None):
     if movie is None:
         movie = find_one_with_key("movies", "_id", movie_id)
     # generate an average reviews score
@@ -109,15 +109,15 @@ def generate_average_review_score(movie_id, movie=None):
             total_review_score += int(review["star_rating"])
         # divide the result by the amount of old scores plus 1 for the
         # score just added
-        new_average_review_score = round(total_review_score/(len(
+        new_average_rating = round(total_review_score/(len(
                                         movie["reviews"])), 2)
     else:
-        new_average_review_score = 0
+        new_average_rating = 0
     # set the variable in the DB to the new value
     mongo.db.movies.update_one({"_id": ObjectId(
                                 movie["_id"])},
                                {"$set": {"average_rating":
-                                         new_average_review_score}})
+                                         new_average_rating}})
 
 
 def convert_string_to_datetime(string_date):
@@ -662,7 +662,7 @@ def create_movie():
                                                movie)
                 add_review_to_latest_reviews_dicts(
                     movie, create_single_review(movie, movie["_id"]))
-                generate_average_review_score(ObjectId(new_id))
+                generate_average_rating(ObjectId(new_id))
                 flash("with your Review Added")
             return redirect(url_for("view_movie", movie_id=new_id))
         else:
@@ -770,7 +770,7 @@ def edit_movie(movie_id):
                                                movie)
                 add_review_to_latest_reviews_dicts(
                     movie, create_single_review(movie, movie["_id"]))
-                generate_average_review_score(ObjectId(movie_id))
+                generate_average_rating(ObjectId(movie_id))
 
             flash("Movie Profile Successfully Updated")
             return redirect(url_for("view_movie", movie_id=movie_id))
@@ -903,7 +903,7 @@ def create_review():
                                                 "reviews": new_review}})
                     create_and_add_mini_movie_dict(movie_id, "movies_reviewed",
                                                    movie)
-                    generate_average_review_score(ObjectId(movie["_id"]))
+                    generate_average_rating(ObjectId(movie["_id"]))
                     add_review_to_latest_reviews_dicts(movie, new_review)
                 else:
                     flash("No User was found so your review was not submitted")
@@ -979,7 +979,7 @@ def edit_review(movie_id, user_id):
                                        {"$push": {"reviews": updated_review}})
 
             add_review_to_latest_reviews_dicts(movie, updated_review)
-            generate_average_review_score(ObjectId(movie["_id"]))
+            generate_average_rating(ObjectId(movie["_id"]))
 
             return redirect(url_for('view_reviews', movie_id=movie_id))
     # condense this to one process
@@ -1026,7 +1026,7 @@ def delete_review(movie_id, user_id):
                                     "$pull", "user_latest_reviews",
                                     "review_for_id", ObjectId(movie_id))
         flash("Review deleted")
-        generate_average_review_score(ObjectId(movie_id))
+        generate_average_rating(ObjectId(movie_id))
         return redirect(url_for('view_reviews', movie_id=movie_id))
     else:
         flash("Review not found")

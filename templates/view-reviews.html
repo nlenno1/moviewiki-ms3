@@ -23,7 +23,7 @@
                     <img src="{{ url_for('static', filename='img/5_stars.png') }}" alt="" class="five-stars">
                 </div>
             </div>
-            <h5><span id="average_review_score">{% if movie.average_review_score %}{{ movie.average_review_score }}{% else %}0{% endif %}</span> / 5 </h5>
+            <h5><span id="average_rating">{% if movie.average_rating %}{{ movie.average_rating }}{% else %}0{% endif %}</span> / 5 </h5>
         </div>
     </div>
     <p class="mb-0 mt-3 text-center">Want to add your own review, click here! 

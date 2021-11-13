@@ -36,6 +36,9 @@
                 <div class="buttons-container mt-4 mb-2">
                     <button type="submit" class="generic-button button-color-gold mt-2">Update Review</a></button>
                     <button class="generic-button mt-2"><a href="{{ url_for('view_reviews', movie_id=movie_review.review_for_id) }}">Cancel</a></button>
+                    {% if (movie_review.reviewer_id == session["id"]) or (session["is_superuser"] == True) %}   
+                        <button class="generic-button button-color-red mt-2"><a href="{{ url_for('delete_review', movie_id=movie_review.review_for_id, user_id=movie_review.reviewer_id) }}">Delete Review</a></button>
+                    {% endif %}
                 </div>
             </div>
         </form>
