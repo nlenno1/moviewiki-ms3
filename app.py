@@ -172,13 +172,20 @@ def add_user_data_to_session_storage(user_dict, new_id=None):
         session['is_superuser'] = user_dict['is_superuser']
 
 
-def consolidate_matching_array_dicts(list_1, list_2):
+def generate_matching_movies_list(collection, collection_list_name, user_list, sort_list_by_key=None, new_list_length=None):
     """
     function to compare 2 lists matching values under append any matching
     dicts to a new list.
     """
-    new_list = set(list_1).intersection(list_2)
-    return new_list
+    storage_list = []
+    for item in collection:
+        if set(user_list).intersection(item[collection_list_name]):
+            storage_list.append(item)
+    if sort_list_by_key:
+        storage_list = sorted(storage_list, key=lambda d: d[sort_list_by_key])
+    elif sort_list_by_key and new_list_length:
+        storage_list = sorted(storage_list, key=lambda d: d[sort_list_by_key])[:new_list_length]
+    return storage_list
 
 
 def find_review_in_reviews_list(review_list, reviewer_id):
@@ -284,17 +291,12 @@ def home():
         try:
             user = find_one_with_key("users", "_id", ObjectId(session["id"]))
             if user:
-                # generate suggested_movies list
-                for item in movies:
-                    if set(user["favourite_genres"]).intersection(
-                                                      item["genre"]):
-                        movies_for_you.append(item)
-                movies_for_you = sorted(movies_for_you, key=lambda d: d[
-                                        'average_rating'])[:15]
+                movies_for_you = generate_matching_movies_list(movies, "genre", user["favourite_genres"], 'average_rating', 15)
+                
                 # generate want_to_watch list
                 for item in user["movies_to_watch"]:
                     for movie in movies:
-                        if movie["movie_title"] == item:
+                        if movie["_id"] == item["movie_id"]:
                             want_to_watch.append(movie)
                 want_to_watch = sorted(want_to_watch, key=lambda d: d[
                                         'average_rating'])[:15]
@@ -460,13 +462,8 @@ def profile():
                 {"password_hash": 0})
 
         # generate suggested_movies list
-        suggested_movies = []
         movies = list(mongo.db.movies.find())
-        for item in movies:
-            if set(user["favourite_genres"]).intersection(item["genre"]):
-                suggested_movies.append(item)
-        suggested_movies = sorted(suggested_movies, key=lambda d: d[
-                                    'average_rating'])[:15]
+        suggested_movies = generate_matching_movies_list(movies, "genre", user["favourite_genres"], 'average_rating', 15)
 
         user_latest_reviews = sorted(user["user_latest_reviews"],
                                         key=lambda d: d['review_date'],
@@ -735,14 +732,9 @@ def view_movie(movie_id):
                                   user["movies_to_watch"], 
                                   "movie_id", movie["_id"])
 
-    # generate similar_movies list - make into function
-    similar_movies = []
+    # generate similar_movies list
     movies = list(mongo.db.movies.find())
-    for item in movies:
-        if set(movie["genre"]).intersection(item["genre"]):
-            similar_movies.append(item)
-    similar_movies = sorted(similar_movies, key=lambda d: d[
-                        'average_rating'], reverse=True)[:15]
+    similar_movies = generate_matching_movies_list(movies, "genre", movie["genre"], 'average_rating', 15)
 
     movie__genre_text_list = ', '.join(name.title() for name in movie["genre"])
     movie["genre"] = movie__genre_text_list
