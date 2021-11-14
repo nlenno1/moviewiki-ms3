@@ -23,7 +23,7 @@
                         <option value="{{ age_rating.rating_value }}">{{ age_rating.rating_name }}</option>
                     {% endfor %}
                 </select>
-                
+                <p class="invalid-message">&nbsp;</p>
                 <label for="duration" class="small-text unselected-text">Duration (mins) *</label>
                 <input type="text" name="duration" id="duration" placeholder="Duration (mins) *" minlength="2" maxlength="3" class="validate" pattern="^[0-9]{2,3}$" required>
                 <p class="invalid-message">Enter a number either 2 or 3 characters long</p>

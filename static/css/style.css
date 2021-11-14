@@ -1005,6 +1005,7 @@ input:placeholder-shown{
     font-size: 0.6rem;
     width: 80%;
     margin: 0 auto;
+    min-height: 35px;
 }
 
 input:invalid + p{

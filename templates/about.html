@@ -5,12 +5,33 @@
 
     <div class="container-md">
         <h5 class="text-center mt-5">How to use and get the most out of this app!</h5>
+        <p class="text-center">Welcome to MovieWiki a place for all to share their opinions and reviews of Movies</p>
+        <p class="text-center">
+            To get started have a look round to see what Movies and Reviews are already here and if you want to add to MovieWiki, just create an account and sign in!
+            <br>
+            Below is our FAQs if you need any help, but if something isn't covered then send us a message throught the Contact button above!
+        </p>
     
         <h3 class="carousel-heading">FAQs</h3>
     
         <div class="accordion my-5" id="faq-accordion">
             <div class="accordion-item">
-                <h2 class="accordion-header" id="image-link-header">
+                <h2 class="accordion-header" id="age-limit-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#age-limit-collapse" aria-expanded="false"
+                        aria-controls="age-limit-collapse">
+                       Is there an age limit to use MovieWiki?
+                    </button>
+                </h2>
+                <div id="age-limit-collapse" class="accordion-collapse collapse"
+                    aria-labelledby="age-limit-heading" data-bs-parent="#faq-accordion">
+                    <div class="accordion-body">
+                        <p>You have to over the age of 8 to create an account on MovieWiki however anyone can view the Movies and Reviews</p>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="why-account-header">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#why-account-collapse" aria-expanded="false"
                         aria-controls="why-account-collapse">
@@ -32,7 +53,22 @@
                 </div>
             </div>
             <div class="accordion-item">
-                <h2 class="accordion-header" id="image-link-header">
+                <h2 class="accordion-header" id="movies-to-add-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#movies-to-add-collapse" aria-expanded="false"
+                        aria-controls="movies-to-add-collapse">
+                       What Movies can I add?
+                    </button>
+                </h2>
+                <div id="movies-to-add-collapse" class="accordion-collapse collapse"
+                    aria-labelledby="movies-to-add-heading" data-bs-parent="#faq-accordion">
+                    <div class="accordion-body">
+                        <p>You can add any Movie you like as long as it has been released already. You cannot add Movies that are yet to be seen publically.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="create-movie-header">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#create-movie-collapse" aria-expanded="false"
                         aria-controls="create-movie-collapse">
@@ -49,7 +85,61 @@
                             <li>Fill out all required fields (*) in the form</li>
                             <li>Click Create Movie</li>
                         </ol>
-                        <p>You need to be signed in to create a movie</p>
+                        <p>You need to be signed in to create a Movie</p>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="update-delete-movie-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#update-delete-movie-collapse" aria-expanded="false"
+                        aria-controls="update-delete-movie-collapse">
+                        How do I Update Or Delete a Movie?
+                    </button>
+                </h2>
+                <div id="update-delete-movie-collapse" class="accordion-collapse collapse"
+                    aria-labelledby="update-delete-movie-heading" data-bs-parent="#faq-accordion">
+                    <div class="accordion-body">
+                        <p>You will find the Update Movie button under the Movie name in the Movie's profile, however this button will only appear if you created the Movie</p>
+                        <p>The Delete Movie button found at the bottom of the Update Movie form</p>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="create-review-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#create-review-collapse" aria-expanded="false"
+                        aria-controls="create-review-collapse">
+                        How do I add a Review?
+                    </button>
+                </h2>
+                <div id="create-review-collapse" class="accordion-collapse collapse"
+                    aria-labelledby="create-review-heading" data-bs-parent="#faq-accordion">
+                    <div class="accordion-body">
+                        <p>To add a Review:</p>
+                        <ol>
+                            <li>Find a Movie you want to Review and click on its profile</li>
+                            <li>Click the "Create Review" button</li>
+                            <li>Fill out all required fields (*) in the form</li>
+                            <li>Click Create Review</li>
+                        </ol>
+                        <p>You need to be signed in to create a Review</p>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="update-delete-review-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#update-delete-review-collapse" aria-expanded="false"
+                        aria-controls="update-delete-review-collapse">
+                        How do I Update Or Delete a Review?
+                    </button>
+                </h2>
+                <div id="update-delete-review-collapse" class="accordion-collapse collapse"
+                    aria-labelledby="update-delete-review-heading" data-bs-parent="#faq-accordion">
+                    <div class="accordion-body">
+                        <p>To Update your review, visit the Movie's profile and click the Update Review button at the top of the page</p>
+                        <p>To Delete your review, click the View All Reviews button on the Movie's Profile and when the Reviews are listed, yours will have an Update and Delete button underneath the Review</p>
                     </div>
                 </div>
             </div>
