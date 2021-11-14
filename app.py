@@ -1,5 +1,4 @@
 import os
-import math
 from datetime import datetime, timedelta
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import (
@@ -9,7 +8,6 @@ from flask_pymongo import PyMongo
 from bson.objectid import ObjectId  # to render an object id in a bson format
 if os.path.exists("env.py"):
     import env
-from dateutil.relativedelta import relativedelta
 
 
 # create an instance of Flask called app
@@ -98,14 +96,6 @@ def update_collection_item(collection_name, search_key, search_value,
         {update_operator: {new_key: new_value}})
 
 
-def delete_collection_item(collection_name, search_key, search_value):
-    mongo_prefix_select(collection_name).delete_one({search_key: search_value})
-
-
-def add_collection_item(collection_name, search_key, search_value):
-    mongo_prefix_select(collection_name).insert_one({search_key: search_value})
-
-
 def generate_average_rating(movie_id, movie=None):
     if movie is None:
         movie = find_one_with_key("movies", "_id", movie_id)
@@ -127,12 +117,6 @@ def generate_average_rating(movie_id, movie=None):
                                 movie["_id"])},
                                {"$set": {"average_rating":
                                          new_average_rating}})
-
-
-def convert_string_to_datetime(string_date):
-    datetime_date = datetime.strptime(
-        string_date, '%Y-%m-%d %H:%M:%S.%f')
-    return datetime_date
 
 
 def create_new_latest_reviews(review_list, new_review_dict,
@@ -204,12 +188,6 @@ def find_review(movie_id, reviewer_id):
     return movie_review
 
 
-def add_review_to_dict(new_movie, movie_id=None):
-    if request.form.get("submit-movie-review"):
-        review = create_single_review(new_movie, movie_id)
-        new_movie["reviews"].append(review)
-
-
 def generate_new_movie_dict(movie_id=None):
     new_movie = {
             "movie_title": request.form.get("movie-title").lower(),
@@ -231,8 +209,9 @@ def generate_new_movie_dict(movie_id=None):
             "average_rating": 0.0
         }
     add_series_information_to_dict(new_movie)
-    if movie_id:
-        add_review_to_dict(new_movie, movie_id)
+    if movie_id and request.form.get("submit-movie-review"):
+        review = create_single_review(new_movie, movie_id)
+        new_movie["reviews"].append(review)
     return new_movie
 
 
