@@ -14,7 +14,7 @@
                 <input type="text" value="{{ movie.movie_title|title }}" name="movie-title" id="movie-title" placeholder="Movie Title" minlength="2" maxlength="30" class="validate" pattern="^(?!.*[\p{P} ]{3})[a-zA-Z0-9\p{P} ]{2,30}$" required>
                 <p class="invalid-message">2 to 30 characters long using letters, numbers and only 2 spaces and/or symbols consecutively</p>
                 <label for="release-date" class="small-text unselected-text">Release Date *</label>
-                <input placeholder="Release Date *" type="date" value="{{ movie.release_date.strftime('%Y-%m-%d') }}" name="release-date" id="release-date" required>
+                <input placeholder="Release Date *" type="date" onfocus="todayDatePicker()" value="{{ movie.release_date.strftime('%Y-%m-%d') }}" name="release-date" id="release-date" required>
                 <p class="invalid-message">Use the date picker to select the release date</p>
                 <label for="age-rating" class="small-text unselected-text">Age Rating*</label>
                 <select id="age-rating" name="age-rating" class="text-body" required>
@@ -162,5 +162,7 @@
     <script src="{{url_for('static', filename='js/review-questions-control.js')}}"></script>
     <script src="{{url_for('static', filename='js/genre-selected-check.js')}}"></script>
     <script src="{{url_for('static', filename='js/create-edit-movie-validation.js')}}"></script>
+    <script src="{{url_for('static', filename='js/date-picker.js')}}"></script>
+
 
 {% endblock %}

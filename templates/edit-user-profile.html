@@ -27,7 +27,7 @@
                     </div> 
                     <label for="dob" class="small-text unselected-text">Date Of Birth *</label>
                     <div>
-                        <input onkeydown="return false" type='date' value="{{ user.dob.strftime('%Y-%m-%d') }}" name="dob" id="dob" placeholder="Date of Birth" class="validate" required>
+                        <input onkeydown="return false" type='date' onfocus="dobDatePicker()" value="{{ user.dob.strftime('%Y-%m-%d') }}" name="dob" id="dob" placeholder="Date of Birth" class="validate" required>
                         <p class="invalid-message">Use the date picker to select your date of birth</p>
                     </div>
                     <label for="email" class="small-text unselected-text">Email Address *</label>
@@ -83,5 +83,6 @@
     <script src="{{url_for('static', filename='js/profile-delete.js')}}"></script>
     <script src="{{url_for('static', filename='js/dropdown-color-change.js')}}"></script>
     <script src="{{url_for('static', filename='js/genre-selected-check.js')}}"></script>
+    <script src="{{url_for('static', filename='js/date-picker.js')}}"></script>
 
 {% endblock %}
