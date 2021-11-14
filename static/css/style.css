@@ -1024,3 +1024,11 @@ input:valid + p, input:placeholder-shown + p, textarea:valid + p, textarea:place
     border-bottom: 2px solid #000;
 }
 
+
+/* error display */
+
+.error-display a {
+    color: black;
+    font-weight: 600;
+    text-decoration: none;
+}

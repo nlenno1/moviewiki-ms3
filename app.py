@@ -1155,6 +1155,52 @@ def view_all_movies():
     return render_template("view-all-movies.html", movies=all_movies)
 
 
+# error handlers
+@app.errorhandler(400)
+def bad_request(e):
+    message = "A Bad Request was made"
+    return render_template('error.html', error=400, message=message), 400
+
+
+@app.errorhandler(403)
+def forbidden(e):
+    message = "This action is Forbidden!"
+    return render_template('error.html', error=403, message=message), 403
+
+
+@app.errorhandler(404)
+def not_found(e):
+    message = "Sorry, we can't find the page you are looking for!"
+    return render_template('error.html', error_code=404, message=message), 404
+
+
+@app.errorhandler(408)
+def request_timeout(e):
+    message = "The Server didn't recieve a complete request is time. Please try \
+        again"
+    return render_template('error.html', error_code=408, message=message), 408
+
+
+@app.errorhandler(429)
+def too_many_requests(e):
+    message = "The Server recieved too many Requests. Try again later"
+    return render_template('error.html', error_code=429, message=message), 429
+
+
+@app.errorhandler(500)
+def internal_server_error(e):
+    message = "Sorry, its not you, its me! I have had an internal server \
+        error! Please give me some time and we can try again"
+    return render_template('error.html', error_code=500, message=message), 500
+
+
+@app.errorhandler(Exception)
+def internal_server_error(e):
+    message = "Something went wrong! If this is a reoccuring error then \
+        get in touch"
+    return render_template('error.html', error_code=e, message=message)
+
+
 # application running instructions by retieving hidden env variables
 if __name__ == "__main__":
     # retrieve the hidden env values and set them in variables
