@@ -598,8 +598,7 @@ p>a:hover {
     margin-bottom: 3rem;
     display: flex;
     flex-wrap: nowrap;
-    align-content: flex-start;
-    align-items: center;
+    align-items: flex-start;
 }
 
 .movie-text,
