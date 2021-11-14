@@ -3,6 +3,80 @@
 
     <h1 id="header-title">About</h1>
 
-    <h5 class="text-center mt-5">How to use and get the most out of this app!</h5>
+    <div class="container-md">
+        <h5 class="text-center mt-5">How to use and get the most out of this app!</h5>
+    
+        <h3 class="carousel-heading">FAQs</h3>
+    
+        <div class="accordion my-5" id="faq-accordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="image-link-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#why-account-collapse" aria-expanded="false"
+                        aria-controls="why-account-collapse">
+                        Why Have A MovieWiki Account?
+                    </button>
+                </h2>
+                <div id="why-account-collapse" class="accordion-collapse collapse"
+                    aria-labelledby="why-account-heading" data-bs-parent="#faq-accordion">
+                    <div class="accordion-body">
+                        <p>With a MovieWiki Account, you can:</p>
+                        <ul>
+                            <li>Add Movies and update the Movies You create</li>
+                            <li>Add Reviews to existing Movies</li>
+                            <li>Keep track of Movies you have reviewed in your User Profile</li>
+                            <li>Create a list of Movies you have watched and Movies you want to watch which is displayed in you User Profile and on the Movies</li>
+                        </ul>
+                        <p>What are you waiting for? Sign Up!</p>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="image-link-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#create-movie-collapse" aria-expanded="false"
+                        aria-controls="create-movie-collapse">
+                        How do I add a Movie?
+                    </button>
+                </h2>
+                <div id="create-movie-collapse" class="accordion-collapse collapse"
+                    aria-labelledby="create-movie-heading" data-bs-parent="#faq-accordion">
+                    <div class="accordion-body">
+                        <p>To add a Movie:</p>
+                        <ol>
+                            <li>Click Movies at the top of the page</li>
+                            <li>Select "New Movie"</li>
+                            <li>Fill out all required fields (*) in the form</li>
+                            <li>Click Create Movie</li>
+                        </ol>
+                        <p>You need to be signed in to create a movie</p>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="image-link-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#image-link-collapse" aria-expanded="false"
+                        aria-controls="image-link-collapse">
+                        How do I add a Movie Image Link?
+                    </button>
+                </h2>
+                <div id="image-link-collapse" class="accordion-collapse collapse"
+                    aria-labelledby="image-link-heading" data-bs-parent="#faq-accordion">
+                    <div class="accordion-body">
+                        <p>To add a Movie Image link:</p>
+                        <ol>
+                            <li>Find a movie image online that you like</li>
+                            <li>Check that it is royalty free and using it will not infringe copyright laws</li>
+                            <li>Right click on the image and select "copy image address". If there is not this option then left click on the image and try again</li>
+                            <li>Paste the link into a url bar to check that it works</li>
+                            <li>If there is any text after the image extension (eg. .jpg or.png) then remove it in the URL bar and check the link again. If the link breaks then find a new image</li>
+                            <li>Copy the image link into the input box</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}
