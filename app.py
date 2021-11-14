@@ -441,7 +441,7 @@ def signup():
 
         # put the user into session and load profile page
         flash("Registration Successful " + session["user"].capitalize() + "!")
-        return redirect(url_for('profile')
+        return redirect(url_for('profile'))
 
     genre_list = list(mongo.db.genre.find().sort("genre_name"))
     return render_template("signup.html", genre_list=genre_list)
@@ -542,7 +542,7 @@ def edit_user_profile():
                                                 ObjectId(session["id"]))
 
             flash(f"Updated {session['user'].capitalize()} Account!")
-            return redirect(url_for('profile')
+            return redirect(url_for('profile'))
 
         except Exception as e:
             flash("User not Found")
@@ -584,7 +584,7 @@ def delete_user_profile(user_id):
         flash(str(e))
         flash("Please try again or get in touch to report "
               "a reoccurring problem")
-        return redirect(url_for('profile')
+        return redirect(url_for('profile'))
 
     if user:
         mongo.db.users.remove({
@@ -596,7 +596,7 @@ def delete_user_profile(user_id):
         return redirect(url_for('home'))
     else:
         flash("No User account was found to delete")
-    return redirect(url_for('profile')
+    return redirect(url_for('profile'))
 
 
 # user account access
@@ -615,7 +615,7 @@ def signin():
 
                 flash("Welcome " + session["user"].capitalize())
 
-                return redirect(url_for('profile')
+                return redirect(url_for('profile'))
             else:
                 flash("The information entered is incorrect")
                 return redirect(url_for('signin'))
