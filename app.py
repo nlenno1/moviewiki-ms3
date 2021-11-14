@@ -1,5 +1,6 @@
 import os
-from datetime import datetime
+import math
+from datetime import datetime, timedelta
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import (
     Flask, flash, render_template,
@@ -8,6 +9,7 @@ from flask_pymongo import PyMongo
 from bson.objectid import ObjectId  # to render an object id in a bson format
 if os.path.exists("env.py"):
     import env
+from dateutil.relativedelta import relativedelta
 
 
 # create an instance of Flask called app
@@ -266,6 +268,21 @@ def create_and_add_mini_movie_dict(movie_id, array_name, movie=None):
                            array_name, new_mini_movie_dict)
 
 
+def filter_movies_using_age_ratings(movie_list, user_age):
+    storage_list = []
+    for movie in movie_list:
+        # any less than 12a, 12, 15 and 18 will be added to the list
+        # check first character of age rating
+        if movie["age_rating"][0] == "1":
+            # convert age rating year number into days
+            age_rating_in_days = float(movie["age_rating"].replace("a","")) * 365.25
+            if age_rating_in_days < user_age:
+                storage_list.append(movie)
+        else:
+            storage_list.append(movie)
+    return storage_list
+
+
 # ---------- app.route ----------
 @app.route("/")
 @app.route("/home")
@@ -274,7 +291,8 @@ def home():
                                             "average_rating": 1,
                                             "release_date": 1,
                                             "genre": 1,
-                                            "image_link": 1}))
+                                            "image_link": 1,
+                                            "age_rating": 1}))
     # sorted alphabeticallly by title with max of 15
     all_movies = sorted(movies, key=lambda d: d['movie_title'])[:15]
     # sorted by average rating by title with max of 15
@@ -292,7 +310,9 @@ def home():
             user = find_one_with_key("users", "_id", ObjectId(session["id"]))
             if user:
                 movies_for_you = generate_matching_movies_list(movies, "genre", user["favourite_genres"], 'average_rating', 15)
-                
+                # calculate age of user
+                age = (datetime.now() - datetime.strptime(user["dob"], '%Y-%m-%d')).days
+                movies_for_you = filter_movies_using_age_ratings(movies_for_you, age)
                 # generate want_to_watch list
                 for item in user["movies_to_watch"]:
                     for movie in movies:
@@ -448,7 +468,7 @@ def signup():
 
 
 # view user profile
-@app.route("/profile", methods=["GET", "POST"])
+@app.route("/profile")
 def profile():
 
     user_signed_in = is_signed_in()
@@ -463,8 +483,12 @@ def profile():
 
         # generate suggested_movies list
         movies = list(mongo.db.movies.find())
-        suggested_movies = generate_matching_movies_list(movies, "genre", user["favourite_genres"], 'average_rating', 15)
 
+        suggested_movies = generate_matching_movies_list(movies, "genre", user["favourite_genres"], 'average_rating', 15)
+        # calculate age of user
+        age = (datetime.now() - datetime.strptime(user["dob"], '%Y-%m-%d')).days
+        suggested_movies = filter_movies_using_age_ratings(suggested_movies, age)
+        
         user_latest_reviews = sorted(user["user_latest_reviews"],
                                         key=lambda d: d['review_date'],
                                         reverse=True)
@@ -482,10 +506,10 @@ def profile():
                                     reverse=True)
 
         return render_template("profile.html", user=user,
-                                suggested_movies=suggested_movies,
-                                user_latest_reviews=user_latest_reviews,
-                                movies_to_watch=movies_to_watch,
-                                movies_watched=movies_watched,
+                                    suggested_movies=suggested_movies,
+                                    user_latest_reviews=user_latest_reviews,
+                                    movies_to_watch=movies_to_watch,
+                                    movies_watched=movies_watched,
                                 movies_reviewed=movies_reviewed)
     except Exception as e:
         flash("User profile was not found")
@@ -541,7 +565,7 @@ def edit_user_profile():
             return redirect(url_for('profile', user_id=session['id']))
 
         except Exception as e:
-            print("User not Found")
+            flash("User not Found")
             flash(str(e))
             flash("Please try again or get in touch to report"
                     " a reoccurring problem")
@@ -550,7 +574,7 @@ def edit_user_profile():
         user = find_one_with_key("users", "_id", ObjectId(session["id"]))
         user["dob"] = datetime.strptime(user["dob"], '%Y-%m-%d')
     except Exception as e:
-        print("User not Found")
+        flash("User not Found")
         flash(str(e))
         flash("Please try again or get in touch to report "
                 "a reoccurring problem")
@@ -700,7 +724,7 @@ def view_movie(movie_id):
         movie = mongo.db.movies.find_one(
                 {'_id': ObjectId(movie_id)})
     except Exception as e:
-        print("Movie Not Found")
+        flash("Movie Not Found")
         flash(str(e))
         flash("Please try again or get in touch to report "
               "a reoccurring problem")
@@ -754,7 +778,7 @@ def edit_movie(movie_id):
     try:
         movie = mongo.db.movies.find_one({"_id": ObjectId(movie_id)})
     except Exception as e:
-        print("Movie Not Found")
+        flash("Movie Not Found")
         flash(str(e))
         flash("Please try again or get in touch to report "
               "a reoccurring problem")
@@ -797,7 +821,7 @@ def edit_movie(movie_id):
                                cast_members_string=cast_members_string,
                                user_has_reviewed=user_has_reviewed)
     else:
-        print("Movie Not Found")
+        flash("Movie Not Found")
         return redirect(url_for('view_all_movies'))
 
 
@@ -807,7 +831,7 @@ def delete_movie(movie_id):
         movie = mongo.db.movies.find_one({"_id": ObjectId(movie_id)},
                                          {"created_by": 1})
     except Exception as e:
-        print("Movie Not Found")
+        flash("Movie Not Found")
         flash(str(e))
         flash("Please try again or get in touch to report "
               "a reoccurring problem")
