@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 
-<h1 id="header-title">Movie</h1>
+    <h1 id="header-title">Movie</h1>
 
     <div class="container-md">
         {% if user_reviewed == False %}
@@ -49,6 +49,16 @@
                                 <img src="{{ movie.image_link }}" onerror="this.onerror=null;this.src='{{ url_for('static', filename='img/movie_placeholder.png') }}'" alt="Movie Image">
                             </a>
                         </div>
+                    </div>
+                    <div class="text-center my-3">
+                        <h4 class="mb-0">Average Star Rating:</h4>
+                        <div class="five-stars-container">
+                            <div class="position-relative">
+                                <img src="{{ url_for('static', filename='img/5_black_stars.png') }}" alt="" class="mask" id="five_stars_mask">
+                                <img src="{{ url_for('static', filename='img/5_stars.png') }}" alt="" class="five-stars">
+                            </div>
+                        </div>
+                        <h5><span id="average_rating">{% if movie.average_rating %}{{ movie.average_rating }}{% else %}0{% endif %}</span> / 5 </h5>
                     </div>
                     <div class="row g-0">
                         <div class="col-12 view-movie-button-container mt-3 mb-5">
@@ -221,4 +231,10 @@
             </div>
         {% endif %}
 
-    {% endblock %}
+{% endblock %}
+
+{% block scripts %}
+
+    <script src="{{url_for('static', filename='js/display-star-rating.js')}}"></script>
+
+{% endblock %}

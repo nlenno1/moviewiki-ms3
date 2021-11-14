@@ -1,6 +1,7 @@
 function displayStarRating () {
-    score = document.querySelector("#average_review_score").innerHTML;
+    score = document.querySelector("#average_rating").innerHTML;
     if (score > 0) {
+        console.log(score)
         scorePercentage = (score/5)*100;
         maskPercentage = 100 - scorePercentage;
     } else {
