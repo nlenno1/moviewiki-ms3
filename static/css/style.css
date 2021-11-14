@@ -601,12 +601,6 @@ p>a:hover {
     align-items: flex-start;
 }
 
-@media (min-width: 768px) {
-    .movie-carousel {
-        height: 390px;
-    }
-}
-
 .movie-text {
     height: 100px;
     max-width: 179px;
@@ -1041,4 +1035,23 @@ input:valid + p, input:placeholder-shown + p, textarea:valid + p, textarea:place
     color: black;
     font-weight: 600;
     text-decoration: none;
+}
+
+/* scrollbar */
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 8px;
+    background-color: #111;
+}
+
+::-webkit-scrollbar-track {
+    border-radius: 2px;
+    width: 120%;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #ffca18;
+    border-radius: 2px;
+    border: 1px solid #111;
 }

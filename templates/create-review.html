@@ -46,7 +46,7 @@
                 </div>
             </div>
         </form>
-        {% if not selected_movie_title %}
+        {% if not selected_movie_id %}
             <div class="mb-5 text-center">
                 <span>If you can't find the Movie you want to review then make its profile page</span>
                 <button type="submit" class="generic-button button-color-gold"><a href="{{ url_for('create_movie') }}">Create Movie</a></button>
