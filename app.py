@@ -158,15 +158,16 @@ def add_user_data_to_session_storage(user_dict, new_id=None):
         session['is_superuser'] = user_dict['is_superuser']
 
 
-def generate_matching_movies_list(collection, collection_list_name, user_list, sort_list_by_key=None, new_list_length=None):
+def generate_matching_movies_list(collection, collection_list_name, user_list, sort_list_by_key=None, new_list_length=None, movie_id=None):
     """
     function to compare 2 lists matching values under append any matching
     dicts to a new list.
     """
     storage_list = []
     for item in collection:
-        if set(user_list).intersection(item[collection_list_name]):
-            storage_list.append(item)
+        if item["_id"] != movie_id:
+            if set(user_list).intersection(item[collection_list_name]):
+                storage_list.append(item)
     if sort_list_by_key:
         storage_list = sorted(storage_list, key=lambda d: d[sort_list_by_key])
     elif sort_list_by_key and new_list_length:
@@ -732,12 +733,12 @@ def view_movie(movie_id):
                             "movie_id", movie["_id"])
 
             user_want_to_watch = check_key_in_array_of_dicts(
-                                  user["movies_to_watch"], 
+                                  user["movies_to_watch"],
                                   "movie_id", movie["_id"])
 
     # generate similar_movies list
     movies = list(mongo.db.movies.find())
-    similar_movies = generate_matching_movies_list(movies, "genre", movie["genre"], 'average_rating', 15)
+    similar_movies = generate_matching_movies_list(movies, "genre", movie["genre"], 'average_rating', 15, movie["_id"])
 
     movie__genre_text_list = ', '.join(name.title() for name in movie["genre"])
     movie["genre"] = movie__genre_text_list
