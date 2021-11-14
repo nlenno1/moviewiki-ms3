@@ -589,7 +589,7 @@ p>a:hover {
 }
 
 .movie-carousel {
-    height: 350px;
+    height: 370px;
     width: 100%;
     padding: 10px 10px 0;
     overflow-x: scroll;
@@ -601,18 +601,28 @@ p>a:hover {
     align-items: flex-start;
 }
 
-.movie-text,
-.search-results-container h4 {
-    height: 80px;
-    max-width: 170px;
+@media (min-width: 768px) {
+    .movie-carousel {
+        height: 390px;
+    }
+}
+
+.movie-text {
+    height: 100px;
+    max-width: 179px;
     text-align: center;
     margin-bottom: 0;
     padding-top: 2px;
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
     align-items: center;
     flex-direction: column;
     flex-wrap: nowrap;
+}
+
+.movie-text h4,
+.search-results-container h4 {
+    margin-bottom: 0;
 }
 
 .movie-placeholder {
@@ -858,7 +868,7 @@ select>.text-black {
 @media(min-width:992px) {
     .search-results-container {
         justify-content: flex-start;
-        padding: 15px 5px 15px 25px;
+        padding: 15px 5px 15px 20px;
     }
 }
 

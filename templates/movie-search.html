@@ -32,26 +32,6 @@
                                 <h4>{{ movie.movie_title }}</h4>
                             </div>
                         {% endfor %}
-                        {% if session['user'] %}
-                            <div class="movie-picture-display">
-                                <div class="movie-placeholder">
-                                    <p>Can't find the film you want then try a different search or create a new profile for it!</p>
-                                    <button class="generic-button button-color-gold"><a href="{{ url_for('create_movie') }}">Create
-                                            Movie</a></button>
-                                </div>
-                                <h4>Still Looking?</h4>
-                            </div>
-                        {% else %}
-                            <div class="movie-picture-display">
-                                <div class="movie-placeholder">
-                                    <p>Can't find the film you want then try a different search or sign in and create a new profile
-                                        for it!</p>
-                                    <button class="generic-button button-color-gold"><a href="{{ url_for('signin') }}">Sign
-                                            In</a></button>
-                                </div>
-                                <h4>Still Looking?</h4>
-                            </div>
-                        {% endif %}
                     </div>
                 </div>
             </div>
