@@ -37,6 +37,13 @@ def is_correct_user(user_id_to_check):
         return False
 
 
+def is_signed_in():
+    if session and len(session) > 1 and session["id"]:
+        return True
+    else:
+        return False
+
+
 def create_single_review(movie, movie_id=None):
     review = {
         "reviewer": session['user'],
@@ -273,7 +280,7 @@ def home():
     movies_for_you = []
     want_to_watch = []
 
-    if len(session) > 1 and session["id"]:
+    if is_signed_in():
         try:
             user = find_one_with_key("users", "_id", ObjectId(session["id"]))
             if user:
@@ -442,119 +449,122 @@ def signup():
 @app.route("/profile", methods=["GET", "POST"])
 def profile():
 
-    if session and session["id"]:
-        try:
-            user = mongo.db.users.find_one(
-                    {"_id": ObjectId(session["id"])},
-                    {"password_hash": 0})
+    user_signed_in = is_signed_in()
+    if not user_signed_in:
+        flash("Please sign in to access a User Profile")
+        return redirect(url_for("signin"))
 
-            # generate suggested_movies list
-            suggested_movies = []
-            movies = list(mongo.db.movies.find())
-            for item in movies:
-                if set(user["favourite_genres"]).intersection(item["genre"]):
-                    suggested_movies.append(item)
-            suggested_movies = sorted(suggested_movies, key=lambda d: d[
-                                      'average_rating'])[:15]
+    try:
+        user = mongo.db.users.find_one(
+                {"_id": ObjectId(session["id"])},
+                {"password_hash": 0})
 
-            user_latest_reviews = sorted(user["user_latest_reviews"],
-                                         key=lambda d: d['review_date'],
-                                         reverse=True)
+        # generate suggested_movies list
+        suggested_movies = []
+        movies = list(mongo.db.movies.find())
+        for item in movies:
+            if set(user["favourite_genres"]).intersection(item["genre"]):
+                suggested_movies.append(item)
+        suggested_movies = sorted(suggested_movies, key=lambda d: d[
+                                    'average_rating'])[:15]
 
-            movies_to_watch = sorted(user["movies_to_watch"],
-                                     key=lambda d: d['movie_title'],
-                                     reverse=True)
+        user_latest_reviews = sorted(user["user_latest_reviews"],
+                                        key=lambda d: d['review_date'],
+                                        reverse=True)
 
-            movies_watched = sorted(user["movies_watched"],
+        movies_to_watch = sorted(user["movies_to_watch"],
                                     key=lambda d: d['movie_title'],
                                     reverse=True)
 
-            movies_reviewed = sorted(user["movies_reviewed"],
-                                     key=lambda d: d['movie_title'],
-                                     reverse=True)
+        movies_watched = sorted(user["movies_watched"],
+                                key=lambda d: d['movie_title'],
+                                reverse=True)
 
-            return render_template("profile.html", user=user,
-                                   suggested_movies=suggested_movies,
-                                   user_latest_reviews=user_latest_reviews,
-                                   movies_to_watch=movies_to_watch,
-                                   movies_watched=movies_watched,
-                                   movies_reviewed=movies_reviewed)
-        except Exception as e:
-            flash("User profile was not found")
-            flash(str(e))
-            flash("Please try again or get in touch to report a"
-                  " reoccurring problem")
-            return redirect(url_for("home"))
-    else:
-        flash("Please sign in to access that User Profile")
-        return redirect(url_for("signin"))
+        movies_reviewed = sorted(user["movies_reviewed"],
+                                    key=lambda d: d['movie_title'],
+                                    reverse=True)
+
+        return render_template("profile.html", user=user,
+                                suggested_movies=suggested_movies,
+                                user_latest_reviews=user_latest_reviews,
+                                movies_to_watch=movies_to_watch,
+                                movies_watched=movies_watched,
+                                movies_reviewed=movies_reviewed)
+    except Exception as e:
+        flash("User profile was not found")
+        flash(str(e))
+        flash("Please try again or get in touch to report a"
+                " reoccurring problem")
+        return redirect(url_for("home"))
 
 
 # edit user profile
 @app.route("/profile/edit", methods=["GET", "POST"])
 def edit_user_profile():
-    if session and session["id"]:
-        if request.method == "POST":
-            try:
-                user = mongo.db.users.find_one(
-                       {"_id": ObjectId(session['id'])},
-                       {"password_hash": 0})
 
-                requested_username = request.form.get("username").lower()
+    user_signed_in = is_signed_in()
+    if not user_signed_in:
+        flash("Please sign in to Edit a User Profile")
+        return redirect(url_for("signin"))
 
-                existing_user = mongo.db.users.find_one(
-                                {"username": requested_username.lower()},
-                                {"password_hash": 0})
-
-                if existing_user and requested_username != user["username"]:
-                    flash("Username " + requested_username.capitalize() +
-                          " already exists")
-                    return redirect(url_for("edit_user_profile",
-                                            user_id=session['id']))
-
-                updated_profile_dict = {
-                    "username": request.form.get("username").lower(),
-                    "firstname": request.form.get("firstname").lower(),
-                    "lastname": request.form.get("lastname").lower(),
-                    "dob": request.form.get("dob"),
-                    "email": request.form.get('email'),
-                    "favourite_genres": request.form.getlist('movie-genre')
-                }
-
-                mongo.db.users.update_one({"_id": ObjectId(session['id'])},
-                                          {"$set": updated_profile_dict})
-
-                add_user_data_to_session_storage(updated_profile_dict,
-                                                 ObjectId(session["id"]))
-
-                flash(f"Updated {session['user'].capitalize()} Account!")
-                return redirect(url_for('profile', user_id=session['id']))
-
-            except Exception as e:
-                print("User not Found")
-                flash(str(e))
-                flash("Please try again or get in touch to report"
-                      " a reoccurring problem")
-                return redirect(url_for('home'))
+    if request.method == "POST":
         try:
-            user = find_one_with_key("users", "_id", ObjectId(session["id"]))
-            user["dob"] = datetime.strptime(user["dob"], '%Y-%m-%d')
+            user = mongo.db.users.find_one(
+                    {"_id": ObjectId(session['id'])},
+                    {"password_hash": 0})
+
+            requested_username = request.form.get("username").lower()
+
+            existing_user = mongo.db.users.find_one(
+                            {"username": requested_username.lower()},
+                            {"password_hash": 0})
+
+            if existing_user and requested_username != user["username"]:
+                flash("Username " + requested_username.capitalize() +
+                        " already exists")
+                return redirect(url_for("edit_user_profile",
+                                        user_id=session['id']))
+
+            updated_profile_dict = {
+                "username": request.form.get("username").lower(),
+                "firstname": request.form.get("firstname").lower(),
+                "lastname": request.form.get("lastname").lower(),
+                "dob": request.form.get("dob"),
+                "email": request.form.get('email'),
+                "favourite_genres": request.form.getlist('movie-genre')
+            }
+
+            mongo.db.users.update_one({"_id": ObjectId(session['id'])},
+                                        {"$set": updated_profile_dict})
+
+            add_user_data_to_session_storage(updated_profile_dict,
+                                                ObjectId(session["id"]))
+
+            flash(f"Updated {session['user'].capitalize()} Account!")
+            return redirect(url_for('profile', user_id=session['id']))
+
         except Exception as e:
             print("User not Found")
             flash(str(e))
-            flash("Please try again or get in touch to report "
-                  "a reoccurring problem")
+            flash("Please try again or get in touch to report"
+                    " a reoccurring problem")
             return redirect(url_for('home'))
+    try:
+        user = find_one_with_key("users", "_id", ObjectId(session["id"]))
+        user["dob"] = datetime.strptime(user["dob"], '%Y-%m-%d')
+    except Exception as e:
+        print("User not Found")
+        flash(str(e))
+        flash("Please try again or get in touch to report "
+                "a reoccurring problem")
+        return redirect(url_for('home'))
 
-        genre_list = list(mongo.db.genre.find().sort("genre_name"))
-        for genre in genre_list:
-            if genre["genre_name"].lower() in user["favourite_genres"]:
-                genre["checked"] = True
-        return render_template("edit-user-profile.html", genre_list=genre_list,
-                               user=user)
-    else:
-        flash("Please sign in to Edit that User Profile")
-        return redirect(url_for("signin"))
+    genre_list = list(mongo.db.genre.find().sort("genre_name"))
+    for genre in genre_list:
+        if genre["genre_name"].lower() in user["favourite_genres"]:
+            genre["checked"] = True
+    return render_template("edit-user-profile.html", genre_list=genre_list,
+                            user=user)
 
 
 # delete user profile
@@ -619,7 +629,9 @@ def signin():
 @app.route("/signout")
 def signout():
 
-    if len(session) == 0:
+    user_signed_in = is_signed_in()
+    if not user_signed_in:
+        flash("You need to be Signed In to Sign Out")
         return redirect(url_for("signin"))
 
     flash("You have signed out")
@@ -627,27 +639,30 @@ def signout():
     return redirect(url_for('home'))
 
 
+
 @app.route("/movie/add", methods=["GET", "POST"])
 def create_movie():
 
-    if len(session) == 0:
+    user_signed_in = is_signed_in()
+    if not user_signed_in:
+        flash("You need to be signed in to add a movie")
         return redirect(url_for("signin"))
 
     if request.method == "POST":
         new_movie = generate_new_movie_dict()
 
         existing_movies = mongo.db.movies.find(
-                          {"movie_title": new_movie["movie_title"]})
+                        {"movie_title": new_movie["movie_title"]})
         if existing_movies:
             for movie in existing_movies:
                 if movie["release_date"].strftime(
-                  '%Y') == new_movie["release_date"].strftime('%Y'):
+                '%Y') == new_movie["release_date"].strftime('%Y'):
                     flash(f"There is already a movie called "
-                          f"{new_movie['movie_title'].title()} which was "
-                          f"released in "
-                          f"{new_movie['release_date'].strftime('%Y')}")
+                        f"{new_movie['movie_title'].title()} which was "
+                        f"released in "
+                        f"{new_movie['release_date'].strftime('%Y')}")
                     flash("Either use the existing movie profile or change"
-                          " the release year")
+                        " the release year")
                     return redirect(url_for('view_all_movies'))
 
         new_id = mongo.db.movies.insert_one(new_movie).inserted_id
@@ -657,9 +672,9 @@ def create_movie():
             if request.form.get("submit-movie-review"):
                 new_review = create_single_review(movie)
                 mongo.db.movies.update_one({"_id": ObjectId(movie["_id"])},
-                                           {"$push": {"reviews": new_review}})
+                                        {"$push": {"reviews": new_review}})
                 create_and_add_mini_movie_dict(new_id, "movies_reviewed",
-                                               movie)
+                                            movie)
                 add_review_to_latest_reviews_dicts(
                     movie, create_single_review(movie, movie["_id"]))
                 generate_average_rating(ObjectId(new_id))
@@ -669,12 +684,10 @@ def create_movie():
             flash("An error occured and the Movie was not created")
         return redirect(url_for("create_movie"))
 
-
-
     genre_list = list(mongo.db.genre.find().sort("genre_name"))
     age_ratings = mongo.db.age_ratings.find().sort("uk_rating_order")
     return render_template("create-movie.html", genre_list=genre_list,
-                           age_ratings=age_ratings)
+                            age_ratings=age_ratings)
 
 
 def check_key_in_array_of_dicts(array_to_check, key, value_to_check_against):
@@ -700,7 +713,7 @@ def view_movie(movie_id):
     user_watched = False
     user_reviewed = False
 
-    if session and session["id"]:
+    if is_signed_in():
         try:
             user = mongo.db.users.find_one(
                 {"_id": ObjectId(session["id"])},
@@ -856,7 +869,9 @@ def view_reviews(movie_id):
 @app.route("/review/add", methods=["GET", "POST"])
 def create_review():
 
-    if len(session) == 0:
+    user_signed_in = is_signed_in()
+    if not user_signed_in:
+        flash("You need to be signed in to add a review")
         return redirect(url_for("signin"))
 
     if request.method == "POST":
@@ -985,7 +1000,7 @@ def edit_review(movie_id, user_id):
     # condense this to one process
     movie = find_one_with_key("movies", "_id", ObjectId(movie_id))
     review = find_review_in_reviews_list(movie["reviews"], user_id)
-    
+
     return render_template(
         "edit-review.html",
         selected_movie=movie, movie_review=review)
@@ -1037,8 +1052,11 @@ def delete_review(movie_id, user_id):
 @app.route("/user/watched-movie/<movie_id>/add")
 def add_watched_movie(movie_id):
 
-    if len(session) == 0:
+    user_signed_in = is_signed_in()
+    if not user_signed_in:
+        flash("You need to be signed in to do this")
         return redirect(url_for("signin"))
+
     try:
         create_and_add_mini_movie_dict(movie_id, "movies_watched")
     except Exception as e:
@@ -1054,7 +1072,9 @@ def add_watched_movie(movie_id):
 @app.route("/user/watched-movie/<movie_id>/remove")
 def remove_watched_movie(movie_id):
 
-    if len(session) == 0:
+    user_signed_in = is_signed_in()
+    if not user_signed_in:
+        flash("You need to be signed in to do this")
         return redirect(url_for("signin"))
     try:
         update_collection_item_dict("users", "_id", ObjectId(session["id"]),
@@ -1074,7 +1094,9 @@ def remove_watched_movie(movie_id):
 @app.route("/user/want-to-watch/<movie_id>/add")
 def add_want_to_watch_movie(movie_id):
 
-    if len(session) == 0:
+    user_signed_in = is_signed_in()
+    if not user_signed_in:
+        flash("You need to be signed in to do this")
         return redirect(url_for("signin"))
     try:
         create_and_add_mini_movie_dict(movie_id, "movies_to_watch")
@@ -1092,7 +1114,9 @@ def add_want_to_watch_movie(movie_id):
 @app.route("/user/want-to-watch/<movie_id>/remove")
 def remove_want_to_watch_movie(movie_id):
 
-    if len(session) == 0:
+    user_signed_in = is_signed_in()
+    if not user_signed_in:
+        flash("You need to be signed in to do this")
         return redirect(url_for("signin"))
     try:
         update_collection_item_dict("users", "_id", ObjectId(session["id"]),
