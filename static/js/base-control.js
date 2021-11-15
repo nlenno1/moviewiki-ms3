@@ -1,8 +1,3 @@
-const sidenavToggler = document.querySelector("#sidenav-toggler")
-const sidenav = document.querySelector("#sidenav")
-const closeSidenav = document.querySelector("#sidenavClose")
-const contentCover = document.querySelector("#content-cover")
-
 function openNav() {
     if (document.documentElement.clientWidth > 320) {
         sidenav.style.width = "280px";
@@ -23,5 +18,5 @@ function closeNav() {
 }
 
 function backToTop() {
-    window.scrollTo(0, 0)
+    window.scrollTo(0, 0);
 }

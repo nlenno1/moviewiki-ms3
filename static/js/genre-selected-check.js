@@ -8,6 +8,6 @@ function checkGenreHasBeenChecked(event) {
 $('document').ready (function () {
     initializeSelectElementColorChange();
     $("form").submit(function(event){
-        checkGenreHasBeenChecked(event)
+        checkGenreHasBeenChecked(event);
     });
-})
+});

@@ -1,8 +1,7 @@
-document.addEventListener('DOMContentLoaded', () => {
+$('document').ready (function () {
     // changes select element text color to black on change to replicate placeholder being removed
-    initializeStarRating()
+    initializeStarRating();
     $("form").submit(function(event){
-        checkStarCountHasBeenEnteredSingleReview(event)
+        checkStarCountHasBeenEnteredSingleReview(event);
     });
 });
-

@@ -8,7 +8,7 @@ function dobDatePicker() {
 }
 
 function todayDatePicker() {
-    var today = new Date()
+    var today = new Date();
     var todayString = today.toISOString().split('T')[0];
     $('input[type="date"]').attr('max', todayString);
 }

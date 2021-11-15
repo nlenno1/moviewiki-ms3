@@ -9,5 +9,5 @@ function initializeSelectElementColorChange() {
 
 $('document').ready (function () {
     initializeSelectElementColorChange();
-})
+});
 

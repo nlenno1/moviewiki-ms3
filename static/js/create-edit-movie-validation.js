@@ -18,10 +18,10 @@ function checkIfSeriesInformationWasMeantToBeSubmitted(event) {
 
 $('document').ready (function () {
     initializeSelectElementColorChange();
-    initializeStarRating()
+    initializeStarRating();
     $("form").submit(function(event){
-        checkIfReviewWasMeantToBeSubmitted(event)
-        checkIfSeriesInformationWasMeantToBeSubmitted(event)
-        checkStarCountHasBeenEntered(event)
+        checkIfReviewWasMeantToBeSubmitted(event);
+        checkIfSeriesInformationWasMeantToBeSubmitted(event);
+        checkStarCountHasBeenEntered(event);
     });
-})
+});
