@@ -874,7 +874,6 @@ def delete_movie(movie_id):
 
     else:
         flash("Movie Not Found So Not Deleted")
-
     return redirect(url_for('home'))
 
 
@@ -1026,7 +1025,7 @@ def edit_review(movie_id, user_id):
             add_review_to_latest_reviews_dicts(movie, updated_review)
             generate_average_rating(ObjectId(movie["_id"]))
 
-            return redirect(url_for('view_movie', movie_id=movie_id))
+            return redirect(url_for('view_reviews', movie_id=movie_id))
     # condense this to one process
     movie = find_one_with_key("movies", "_id", ObjectId(movie_id))
     review = find_review_in_reviews_list(movie["reviews"], user_id)
