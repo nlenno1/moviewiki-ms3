@@ -52,7 +52,7 @@ h4,
 }
 
 .unselected-text {
-    color: #929292;
+    color: #333333;
 }
 
 #user-review-accordion .generic-button {
@@ -196,13 +196,6 @@ h4,
     width: 75%;
     opacity: 1;
     max-width: 250px;
-}
-
-.form-card hr {
-    margin: 20px auto;
-    max-width: none;
-    box-sizing: border-box;
-    width: 75%;
 }
 
 .sidenav>ul>li>a {
@@ -507,6 +500,13 @@ input[type="checkbox"i] {
     padding: 20px 25px;
 }
 
+.form-card hr {
+    margin: 20px auto;
+    max-width: none;
+    box-sizing: border-box;
+    width: 75%;
+}
+
 .input-large select,
 .input-large textarea,
 .input-large [type="text"],
@@ -588,7 +588,7 @@ p>a:hover {
 
 .movie-image-continer {
     overflow: hidden;
-    background-color: #929292;
+    background-color: #333333;
     border-radius: 3px;
     display: flex;
     flex-direction: row;
@@ -631,17 +631,18 @@ p>a:hover {
     align-items: center;
     flex-direction: column;
     flex-wrap: nowrap;
+    padding-bottom: 0;
+    font-size: calc(1.275rem + .3vw);;
 }
 
-.movie-text h4,
-.search-results-container h4 {
-    margin-bottom: 0;
+.movie-text p .title, .search-results-container p .title {
+    padding-bottom: 0;
+    font-size: calc(1.275rem + .3vw);;
 }
 
 .movie-placeholder {
     padding: 20px 10px;
-    background-color: currentColor;
-    opacity: .5;
+    background-color: #333333;
     border-radius: 3px;
 }
 
@@ -660,7 +661,7 @@ p>a:hover {
 /* Movie Form */
 
 select {
-    color: #929292;
+    color: #333333;
 }
 
 select>.text-black {
@@ -802,16 +803,6 @@ select>.text-black {
 
 .reviews-header .image-container {
     margin: 0 auto;
-}
-
-.sub-script {
-    font-size: 0.6rem;
-    font-weight: 200;
-    padding-left: 10px;
-}
-
-.grey-text {
-    color: rgb(118, 118, 118);
 }
 
 .small-text {
@@ -1047,29 +1038,10 @@ input:valid + p, input:placeholder-shown + p, textarea:valid + p, textarea:place
     border-bottom: 2px solid #111;
 }
 
-
 /* error display */
 
 .error-display a {
     color: black;
     font-weight: 600;
     text-decoration: none;
-}
-
-/* scrollbar */
-
-::-webkit-scrollbar {
-    width: 10px;
-    height: 8px;
-    background-color: #111;
-}
-
-::-webkit-scrollbar-track {
-    border-radius: 2px;
-}
-
-::-webkit-scrollbar-thumb {
-    background: #ffca18;
-    border-radius: 2px;
-    border: 1px solid #111;
 }
