@@ -1,7 +1,7 @@
 # MovieWiki
 ![Live Project Representation Image]()
 
-[Link to Live Project]()
+[Link to Live Project](https://moviewiki-project.herokuapp.com/)
 
 ---
 # Introduction
@@ -17,51 +17,60 @@ This is the third of four Milestone Projects that make up the Full Stack Web Dev
 # Strategy
 
 ### Project Goals
-- Develop a space where users can easily share their opinions on various movies and find other users' reviews,
+- Develop a space where users can easily find information on movies, share their opinions on various movies and find other users' reviews,
 - Build a responsive app using the Mobile First design principle,
 - Present any information in an aesthetically pleasing way,
-- Handle any errors in such a way to help the user understand the issue,
+- Handle any errors in such a way to help the user understand the issue and provide an easy form of contact if any error should persist,
 
 ### Business Goals
-- Provide a service that Users will pay to use,
+- Provide a service that Users could pay to use additional functionality in,
 - Build a platform that can facillitate productive and relevant adverts or sponsored links to secondary sites (eg. Streaming services or Cinemas)
 
 ### User Demographic
-- All ages and backgrounds
-- Has an interest in movies/movies
+- All ages and backgrounds for viewing Movie information
+- Ages 8 and up for contributing
+- Has an interest in movies
+- Want to contribute and share their opinions
 - More comfortable using mobile devices
+
+## Value to the User
+- Stores and displays information about Movies (including the next movie in the series etc)
+- Provides a space to share opinions
+- Helps the user keep track of movies they have watched and want to watch
+- Suggests new movies that they might enjoy
 
 ### User Stories
 
-1. I just watched a movie and would like to share my opinion of it
-2. I am interested in seeing a new movie in the cinema and to help me decide I want to read some reviews and see a rating from my peers
-3. I want to find a movie to watch I don't have any ideas
-4. I can't remember if I have watched a movie or not but I want to be able to check to save myself time
-5. I want to keep track of how many movies I have left to watch in a series before the next film is released
-
-**Casual User** - As a casual user who has not created an account, I want to be able to:
-- search and view information about movies (age dependant)
-- view movie reviews including ratings (age dependant)
-- view details of users
-- contact the admin team if I have any problems, see incorrect information or want to report anything
-- create an account if I want to do more
+**Casual/First Time User** - As a casual/first time user who has not created an account, I want to be able to:
+- Find out more about MovieWiki and how to use it
+- Search for specific movies or view all movies
+- Find the highest rateed movies and the latest releases
+- View information about those movies
+- Quickly establish if I should watch a Movie or not
+- View movie reviews including ratings
+- Contact the admin team if I have any problems, see incorrect information or want to report anything
+- Create an account if I want to do more
 
 **Contributer** - As a contributer who has signed in, I want to be able to:
-- do everything a Causal User can
-- add, edit or delete my movie reviews
-- create movie profiles that don't exist yet
-- edit movie profiles that I created
-- keep track of what movies I have watched
-- delete my User Account
+- Do everything a Causal User can
+- Add, edit and delete my own movie reviews
+- View my latest reviews and all my reviews on the site
+- Create movie profiles that don't exist yet
+- Edit movie profiles that I created
+- Keep track of what movies I have watched, reviewed and the ones I want to watch
+- Have new movies suggested to me based on my movie genre preferences, age, what I have watched and the movie's review scores
+- Edit my account information
+- Delete my account
 
 **Admin** - As an administrator, I want to be able to:
-- do everything a Contributer can
-- delete any Movie Profile
-- delete any User Account
-- delete any Review
-- add, modify or delete any Genre Catagory
+- Do everything a Contributer can
+- Delete any Movie Profile
+- Delete any Review
+- Add, Modify and Delete any Genre Catagory
 
-### Strategy Table
+
+# Scope
+### Feature Ideas Table
 
 After an initial planning session I drew up a list of potential features to build into this project. Below is my Importance Viability analysis of these features.
 
@@ -81,80 +90,112 @@ After an initial planning session I drew up a list of potential features to buil
 | L | View User Profile | 4 | 5 |
 | M | Search User Profiles | 2 | 5 |
 | N | Display Suggested/Relevant Movies to User | 4 | 5 |
-| O | Restrict information about Movies in line with Movie age rating | 4 | 4 |
+| O | Tailor Movie Recommendations based on the Movie age rating | 4 | 4 |
 | P | User Input Validation | 5 | 5 |
 | Q | Save Movies onto a personal watched/want to watch list | 4 | 5 |
 | R | Links to Socials | 3 | 5 | 
 
-
 ![Importance Viability Graph](readme_assets/importance_viability_chart.png)
 
-Having performed this analysis, I decided to remove features M, K, G, I, H and E from this production release due to many factors including time limitations
-
+Having performed this analysis, I decided to remove features M, K, G, H, I and E from this production release due to many factors including time limitations.
 Feature R (Links to socials) has been left in due to its simplicity.
-
-# Scope 
+Some of these fetaures will have restricted access which will be controlled by if they are signed in or using a superuser account. 
 
 ## Functionality Requirements
 - Clean and themed presentation of information
- - Easy navigation to the required information
- - Quick loading of the website
- - Quick response times from calls to MongoDB
- - Contact the developer for and feedback or bug reports
+- Easy navigation to the required information
+- Quick loading of the website
+- Quick response times from calls to MongoDB
+- Contact the developer for feedback/bug reports
 
-## Features
+## Structure
 
-This is a full breakdown of all the features & elements that will be impliments for the first production release of MovieWiki.
+**Topology Diagrams**
+
+The Blue elements in these diagrams signify pages that are accessable from Navbar at all times.
+
+Buttons not referances will return to the same page, use Ajax so no reload or return the home page.
+User Update Profile Page and Update Profile Review only avaliable if User created page or review.
+
+Guest User
+![Website Topology Diagram Guest User](readme_assets/website_structure_guest_user.jpg)
+
+Contributer User
+![Website Topology Diagram Guest User](readme_assets/website_structure_contributer_user.jpg)
+
+Admin User
+![Website Topology Diagram Guest User](readme_assets/website_structure_admin_user.jpg)
+
+
+## Skeleton
+
+To view the wireframes for this project [click here](readme_assets/wireframe_display.md)
+
+# Features
+
+This is a full breakdown of all the features & elements that have been be implimented for the first production release of MovieWiki.
 
 ### Multi Page Elements
 
-**Notifications** - All notifications will come in the form of "Toasts" displayed on the bottom of the viewing screen.
+**User Feedback** - All User Feedback messages will come in the form of "Flash Messages" displayed at the top of the screen, just below the header image.
 
 **Navbar**
 - Logo - to establish identity and act as a home button on smaller devices
 - Home button - link to homepage
-- About button - link to about page/modal containing information and instructions  to inform users on what they can do on the website
-- "Write a review" button - link to create_review.html (Only visible when logged in)
-- Contact button - link to contact.html which will auto fill user information when logged in
-- Sign In/Sign Up buttons - link to sign_in.html/sign_up.html (Only visable when not logged in)
-- Profile button - link to view_user.html with hover effect popover that displays username
-- Log Out button - runs log_out() function and reloads home page
+- About button - link to about page containing information, instructions and FAQs to inform users on what they can do on MovieWiki
+- Movies dropdown menu which will contain links to:
+    - "New Review" button - link to create review page (Only visible when logged in)
+    - "New Movie" button - link to create movie page(Only visible when logged in)
+    - View All Movies - link to view all movies page
+- Contact button - link to contact page which will auto fill user information when logged in
+- Genre button - link to genre management which will only be avaliable to superusers
+- Sign In/Sign Up buttons - link to sign_in/sign_up pages (Only visable when not logged in)
+- Profile button - link to user profile
+- Log Out button - runs signout() function and returns to home page
+
+At Mobile screen widths, the navbar link will be contained in a sidebar which can be toggled with a button on the navbar. The dropdown will be removed for the sidebar, and the options will be displayed in full.
 
 **Footer**
 - Logo - to establish identity and act as a home button
-- Copyright information
 - Back to top button - for easier navigation of larger pages to links in the navbar
 - Links to socials for promotion
 
-### base.html/index.html
+### /home
 
-- Movie displays - on load will show User appropriate or reccommended movies based on their profile or previous interactions.
+- Movie displays - on load will show User appropriate or reccommended movies based on their profile and the movie's average rating
 - Movie Search Bar - Will search all Movie names and return the results in the space where the Movie Displays were
 
-### sign_up.html
+### /signup
 
-- Form input section - Collects data from user. Favourite Film Genre list generated from Genre collection in the database
-- Create Account button - will "POST" the data to the database and return the user to their view_user.html page
+- Form input section - Collects data from user with appropriate validation. Favourite Film Genre list generated from Genre collection in the database
+- Create Account button - will "POST" the data to the database and return the user to their user profile page
 - Cancel button - links to homepage
 
-### sign_in.html
+### /signin
 
-- Form input section - Collects data from user
-- Login button - compares the submitted data with the stored data to confirm Users identity. If information is correct then User is returned to their view_user.html page
+- Form input section - Collects data from user with appropriate validation
+- Sign In button - compares the submitted data with the stored data to confirm Users identity. If information is correct then User is returned to their user profile page with a welcome message
 
-### view_user.html
+### /profile
 
-- User information section - formats and presents information recieved from the database
-- Update Profile button - link to sign_up.html in edit mode to edit page content (only avaliable to Admin and the User who created the account)
-- Delete Profile button - calls the delete_profile() function and returns user to the homepage with a deletion notification (only avaliable to Admin and the User who created the page)
-- Latest Reviews Section - Shows the last 3 reviews this user added. This section includes buttons for every review displayed to View the Movie Profile reviewed, View other Reviews on that particular Movie and, if Admin or the User who created the account, Edit or Delete the review
+- User information section - formats and presents information recieved from the database (e.g. name, email address, favourite movie genres etc)
+- Update Profile button - link to /profile/edit to edit page content
+- Movies Watched/Want to Watch/Reviewed Accordion Section - Accordion section that displays all user generated lists.
+- Latest Reviews Section - Shows the last 3 reviews this user added. This section will not be visible if the user has no reviews.
 
-### genre.html (admin only)
+### /profile/edit
+
+- Form input section - Auto filled with all existing values for the user to edit with appropriate validation
+- Update Account button - updates the account information
+- Delete Account button - calls the delete_profile() function and returns user to the homepage with a deletion notification (only avaliable to User who created the page)
+- Cancel button - returns user to their user profile page
+
+### /genre (admin only)
 
 - Add New Genre input and button - Collects admin input and "POST"s it to the database
-- Genre Accordion section - An accordion section will be generated for each Genre in the Genre collection with an Update Genre section and Delete Genre button
-- Update Genre input and button - Collects admin input and "POST"s it to the database
-- Delete - calls the delete_genre() function and returns admin to genre.html
+- Genre Display section - An section that will be generated from the Genre collection with an Update Genre section and Delete Genre button
+- Update Genre input and button - Collects  input and "POST"s it to the database
+- Delete - calls the delete_genre() function and returns to genre.html
 
 ### create_movie_profile.html
 
@@ -208,29 +249,6 @@ If user is editing a Movie profile, then the buttons will be update and cancel b
 - Moderate Content being submitted by Users
 - Actor/Actresses profiles
 - Add computer location to User profile to change movie age restrictions depending on country
-
-## Structure
-
-**Topology Diagrams**
-
-The Blue elements in these diagrams signify pages that are accessable from Navbar at all times.
-
-Buttons not referances will return to the same page, use Ajax so no reload or return the home page.
-User Update Profile Page and Update Profile Review only avaliable if User created page or review.
-
-Guest User
-![Website Topology Diagram Guest User](readme_assets/website_structure_guest_user.jpg)
-
-Contributer User
-![Website Topology Diagram Guest User](readme_assets/website_structure_contributer_user.jpg)
-
-Admin User
-![Website Topology Diagram Guest User](readme_assets/website_structure_admin_user.jpg)
-
-
-## Skeleton
-
-To view the wireframes for this project [click here](readme_assets/wireframe_display.md)
 
 ### Design
 
