@@ -66,7 +66,7 @@
                         {% if (review.reviewer_id == session["id"]) %}
                             <button class="generic-button button-color-gold mt-2"><a href="{{ url_for('edit_review', movie_id=movie._id, user_id=review.reviewer_id) }}">Update Review</a></button>
                         {% endif %}
-                        {% if (review.reviewer_id == session["id"]) or (session["is_superuser"] == True) %}   
+                        {% if session["is_superuser"] == True %}   
                             <button class="generic-button button-color-red mt-2"><a href="{{ url_for('delete_review', movie_id=movie._id, user_id=review.reviewer_id) }}">Delete Review</a></button>
                         {% endif %}
                         </div>

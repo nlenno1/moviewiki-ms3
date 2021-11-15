@@ -767,7 +767,11 @@ def view_movie(movie_id):
                                   "movie_id", movie["_id"])
 
     # generate similar_movies list
-    movies = list(mongo.db.movies.find())
+    movies = list(mongo.db.movies.find({}, {"genre": 1, "average_rating": 1,
+                                            "movie_title": 1,
+                                            "release_date": 1,
+                                            "latest_reviews": 1,
+                                            "image_link": 1}))
     similar_movies = generate_matching_movies_list(movies, "genre", movie["genre"], 'average_rating', 15, movie["_id"])
 
     movie__genre_text_list = ', '.join(name.title() for name in movie["genre"])
@@ -1022,7 +1026,7 @@ def edit_review(movie_id, user_id):
             add_review_to_latest_reviews_dicts(movie, updated_review)
             generate_average_rating(ObjectId(movie["_id"]))
 
-            return redirect(url_for('view_reviews', movie_id=movie_id))
+            return redirect(url_for('view_movie', movie_id=movie_id))
     # condense this to one process
     movie = find_one_with_key("movies", "_id", ObjectId(movie_id))
     review = find_review_in_reviews_list(movie["reviews"], user_id)
