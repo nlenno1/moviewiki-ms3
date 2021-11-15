@@ -12,7 +12,7 @@
                     * required
                 </div>
                 <label for="movie-title-list" class="small-text unselected-text">Movie Title *</label>
-                <select id="movie-title-list" name="selected-movie-id" required>
+                <select id="movie-title-list" onfocus="this.size=10" onblur='this.size=1;' onchange='this.size=1; this.blur();' name="selected-movie-id" required>
                     <option class="hidden" value="" hidden>Movie Title *</option>
                     {% for movie in movie_title_list %}
                         {% if movie._id|string == selected_movie_id %}
