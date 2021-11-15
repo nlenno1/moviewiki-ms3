@@ -263,6 +263,12 @@ def filter_movies_using_age_ratings(movie_list, user_age):
     return storage_list
 
 
+def check_if_user_has_watched(movies_list, user):
+    storage_list = [movie for movie in movies_list if movie["_id"] not in 
+                    [movie["movie_id"] for movie in user["movies_watched"]]]
+    return storage_list
+
+
 # ---------- app.route ----------
 @app.route("/")
 @app.route("/home")
@@ -287,17 +293,18 @@ def home():
 
     if is_signed_in():
         try:
-            user = find_one_with_key("users", "_id", ObjectId(session["id"]))
+            user = mongo.db.users.find_one({"_id": ObjectId(session["id"])},
+                                            {"password_hash": 0})
+
             if user:
                 movies_for_you = generate_matching_movies_list(movies, "genre", user["favourite_genres"], 'average_rating', 15)
                 # calculate age of user
                 age = (datetime.now() - datetime.strptime(user["dob"], '%Y-%m-%d')).days
                 movies_for_you = filter_movies_using_age_ratings(movies_for_you, age)
+                movies_for_you = check_if_user_has_watched(movies_for_you, user)
                 # generate want_to_watch list
-                for item in user["movies_to_watch"]:
-                    for movie in movies:
-                        if movie["_id"] == item["movie_id"]:
-                            want_to_watch.append(movie)
+                want_to_watch = [movie for movie in movies if movie["_id"] in
+                                [movie["movie_id"] for movie in user["movies_to_watch"]]]
                 want_to_watch = sorted(want_to_watch, key=lambda d: d[
                                         'average_rating'])[:15]
         except Exception:
@@ -462,12 +469,17 @@ def profile():
                 {"password_hash": 0})
 
         # generate suggested_movies list
-        movies = list(mongo.db.movies.find())
+        movies = list(mongo.db.movies.find({}, {"movie_title": 1,
+                                                "image_link": 1,
+                                                "genre": 1,
+                                                "average_rating": 1,
+                                                "age_rating": 1}))
 
         suggested_movies = generate_matching_movies_list(movies, "genre", user["favourite_genres"], 'average_rating', 15)
         # calculate age of user
         age = (datetime.now() - datetime.strptime(user["dob"], '%Y-%m-%d')).days
         suggested_movies = filter_movies_using_age_ratings(suggested_movies, age)
+        suggested_movies = check_if_user_has_watched(suggested_movies, user)
 
         user_latest_reviews = sorted(user["user_latest_reviews"],
                                         key=lambda d: d['review_date'],
