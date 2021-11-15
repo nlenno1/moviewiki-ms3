@@ -146,14 +146,33 @@ The coloured headers are the different collections and the embedded documents ar
 
 To view the wireframes for this project [click here](readme_assets/wireframe_display.md)
 
-### Design
+### Design Decisions
+
+Bootstrap provides a clean user friendly appearance to the website which is easy to customise for the situation using its extensive supporting documentation.
 
 **Colour Scheme**
 
+I designed the colour scheme for this website from the header image that is used at the top of every page.
+
+The colour scheme is high contrast and easily viewable. This is the final colour scheme I used:
+![Colour Scheme Diagram](readme_assets/colors_diagram.png)
+
+All navigational sections have a black (#111111) background with the contrasting yellow/gold (#FFCA18) nav links.
+Mobile devices use a hamburger-menu-naigation button to access the side navbar. The sidenav is positioned on the right, to make it more accessable to mobile users using one hand.
+
+[Sidenav Image](readme_assets/sidenav_image.png)
+
+The forms and fields follow the same custom look consistently across the website. The base of the input is a solid black (#111111) line, which changes color if the input is not validated. The labels are grey (#929292)
+
 **Typography**
+
+To suit the Movie theme of the website, I chose to use [Bebas Neue](https://fonts.google.com/specimen/Bebas+Neue) for the headers, logo and some buttons.
+For the rest of the text, I decieded to use the neutral looking font of [Montserrat](https://fonts.google.com/specimen/Montserrat) to balance the characted of the heading font.
 
 **Imagery**
 
+The header image was used to develop the colour scheme.
+The movie placeholder image was chosen as it fits with the colour scheme and fonts used. 
 
 # Features
 
@@ -273,6 +292,16 @@ If user is editing a Movie profile, then the buttons will be update and cancel b
 - Moderate Content being submitted by Users
 - Actor/Actresses profiles
 - Add computer location to User profile to change movie age restrictions depending on country
+
+# Bugs and Issues
+
+|Bug ID # | Bug      | Cause/Reason | Fix |
+| ----------- | ----------- | ----------- | ----------- | 
+|1 | | | |
+|2 | | | |
+|3 | | | |
+|4 | | | |
+
 
 # Technologies Used
 
