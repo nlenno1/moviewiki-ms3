@@ -23,11 +23,11 @@
                     <div class="col-12 search-results-container shadow">
                         {% for movie in movies %}
                             <div class="movie-picture-display">
-                                <a href="{{ url_for('view_movie', movie_id=movie._id) }}">
-                                    <div class="movie-image-continer">
+                                <div class="movie-image-continer">
+                                    <a href="{{ url_for('view_movie', movie_id=movie._id) }}">
                                         <img src="{{ movie.image_link }}" onerror="this.onerror=null;this.src='{{ url_for('static', filename='img/movie_placeholder.png') }}'" alt="Movie Image">
-                                    </div>
-                                </a>
+                                    </a>
+                                </div>
                                 <div class="movie-text">
                                     <h4>{{ movie.movie_title }}</h4>
                                     <p class="mb-0 small-text">{{ movie.release_date.strftime("%Y") }}</p>

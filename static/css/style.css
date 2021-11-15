@@ -588,9 +588,10 @@ p>a:hover {
 
 .movie-image-continer {
     overflow: hidden;
-    background-color: transparent;
+    background-color: #929292;
     border-radius: 3px;
     display: flex;
+    flex-direction: row;
     justify-content: center;
     align-content: center;
 }
