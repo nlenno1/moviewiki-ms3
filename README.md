@@ -110,26 +110,50 @@ Some of these fetaures will have restricted access which will be controlled by i
 
 ## Structure
 
-**Topology Diagrams**
+### Topology Diagrams
 
 The Blue elements in these diagrams signify pages that are accessable from Navbar at all times.
 
-Buttons not referances will return to the same page, use Ajax so no reload or return the home page.
-User Update Profile Page and Update Profile Review only avaliable if User created page or review.
+Buttons not referances will return to the same page or return the home page.
+Edit Movie Profile and Update Review only avaliable if User created page or review.
+Delete functions will return to:
+- Delete Review returns Movie Profile Page
+- Delete Movie Returns Home
+- Delete User Profile Returns Home
 
 Guest User
-![Website Topology Diagram Guest User](readme_assets/website_structure_guest_user.jpg)
+![Website Topology Diagram Guest User](readme_assets/website_structure_guest.jpg)
 
 Contributer User
-![Website Topology Diagram Guest User](readme_assets/website_structure_contributer_user.jpg)
+![Website Topology Diagram Guest User](readme_assets/website_structure_contributer.jpg)
 
 Admin User
-![Website Topology Diagram Guest User](readme_assets/website_structure_admin_user.jpg)
+![Website Topology Diagram Guest User](readme_assets/website_structure_admin.jpg)
 
+Jinja Template Structure/Relationships
+![Jinja Template Structure/Relationships](readme_assets/website_structure-jinja-template-relationships.jpg)
+
+### Database Structure
+
+This project uses MongoDB as its database provider. 
+
+This diagram shows the structure and schema used in the database.
+The coloured headers are the different collections and the embedded documents are shown connected to the collections.
+
+![Database Structure Diagram](readme_assets/moviewiki_database_structure.jpeg)
 
 ## Skeleton
 
 To view the wireframes for this project [click here](readme_assets/wireframe_display.md)
+
+### Design
+
+**Colour Scheme**
+
+**Typography**
+
+**Imagery**
+
 
 # Features
 
@@ -249,14 +273,6 @@ If user is editing a Movie profile, then the buttons will be update and cancel b
 - Moderate Content being submitted by Users
 - Actor/Actresses profiles
 - Add computer location to User profile to change movie age restrictions depending on country
-
-### Design
-
-**Colour Scheme**
-
-**Typography**
-
-**Imagery**
 
 # Technologies Used
 
