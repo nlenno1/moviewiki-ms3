@@ -208,6 +208,10 @@ h4,
     transition: 0.3s;
 }
 
+.sidenav>ul>li>.sidenav-button {
+    padding: 0;
+}
+
 .sidenav button {
     margin: 8px 8px 8px 32px;
 }
