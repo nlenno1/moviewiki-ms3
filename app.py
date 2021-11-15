@@ -468,22 +468,19 @@ def profile():
         # calculate age of user
         age = (datetime.now() - datetime.strptime(user["dob"], '%Y-%m-%d')).days
         suggested_movies = filter_movies_using_age_ratings(suggested_movies, age)
-        
+
         user_latest_reviews = sorted(user["user_latest_reviews"],
                                         key=lambda d: d['review_date'],
                                         reverse=True)
 
         movies_to_watch = sorted(user["movies_to_watch"],
-                                    key=lambda d: d['movie_title'],
-                                    reverse=True)
+                                    key=lambda d: d['movie_title'])
 
         movies_watched = sorted(user["movies_watched"],
-                                key=lambda d: d['movie_title'],
-                                reverse=True)
+                                key=lambda d: d['movie_title'])
 
         movies_reviewed = sorted(user["movies_reviewed"],
-                                    key=lambda d: d['movie_title'],
-                                    reverse=True)
+                                    key=lambda d: d['movie_title'])
 
         return render_template("profile.html", user=user,
                                     suggested_movies=suggested_movies,
@@ -498,6 +495,27 @@ def profile():
                 " reoccurring problem")
         return redirect(url_for("home"))
 
+
+@app.route("/profile/reviews/view")
+def view_all_user_reviews():
+    try:
+        movies = mongo.db.movies.find({}, {"reviews": 1})
+        reviews = []
+        for movie in movies:
+            for review in movie["reviews"]:
+                if review["reviewer_id"] == session["id"]:
+                    print("added")
+                    reviews.append(review)
+        reviews = sorted(reviews, key=lambda d: d[
+                                    'review_for'])
+        return render_template("view-all-user-reviews.html",
+                                reviews=reviews)
+    except Exception as e:
+        flash("Movies Not Found")
+        flash(str(e))
+        flash("Please try again or get in touch to report "
+              "a reoccurring problem")
+        return redirect(url_for('view_all_movies'))
 
 # edit user profile
 @app.route("/profile/edit", methods=["GET", "POST"])
@@ -1157,6 +1175,7 @@ def view_all_movies():
 
 
 # error handlers
+"""
 @app.errorhandler(400)
 def bad_request(e):
     message = "A Bad Request was made"
@@ -1200,7 +1219,7 @@ def internal_server_error(e):
     message = "Something went wrong! If this is a reoccuring error then \
         get in touch"
     return render_template('error.html', error_code=e, message=message)
-
+"""
 
 # application running instructions by retieving hidden env variables
 if __name__ == "__main__":

@@ -126,9 +126,17 @@
                 </div>
             </div>
             {% if user_latest_reviews|length > 0 %}
+                <div class="row mt-4 text-center">
+                    <div class="col-12 col-md-6 text-md-start">
+                        <h3>Your Latest Reviews</h3>
+                    </div>
+                    <div class="col-12 col-md-6 text-md-end">
+                        <button class="generic-button button-color-gold movie-font mt-2"><a
+                            href="{{ url_for('view_all_user_reviews') }}">View All Reviews</a></button>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-12">
-                        <h3 class="mt-4">Your Latest Reviews</h3>
                         <div class="card form-card shadow">
                             <div class="accordion" id="user-review-accordion">
                                 {% for review in user_latest_reviews %}
