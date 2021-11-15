@@ -39,10 +39,6 @@ h4,
     color: #fafafa;
 }
 
-.button-color-green {
-    background-color: #00DE00;
-}
-
 .button-color-gold {
     background-color: #ffca18;
 }
@@ -139,7 +135,7 @@ h4,
 .navbar-nav .dropdown-menu {
     margin-top: 19px;
     background-color: rgba(0, 0, 0, 0.75);
-    border: 2px solid #000;
+    border: 2px solid #111;
     text-align: center;
 }
 
@@ -274,7 +270,7 @@ h4,
 
 #header-title {
     width: 100%;
-    color: #fff;
+    color: #fafafa;
     font-size: 4rem;
     text-align: center;
     position: relative;
@@ -587,7 +583,7 @@ p>a:hover {
 
 .movie-image-continer {
     overflow: hidden;
-    background-color: #737577;
+    background-color: #929292;
     border-radius: 3px;
 }
 
@@ -655,7 +651,7 @@ p>a:hover {
 /* Movie Form */
 
 select {
-    color: #8e8e8e;
+    color: #929292;
 }
 
 select>.text-black {
@@ -890,7 +886,7 @@ select>.text-black {
 }
 
 .accordion-button:not(.collapsed) {
-    color: #000;
+    color: #111;
     background-color: rgba(255, 202, 24, 0.75);
 }
 
@@ -900,7 +896,7 @@ select>.text-black {
 
 .accordion-button:focus {
     z-index: 3;
-    border-color: #000;
+    border-color: #111;
     outline: 0;
     box-shadow: 0 0 0 0.25rem rgb(255 202 24 / 25%);
 }
@@ -1009,11 +1005,11 @@ textarea:invalid {
 }
 
 textarea:placeholder-shown {
-    border: 1px solid #000;
+    border: 1px solid #111;
 }
 
 input:placeholder-shown{
-    border-bottom: 1px solid #000;
+    border-bottom: 1px solid #111;
 }
 
 .invalid-message {
@@ -1039,7 +1035,7 @@ input:valid + p, input:placeholder-shown + p, textarea:valid + p, textarea:place
 }
 
 .input-container input:valid, .input-container input:placeholder-shown {
-    border-bottom: 2px solid #000;
+    border-bottom: 2px solid #111;
 }
 
 
@@ -1061,7 +1057,6 @@ input:valid + p, input:placeholder-shown + p, textarea:valid + p, textarea:place
 
 ::-webkit-scrollbar-track {
     border-radius: 2px;
-    width: 120%;
 }
 
 ::-webkit-scrollbar-thumb {
