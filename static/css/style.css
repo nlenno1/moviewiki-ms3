@@ -641,6 +641,7 @@ p>a:hover {
     flex-direction: row;
     justify-content: center;
     align-content: center;
+    align-items: center;
 }
 
 .movie-picture-display img {
