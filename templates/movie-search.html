@@ -29,7 +29,10 @@
                                         <img src="{{ movie.image_link }}" onerror="this.onerror=null;this.src='{{ url_for('static', filename='img/movie_placeholder.png') }}'" alt="Movie Image">
                                     </div>
                                 </a>
-                                <h4>{{ movie.movie_title }}</h4>
+                                <div class="movie-text">
+                                    <p class="title">{{ movie.movie_title }}</p>
+                                    <p class="small-text">{{ movie.release_date.strftime("%Y") }}</p>
+                                </div>
                             </div>
                         {% endfor %}
                     </div>
