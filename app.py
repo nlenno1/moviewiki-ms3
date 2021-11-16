@@ -158,7 +158,9 @@ def add_user_data_to_session_storage(user_dict, new_id=None):
         session['is_superuser'] = user_dict['is_superuser']
 
 
-def generate_matching_movies_list(collection, collection_list_name, user_list, sort_list_by_key=None, new_list_length=None, movie_id=None):
+def generate_matching_movies_list(collection, collection_list_name, 
+                                  user_list, sort_list_by_key=None, 
+                                  new_list_length=None, movie_id=None):
     """
     function to compare 2 lists matching values under append any matching
     dicts to a new list.
@@ -255,7 +257,8 @@ def filter_movies_using_age_ratings(movie_list, user_age):
         # check first character of age rating
         if movie["age_rating"][0] == "1":
             # convert age rating year number into days
-            age_rating_in_days = float(movie["age_rating"].replace("a","")) * 365.25
+            age_rating_in_days = float(movie["age_rating"].replace(
+                                        "a", "")) * float(365.25)
             if age_rating_in_days < user_age:
                 storage_list.append(movie)
         else:
@@ -278,9 +281,10 @@ def home():
                                             "release_date": 1,
                                             "genre": 1,
                                             "image_link": 1,
-                                            "age_rating": 1}))
+                                            "age_rating": 1}).sort(
+                                                                "movie_title"))
     # sorted alphabeticallly by title with max of 15
-    all_movies = sorted(movies, key=lambda d: d['movie_title'])[:15]
+    all_movies = movies[:15]
     # sorted by average rating by title with max of 15
     highest_rated = sorted(movies, key=lambda d: d['average_rating'],
                            reverse=True)[:15]
@@ -294,17 +298,23 @@ def home():
     if is_signed_in():
         try:
             user = mongo.db.users.find_one({"_id": ObjectId(session["id"])},
-                                            {"password_hash": 0})
+                                           {"password_hash": 0})
 
             if user:
-                movies_for_you = generate_matching_movies_list(movies, "genre", user["favourite_genres"], 'average_rating', 15)
+                movies_for_you = generate_matching_movies_list(
+                                    movies, "genre", user["favourite_genres"],
+                                    'average_rating', 15)
                 # calculate age of user
-                age = (datetime.now() - datetime.strptime(user["dob"], '%Y-%m-%d')).days
-                movies_for_you = filter_movies_using_age_ratings(movies_for_you, age)
-                movies_for_you = check_if_user_has_watched(movies_for_you, user)
+                age = (datetime.now() - datetime.strptime(
+                                            user["dob"], '%Y-%m-%d')).days
+                movies_for_you = filter_movies_using_age_ratings(
+                                    movies_for_you, age)
+                movies_for_you = check_if_user_has_watched(
+                                    movies_for_you, user)
                 # generate want_to_watch list
                 want_to_watch = [movie for movie in movies if movie["_id"] in
-                                [movie["movie_id"] for movie in user["movies_to_watch"]]]
+                                 [movie["movie_id"] for movie in
+                                 user["movies_to_watch"]]]
                 want_to_watch = sorted(want_to_watch, key=lambda d: d[
                                         'average_rating'])[:15]
         except Exception:
@@ -320,7 +330,8 @@ def home():
 @app.route("/search", methods=["POST"])
 def movie_title_search():
     query = request.form.get("movie_title_search")
-    searched_movies = list(mongo.db.movies.find({"$text": {"$search": query}}))
+    searched_movies = list(mongo.db.movies.find(
+                            {"$text": {"$search": query}}).sort("movie_title"))
     return render_template("movie-search.html", movies=searched_movies)
 
 
@@ -475,36 +486,40 @@ def profile():
                                                 "average_rating": 1,
                                                 "age_rating": 1}))
 
-        suggested_movies = generate_matching_movies_list(movies, "genre", user["favourite_genres"], 'average_rating', 15)
+        suggested_movies = generate_matching_movies_list(
+                            movies, "genre", user["favourite_genres"],
+                            'average_rating', 15)
         # calculate age of user
-        age = (datetime.now() - datetime.strptime(user["dob"], '%Y-%m-%d')).days
-        suggested_movies = filter_movies_using_age_ratings(suggested_movies, age)
+        age = (datetime.now() - datetime.strptime(
+                                user["dob"], '%Y-%m-%d')).days
+        suggested_movies = filter_movies_using_age_ratings(
+                            suggested_movies, age)
         suggested_movies = check_if_user_has_watched(suggested_movies, user)
 
         user_latest_reviews = sorted(user["user_latest_reviews"],
-                                        key=lambda d: d['review_date'],
-                                        reverse=True)
+                                     key=lambda d: d['review_date'],
+                                     reverse=True)
 
         movies_to_watch = sorted(user["movies_to_watch"],
-                                    key=lambda d: d['movie_title'])
+                                 key=lambda d: d['movie_title'])
 
         movies_watched = sorted(user["movies_watched"],
                                 key=lambda d: d['movie_title'])
 
         movies_reviewed = sorted(user["movies_reviewed"],
-                                    key=lambda d: d['movie_title'])
+                                 key=lambda d: d['movie_title'])
 
         return render_template("profile.html", user=user,
-                                    suggested_movies=suggested_movies,
-                                    user_latest_reviews=user_latest_reviews,
-                                    movies_to_watch=movies_to_watch,
-                                    movies_watched=movies_watched,
-                                movies_reviewed=movies_reviewed)
+                               suggested_movies=suggested_movies,
+                               user_latest_reviews=user_latest_reviews,
+                               movies_to_watch=movies_to_watch,
+                               movies_watched=movies_watched,
+                               movies_reviewed=movies_reviewed)
     except Exception as e:
         flash("User profile was not found")
         flash(str(e))
         flash("Please try again or get in touch to report a"
-                " reoccurring problem")
+              " reoccurring problem")
         return redirect(url_for("home"))
 
 
@@ -516,7 +531,6 @@ def view_all_user_reviews():
         for movie in movies:
             for review in movie["reviews"]:
                 if review["reviewer_id"] == session["id"]:
-                    print("added")
                     reviews.append(review)
         reviews = sorted(reviews, key=lambda d: d[
                                     'review_for'])
@@ -989,9 +1003,9 @@ def create_review():
                                         user_id=session["id"]))
     else:
         movie_id = None
-    movie_title_list = sorted(mongo.db.movies.find({},
-                              {"movie_title": 1, "release_date": 1}),
-                              key=lambda d: d['movie_title'])[:15]
+    movie_title_list = mongo.db.movies.find(
+                        {}, {"movie_title": 1,
+                             "release_date": 1}).sort("movie_title")
     return render_template(
         "create-review.html", movie_title_list=movie_title_list,
         selected_movie_id=movie_id)
@@ -1184,13 +1198,12 @@ def contact():
 @app.route("/movie/view_all")
 def view_all_movies():
     movies = mongo.db.movies.find({}, {"movie_title": 1, "image_link": 1,
-                                       "release_date": 1})
-    all_movies = sorted(movies, key=lambda d: d['movie_title'])
-    return render_template("view-all-movies.html", movies=all_movies)
+                                       "release_date": 1}).sort("movie_title")
+    return render_template("view-all-movies.html", movies=movies)
 
 
 # error handlers
-"""
+
 @app.errorhandler(400)
 def bad_request(e):
     message = "A Bad Request was made"
@@ -1234,7 +1247,7 @@ def internal_server_error(e):
     message = "Something went wrong! If this is a reoccuring error then \
         get in touch"
     return render_template('error.html', error_code=e, message=message)
-"""
+
 
 # application running instructions by retieving hidden env variables
 if __name__ == "__main__":
