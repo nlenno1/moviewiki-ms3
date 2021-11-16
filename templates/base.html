@@ -41,7 +41,7 @@
                       Movies
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        {% if session["user"] %}
+                        {% if session["id"] %}
                             <li><a class="nav-link" href="{{ url_for('create_review') }}">New Review</a></li>
                             <li><a class="nav-link" href="{{ url_for('create_movie') }}">New Movie</a></li>
                             <hr>
@@ -61,7 +61,7 @@
         </div>
         <div class="collapse navbar-collapse navbar-buttons">
             <ul class="navbar-nav">
-                {% if session["user"] %}
+                {% if session["id"] %}
                     <li class="nav-item">
                         <a class="navbar-button" href="{{ url_for('profile') }}"><i class="fas fa-user-circle"></i>Profile</a>
                     </li>
@@ -98,7 +98,7 @@
             <li class="nav-item">
                 <a href="{{ url_for('view_all_movies') }}">View All Movies</a>
             </li>
-            {% if session["user"] %}
+            {% if session["id"] %}
             <li class="nav-item">
                 <a href="{{ url_for('create_review') }}">New Review</a>
             </li>
@@ -114,7 +114,7 @@
         </ul>
         <hr class="side-nav-hr">
         <ul class="navbar-nav">
-            {% if session["user"] %}
+            {% if session["id"] %}
                 <li>
                     <a class="button sidenav-button navbar-button" href="{{ url_for('profile') }}"><i class="fas fa-user-circle"></i>Profile</a>
                 </li>
