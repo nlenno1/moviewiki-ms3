@@ -27,7 +27,7 @@
                     </div> 
                     <label for="dob" class="small-text unselected-text">Date Of Birth *</label>
                     <div>
-                        <input onkeydown="return false" type='date' onfocus="dobDatePicker()" value="{{ user.dob.strftime('%Y-%m-%d') }}" name="dob" id="dob" placeholder="Date of Birth" class="validate" required>
+                        <input onkeydown="return false" type='date' onfocus="dobDatePicker()" value="{{ user.dob }}" name="dob" id="dob" placeholder="Date of Birth" class="validate" required>
                         <p class="invalid-message">Use the date picker to select your date of birth</p>
                     </div>
                     <label for="email" class="small-text unselected-text">Email Address *</label>
@@ -70,7 +70,7 @@
             </div>
         </div>
         <div class="buttons-container mt-4">
-            <a  class="button generic-button button-color-red" href="{{ url_for('delete_user_profile', user_id=session['id']) }}">Delete Profile</a>
+            <a  class="button generic-button button-color-red" href="{{ url_for('delete_user_profile', user_id=user['_id']) }}">Delete Profile</a>
             <a  class="button generic-button" href="{{ url_for('profile') }}">Cancel</a>
         </div>
     </div>

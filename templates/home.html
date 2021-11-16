@@ -21,7 +21,7 @@
                 </form>
             </div>
         </div>
-        {% if session["user"] %}
+        {% if session["id"] %}
             {% if movies_for_you|length > 0 %}
                 <div class="row g-0">
                     <div class="col">
@@ -94,7 +94,7 @@
                             </div>
                         </div>
                     {% endfor %}
-                    {% if session['user'] %}
+                    {% if session['id'] %}
                         <div class="movie-picture-display">
                             <div class="movie-placeholder">
                                 <p>Can't find the film you want then try searching or create a new profile for it!</p>
@@ -132,7 +132,7 @@
                         </div>
                     </div>
                     {% endfor %}
-                    {% if session['user'] %}
+                    {% if session['id'] %}
                         <div class="movie-picture-display">
                             <div class="movie-placeholder">
                                 <p>Can't find the film you want then try searching or create a new profile for it!</p>
@@ -167,7 +167,7 @@
                             <h4 class="movie-text">{{ movie.movie_title }}</h4>
                         </div>
                     {% endfor %}
-                    {% if session['user'] %}
+                    {% if session['id'] %}
                         <div class="movie-picture-display">
                             <div class="movie-placeholder">
                                 <p>Can't find the film you want then try searching or create a new profile for it!</p>
