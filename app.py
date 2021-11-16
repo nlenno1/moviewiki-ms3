@@ -27,7 +27,7 @@ def is_admin():
     """
     calls to db using session id variable to confirm if user is admin
     """
-    if session and session["id"]:
+    if session and len(session) > 1 and session["id"]:
         user = mongo.db.users.find_one({"_id": ObjectId(session["id"])},
                                        {"is_superuser": 1})
         if user and user["is_superuser"] is True:
@@ -42,7 +42,7 @@ def is_correct_user(user_id_to_check):
     check if user created document and is allowed to edit by passing in
     created_by variable and calling to db using session id
     """
-    if session and session["id"]:
+    if session and len(session) > 1 and session["id"]:
         user = mongo.db.users.find_one({"_id": ObjectId(session["id"])},
                                        {"is_superuser": 1})
         if user and (user["_id"] == user_id_to_check or session[
@@ -55,7 +55,7 @@ def is_signed_in():
     """
     checks session id against the database to see if the user exists
     """
-    if session and session["id"]:
+    if session and len(session) > 1 and session["id"]:
         user = mongo.db.users.find_one({"_id": ObjectId(session["id"])},
                                        {"_id": 1})
         if user:
