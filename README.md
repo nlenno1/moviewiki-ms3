@@ -293,16 +293,6 @@ If user is editing a Movie profile, then the buttons will be update and cancel b
 - Actor/Actresses profiles
 - Add computer location to User profile to change movie age restrictions depending on country
 
-# Bugs and Issues
-
-|Bug ID # | Bug      | Cause/Reason | Fix |
-| ----------- | ----------- | ----------- | ----------- | 
-|1 | | | |
-|2 | | | |
-|3 | | | |
-|4 | | | |
-
-
 # Technologies Used
 
 - [HTML5](https://developer.mozilla.org/en-US/docs/Glossary/HTML5) - Programming Language
@@ -327,7 +317,48 @@ If user is editing a Movie profile, then the buttons will be update and cancel b
 - [Coolors](https://coolors.co/) - Colour scheme generator
 - [Font Awesome](https://fontawesome.com/) - Icon provider
 
+# Bugs and Issues
+
+|Bug ID # | Bug      | Cause/Reason | Fix |
+| ----------- | ----------- | ----------- | ----------- | 
+|1 | | | |
+|2 | | | |
+|3 | | | |
+|4 | | | |
+
+# Testing
+
+Testing for this project can be found in the [Testing Document]("readme_assets/testing.md)
+
+# Deployment
+
+## Heroku Deployment
+
+Full instructions on how to create heroku app
+- connect to repo
+- setup hidden/secret variables
+
+## Database Deployment
+
+Full instructions on how to create mongo db database
+- user access
+- create collections
+
+## Repository Management
+
+### Clone/Fork Repo
+
+**Installing Requirements**
+
+    pip3 install -r requirements.txt
+
+**Setup Environmental Variables**
+
+
 # Credits
+
+errorhandlers seen in https://github.com/kairosity/mp3-snapathon/
+readme structure.components https://github.com/RussOakham/wanderlust-recipes/
 
 ### Code snippets
 
@@ -336,6 +367,10 @@ If user is editing a Movie profile, then the buttons will be update and cancel b
 ## Content
 
 ## Media 
+**Images**
+- Header image from [PIXABAY](https://pixabay.com/photos/movie-film-roll-filmstrip-analog-3057394/)
+- Favicon from [PNGEGG](https://www.pngegg.com/en/png-zwxhn)
+- Fovie placeholder from [PNGAAA](https://www.pngaaa.com/detail/3488028)
 
 ## Acknowledgments
 
