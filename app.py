@@ -191,26 +191,27 @@ def find_review(movie_id, reviewer_id):
     return movie_review
 
 
-def generate_new_movie_dict(movie_id=None):
+def generate_new_movie_dict(movie_id=None, update=None):
     new_movie = {
-            "movie_title": request.form.get("movie-title").lower(),
-            "release_date": datetime.strptime(request.form.get(
-                                              "release-date"), '%Y-%m-%d'),
-            "age_rating": request.form.get("age-rating"),
-            "duration": request.form.get("duration"),
-            "genre": request.form.getlist("movie-genre"),
-            "director": request.form.get("director").lower(),
-            "cast_members": request.form.get(
-                "cast-members").lower().split(","),
-            "movie_synopsis": request.form.get("movie-synopsis"),
-            "movie_description": request.form.get("movie-description"),
-            "image_link": request.form.get("image-link"),
-            "reviews": [],
-            "latest_reviews": [],
-            "created_by": session['id'],
-            "is_part_of_series": False,
-            "average_rating": 0.0
-        }
+        "movie_title": request.form.get("movie-title").lower(),
+        "release_date": datetime.strptime(request.form.get(
+                                        "release-date"), '%Y-%m-%d'),
+        "age_rating": request.form.get("age-rating"),
+        "duration": request.form.get("duration"),
+        "genre": request.form.getlist("movie-genre"),
+        "director": request.form.get("director").lower(),
+        "cast_members": request.form.get(
+            "cast-members").lower().split(","),
+        "movie_synopsis": request.form.get("movie-synopsis"),
+        "movie_description": request.form.get("movie-description"),
+        "image_link": request.form.get("image-link"),
+    }
+    if update is None:
+        new_movie["reviews"]: []
+        new_movie["latest_reviews"]: []
+        new_movie["created_by"]: session['id']
+        new_movie["is_part_of_series"]: False
+        new_movie["average_rating"]: 0.0
     add_series_information_to_dict(new_movie)
     if movie_id and request.form.get("submit-movie-review"):
         review = create_single_review(new_movie, movie_id)
@@ -819,8 +820,8 @@ def edit_movie(movie_id):
             return redirect(url_for("home"))
 
         if request.method == "POST":
-            updated_movie = generate_new_movie_dict(movie_id)
-            mongo.db.movies.update({"_id": ObjectId(movie_id)}, updated_movie)
+            updated_movie = generate_new_movie_dict(movie_id, "update")
+            mongo.db.movies.update_one({"_id": ObjectId(movie_id)}, {"$set": updated_movie})
 
             if request.form.get("submit-movie-review"):
                 create_and_add_mini_movie_dict(movie_id, "movies_reviewed",
