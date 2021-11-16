@@ -40,8 +40,9 @@
                             <p>{{ review.review }}</p>
                         </div>
                         <div class="review-footer">
-                            <button class="generic-button button-color-gold mt-2"><a href="{{ url_for('edit_review', movie_id=review.review_for_id, user_id=review.reviewer_id) }}">Update Review</a></button>
-                            <button class="generic-button button-color-gold mt-2"><a href="{{ url_for('view_movie', movie_id=review.review_for_id) }}">View Movie</a></button>                        </div>
+                            <a class="button generic-button button-color-gold" href="{{ url_for('edit_review', movie_id=review.review_for_id, user_id=review.reviewer_id) }}">Update Review</a>
+                            <a class="button generic-button button-color-gold" href="{{ url_for('view_movie', movie_id=review.review_for_id) }}">View Movie</a>
+                        </div>
                     </div>
                 {% endfor %}
             {% else %}
@@ -49,7 +50,7 @@
                     <div class="col-12">
                         <div class="card form-card card-large text-center shadow">
                             <h2>You haven't Written ANY Reviews!</h2>
-                            <p>Select a Movie and get Writing  <button class="generic-button button-color-gold"><a href="{{ url_for('view_all_movies') }}">View All Movies</a></button></p>
+                            <p>Select a Movie and get Writing <a class="button generic-button button-color-gold" href="{{ url_for('view_all_movies') }}">View All Movies</a></p>
                         </div>
                     </div>
                 </div>

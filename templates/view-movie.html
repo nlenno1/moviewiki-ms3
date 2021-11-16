@@ -5,16 +5,20 @@
 
     <div class="container-md">
         {% if user_reviewed == False %}
-            <p class="mb-0 mt-4 text-center">Want to add your review of this movie? Click here! 
-            {% if session["user"] %}
-                <button class="generic-button button-color-gold"><a href="{{ url_for('create_review', movie_id=movie._id) }}">Create Review</a></button></p> 
-            {% else %}
-                <button class="generic-button button-color-gold"><a href="{{ url_for('signin') }}">Sign In</a></button></p> 
-            {% endif %}
+            <div class="text-button-container">
+                <p class=" text-center">Want to add your review of this movie? Click here!</p>
+                {% if session["user"] %}
+                    <a class="button generic-button button-color-gold" href="{{ url_for('create_review', movie_id=movie._id) }}">Create Review</a>
+                {% else %}
+                    <a class="button generic-button button-color-gold" href="{{ url_for('signin') }}">Sign In</a> 
+                {% endif %}
+            </div>
         {% else %}
-            <p class="mb-0 mt-4 text-center">You have reviewed this movie<button class="generic-button button-color-gold mt-2"><a href="{{ url_for('edit_review', movie_id=movie._id, user_id=session['id']) }}">Update Review</a></button></p>
+            <div class="text-button-container">
+                <p class=" text-center">You have reviewed this movie</p><a class="button generic-button button-color-gold" href="{{ url_for('edit_review', movie_id=movie._id, user_id=session['id']) }}">Update Review</a>
+            </div>
         {% endif %}
-        <div class="card form-card shadow">
+        <div class="card form-card mt-0 shadow">
             <div class="row my-3">
                 <div class="col-12 col-md-7  text-center text-md-start">
                     <div class="row">
@@ -61,32 +65,32 @@
                         <h5><span id="average_rating">{% if movie.average_rating %}{{ movie.average_rating }}{% else %}0{% endif %}</span> / 5 </h5>
                     </div>
                     <div class="row g-0">
-                        <div class="col-12 view-movie-button-container mt-3 mb-5">
+                        <div class="col-12 view-movie-button-container mb-3">
                             {% if session["user"] %}
                                 {% if user_watched == True %}
-                                    <button class="generic-button button-color-gold movie-font mt-2"><a
+                                    <a class="button generic-button button-color-gold movie-font"
                                             href="{{ url_for('remove_watched_movie', movie_id=movie._id) }}">I Haven't Watched
-                                            This</a></button>
+                                            This</a>
                                 {% else %}
-                                    <button class="generic-button button-color-gold movie-font mt-2"><a
+                                    <a class="button generic-button button-color-gold movie-font"
                                         href="{{ url_for('add_watched_movie', movie_id=movie._id) }}">I Have Watched
-                                        This</a></button>
+                                        This</a>
                                 {% endif %}
                                 {% if user_want_to_watch == True %}
-                                    <button class="generic-button button-color-gold movie-font mt-2"><a
+                                    <a class="button generic-button button-color-gold movie-font"
                                         href="{{ url_for('remove_want_to_watch_movie', movie_id=movie._id) }}">I Don't Want to
-                                        Watch This</a></button>
+                                        Watch This</a>
                                 {% else %}
-                                    <button class="generic-button button-color-gold movie-font mt-2"><a
+                                    <a class="button generic-button button-color-gold movie-font"
                                         href="{{ url_for('add_want_to_watch_movie', movie_id=movie._id) }}">I Want to Watch
-                                        This</a></button>
+                                        This</a>
                                 {% endif %}
                             {% endif %}
-                            <button class="generic-button button-color-gold movie-font mt-2"><a
-                                    href="{{ url_for('view_reviews', movie_id=movie._id) }}">View All Reviews</a></button>
+                            <a class="button generic-button button-color-gold movie-font"
+                                    href="{{ url_for('view_reviews', movie_id=movie._id) }}">View All Reviews</a>
                             {% if (movie.created_by == session["id"]) or (session["is_superuser"] == True) %}
-                                <button class="generic-button movie-font mt-2"><a
-                                        href="{{ url_for('edit_movie', movie_id=movie._id) }}">Edit Movie Profile</a></button>
+                                <a class="button generic-button movie-font"
+                                        href="{{ url_for('edit_movie', movie_id=movie._id) }}">Edit Movie Profile</a>
                             {% endif %}
                         </div>
                     </div>
@@ -136,7 +140,7 @@
             </div>
             <div class="row">
                 <div class="col">
-                    <div class="accordion mt-5" id="movie-info-accordion">
+                    <div class="accordion" id="movie-info-accordion">
                         {% if movie.movie_description|length > 0 %}
                             <div class="accordion-item">
                                 <h2 class="accordion-header" id="description-header">

@@ -41,15 +41,15 @@
                     </span>
                 </div>
                 <div class="buttons-container mt-4 mb-2">
-                    <button type="submit" class="generic-button button-color-gold mt-2">Create Review</a></button>
-                    <button class="generic-button mt-2"><a href="{{ url_for('home') }}">Cancel</a></button>
+                    <button type="submit" class="generic-button button-color-gold">Create Review</a></button>
+                    <a class="button generic-button" href="{{ url_for('home') }}">Cancel</a>
                 </div>
             </div>
         </form>
         {% if not selected_movie_id %}
-            <div class="mb-5 text-center">
-                <span>If you can't find the Movie you want to review then make its profile page</span>
-                <button type="submit" class="generic-button button-color-gold"><a href="{{ url_for('create_movie') }}">Create Movie</a></button>
+            <div class="text-button-container">
+                <p>If you can't find the Movie you want to review then make its profile page</p>
+                <a class="button generic-button button-color-gold" href="{{ url_for('create_movie') }}">Create Movie</a>
             </div>
         {% endif %}
     </div>

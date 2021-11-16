@@ -143,9 +143,9 @@
                     </div>
                 {% endif %}
                 <div class="buttons-container my-4">
-                    <button type="submit" class="generic-button button-color-gold mt-2">Update Movie</button>
-                    <button class="generic-button mt-2"><a href="{{ url_for('home') }}">Cancel</a></button>
-                    <button class="generic-button button-color-red mt-2"><a href="{{ url_for('delete_movie', movie_id=movie._id) }}">Delete Movie</a></button>
+                    <button type="submit" class="generic-button button-color-gold">Update Movie</button>
+                    <a class="button generic-button" href="{{ url_for('home') }}">Cancel</a>
+                    <a class="button generic-button button-color-red" href="{{ url_for('delete_movie', movie_id=movie._id) }}">Delete Movie</a></button>
                 </div>
             </form>
         </div>

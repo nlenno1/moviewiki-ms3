@@ -10,7 +10,7 @@ h4,
 .navbar-brand,
 .logo,
 .movie-font,
-.movie-image-continer {
+.movie-image-continer, .title {
     font-family: Bebas Neue, sans-serif;
 }
 
@@ -19,7 +19,6 @@ h4,
     justify-content: center;
 }
 
-
 .generic-button {
     border-radius: 5px;
     background-color: #c4c4c4;
@@ -27,7 +26,7 @@ h4,
     max-width: 180px;
     width: 100%;
     box-sizing: border-box;
-    margin: 0 4px;
+    margin: 0.5rem 4px;
     height: 40px;
     transition: 0.3s;
 }
@@ -67,13 +66,44 @@ h4,
 #user-review-accordion .generic-button {
     height: 80px;
     width: 100%;
-    margin: 0 auto;
+}
+
+.text-button-container, .buttons-container {
+    display:flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    text-align: center;
+}
+
+.text-button-container {
+    margin: 0.5rem 0;
+}
+
+.text-button-container p {
+    margin-bottom: 0;
+}
+
+.justify-right {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
 @media (min-width: 350px) {
     #user-review-accordion .generic-button {
         height: 40px;
         width: 180px;
+    }
+}
+
+@media (min-width: 576px) {
+    .justify-right {
+        justify-content: flex-end;
     }
 }
 
@@ -317,6 +347,7 @@ footer {
     background-color: #111;
     color: #fafafa;
     border-top: 5px solid #ffca18;
+    margin-top: 2.5rem;
 }
 
 .socials {
@@ -358,7 +389,7 @@ footer .logo {
 
 .input-container {
     position: relative;
-    margin-top: 6px;
+    margin-top: 14px;
 }
 
 .search-bar-container input {
@@ -378,6 +409,11 @@ footer .logo {
     flex-wrap: wrap;
     justify-content: space-around;
     align-items: center;
+}
+
+.genre-container form {
+    width: 100%;
+    max-width: 600px;
 }
 
 .genre-container {
@@ -418,7 +454,7 @@ footer .logo {
     align-content: center;
     flex-direction: column;
     margin: 0 auto;
-    /* width: 85% */
+    padding: 0 5%;
 }
 
 .contact-card>.generic-form {
@@ -499,16 +535,10 @@ input[type="checkbox"i] {
     width: 2em !important;
 }
 
-.buttons-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
 .form-card {
     margin: 30px auto;
     width: 100%;
-    padding: 20px 25px;
+    padding: 20px 0;
 }
 
 .form-card hr {
@@ -560,6 +590,12 @@ p>a {
 p>a:hover {
     font-size: 600;
     color: #ffca18;
+}
+
+@media (min-width: 315px){
+    .form-card {
+        padding: 20px 25px;
+    }
 }
 
 /* Contact */
