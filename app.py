@@ -31,8 +31,9 @@ def is_admin():
         user = mongo.db.users.find_one({"_id": ObjectId(session["id"])},
                                        {"is_superuser": 1})
         if user and user["is_superuser"] is True:
-            print(user["is_superuser"])
+            session["is_superuser"] = True
             return True
+    session["is_superuser"] = False
     return False
 
 
@@ -309,7 +310,7 @@ def check_if_user_has_watched(movies_list, user):
     check if a movie id, from a list of movies,
     is not in the user's movies watched list
     """
-    storage_list = [movie for movie in movies_list if movie["_id"] not in 
+    storage_list = [movie for movie in movies_list if movie["_id"] not in
                     [movie["movie_id"] for movie in user["movies_watched"]]]
     return storage_list
 
@@ -318,6 +319,10 @@ def check_if_user_has_watched(movies_list, user):
 @app.route("/")
 @app.route("/home")
 def home():
+    """
+    find all movies, sort them into appropriate lists and
+    display on the home screen
+    """
     movies = list(mongo.db.movies.find({}, {"movie_title": 1,
                                             "average_rating": 1,
                                             "release_date": 1,
@@ -333,33 +338,25 @@ def home():
     # sorted by release date by title with max of 15
     latest_releases = sorted(movies, key=lambda d: d['release_date'],
                              reverse=True)[:15]
-    # initialize empty lists for storage
-    movies_for_you = []
+    movies_for_you = []  # initialize empty lists
     want_to_watch = []
-
     if is_signed_in():
-        try:
-            user = find_user()
-            if user:
-                movies_for_you = create_similar_movies_list(
-                                    movies, "genre", user["favourite_genres"],
-                                    'average_rating', 15)
-                # calculate age of user
-                age = (datetime.now() - datetime.strptime(
-                                            user["dob"], '%Y-%m-%d')).days
-                movies_for_you = filter_movies_using_age_ratings(
-                                    movies_for_you, age)
-                movies_for_you = check_if_user_has_watched(
-                                    movies_for_you, user)
-                # generate want_to_watch list
-                want_to_watch = [movie for movie in movies if movie["_id"] in
-                                 [movie["movie_id"] for movie in
-                                 user["movies_to_watch"]]]
-                want_to_watch = sorted(want_to_watch, key=lambda d: d[
-                                        'average_rating'])[:15]
-        except Exception:
-            pass
-
+        user = find_user()
+        if user:  # create list specific to the users
+            movies_for_you = create_similar_movies_list(
+                                movies, "genre", user["favourite_genres"],
+                                'average_rating', 15)
+            user_age = (datetime.now() - datetime.strptime(
+                                        user["dob"], '%Y-%m-%d')).days
+            movies_for_you = filter_movies_using_age_ratings(
+                                movies_for_you, user_age)
+            movies_for_you = check_if_user_has_watched(
+                                movies_for_you, user)
+            want_to_watch = [movie for movie in movies if movie["_id"] in
+                             [movie["movie_id"] for movie in
+                              user["movies_to_watch"]]]
+            want_to_watch = sorted(want_to_watch, key=lambda d: d[
+                                    'average_rating'])[:15]
     return render_template("home.html", all_movies=all_movies,
                            highest_rated=highest_rated,
                            latest_releases=latest_releases,
@@ -369,6 +366,9 @@ def home():
 
 @app.route("/search", methods=["POST"])
 def movie_title_search():
+    """
+    search for movies and display results
+    """
     query = request.form.get("movie_title_search")
     searched_movies = list(mongo.db.movies.find(
                             {"$text": {"$search": query}}).sort("movie_title"))
@@ -378,6 +378,9 @@ def movie_title_search():
 # genre management
 @app.route("/genre")
 def get_all_genre():
+    """
+    view genre management page with genres sorted alphabetically
+    """
     is_user_admin = is_admin()
     if not is_user_admin:
         return redirect(url_for("home"))
@@ -387,10 +390,12 @@ def get_all_genre():
 
 @app.route("/genre/add", methods=["POST"])
 def add_genre():
+    """
+    if new genre name is unique, add it to the DB
+    """
     is_user_admin = is_admin()
     if not is_user_admin:
         return redirect(url_for("home"))
-
     new_genre_name = request.form.get('genre-name').lower()
     # check if genre name already exists
     existing_name = mongo.db.genre.find_one({"genre_name": new_genre_name})
@@ -407,57 +412,41 @@ def add_genre():
 @app.route("/genre/<genre_id>/update", methods=["POST"])
 def update_genre(genre_id):
     """
-    function to update a genre name in the DB
+    check for unique name and update a genre name in the DB
     """
     is_user_admin = is_admin()
     if not is_user_admin:
         return redirect(url_for("home"))
-
     new_genre_name = request.form.get("replacement-genre-name")
-    # check if genre name already exists
     existing_name = mongo.db.genre.find_one({"genre_name": new_genre_name})
     if existing_name:
-        flash("There is a Genre with this name already")
+        flash(f"There is a Genre with the name {new_genre_name} already")
         return redirect(url_for('get_all_genre'))
-    # updating the informatiion in the DB using the _id to find the documnet
-    try:
-        genre = mongo.db.genre.find_one({'_id': ObjectId(genre_id)})
-        if genre:
-            mongo.db.genre.update({"_id": ObjectId(genre_id)}, {
-                                        "genre_name": new_genre_name.lower()})
-            flash("Genre Updated")
-        else:
-            flash("Genre Not Found to Update")
-        return redirect(url_for('get_all_genre'))
-    except Exception as e:
-        flash("Genre Not Found")
-        flash(str(e))
-        flash("Please try again or get in touch to report a "
-              "reoccurring problem")
+    genre = mongo.db.genre.find_one({'_id': ObjectId(genre_id)})
+    if genre:
+        mongo.db.genre.update_one({"_id": ObjectId(genre_id)},
+                                  {"$set":
+                                  {"genre_name": new_genre_name.lower()}})
+        flash(f"Genre Name Updated to {new_genre_name}")
+    else:
+        flash(f"Unable to Update. Genre {new_genre_name} Not Found")
     return redirect(url_for('get_all_genre'))
 
 
 @app.route("/genre/<genre_id>/delete")
 def delete_genre(genre_id):
+    """
+    find and delete a selected genre
+    """
     is_user_admin = is_admin()
     if not is_user_admin:
         return redirect(url_for("home"))
-    try:
-        genre = find_one_with_id("genre", ObjectId(genre_id))
-
-        if genre:
-            mongo.db.genre.remove_one({
-                "_id": genre["_id"]
-            })
-            flash("Genre Deleted")
-        else:
-            flash("No Genre was found so nothing was deleted")
-    except Exception as e:
-        flash("Genre Not Found or Deleted")
-        flash(str(e))
-        flash("Please try again or get in touch to report a "
-              "reoccurring problem")
-
+    genre = find_one_with_id("genre", ObjectId(genre_id))
+    if genre:
+        mongo.db.genre.delete_one({"_id": genre["_id"]})
+        flash(f"Genre {genre['genre_name']} Deleted")
+    else:
+        flash("No Genre was found so nothing was deleted")
     return redirect(url_for('get_all_genre'))
 
 
@@ -496,6 +485,8 @@ def signup():
 
         new_id = mongo.db.users.insert_one(register).inserted_id
         session["id"] = str(new_id)
+        is_user_admin = is_admin()
+
 
         # put the user into session and load profile page
         flash("Registration Successful " + session["user"].capitalize() + "!")
@@ -689,6 +680,7 @@ def signin():
                                    request.form.get("password")):
 
                 session["id"] = str(existing_user["_id"])
+                is_admin()
 
                 flash(f"Welcome Back {existing_user['username'].capitalize()}")
 
