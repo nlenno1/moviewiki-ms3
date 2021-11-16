@@ -116,17 +116,17 @@
         <ul class="navbar-nav">
             {% if session["user"] %}
                 <li>
-                    <a class="sidenav-button" href="{{ url_for('profile') }}"><button class="navbar-button"><i class="fas fa-user-circle"></i>Profile</button></a>
+                    <a class="button sidenav-button navbar-button" href="{{ url_for('profile') }}"><i class="fas fa-user-circle"></i>Profile</a>
                 </li>
                 <li>
-                    <a class="sidenav-button" href="{{ url_for('signout') }}"><button class="navbar-button">Sign Out</button></a>
+                    <a class="button sidenav-button navbar-button" href="{{ url_for('signout') }}">Sign Out</a>
                 </li>
             {% else %}
                 <li>
-                    <a class="sidenav-button" href="{{ url_for('signup') }}"><button class="navbar-button">Sign Up</button></a>
+                    <a class="button sidenav-button navbar-button" href="{{ url_for('signup') }}">Sign Up</a>
                 </li>
                 <li>
-                    <a class="sidenav-button" href="{{ url_for('signin') }}"><button class="navbar-button">Sign In</button></a>
+                    <a class="button navbar-button sidenav-button" href="{{ url_for('signin') }}">Sign In</a>
                 </li>
             {% endif %}
         </ul>
