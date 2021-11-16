@@ -321,14 +321,35 @@ If user is editing a Movie profile, then the buttons will be update and cancel b
 
 |Bug ID # | Bug      | Cause/Reason | Fix |
 | ----------- | ----------- | ----------- | ----------- | 
-|1 | | | |
-|2 | | | |
+|1 |Screen overflowing on the y axis with little or no content displayed | Set min-height attribute for content and then changed the height of other elements not in the contect div|Set all non content elements to a set height and altered the content div min-height calculation|
+|2 |Variable not displaying in flash messages |Invalid F string syntax|Read up on f string documentation and improved the syntax|
 |3 | | | |
-|4 | | | |
+| | | | |
+| | | | |
+| | | | |
+| | | | |
+| | | | |
+| | | | |
+| | | | |
+| | | | |
+| | | | |
+| | | | |
+| | | | |
+| | | | |
+| | | | |
+| | | | |
+| | | | |
+| | | | |
+| | | | |
+| | | | |
+| | | | |
+| | | | |
+| | | | |
+| | | | |
 
 # Testing
 
-Testing for this project can be found in the [Testing Document]("readme_assets/testing.md)
+Testing for this project can be found in the [Testing Document](readme_assets/testing.md)
 
 # Deployment
 
