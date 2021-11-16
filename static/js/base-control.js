@@ -1,3 +1,6 @@
+contentCover = document.getElementById("content-cover")
+sidenav = document.getElementById("sidenav")
+
 function openNav() {
     if (document.documentElement.clientWidth > 320) {
         sidenav.style.width = "280px";
