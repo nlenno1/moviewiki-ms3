@@ -1,5 +1,5 @@
 import os
-from datetime import datetime, timedelta
+from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import (
     Flask, flash, render_template,
@@ -24,24 +24,42 @@ mongo = PyMongo(app)
 
 # ---------- Functions ----------
 def is_admin():
-    if session and session["is_superuser"] is True:
-        return True
+    """
+    calls to db using session id variable to confirm if user is admin
+    """
+    if session and session["id"]:
+        user = mongo.db.users.find_one({"_id": ObjectId(session["id"])},
+                                       {"is_superuser": 1})
+        if user and user["is_superuser"] is True:
+            print(user["is_superuser"])
+            return True
     return False
 
 
 def is_correct_user(user_id_to_check):
-    if session and session["id"] and (
-      session["id"] == user_id_to_check or session["is_superuser"] is True):
-        return True
-    else:
-        return False
+    """
+    check if user created document and is allowed to edit by passing in
+    created_by variable
+    """
+    if session and session["id"]:
+        user = mongo.db.users.find_one({"_id": ObjectId(session["id"])},
+                                       {"is_superuser": 1})
+        if user and (user["_id"] == user_id_to_check or session[
+                        "is_superuser"] is True):
+            return True
+    return False
 
 
 def is_signed_in():
-    if session and len(session) > 1 and session["id"]:
-        return True
-    else:
-        return False
+    """
+    checks session id against the database to see if user exists
+    """
+    if session and session["id"]:
+        user = mongo.db.users.find_one({"_id": ObjectId(session["id"])},
+                                       {"_id": 1})
+        if user:
+            return True
+    return False
 
 
 def create_single_review(movie, movie_id=None):
@@ -111,7 +129,7 @@ def generate_average_rating(movie_id, movie=None):
         new_average_rating = round(total_review_score/(len(
                                         movie["reviews"])), 2)
     else:
-        new_average_rating = 0
+        new_average_rating = 0.0
     # set the variable in the DB to the new value
     mongo.db.movies.update_one({"_id": ObjectId(
                                 movie["_id"])},
