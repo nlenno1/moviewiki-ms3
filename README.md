@@ -56,7 +56,7 @@ This is the third of four Milestone Projects that make up the Full Stack Web Dev
 - Add, edit and delete my own movie reviews
 - View my latest reviews and all my reviews on the site
 - Create movie profiles that don't exist yet
-- Edit movie profiles that I created
+- Edit and Delete movie profiles that I created
 - Keep track of what movies I have watched, reviewed and the ones I want to watch
 - Have new movies suggested to me based on my movie genre preferences, age, what I have watched and the movie's review scores
 - Edit my account information
