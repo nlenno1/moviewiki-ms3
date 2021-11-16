@@ -39,7 +39,7 @@ def is_admin():
 def is_correct_user(user_id_to_check):
     """
     check if user created document and is allowed to edit by passing in
-    created_by variable
+    created_by variable and calling to db using session id
     """
     if session and session["id"]:
         user = mongo.db.users.find_one({"_id": ObjectId(session["id"])},
@@ -52,7 +52,7 @@ def is_correct_user(user_id_to_check):
 
 def is_signed_in():
     """
-    checks session id against the database to see if user exists
+    checks session id against the database to see if the user exists
     """
     if session and session["id"]:
         user = mongo.db.users.find_one({"_id": ObjectId(session["id"])},
@@ -63,6 +63,9 @@ def is_signed_in():
 
 
 def create_single_review(movie, movie_id=None):
+    """
+    create review dictionary
+    """
     review = {
         "reviewer": session['user'],
         "reviewer_id": session["id"],
@@ -74,15 +77,18 @@ def create_single_review(movie, movie_id=None):
         "review_for_id": movie["_id"]
     }
     # set movie_id conditional as when creating movie it
-    # doesn't have a MongoDb _id yet
+    # doesn't have a MongoDB _id yet
     if movie_id is None:
-        review["review_for_id"]: movie["_id"]
+        review["review_for_id"] = movie["_id"]
     else:
-        review["review_for_id"]: movie_id
+        review["review_for_id"] = movie_id
     return review
 
 
 def mongo_prefix_select(collection_name):
+    """
+    prefix Switch statement for the functions below
+    """
     search_prefix = {
         "users": mongo.db.users,
         "movies": mongo.db.movies,
@@ -92,15 +98,21 @@ def mongo_prefix_select(collection_name):
     return mongo_prefix
 
 
-def find_one_with_key(collection_name, search_key, search_value):
-    movie = mongo_prefix_select(collection_name).find_one(
-        {search_key: search_value})
-    return movie
+def find_one_with_id(collection_name, search_id):
+    """
+    call to the database to return a whole document
+    """
+    document = mongo_prefix_select(collection_name).find_one(
+        {"_id": search_id})
+    return document
 
 
 def update_collection_item_dict(collection_name, search_key, search_value,
                                 update_operator, array_to_update,
                                 array_search_key, array_search_value):
+    """
+    updates a dictionary in an array field in a document
+    """
     mongo_prefix_select(collection_name).update_one(
         {search_key: search_value},
         {update_operator: {array_to_update:
@@ -109,36 +121,39 @@ def update_collection_item_dict(collection_name, search_key, search_value,
 
 def update_collection_item(collection_name, search_key, search_value,
                            update_operator, new_key, new_value):
+    """
+    updates a field document
+    """
     mongo_prefix_select(collection_name).update_one(
         {search_key: search_value},
         {update_operator: {new_key: new_value}})
 
 
-def generate_average_rating(movie_id, movie=None):
+def update_average_rating(movie_id, movie=None):
+    """
+    set movie average_rating variable as average of all review
+    ratings for a specified movie
+    """
     if movie is None:
-        movie = find_one_with_key("movies", "_id", movie_id)
-    # generate an average reviews score
+        movie = find_one_with_id("movies", movie_id)
     total_review_score = 0
-    # add all the review scores together from the data pulled from
-    # the DB
     if len(movie["reviews"]) > 0:
         for review in movie["reviews"]:
             total_review_score += int(review["star_rating"])
-        # divide the result by the amount of old scores plus 1 for the
-        # score just added
         new_average_rating = round(total_review_score/(len(
                                         movie["reviews"])), 2)
     else:
         new_average_rating = 0.0
-    # set the variable in the DB to the new value
-    mongo.db.movies.update_one({"_id": ObjectId(
-                                movie["_id"])},
-                               {"$set": {"average_rating":
-                                         new_average_rating}})
+    update_collection_item("movies", "_id", ObjectId(movie["_id"]),
+                           "$set", "average_rating", new_average_rating)
 
 
 def create_new_latest_reviews(review_list, new_review_dict,
                               to_compare_1, to_compare_2):
+    """
+    adds new review to the latest review dict and removes the
+    oldest if the dict length is over 3
+    """
     new_review_list = [review for review in review_list if
                        review[to_compare_1] != to_compare_2]
 
@@ -149,8 +164,10 @@ def create_new_latest_reviews(review_list, new_review_dict,
 
 
 def add_review_to_latest_reviews_dicts(movie, new_review_dict):
-    user = find_one_with_key("users", "_id", ObjectId(session["id"]))
-
+    """
+    update latest review arrays in movie and user document
+    """
+    user = find_one_with_id("users", ObjectId(session["id"]))
     user["user_latest_reviews"] = create_new_latest_reviews(
         user["user_latest_reviews"], new_review_dict, "review_for_id",
         movie["_id"])
@@ -161,19 +178,6 @@ def add_review_to_latest_reviews_dicts(movie, new_review_dict):
                            "user_latest_reviews", user["user_latest_reviews"])
     update_collection_item("movies", '_id', ObjectId(movie['_id']), "$set",
                            "latest_reviews", movie["latest_reviews"])
-
-
-def add_user_data_to_session_storage(user_dict, new_id=None):
-    if new_id is None:
-        session["id"] = str(user_dict['_id'])
-    else:
-        session["id"] = str(new_id)
-    session['user'] = user_dict['username']
-    session['email'] = user_dict['email']
-    session['full-name'] = user_dict[
-        'firstname'] + " " + user_dict['lastname']
-    if "is_superuser" in user_dict:
-        session['is_superuser'] = user_dict['is_superuser']
 
 
 def generate_matching_movies_list(collection, collection_list_name, 
@@ -204,7 +208,7 @@ def find_review_in_reviews_list(review_list, reviewer_id):
 
 
 def find_review(movie_id, reviewer_id):
-    movie = find_one_with_key("movies", "_id", ObjectId(movie_id))
+    movie = find_one_with_id("movies", ObjectId(movie_id))
     movie_review = find_review_in_reviews_list(movie["reviews"], reviewer_id)
     return movie_review
 
@@ -225,11 +229,11 @@ def generate_new_movie_dict(movie_id=None, update=None):
         "image_link": request.form.get("image-link"),
     }
     if update is None:
-        new_movie["reviews"]: []
-        new_movie["latest_reviews"]: []
-        new_movie["created_by"]: session['id']
-        new_movie["is_part_of_series"]: False
-        new_movie["average_rating"]: 0.0
+        new_movie["reviews"] = []
+        new_movie["latest_reviews"] = []
+        new_movie["created_by"] = session['id']
+        new_movie["is_part_of_series"] = False
+        new_movie["average_rating"] = 0.0
     add_series_information_to_dict(new_movie)
     if movie_id and request.form.get("submit-movie-review"):
         review = create_single_review(new_movie, movie_id)
@@ -257,7 +261,7 @@ def create_and_add_mini_movie_dict(movie_id, array_name, movie=None):
     generate mini movie dict and add to session user profile array
     """
     if movie is None:
-        movie = find_one_with_key("movies", "_id", ObjectId(movie_id))
+        movie = find_one_with_id("movies", ObjectId(movie_id))
 
     new_mini_movie_dict = {
         "movie_id": movie["_id"],
@@ -422,7 +426,7 @@ def delete_genre(genre_id):
     if not is_user_admin:
         return redirect(url_for("home"))
     try:
-        genre = find_one_with_key("genre", "_id", ObjectId(genre_id))
+        genre = find_one_with_id("genre", ObjectId(genre_id))
 
         if genre:
             mongo.db.genre.remove_one({
@@ -474,7 +478,7 @@ def signup():
         }
 
         new_id = mongo.db.users.insert_one(register).inserted_id
-        add_user_data_to_session_storage(register, new_id)
+        session["id"] = str(new_id)
 
         # put the user into session and load profile page
         flash("Registration Successful " + session["user"].capitalize() + "!")
@@ -601,9 +605,6 @@ def edit_user_profile():
             mongo.db.users.update_one({"_id": ObjectId(session['id'])},
                                         {"$set": updated_profile_dict})
 
-            add_user_data_to_session_storage(updated_profile_dict,
-                                                ObjectId(session["id"]))
-
             flash(f"Updated {session['user'].capitalize()} Account!")
             return redirect(url_for('profile'))
 
@@ -614,7 +615,7 @@ def edit_user_profile():
                     " a reoccurring problem")
             return redirect(url_for('home'))
     try:
-        user = find_one_with_key("users", "_id", ObjectId(session["id"]))
+        user = find_one_with_id("users", ObjectId(session["id"]))
         user["dob"] = datetime.strptime(user["dob"], '%Y-%m-%d')
     except Exception as e:
         flash("User not Found")
@@ -641,7 +642,7 @@ def delete_user_profile(user_id):
         return redirect(url_for("home"))
 
     try:
-        user = find_one_with_key("users", "_id", ObjectId(user_id))
+        user = find_one_with_id("users", ObjectId(user_id))
     except Exception as e:
         flash("User Profile Was Not Deleted")
         flash(str(e))
@@ -674,7 +675,7 @@ def signin():
             if check_password_hash(existing_user["password_hash"],
                                    request.form.get("password")):
 
-                add_user_data_to_session_storage(existing_user)
+                session["id"] = str(existing_user["_id"])
 
                 flash("Welcome " + session["user"].capitalize())
 
@@ -730,7 +731,7 @@ def create_movie():
                     return redirect(url_for('view_all_movies'))
 
         new_id = mongo.db.movies.insert_one(new_movie).inserted_id
-        movie = find_one_with_key("movies", "_id", ObjectId(new_id))
+        movie = find_one_with_id("movies", ObjectId(new_id))
         if movie:
             flash(f"Movie {movie['movie_title'].title()} Created")
             if request.form.get("submit-movie-review"):
@@ -741,7 +742,7 @@ def create_movie():
                                             movie)
                 add_review_to_latest_reviews_dicts(
                     movie, create_single_review(movie, movie["_id"]))
-                generate_average_rating(ObjectId(new_id))
+                update_average_rating(ObjectId(new_id))
                 flash("with your Review Added")
             return redirect(url_for("view_movie", movie_id=new_id))
         else:
@@ -846,7 +847,7 @@ def edit_movie(movie_id):
                                                movie)
                 add_review_to_latest_reviews_dicts(
                     movie, create_single_review(movie, movie["_id"]))
-                generate_average_rating(ObjectId(movie_id))
+                update_average_rating(ObjectId(movie_id))
 
             flash("Movie Profile Successfully Updated")
             return redirect(url_for("view_movie", movie_id=movie_id))
@@ -914,7 +915,7 @@ def delete_movie(movie_id):
 @app.route("/reviews/<movie_id>/view")
 def view_reviews(movie_id):
     try:
-        movie = find_one_with_key("movies", "_id", ObjectId(movie_id))
+        movie = find_one_with_id("movies", ObjectId(movie_id))
         movie_reviews = sorted(movie["reviews"], key=lambda d: d[
                                     'review_date'], reverse=True)
         return render_template("view-reviews.html", movie=movie,
@@ -963,7 +964,7 @@ def create_review():
                                         movie_id=movie["_id"],
                                         user_id=session["id"]))
                 try:
-                    user = find_one_with_key("users", "_id",
+                    user = find_one_with_id("users",
                                              ObjectId(session["id"]))
                 except Exception as e:
                     flash("User Not Found")
@@ -980,7 +981,7 @@ def create_review():
                                                 "reviews": new_review}})
                     create_and_add_mini_movie_dict(movie_id, "movies_reviewed",
                                                    movie)
-                    generate_average_rating(ObjectId(movie["_id"]))
+                    update_average_rating(ObjectId(movie["_id"]))
                     add_review_to_latest_reviews_dicts(movie, new_review)
                 else:
                     flash("No User was found so your review was not submitted")
@@ -1038,7 +1039,7 @@ def edit_review(movie_id, user_id):
 
     if request.method == "POST":
         try:
-            movie = find_one_with_key("movies", "_id", ObjectId(movie_id))
+            movie = find_one_with_id("movies", ObjectId(movie_id))
         except Exception as e:
             flash("Movie Not Found")
             flash(str(e))
@@ -1056,11 +1057,11 @@ def edit_review(movie_id, user_id):
                                        {"$push": {"reviews": updated_review}})
 
             add_review_to_latest_reviews_dicts(movie, updated_review)
-            generate_average_rating(ObjectId(movie["_id"]))
+            update_average_rating(ObjectId(movie["_id"]))
 
             return redirect(url_for('view_reviews', movie_id=movie_id))
     # condense this to one process
-    movie = find_one_with_key("movies", "_id", ObjectId(movie_id))
+    movie = find_one_with_id("movies", ObjectId(movie_id))
     review = find_review_in_reviews_list(movie["reviews"], user_id)
 
     return render_template(
@@ -1103,7 +1104,7 @@ def delete_review(movie_id, user_id):
                                     "$pull", "user_latest_reviews",
                                     "review_for_id", ObjectId(movie_id))
         flash("Review deleted")
-        generate_average_rating(ObjectId(movie_id))
+        update_average_rating(ObjectId(movie_id))
         return redirect(url_for('view_reviews', movie_id=movie_id))
     else:
         flash("Review not found")
