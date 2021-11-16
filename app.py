@@ -107,6 +107,15 @@ def find_one_with_id(collection_name, search_id):
     return document
 
 
+def find_user():
+    """
+    call to the database to return users document
+    """
+    document = mongo_prefix_select("users").find_one(
+               {"_id": ObjectId(session["id"])}, {"password_hash": 0})
+    return document
+
+
 def update_collection_item_dict(collection_name, search_key, search_value,
                                 update_operator, array_to_update,
                                 array_search_key, array_search_value):
@@ -178,6 +187,7 @@ def add_review_to_latest_reviews_dicts(movie, new_review_dict):
                            "user_latest_reviews", user["user_latest_reviews"])
     update_collection_item("movies", '_id', ObjectId(movie['_id']), "$set",
                            "latest_reviews", movie["latest_reviews"])
+
 
 
 def generate_matching_movies_list(collection, collection_list_name, 
@@ -320,9 +330,7 @@ def home():
 
     if is_signed_in():
         try:
-            user = mongo.db.users.find_one({"_id": ObjectId(session["id"])},
-                                           {"password_hash": 0})
-
+            user = find_user()
             if user:
                 movies_for_you = generate_matching_movies_list(
                                     movies, "genre", user["favourite_genres"],
@@ -498,9 +506,7 @@ def profile():
         return redirect(url_for("signin"))
 
     try:
-        user = mongo.db.users.find_one(
-                {"_id": ObjectId(session["id"])},
-                {"password_hash": 0})
+        user = find_user()
 
         # generate suggested_movies list
         movies = list(mongo.db.movies.find({}, {"movie_title": 1,
@@ -577,9 +583,7 @@ def edit_user_profile():
 
     if request.method == "POST":
         try:
-            user = mongo.db.users.find_one(
-                    {"_id": ObjectId(session['id'])},
-                    {"password_hash": 0})
+            user = find_user()
 
             requested_username = request.form.get("username").lower()
 
