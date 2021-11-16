@@ -189,13 +189,11 @@ def add_review_to_latest_reviews_dicts(movie, new_review_dict):
                            "latest_reviews", movie["latest_reviews"])
 
 
-
-def generate_matching_movies_list(collection, collection_list_name, 
-                                  user_list, sort_list_by_key=None, 
-                                  new_list_length=None, movie_id=None):
+def create_similar_movies_list(collection, collection_list_name,
+                               user_list, sort_list_by_key=None,
+                               new_list_length=None, movie_id=None):
     """
-    function to compare 2 lists matching values under append any matching
-    dicts to a new list.
+    creates similar or suggested movies lists
     """
     storage_list = []
     for item in collection:
@@ -205,25 +203,26 @@ def generate_matching_movies_list(collection, collection_list_name,
     if sort_list_by_key:
         storage_list = sorted(storage_list, key=lambda d: d[sort_list_by_key])
     elif sort_list_by_key and new_list_length:
-        storage_list = sorted(storage_list, key=lambda d: d[sort_list_by_key])[:new_list_length]
+        storage_list = sorted(storage_list, key=lambda d: d[
+                                sort_list_by_key])[:new_list_length]
     return storage_list
 
 
-def find_review_in_reviews_list(review_list, reviewer_id):
-    movie_review = None
+def find_review_for_movies_in_reviews_list(review_list, reviewer_id):
+    """
+    find all reviews by one user in a list
+    """
+    movie_review = []
     if len(review_list) > 0:
         movie_review = [review for review in review_list
                         if review["reviewer_id"] == reviewer_id][0]
     return movie_review
 
 
-def find_review(movie_id, reviewer_id):
-    movie = find_one_with_id("movies", ObjectId(movie_id))
-    movie_review = find_review_in_reviews_list(movie["reviews"], reviewer_id)
-    return movie_review
-
-
 def generate_new_movie_dict(movie_id=None, update=None):
+    """
+    create new movie dict for add or edit movie
+    """
     new_movie = {
         "movie_title": request.form.get("movie-title").lower(),
         "release_date": datetime.strptime(request.form.get(
@@ -252,6 +251,9 @@ def generate_new_movie_dict(movie_id=None, update=None):
 
 
 def add_series_information_to_dict(new_movie):
+    """
+    add series info to movie dict
+    """
     if request.form.get("submit-series-info"):
         new_movie["is_part_of_series"] = True
     else:
@@ -268,7 +270,7 @@ def add_series_information_to_dict(new_movie):
 
 def create_and_add_mini_movie_dict(movie_id, array_name, movie=None):
     """
-    generate mini movie dict and add to session user profile array
+    create mini movie dict and add to session user profile
     """
     if movie is None:
         movie = find_one_with_id("movies", ObjectId(movie_id))
@@ -284,9 +286,12 @@ def create_and_add_mini_movie_dict(movie_id, array_name, movie=None):
 
 
 def filter_movies_using_age_ratings(movie_list, user_age):
+    """
+    create new array with only movies that the user is old enough to watch
+    any movie age rating less than 12a, 12, 15 and 18 will be added to the list
+    """
     storage_list = []
     for movie in movie_list:
-        # any less than 12a, 12, 15 and 18 will be added to the list
         # check first character of age rating
         if movie["age_rating"][0] == "1":
             # convert age rating year number into days
@@ -300,6 +305,10 @@ def filter_movies_using_age_ratings(movie_list, user_age):
 
 
 def check_if_user_has_watched(movies_list, user):
+    """
+    check if a movie id, from a list of movies,
+    is not in the user's movies watched list
+    """
     storage_list = [movie for movie in movies_list if movie["_id"] not in 
                     [movie["movie_id"] for movie in user["movies_watched"]]]
     return storage_list
@@ -332,7 +341,7 @@ def home():
         try:
             user = find_user()
             if user:
-                movies_for_you = generate_matching_movies_list(
+                movies_for_you = create_similar_movies_list(
                                     movies, "genre", user["favourite_genres"],
                                     'average_rating', 15)
                 # calculate age of user
@@ -515,7 +524,7 @@ def profile():
                                                 "average_rating": 1,
                                                 "age_rating": 1}))
 
-        suggested_movies = generate_matching_movies_list(
+        suggested_movies = create_similar_movies_list(
                             movies, "genre", user["favourite_genres"],
                             'average_rating', 15)
         # calculate age of user
@@ -810,7 +819,7 @@ def view_movie(movie_id):
                                             "release_date": 1,
                                             "latest_reviews": 1,
                                             "image_link": 1}))
-    similar_movies = generate_matching_movies_list(movies, "genre", movie["genre"], 'average_rating', 15, movie["_id"])
+    similar_movies = create_similar_movies_list(movies, "genre", movie["genre"], 'average_rating', 15, movie["_id"])
 
     movie__genre_text_list = ', '.join(name.title() for name in movie["genre"])
     movie["genre"] = movie__genre_text_list
@@ -1064,9 +1073,11 @@ def edit_review(movie_id, user_id):
             update_average_rating(ObjectId(movie["_id"]))
 
             return redirect(url_for('view_reviews', movie_id=movie_id))
-    # condense this to one process
+    # check this to replace below
+    # mongo.db.movies.find_one({"_id":ObjectId(movie_id)},
+    #                          {"reviews" : {"reviewer_id": user_id}})
     movie = find_one_with_id("movies", ObjectId(movie_id))
-    review = find_review_in_reviews_list(movie["reviews"], user_id)
+    review = find_review_for_movies_in_reviews_list(movie["reviews"], user_id)
 
     return render_template(
         "edit-review.html",
@@ -1081,7 +1092,9 @@ def delete_review(movie_id, user_id):
         flash("You don't have permission to delete this review")
         return redirect(url_for('home'))
     try:
-        review = find_review(movie_id, user_id)
+        movie = find_one_with_id("movies", ObjectId(movie_id))
+        review = find_review_for_movies_in_reviews_list(
+                    movie["reviews"], user_id)
     except Exception as e:
         flash("Review Not Found")
         flash(str(e))
