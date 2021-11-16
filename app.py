@@ -681,7 +681,7 @@ def signin():
 
                 session["id"] = str(existing_user["_id"])
 
-                flash("Welcome " + session["user"].capitalize())
+                flash(f"Welcome Back {existing_user['username'].capitalize()}")
 
                 return redirect(url_for('profile'))
             else:
@@ -1215,8 +1215,10 @@ def contact():
             "datetime_sent": datetime.now()
         })
         flash("Message Sent Successfully!")
-
-    return render_template("contact.html")
+    user = mongo.db.users.find_one({"_id": ObjectId(session["id"])},
+                                   {"firstname": 1, "lastname": 1,
+                                   "email": 1})
+    return render_template("contact.html", user=user)
 
 
 @app.route("/movie/view_all")
@@ -1227,7 +1229,7 @@ def view_all_movies():
 
 
 # error handlers
-
+"""
 @app.errorhandler(400)
 def bad_request(e):
     message = "A Bad Request was made"
@@ -1271,7 +1273,7 @@ def internal_server_error(e):
     message = "Something went wrong! If this is a reoccuring error then \
         get in touch"
     return render_template('error.html', error_code=e, message=message)
-
+"""
 
 # application running instructions by retieving hidden env variables
 if __name__ == "__main__":
