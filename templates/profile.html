@@ -46,7 +46,7 @@
                                 </button>
                             </h2>
                             <div id="movies-to-watch-collapse" class="accordion-collapse collapse"
-                                aria-labelledby="to-watch-heading" data-bs-parent="#user-profile-accordion">
+                                aria-labelledby="to-watch-header" data-bs-parent="#user-profile-accordion">
                                 <div class="accordion-body">
                                     <div class="row g-0">
                                         {% if movies_to_watch|length > 0 %}
@@ -76,7 +76,7 @@
                                     </button>
                                 </h2>
                                 <div id="movies-watched-collapse" class="accordion-collapse collapse"
-                                    aria-labelledby="watched-heading" data-bs-parent="#user-profile-accordion">
+                                    aria-labelledby="watched-header" data-bs-parent="#user-profile-accordion">
                                     <div class="accordion-body">
                                         <div class="row g-0">
                                             {% if movies_watched|length > 0 %}
@@ -106,7 +106,7 @@
                                 </button>
                             </h2>
                             <div id="movies-reviewed-collapse" class="accordion-collapse collapse"
-                                aria-labelledby="reviewed-heading" data-bs-parent="#user-profile-accordion">
+                                aria-labelledby="reviewed-header" data-bs-parent="#user-profile-accordion">
                                 <div class="accordion-body">
                                     <div class="row g-0">
                                         {% if movies_reviewed|length > 0 %}
@@ -147,15 +147,15 @@
                                 {% for review in user_latest_reviews %}
                                     {% if loop.index < 4 %}
                                         <div class="accordion-item">
-                                            <h2 class="accordion-header" id="user-review-header">
+                                            <h2 class="accordion-header" id="user-review-header-{{loop.index}}">
                                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                                     data-bs-target="#review-collapse-{{loop.index}}" aria-expanded="false"
-                                                    aria-controls="review-collapse">
+                                                    aria-controls="review-collapse-{{loop.index}}">
                                                     <i class="fas fa-film d-none d-sm-block ms-2 me-2 me-sm-5"></i> {{ review.review_for|title }} - {{ review.review_title|title }} - {{ review.star_rating }} Stars
                                                 </button>
                                             </h2>
                                             <div id="review-collapse-{{loop.index}}" class="accordion-collapse collapse"
-                                                aria-labelledby="user-review-heading" data-bs-parent="#user-review-accordion">
+                                                aria-labelledby="user-review-header-{{loop.index}}" data-bs-parent="#user-review-accordion">
                                                 <div class="accordion-body">
                                                     <p>{% if review.review %}{{ review.review }}{% else %}There is no text in this review{% endif %}</p>
                                                     <p class="small-text">Reviewed on: {{ review.review_date.strftime('%d %B %Y at %H:%M') }}</p>
