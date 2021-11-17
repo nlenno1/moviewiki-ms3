@@ -20,10 +20,10 @@
                                 <div class="col-12 col-md-6">
                                     <h4 class="mb-0"> {{ review.review_title }} </h4>
                                     {% for star in range(review.star_rating) %}
-                                        <i id="star" class="fas fa-star gold-star"></i>
+                                        <i class="fas fa-star gold-star"></i>
                                     {% endfor %}
                                     {% for star in range(5 - review.star_rating) %}
-                                            <i id="star" class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
                                     {% endfor %}
                                 </div>
                                 <div class="col-12 col-md-6 text-end small-text">
