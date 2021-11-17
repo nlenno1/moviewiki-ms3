@@ -881,6 +881,8 @@ def view_reviews(movie_id):
     movie = mongo.db.movies.find_one({"_id": ObjectId(movie_id)},
                                      {"reviews": 1, "movie_title": 1,
                                      "average_rating": 1})
+    if movie["image_link"] == "none":
+        movie["image_link"] = "/static/img/movie_placeholder.png"
     movie_reviews = sorted(movie["reviews"], key=lambda d: d[
                                 'review_date'], reverse=True)
     return render_template("view-reviews.html", movie=movie,

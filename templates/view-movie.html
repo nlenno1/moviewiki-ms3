@@ -151,7 +151,7 @@
                                     </button>
                                 </h2>
                                 <div id="description-collapse" class="accordion-collapse collapse"
-                                    aria-labelledby="description-heading" data-bs-parent="#movie-info-accordion">
+                                    aria-labelledby="description-header" data-bs-parent="#movie-info-accordion">
                                     <div class="accordion-body">
                                         {{ movie.movie_description }}
                                     </div>
@@ -168,7 +168,7 @@
                                     </button>
                                 </h2>
                                 <div id="movies-to-watch-collapse" class="accordion-collapse collapse"
-                                    aria-labelledby="to-watch-heading" data-bs-parent="#movie-info-accordion">
+                                    aria-labelledby="to-watch-header" data-bs-parent="#movie-info-accordion">
                                     <div class="accordion-body">
                                         <iframe id="ytplayer" type="text/html" width="640" height="360"
                                             src="{{ movie.trailer_link }}" frameborder="0"></iframe>
@@ -234,6 +234,7 @@
                 </div>
             </div>
         {% endif %}
+    </div>
 
 {% endblock %}
 
