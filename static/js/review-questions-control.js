@@ -8,13 +8,13 @@ $('document').ready (function () {
             $("#review-title").val('');
             $("#movie-review").val('');
             $("#star-count").val('');
-            for (i=0; i < 6; i++) {
+            for (let i=0; i < 6; i++) {
                 $('#'+i).removeClass("gold-star");
             }
             $("#submit-movie-review").prop('checked', false);
         } else {
             initializeStarRating();
-            // add required valsue to all review inputs
+            // add required value to all review inputs
             $("#review-title").attr('required', "");
             $("#movie-review").attr('required', "");
         }

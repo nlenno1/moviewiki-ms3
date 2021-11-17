@@ -1,19 +1,19 @@
-function countStars () {
-    stars = document.getElementsByClassName('gold-star').length;
+function countStars () { // count the gold stars and set it to the star count value
+    let stars = document.getElementsByClassName('gold-star').length;
     document.querySelector("#star-count").value =  stars;
 }
 
-function initializeStarRating() {
-    starList = document.getElementsByClassName('fa-star');
+function initializeStarRating() { // fin the star icons on the page
+    let starList = document.getElementsByClassName('fa-star');
     for (let i = 0; i < starList.length; i++) {
-        starList[i].addEventListener("click", function(){
-            for (i=this.id; i < 6; i++) {
+        starList[i].addEventListener("click", function(){ // stars have id of 1 to 5
+            for (let i=this.id; i < 6; i++) { // all stars above the star clicked are turned black
                 document.getElementById(i).classList.remove("gold-star");
-            }
-            for (i=this.id; i > 0; i--) {
+            } // star clicked and all stars below are turned gold
+            for (let i=this.id; i > 0; i--) {
                 document.getElementById(i).classList.add("gold-star");
-            }
-            countStars ();
+            } // set star-count value if not pass in from python
+            countStars();
         });
     }
 }

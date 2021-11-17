@@ -1,8 +1,8 @@
 function initializeSelectElementColorChange() {
-    elementList = document.getElementsByTagName('select');
-    for (let i = 0; i < elementList.length; i++) {
+    let elementList = document.getElementsByTagName('select'); // find select elements
+    for (let i = 0; i < elementList.length; i++) { // add change event listener to all
         elementList[i].addEventListener("change", function () {
-            this.classList.add("text-black");
+            this.classList.add("text-black"); // change text color
         });
     }
 }
