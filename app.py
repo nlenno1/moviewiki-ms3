@@ -337,10 +337,12 @@ def check_and_replace_image_links(movies):
     """
     check image link in list of movies and replace with file name if needed
     """
+    storage_list = []
     for movie in movies:
         if movie["image_link"] == "none":
-            movie["image_link"] = url_for(
-                                'static', filename='img/movie_placeholder.png')
+            movie["image_link"] = "/static/img/movie_placeholder.png"
+        storage_list.append(movie)
+    return storage_list
 
 
 # ---------- app.route ----------
@@ -358,7 +360,7 @@ def home():
                                             "image_link": 1,
                                             "age_rating": 1}).sort(
                                                                 "movie_title"))
-    check_and_replace_image_links(movies)
+    movies = check_and_replace_image_links(movies)
     # sorted alphabeticallly by title with max of 15
     all_movies = movies[:15]
     # sorted by average rating by title with max of 15
@@ -531,7 +533,7 @@ def profile():
                                             "genre": 1,
                                             "average_rating": 1,
                                             "age_rating": 1}))
-    check_and_replace_image_links(movies)
+    movies = check_and_replace_image_links(movies)
     suggested_movies = create_similar_movies_list(  # generate movie lists
                         movies, "genre", user["favourite_genres"],
                         'average_rating', 15, None, user["dob"],
@@ -775,7 +777,7 @@ def view_movie(movie_id):
                                             "release_date": 1,
                                             "latest_reviews": 1,
                                             "image_link": 1}))
-    check_and_replace_image_links(movies)
+    movies = check_and_replace_image_links(movies)
     sim_movies = create_similar_movies_list(movies, "genre", movie["genre"],
                                             'average_rating', 15, movie["_id"])
     movie_genre_text_list = ', '.join(name.title() for name in movie["genre"])
@@ -1116,12 +1118,12 @@ def contact():
 @app.route("/movies")
 def view_all_movies():
     """
-    find all movies, store required information, sort by movie title and 
+    find all movies, store required information, sort by movie title and
     render to the page
     """
     movies = mongo.db.movies.find({}, {"movie_title": 1, "image_link": 1,
                                        "release_date": 1}).sort("movie_title")
-    check_and_replace_image_links(movies)
+    movies = check_and_replace_image_links(movies)
     return render_template("view-all-movies.html", movies=movies)
 
 
