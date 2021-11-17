@@ -54,7 +54,7 @@
                 <p class="invalid-message">A list of names seperated with a comma, 5 to 300 characters long, using letters and only 3 spaces and/or symbols consecutively (no spaces after the commas)</p>
                 <hr class="shadow">
                 <label for="movie-synopsis" class="small-text unselected-text">Movie Synopsis * - Write a short description of the movie</label>
-                <textarea rows ="3" cols="140" name="movie-synopsis" id="movie-synopsis" placeholder="Movie Synopsis *" minlength="10" maxlength="200" class="validate" required></textarea>
+                <textarea rows ="3" cols="140" name="movie-synopsis" id="movie-synopsis" placeholder="Movie Synopsis *" minlength="10" maxlength="200" class="validate" required>{{ movie.movie_synopsis }}</textarea>
                 <p class="invalid-message">Synopsis 10 to 200 characters long</p>
                 <label for="movie-description" class="small-text unselected-text pb-2">Movie Description - Write a longer description of the Movie</label>
                 <textarea name="movie-description" id="movie-description" rows ="8" cols="140" placeholder="Movie Description" minlength="10" maxlength="100" class="validate">{{ movie.movie_description }}</textarea>

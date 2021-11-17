@@ -11,14 +11,14 @@
                 <div class="text-end small-text unselected-text">
                     * required
                 </div>
-                <label for="movie-title-list" class="small-text unselected-text">Movie Title *</label>
+                <label class="small-text unselected-text">Movie Title *</label>
                 <input value="{{ review.review_for|title }}" type="text" name="selected-movie-title" id="movie-title" readonly>
                 <p class="invalid-message mb-2">&nbsp;</p>
                 <label for="review-title" class="small-text unselected-text">Review Title *</label>
                 <input value="{{ review.review_title|title }}" type="text" name="review-title" id="review-title" placeholder="Review Title" minlength="2" maxlength="75" class="validate" pattern='^(?!.*[  !-.,?:/;"(]{3})[a-zA-Z0-9 !-.,?:/;"(]{2,75}$' required>
                 <p class="invalid-message">2 to 75 characters long using letters, numbers and only 2 spaces and/or symbols consecutively</p>
                 <label for="movie-review" class="small-text unselected-text">Movie Review *</label>
-                <textarea name="movie-review" id="movie-review" rows ="8" cols="100" placeholder="Movie Review" minlength="10" maxlength="500" class="validate" pattern='^{10,500}$' required>{{ review.review }}</textarea>
+                <textarea name="movie-review" id="movie-review" rows ="8" cols="100" placeholder="Movie Review" minlength="10" maxlength="500" class="validate" required>{{ review.review }}</textarea>
                 <p class="invalid-message">Review from 10 to 500 characters in length</p>
                 <div class="star-rating-container">
                     <input type="hidden" name="star-count" id="star-count" value="{{ review.star_rating }}">
