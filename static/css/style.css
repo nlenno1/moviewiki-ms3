@@ -1,5 +1,5 @@
 body {
-    font-family: Montserrat, sans-serif;
+    font-family: "Montserrat", "sans-serif";
     transition: 0.3s;
 }
 
@@ -11,7 +11,7 @@ h4,
 .logo,
 .movie-font,
 .movie-image-continer, .title {
-    font-family: Bebas Neue, sans-serif;
+    font-family: "Bebas Neue", "sans-serif";
 }
 
 .container {
@@ -29,6 +29,7 @@ h4,
     margin: 0.5rem 4px;
     height: 40px;
     transition: 0.3s;
+    border: 2px outset #c4c4c4;
 }
 
 .button {
@@ -37,11 +38,9 @@ h4,
     justify-content: center;
     padding: 1px 6px;
     text-align: center;
-    border: 2px outset rgb(133, 133, 133);
     color: #111;
     text-decoration: none;
-    border-color: -internal-light-dark(rgb(118, 118, 118), rgb(133, 133, 133));
-} 
+}
 
 .generic-button:hover, .button:hover {
     color: #fafafa;
@@ -512,7 +511,7 @@ select,
     padding: 10px;
 }
 
-input[type="checkbox"i] {
+input[type="checkbox" i] {
     width: 20px !important;
     margin: 3px 3px 3px 4px;
     box-sizing: border-box;
@@ -522,6 +521,7 @@ input[type="checkbox"i] {
     padding: 5px 10px;
     width: 100%;
     background-color: #fff;
+    appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
     -o-appearance: none;
@@ -588,7 +588,7 @@ p>a {
 }
 
 p>a:hover {
-    font-size: 600;
+    font-weight: 900;
     color: #ffca18;
 }
 
@@ -976,13 +976,15 @@ select>.text-black {
 
 /* Profile */
 
-.profile_controls_container,
 .profile_controls_container div {
-    text-align: center;
     display: flex;
     flex-wrap: nowrap;
     flex-direction: column;
     align-items: center;
+}
+
+.profile_controls_container h1, .profile_controls_container div {
+    text-align: center;
 }
 
 .user-info {
