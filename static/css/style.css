@@ -639,7 +639,7 @@ p>a:hover {
 
 .movie-picture-display img {
     object-fit: cover;
-    width: 100%;
+    width: 169px;
     border-radius: 3px;
     transition: all 0.2s ease-in-out;
 }
