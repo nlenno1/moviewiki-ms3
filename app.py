@@ -230,6 +230,9 @@ def generate_new_movie_dict(movie_id=None, update=None):
     """
     create new movie dict for add or edit movie
     """
+    image_link = request.form.get("image-link")
+    if not image_link:
+        image_link = "none"
     new_movie = {
         "movie_title": request.form.get("movie-title").lower(),
         "release_date": datetime.strptime(request.form.get(
@@ -242,7 +245,7 @@ def generate_new_movie_dict(movie_id=None, update=None):
             "cast-members").lower().split(","),
         "movie_synopsis": request.form.get("movie-synopsis"),
         "movie_description": request.form.get("movie-description"),
-        "image_link": request.form.get("image-link"),
+        "image_link": image_link,
     }
     if update is None:
         new_movie["reviews"] = []
@@ -330,6 +333,16 @@ def check_key_in_array_of_dicts(array_to_check, key, value_to_check_against):
     return False
 
 
+def check_and_replace_image_links(movies):
+    """
+    check image link in list of movies and replace with file name if needed
+    """
+    for movie in movies:
+        if movie["image_link"] == "none":
+            movie["image_link"] = url_for(
+                                'static', filename='img/movie_placeholder.png')
+
+
 # ---------- app.route ----------
 @app.route("/")
 @app.route("/home")
@@ -345,6 +358,7 @@ def home():
                                             "image_link": 1,
                                             "age_rating": 1}).sort(
                                                                 "movie_title"))
+    check_and_replace_image_links(movies)
     # sorted alphabeticallly by title with max of 15
     all_movies = movies[:15]
     # sorted by average rating by title with max of 15
@@ -517,6 +531,7 @@ def profile():
                                             "genre": 1,
                                             "average_rating": 1,
                                             "age_rating": 1}))
+    check_and_replace_image_links(movies)
     suggested_movies = create_similar_movies_list(  # generate movie lists
                         movies, "genre", user["favourite_genres"],
                         'average_rating', 15, None, user["dob"],
@@ -760,6 +775,7 @@ def view_movie(movie_id):
                                             "release_date": 1,
                                             "latest_reviews": 1,
                                             "image_link": 1}))
+    check_and_replace_image_links(movies)
     sim_movies = create_similar_movies_list(movies, "genre", movie["genre"],
                                             'average_rating', 15, movie["_id"])
     movie_genre_text_list = ', '.join(name.title() for name in movie["genre"])
@@ -1105,6 +1121,7 @@ def view_all_movies():
     """
     movies = mongo.db.movies.find({}, {"movie_title": 1, "image_link": 1,
                                        "release_date": 1}).sort("movie_title")
+    check_and_replace_image_links(movies)
     return render_template("view-all-movies.html", movies=movies)
 
 
