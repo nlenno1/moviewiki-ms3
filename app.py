@@ -873,7 +873,7 @@ def delete_movie(movie_id):
 
 
 # review management
-@app.route("/movies/<movie_id>/reviews")
+@app.route("/movie/<movie_id>/reviews")
 def view_reviews(movie_id):
     """
     view all reviews from a specific movie
