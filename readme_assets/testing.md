@@ -7,6 +7,9 @@
 ### User Stories
 
 **Casual/First Time User** 
+<details>
+  <summary>As a Casual/First Time User, I want to be able to:</summary>
+
 - Find out more about MovieWiki and how to use it
     - The About page, which is easily accessabily from the navbar or sidenav at all times, contains all the information needed.
 - Search for specific movies or view all movies
@@ -28,9 +31,13 @@
     - When a user is logged in, the name and email fields will auto fill for ease of use.
 - Create an account if I want to do more
     - The sign up page is always easliy accessible from the navbar or sidebar through the sign up button.
+</details>
+<br>
 
+**Contributer** 
+<details>
+  <summary>As a contributer who has signed in, I want to be able to:</summary>
 
-**Contributer** - As a contributer who has signed in, I want to be able to:
 - Do everything a Causal User can
     - See above
 - Add, edit and delete my own movie reviews
@@ -60,13 +67,19 @@
 - Delete my account
     - The delete account button is found at the bottom of the edit user profile page.
     - When clicked the user is shown a confirmation screen which contains details about hwo their access will be effected if they delete their account.
+</details>
+<br>
 
-**Admin** - As an administrator, I want to be able to:
+**Admin**
+<details>
+  <summary>As an administrator, I want to be able to:</summary>
+
 - Do everything a Contributer can
 - Delete any Movie Profile
 - Delete any Review
 - Add, Modify and Delete any Genre Catagory
-
+</details>
+<br>
 
 ### Peer Review Testing
 
@@ -81,15 +94,35 @@ Mobile Compatibility Tester - Google Mobile-Friendly Test
 ## General Testing
 General Performance/SEO - Google Lighthouse
 
-Colour Tester - A11y
-
 ## Validation
 
 ### HTML
 
 To validate the HTML files I used the [W3C Markup Validator](https://validator.w3.org/nu/).
 I passed the url into the validator to stop any Jinja Templating Language creating errors.
-**All the HTML passed validation with no issues**. Below is the confirmation messages:
+For the Error page, I opened the page on a web browser, copies the HTML code and directly inputed it into the validator.
+
+<details>
+  <summary>HTML Validation Errors</summary>
+
+Validating the HTML raised several validation errors:
+|Error |Solution|
+|-----|-----|
+|movie image tags with an empty src attribute |add a placeholder of "none" if no movie link when creating/updating a movie document and add a function to check for "none" and replace it with a local image link if found|
+|hr elements inside a ul |stop the list and start it again after the hr element in the navbar/sidebar and remove hr from navbar dropdown|
+|aria-labelledby attributes of id names that didn't exist |check and update to the correct value (heading -> header)|
+|textarea input elements with the pattern attribute |remove pattern attribute from textarea elements and correct error message to just length of input|
+|div inside a ul for th edropdown genre lists which were targeted by a JS function |removed the div, added div classes to the ul and changed JS selector values to find ul without div|
+|genre select element, for edit movie which is auto filled, which has the required attribute, needs the first option in the list to have a value equal to "" |add a first option with a value of "" and the hidden attribute |
+|date input can not have a placeholder attribute |remove the placeholder attribute |
+|label's for attribute must point to an Id on the page |update label's for attibute |
+|id attribute can not contain whitespaces |use the jinja replace filter to replace whitespaces for dashes|
+|duplicated id values for star icons |remove the id sttribute when generating the stars with Jinja|
+</details>
+
+After correcting these errors, the **HTML passed validation with no issues**. 
+
+Below are the confirmation messages:
 
 <details>
   <summary>HTML/Markup Validation</summary>
@@ -111,30 +144,92 @@ I passed the url into the validator to stop any Jinja Templating Language creati
 ![Validation Image](validation/view-all-user-reveiws-valid.jpg)
 ![Validation Image](validation/view-movie-valid.jpg)
 ![Validation Image](validation/view-reviews-valid.jpg)
+![Validation Image](validation/error-valid.jpg)
 </details>
+<br>
 
 ### CSS
 
+To validate the CSS file I used the [W3C CSS Validator](https://jigsaw.w3.org/css-validator/).
+I tested the style.css by direct input.
+
+When testing the validator found a:
+- Parse Error created after using the css selector"["checkboxi]" instead of "[checkbox] i",
+- Value Error created by using the font-size attribute rather than the font-weight with the value of 600,
+
+After correcting these issues the **CSS passed validation** with 3 warnings which are about browser compatability which is why they were left.
+
+![Validation Image](validation/css-valid-warnings.jpg)
+<br>
 
 ### JavaScript
+
+I used the [Beautify Tools JavaScript Validator](https://beautifytools.com/javascript-validator.php) to validate my JavaScript.
+
+During validation, a few errors kept comming up which were:
+1. missing semicolon
+2. a variable not being defined
+3. a function not being defined
+
+I fixed all instances of error 1 and 2 however due to the way I have used the JavaScript functions, either calling them inline from the HTML or from a different JS file using event listeners, the validator can not see where the function is defined or used. 
+
+This means the JavaScript files have the following validation errors because of how the validator works.
 
 <details>
   <summary>JavaScript Validation Errors</summary>
 
 Base Control
+
 ![Validation Image](validation/base-control-valid.jpg)
+
 Create Edit Movie Validation
+
 ![Validation Image](validation/create-edit-movie-validation-valid.jpg)
+
 Date Picker
+
 ![Validation Image](validation/date-picker-valid.jpg)
+
 Profile Delete
+
 ![Validation Image](validation/profile-delete-valid.jpg)
+
 Review Questions
+
 ![Validation Image](validation/review-questions-control-valid.jpg)
+
 Review Star Function
+
 ![Validation Image](validation/review-star-function-valid.jpg)
+
 </details>
+<br>
 
 ### Python
 
+Throughout the building of my projext, I used [flake8](https://pypi.org/project/flake8/) and [pylint](https://www.pylint.org/) installed on my IDE to validate my Python code.
+
+When I had finished building the project, I ran one last test on [PEP8 online](http://pep8online.com/) to confirm my code is PEP8 complient. 
+
+My app.py file **passed all PEP8 compliance validation** with no issues.
+
+<details>
+  <summary>Python Validation Results</summary>
+
 ![Validation Image](validation/python-valid.jpg)
+</details>
+<br>
+
+### Colour Tester - A11y
+
+I validated my colour scheme contrast on A11y Color Contrast Accessibility Validator to improve accessibility.
+
+I used the Sign Up page as it contains all the colours on the site and is accessabily by a user who is not signed in.
+
+The Sign Up page **passed** the colour contrast test with no issues.
+
+<details>
+  <summary>A11y Results</summary>
+
+![Validation Image](validation/color-valid.jpg)
+</details>
