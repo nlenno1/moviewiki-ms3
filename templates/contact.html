@@ -16,7 +16,6 @@
                     <input type="text" {% if user %}value="{{ user.firstname|title }} {{ user.lastname|title }}"{% endif %} name="full-name" id="full-name" placeholder="Full Name" minlength="2" maxlength="25" class="validate" pattern="^(?!.*[ -]{2})[a-zA-Z- ]{2,25}$" required>
                     <p class="invalid-message">2 to 25 characters long using letters and only 1 space or dash consecutively</p>
                 </div>
-                
                 <label for="email" class="small-text unselected-text">Email Address *</label>
                 <div>
                     <input type="email" value="{{ user.email }}" name="email" id="email" placeholder="Email Address" minlength="6" maxlength="40" class="validate" required>
