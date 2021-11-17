@@ -1,5 +1,5 @@
 function checkGenreHasBeenChecked(event) {
-    if ($('div.checkbox-group.required :checkbox:checked').length == 0) {
+    if ($('ul.checkbox-group.required :checkbox:checked').length == 0) {
         alert('Please choose at least one Genre from the dropdown');
         event.preventDefault(event);
     }
