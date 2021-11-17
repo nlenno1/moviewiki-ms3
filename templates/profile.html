@@ -160,7 +160,7 @@
                                                     <p>{% if review.review %}{{ review.review }}{% else %}There is no text in this review{% endif %}</p>
                                                     <p class="small-text">Reviewed on: {{ review.review_date.strftime('%d %B %Y at %H:%M') }}</p>
                                                     <div class="justify-right">
-                                                        <a class="button generic-button button-color-gold" href="{{ url_for('edit_review', movie_id=review.review_for_id, user_id=review.reviewer_id) }}">Update Review</a>
+                                                        <a class="button generic-button button-color-gold" href="{{ url_for('edit_review', movie_id=review.review_for_id) }}">Update Review</a>
                                                         <a class="button generic-button button-color-gold" href="{{ url_for('view_movie', movie_id=review.review_for_id) }}">View Movie</a>
                                                     </div>
                                                 </div>

@@ -66,10 +66,10 @@
                         </div>
                         <div class="review-footer">
                         {% if (review.reviewer_id == session["id"]) %}
-                            <a class="button generic-button button-color-gold" href="{{ url_for('edit_review', movie_id=movie._id, user_id=review.reviewer_id) }}">Update Review</a>
+                            <a class="button generic-button button-color-gold" href="{{ url_for('edit_review', movie_id=movie._id) }}">Update Review</a>
                         {% endif %}
                         {% if session["is_superuser"] == True %}   
-                            <a class="button generic-button button-color-red" href="{{ url_for('delete_review', movie_id=movie._id, user_id=review.reviewer_id) }}">Delete Review</a>
+                            <a class="button generic-button button-color-red" href="{{ url_for('delete_review', movie_id=movie._id) }}">Delete Review</a>
                         {% endif %}
                         </div>
                     </div>

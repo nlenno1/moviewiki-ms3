@@ -7,7 +7,7 @@
         {% if user_reviewed == False %}
             <div class="text-button-container">
                 <p class=" text-center">Want to add your review of this movie? Click here!</p>
-                {% if session["user"] %}
+                {% if session["id"] %}
                     <a class="button generic-button button-color-gold" href="{{ url_for('create_review', movie_id=movie._id) }}">Create Review</a>
                 {% else %}
                     <a class="button generic-button button-color-gold" href="{{ url_for('signin') }}">Sign In</a> 
@@ -15,7 +15,7 @@
             </div>
         {% else %}
             <div class="text-button-container">
-                <p class=" text-center">You have reviewed this movie</p><a class="button generic-button button-color-gold" href="{{ url_for('edit_review', movie_id=movie._id, user_id=session['id']) }}">Update Review</a>
+                <p class=" text-center">You have reviewed this movie</p><a class="button generic-button button-color-gold" href="{{ url_for('edit_review', movie_id=movie._id) }}">Update Review</a>
             </div>
         {% endif %}
         <div class="card form-card mt-0 shadow">
@@ -66,7 +66,7 @@
                     </div>
                     <div class="row g-0">
                         <div class="col-12 view-movie-button-container mb-3">
-                            {% if session["user"] %}
+                            {% if session["id"] %}
                                 {% if user_watched == True %}
                                     <a class="button generic-button button-color-gold movie-font"
                                             href="{{ url_for('remove_watched_movie', movie_id=movie._id) }}">I Haven't Watched

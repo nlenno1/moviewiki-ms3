@@ -6,26 +6,26 @@
     <div class="container-md">
         <h3 class="mt-5 text-center">Write a Review for any Movie that has a profile</h3>
         <h5 class="text-center">Type into the Movie Title box to search for the movie you want<br>If the movie you want is not in the dropdown menu then it doesn't have a profile yet!</h5>
-        <form class="generic-form" method="POST" action="{{ url_for('edit_review', movie_id=selected_movie._id, user_id=movie_review.reviewer_id) }}">
+        <form class="generic-form" method="POST" action="{{ url_for('edit_review', movie_id=movie._id) }}">
             <div id="add-review" class="card form-card card-small shadow">
                 <div class="text-end small-text unselected-text">
                     * required
                 </div>
                 <label for="movie-title-list" class="small-text unselected-text">Movie Title *</label>
-                <input value="{{ selected_movie.movie_title|title }}" type="text" name="selected-movie-title" id="movie-title" readonly>
+                <input value="{{ review.review_for|title }}" type="text" name="selected-movie-title" id="movie-title" readonly>
                 <p class="invalid-message mb-2">&nbsp;</p>
                 <label for="review-title" class="small-text unselected-text">Review Title *</label>
-                <input value="{{ movie_review.review_title|title }}" type="text" name="review-title" id="review-title" placeholder="Review Title" minlength="2" maxlength="75" class="validate" pattern='^(?!.*[  !-.,?:/;"(]{3})[a-zA-Z0-9 !-.,?:/;"(]{2,75}$' required>
+                <input value="{{ review.review_title|title }}" type="text" name="review-title" id="review-title" placeholder="Review Title" minlength="2" maxlength="75" class="validate" pattern='^(?!.*[  !-.,?:/;"(]{3})[a-zA-Z0-9 !-.,?:/;"(]{2,75}$' required>
                 <p class="invalid-message">2 to 75 characters long using letters, numbers and only 2 spaces and/or symbols consecutively</p>
                 <label for="movie-review" class="small-text unselected-text">Movie Review *</label>
-                <textarea name="movie-review" id="movie-review" rows ="8" cols="100" placeholder="Movie Review" minlength="10" maxlength="500" class="validate" pattern='^{10,500}$' required>{{ movie_review.review }}</textarea>
+                <textarea name="movie-review" id="movie-review" rows ="8" cols="100" placeholder="Movie Review" minlength="10" maxlength="500" class="validate" pattern='^{10,500}$' required>{{ review.review }}</textarea>
                 <p class="invalid-message">Review from 10 to 500 characters in length</p>
                 <div class="star-rating-container">
-                    <input type="hidden" name="star-count" id="star-count" value="{{ movie_review.star_rating }}">
+                    <input type="hidden" name="star-count" id="star-count" value="{{ review.star_rating }}">
                     <span>Click the stars to choose your Star Rating: </span>
                     <span class="star_container">
                         {% for i in range(1,6) %}
-                            {% if (i) <= movie_review.star_rating %}
+                            {% if (i) <= review.star_rating %}
                                 <i id="{{ i }}" class="fas fa-star gold-star"></i>
                             {% else %}
                                 <i id="{{ i }}" class="fas fa-star"></i>
@@ -35,9 +35,9 @@
                 </div>
                 <div class="buttons-container mt-4 mb-2">
                     <button type="submit" class="generic-button button-color-gold mt-2">Update Review</a></button>
-                    <a class="button generic-button" href="{{ url_for('view_reviews', movie_id=movie_review.review_for_id) }}">Cancel</a>
-                    {% if (movie_review.reviewer_id == session["id"]) or (session["is_superuser"] == True) %}   
-                        <a  class="button generic-button button-color-red" href="{{ url_for('delete_review', movie_id=movie_review.review_for_id, user_id=movie_review.reviewer_id) }}">Delete Review</a>
+                    <a class="button generic-button" href="{{ url_for('view_reviews', movie_id=review.review_for_id) }}">Cancel</a>
+                    {% if (review.reviewer_id == session["id"]) or (session["is_superuser"] == True) %}   
+                        <a  class="button generic-button button-color-red" href="{{ url_for('delete_review', movie_id=review.review_for_id) }}">Delete Review</a>
                     {% endif %}
                 </div>
             </div>

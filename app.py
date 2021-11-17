@@ -192,7 +192,8 @@ def add_review_to_latest_reviews_dicts(movie, new_review_dict):
 
 def create_similar_movies_list(collection, collection_list_name, user_list,
                                sort_list_by_key=None, new_list_length=None,
-                               movie_id=None, dob=None, movies_watched_list=None):
+                               movie_id=None, dob=None,
+                               movies_watched_list=None):
     """
     creates similar or suggested movies lists
     """
@@ -206,7 +207,8 @@ def create_similar_movies_list(collection, collection_list_name, user_list,
     if dob:
         storage_list = filter_movies_using_age_ratings(storage_list, dob)
     if movies_watched_list:
-        storage_list = check_if_user_has_watched(storage_list, movies_watched_list)
+        storage_list = check_if_user_has_watched(
+                        storage_list, movies_watched_list)
     if new_list_length:
         storage_list = storage_list[:new_list_length]
     return storage_list
@@ -318,6 +320,13 @@ def check_if_user_has_watched(movies_list, watched_list):
     storage_list = [movie for movie in movies_list if movie["_id"] not in
                     [movie["movie_id"] for movie in watched_list]]
     return storage_list
+
+
+def check_key_in_array_of_dicts(array_to_check, key, value_to_check_against):
+    for item in array_to_check:
+        if value_to_check_against == item[key]:
+            return True
+    return False
 
 
 # ---------- app.route ----------
@@ -450,7 +459,7 @@ def delete_genre(genre_id):
     return redirect(url_for('get_all_genre'))
 
 
-# user account management
+# user account
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
     """
@@ -484,14 +493,14 @@ def signup():
         }  # insert dict into DB
         new_id = mongo.db.users.insert_one(register).inserted_id
         session["id"] = str(new_id)  # put the user in session
+        session["user"] = register['username']
         is_admin()  # assign is_superuser value
-        flash(f"Registration Successful!")
+        flash("Registration Successful!")
         return redirect(url_for('profile'))
     genre_list = list(mongo.db.genre.find().sort("genre_name"))
     return render_template("signup.html", genre_list=genre_list)
 
 
-# view user profile
 @app.route("/profile")
 def profile():
     """
@@ -625,83 +634,85 @@ def delete_user_profile(user_id):
     return redirect(url_for('profile'))
 
 
-# user account access
 @app.route("/signin", methods=["GET", "POST"])
 def signin():
-    if request.method == "POST":
-        # check if username is on the BD
+    """
+    GET - returns sign in page
+    POST - check if user exists, check password hash and if correct
+    """
+    if request.method == "POST":  # check if username is on the BD
         existing_user = mongo.db.users.find_one(
-            {"username": request.form.get("username").lower()}
+            {"username": request.form.get("username").lower()},
+            {"password_hash": 1, "username": 1}
         )
-        if existing_user:
+        if existing_user:  # check password hash
             if check_password_hash(existing_user["password_hash"],
                                    request.form.get("password")):
-
                 session["id"] = str(existing_user["_id"])
-                is_admin()
-
+                session["user"] = existing_user['username']
+                is_admin()  # set is_superuser variable
                 flash(f"Welcome Back {existing_user['username'].capitalize()}")
-
                 return redirect(url_for('profile'))
             else:
                 flash("The information entered is incorrect")
                 return redirect(url_for('signin'))
-
         else:
             flash("The information entered is incorrect")
             return redirect(url_for('signin'))
-
     return render_template("signin.html")
 
 
 @app.route("/signout")
 def signout():
-
     user_signed_in = is_signed_in()
     if not user_signed_in:
         flash("You need to be Signed In to Sign Out")
         return redirect(url_for("signin"))
-
     flash("You have signed out")
     session.clear()
     return redirect(url_for('home'))
 
 
+# movie management
 @app.route("/movie/add", methods=["GET", "POST"])
 def create_movie():
-
+    """
+    GET - find and sort genre and age rating lists for movie add form
+    POST - if no similar movies titles, generate new movie dict and insert
+    into DB. If added, insert review after.
+    """
     user_signed_in = is_signed_in()
     if not user_signed_in:
         flash("You need to be signed in to add a movie")
         return redirect(url_for("signin"))
-
     if request.method == "POST":
         new_movie = generate_new_movie_dict()
-
         existing_movies = mongo.db.movies.find(
-                        {"movie_title": new_movie["movie_title"]})
+                        {"movie_title": new_movie["movie_title"]},
+                        {"release_date": 1, "movie_title": 1})
         if existing_movies:
             for movie in existing_movies:
+                # convert datetime to string to compare
                 if movie["release_date"].strftime(
-                '%Y') == new_movie["release_date"].strftime('%Y'):
+                     '%Y') == new_movie["release_date"].strftime('%Y'):
                     flash(f"There is already a movie called "
-                        f"{new_movie['movie_title'].title()} which was "
-                        f"released in "
-                        f"{new_movie['release_date'].strftime('%Y')}")
+                          f"{new_movie['movie_title'].title()} which was "
+                          f"released in "
+                          f"{new_movie['release_date'].strftime('%Y')}")
                     flash("Either use the existing movie profile or change"
-                        " the release year")
+                          " the release year")
                     return redirect(url_for('view_all_movies'))
-
+        # movie dict insert and returns new ObjectId
         new_id = mongo.db.movies.insert_one(new_movie).inserted_id
         movie = find_one_with_id("movies", ObjectId(new_id))
-        if movie:
+        if movie:  # check movie was created and add review
             flash(f"Movie {movie['movie_title'].title()} Created")
             if request.form.get("submit-movie-review"):
                 new_review = create_single_review(movie)
                 mongo.db.movies.update_one({"_id": ObjectId(movie["_id"])},
-                                        {"$push": {"reviews": new_review}})
+                                           {"$push": {"reviews": new_review}})
                 create_and_add_mini_movie_dict(new_id, "movies_reviewed",
-                                            movie)
+                                               movie)
                 add_review_to_latest_reviews_dicts(
                     movie, create_single_review(movie, movie["_id"]))
                 update_average_rating(ObjectId(new_id))
@@ -710,99 +721,74 @@ def create_movie():
         else:
             flash("An error occured and the Movie was not created")
         return redirect(url_for("create_movie"))
-
     genre_list = list(mongo.db.genre.find().sort("genre_name"))
     age_ratings = mongo.db.age_ratings.find().sort("uk_rating_order")
     return render_template("create-movie.html", genre_list=genre_list,
-                            age_ratings=age_ratings)
-
-
-def check_key_in_array_of_dicts(array_to_check, key, value_to_check_against):
-    for item in array_to_check:
-        if value_to_check_against == item[key]:
-            return True
-    return False
+                           age_ratings=age_ratings)
 
 
 @app.route("/movie/<movie_id>/view")
 def view_movie(movie_id):
-    try:
-        movie = mongo.db.movies.find_one(
-                {'_id': ObjectId(movie_id)})
-    except Exception as e:
-        flash("Movie Not Found")
-        flash(str(e))
-        flash("Please try again or get in touch to report "
-              "a reoccurring problem")
-        return redirect(url_for('view_all_movies'))
-
+    """
+    check movie exists, find user interactions with movie if signed in,
+    create required lists and display
+    """
+    movie = mongo.db.movies.find_one(
+            {'_id': ObjectId(movie_id)})
     user_want_to_watch = False
     user_watched = False
     user_reviewed = False
-
-    if is_signed_in():
-        try:
-            user = mongo.db.users.find_one(
-                {"_id": ObjectId(session["id"])},
-                {"_id": 0, "movies_watched": 1, "movies_to_watch": 1,
-                 "movies_reviewed": 1})
-        except Exception:
-            pass
-
-        if user:
+    if is_signed_in():  # check for user documnet
+        user = mongo.db.users.find_one(
+            {"_id": ObjectId(session["id"])},
+            {"_id": 0, "movies_watched": 1, "movies_to_watch": 1,
+                "movies_reviewed": 1})
+        if user:  # create user account lists
             user_reviewed = check_key_in_array_of_dicts(
                               user["movies_reviewed"],
                               "movie_id", movie["_id"])
-
             user_watched = check_key_in_array_of_dicts(
                             user["movies_watched"],
                             "movie_id", movie["_id"])
-
             user_want_to_watch = check_key_in_array_of_dicts(
                                   user["movies_to_watch"],
                                   "movie_id", movie["_id"])
-
-    # generate similar_movies list
+    # create render_template required arguements
     movies = list(mongo.db.movies.find({}, {"genre": 1, "average_rating": 1,
                                             "movie_title": 1,
                                             "release_date": 1,
                                             "latest_reviews": 1,
                                             "image_link": 1}))
-    similar_movies = create_similar_movies_list(movies, "genre", movie["genre"], 'average_rating', 15, movie["_id"])
-
-    movie__genre_text_list = ', '.join(name.title() for name in movie["genre"])
-    movie["genre"] = movie__genre_text_list
+    sim_movies = create_similar_movies_list(movies, "genre", movie["genre"],
+                                            'average_rating', 15, movie["_id"])
+    movie_genre_text_list = ', '.join(name.title() for name in movie["genre"])
+    movie["genre"] = movie_genre_text_list  # convert genre list to a string
     latest_reviews = sorted(movie["latest_reviews"], key=lambda d: d[
                         'review_date'], reverse=True)
-
     return render_template("view-movie.html", movie=movie,
                            user_watched=user_watched,
                            user_want_to_watch=user_want_to_watch,
-                           similar_movies=similar_movies,
+                           similar_movies=sim_movies,
                            latest_reviews=latest_reviews,
                            user_reviewed=user_reviewed)
 
 
 @app.route("/movie/<movie_id>/edit", methods=["GET", "POST"])
 def edit_movie(movie_id):
-    try:
-        movie = mongo.db.movies.find_one({"_id": ObjectId(movie_id)})
-    except Exception as e:
-        flash("Movie Not Found")
-        flash(str(e))
-        flash("Please try again or get in touch to report "
-              "a reoccurring problem")
-        return redirect(url_for('view_all_movies'))
-
-    if movie:
-        # use id from movie["created_by"] to check if user created the profile
+    """
+    GET - gather data and create lists/variables for display in inputs
+    POST - check for movie, create new movie dict, update movie then add
+    review to movie and user documnets
+    """
+    movie = mongo.db.movies.find_one({"_id": ObjectId(movie_id)})
+    if movie:  # use movie["created_by"] id to check if user created movie
         is_user_allowed = is_correct_user(movie["created_by"])
         if not is_user_allowed:
             return redirect(url_for("home"))
-
         if request.method == "POST":
             updated_movie = generate_new_movie_dict(movie_id, "update")
-            mongo.db.movies.update_one({"_id": ObjectId(movie_id)}, {"$set": updated_movie})
+            mongo.db.movies.update_one({"_id": ObjectId(movie_id)},
+                                       {"$set": updated_movie})
 
             if request.form.get("submit-movie-review"):
                 create_and_add_mini_movie_dict(movie_id, "movies_reviewed",
@@ -813,17 +799,14 @@ def edit_movie(movie_id):
 
             flash("Movie Profile Successfully Updated")
             return redirect(url_for("view_movie", movie_id=movie_id))
-
         genre_list = list(mongo.db.genre.find().sort("genre_name"))
         for genre in genre_list:
             if genre["genre_name"].lower() in movie["genre"]:
                 genre["checked"] = True
         age_ratings = mongo.db.age_ratings.find().sort("uk_rating_order")
-        # make into function??
         matching_ids = [review["reviewer_id"] for review in movie["reviews"]
                         if review["reviewer_id"] == session["id"]]
         user_has_reviewed = True if matching_ids else False
-
         cast_members_string = ','.join(name.title() for name in movie[
                                 "cast_members"])
         return render_template("edit-movie.html", genre_list=genre_list,
@@ -832,110 +815,86 @@ def edit_movie(movie_id):
                                user_has_reviewed=user_has_reviewed)
     else:
         flash("Movie Not Found")
-        return redirect(url_for('view_all_movies'))
+        return redirect(url_for('home'))
 
 
 @app.route("/movie/<movie_id>/delete")
 def delete_movie(movie_id):
-    try:
-        movie = mongo.db.movies.find_one({"_id": ObjectId(movie_id)},
-                                         {"created_by": 1})
-    except Exception as e:
-        flash("Movie Not Found")
-        flash(str(e))
-        flash("Please try again or get in touch to report "
-              "a reoccurring problem")
-        return redirect(url_for('view_all_movies'))
-
+    """
+    check movie exists, if user allowed, delete from all storage locations
+    """
+    movie = mongo.db.movies.find_one({"_id": ObjectId(movie_id)},
+                                     {"created_by": 1})
     if movie:
-        # use id from movie["created_by"] field to check if user
-        # created the profile
+        # compare movie["created_by"] id to check if user created movie
         is_user_allowed = is_correct_user(movie["created_by"])
         if not is_user_allowed:
             flash("You are not allowed to delete this movie")
             return redirect(url_for("home"))
-        # remove movie from all users movies_reviewed, watched and to watch arrays
-        mongo.db.users.update_many({}, {"$pull": {"movies_reviewed": {"movie_id": movie["_id"]}}})
-
-        mongo.db.users.update_many({}, {"$pull": {"movies_watched": {"movie_id": movie["_id"]}}})
-
-        mongo.db.users.update_many({}, {"$pull": {"movies_to_watch": {"movie_id": movie["_id"]}}})
+        # remove movie from all users movies_reviewed, watched
+        # and to watch arrays
+        mongo.db.users.update_many({}, {"$pull": {"movies_reviewed":
+                                        {"movie_id": movie["_id"]}}})
+        mongo.db.users.update_many({}, {"$pull": {"movies_watched":
+                                        {"movie_id": movie["_id"]}}})
+        mongo.db.users.update_many({}, {"$pull": {"movies_to_watch":
+                                        {"movie_id": movie["_id"]}}})
         # remove movie from all users latest_reviews array
-        mongo.db.users.update_many({}, {"$pull": {"user_latest_reviews": {"review_for_id": movie["_id"]}}})
-
-        mongo.db.movies.remove({
-            "_id": movie["_id"]
-        })
+        mongo.db.users.update_many({}, {"$pull": {"user_latest_reviews":
+                                        {"review_for_id": movie["_id"]}}})
+        mongo.db.movies.delete_one({"_id": movie["_id"]})
         flash("Movie Deleted")
-
     else:
         flash("Movie Not Found So Not Deleted")
     return redirect(url_for('home'))
 
 
 # review management
-@app.route("/reviews/<movie_id>/view")
+@app.route("/movies/<movie_id>/reviews")
 def view_reviews(movie_id):
-    try:
-        movie = find_one_with_id("movies", ObjectId(movie_id))
-        movie_reviews = sorted(movie["reviews"], key=lambda d: d[
-                                    'review_date'], reverse=True)
-        return render_template("view-reviews.html", movie=movie,
-                               movie_reviews=movie_reviews)
-    except Exception as e:
-        flash("Movie Not Found")
-        flash(str(e))
-        flash("Please try again or get in touch to report "
-              "a reoccurring problem")
-        return redirect(url_for('view_all_movies'))
+    """
+    view all reviews from a specific movie
+    """
+    movie = mongo.db.movies.find_one({"_id": ObjectId(movie_id)},
+                                     {"reviews": 1, "movie_title": 1,
+                                     "average_rating": 1})
+    movie_reviews = sorted(movie["reviews"], key=lambda d: d[
+                                'review_date'], reverse=True)
+    return render_template("view-reviews.html", movie=movie,
+                           movie_reviews=movie_reviews)
 
 
 # use movie_if for this app.route not movie_title - request args **!
 @app.route("/review/add", methods=["GET", "POST"])
 def create_review():
-
+    """
+    GET - if args and if no previous reviews pass in movie, create movie
+    title list for display in create review form
+    POST - check movie exists, check for previous reviews, create review dict
+    and add to movie and user lists
+    """
     user_signed_in = is_signed_in()
     if not user_signed_in:
         flash("You need to be signed in to add a review")
         return redirect(url_for("signin"))
-
     if request.method == "POST":
         movie_id = request.form.get('selected-movie-id')
-
         if movie_id:
-            try:
-                movie = mongo.db.movies.find_one({"_id": ObjectId(movie_id)},
-                                                 {"latest_reviews": 1,
-                                                  "reviews": 1,
-                                                  "movie_title": 1,
-                                                  "release_date": 1})
-            except Exception as e:
-                flash("Movie Not Found")
-                flash(str(e))
-                flash("Please try again or get in touch to report a "
-                      "reoccurring problem")
-                return redirect(url_for('view_all_movies'))
-
-            if movie:
-                # check for previous review from user
-                for review in movie["reviews"]:
-                    if review["reviewer_id"] == session["id"]:
-                        flash("You have already created a review "
-                              "for this movie")
-                        return redirect(url_for('edit_review',
-                                        movie_id=movie["_id"],
-                                        user_id=session["id"]))
-                try:
-                    user = find_one_with_id("users",
-                                             ObjectId(session["id"]))
-                except Exception as e:
-                    flash("User Not Found")
-                    flash(str(e))
-                    flash("Please try again or get in touch to report "
-                          "a reoccurring problem")
-                    return redirect(url_for('view_reviews',
-                                            movie_id=movie["_id"]))
+            movie = mongo.db.movies.find_one({"_id": ObjectId(movie_id)},
+                                             {"latest_reviews": 1,
+                                              "reviews": 1,
+                                              "movie_title": 1,
+                                              "release_date": 1})
+            if movie:  # check for previous review from user
+                user = find_one_with_id("users", ObjectId(session["id"]))
                 if user:
+                    for review in movie["reviews"]:
+                        if review["reviewer_id"] == str(user["_id"]):
+                            flash("You have already created a review "
+                                  "for this movie")
+                            return redirect(url_for('edit_review',
+                                            movie_id=movie["_id"],
+                                            user_id=session["id"]))
                     new_review = create_single_review(movie)
                     mongo.db.movies.update_one({"_id": ObjectId(
                                                 movie["_id"])},
@@ -950,31 +909,14 @@ def create_review():
                 return redirect(url_for('view_reviews', movie_id=movie["_id"]))
             else:
                 flash("Movie Not Found")
-                flash("Please try again or get in touch to report "
-                      "a reoccurring problem")
-                return redirect(url_for('create_review'))
-
         else:
-            requested_movie_name = request.form.get("selected-movie-title")
-
-            flash(f"There is no movie called '{requested_movie_name.title()}' "
-                  f"in the database.\nEither create a profile for this movie "
-                  f"or try a different Movie Title")
+            flash("Please select a Movie")
         return redirect(url_for('create_review'))
-
     movie_id = request.args.get("movie_id")
     if movie_id:
-        try:
-            movie = mongo.db.movies.find_one({"_id": ObjectId(movie_id)},
-                                             {"reviews": 1})
-        except Exception as e:
-            flash("Movie Not Found")
-            flash(str(e))
-            flash("Please try again or get in touch to report a"
-                  " reoccurring problem")
-            return redirect(url_for('view_all_movies'))
-        if movie:
-            # check for previous review from user
+        movie = mongo.db.movies.find_one({"_id": ObjectId(movie_id)},
+                                         {"reviews": 1})
+        if movie:  # check for previous review from user
             if len(movie["reviews"]) > 0:
                 for review in movie["reviews"]:
                     if review["reviewer_id"] == session["id"]:
@@ -993,65 +935,51 @@ def create_review():
         selected_movie_id=movie_id)
 
 
-@app.route("/movie/<movie_id>/review/<user_id>/edit", methods=["GET", "POST"])
-def edit_review(movie_id, user_id):
-    is_user_allowed = is_correct_user(user_id)
+@app.route("/movie/<movie_id>/review/edit", methods=["GET", "POST"])
+def edit_review(movie_id):
+    """
+    GET - display current review for editing in form
+    POST - delete old review, create new review dict and push to doc and lists
+    """
+    user = mongo.db.users.find_one({"_id": ObjectId(session["id"])},
+                                   {"_id": 1})
+    is_user_allowed = is_correct_user(str(user["_id"]))
     if not is_user_allowed:
         return redirect(url_for('view_reviews', movie_id=movie_id))
-
-    if request.method == "POST":
-        try:
-            movie = find_one_with_id("movies", ObjectId(movie_id))
-        except Exception as e:
-            flash("Movie Not Found")
-            flash(str(e))
-            flash("Please try again or get in touch to report a"
-                  " reoccurring problem")
-            return redirect(url_for('view_all_movies'))
-        if movie:
+    if request.method == "POST":  # check movie exists
+        movie = find_one_with_id("movies", ObjectId(movie_id))
+        if movie:  # delete old dict create new dict and push to lists & doc
             updated_review = create_single_review(movie)
-
             update_collection_item_dict("movies", "_id", ObjectId(movie_id),
                                         "$pull", "reviews", "reviewer_id",
-                                        user_id)
-
+                                        str(user["_id"]))
             mongo.db.movies.update_one({"_id": ObjectId(movie_id)},
                                        {"$push": {"reviews": updated_review}})
-
             add_review_to_latest_reviews_dicts(movie, updated_review)
             update_average_rating(ObjectId(movie["_id"]))
-
             return redirect(url_for('view_reviews', movie_id=movie_id))
-    # check this to replace below
-    # mongo.db.movies.find_one({"_id":ObjectId(movie_id)},
-    #                          {"reviews" : {"reviewer_id": user_id}})
+    movie = mongo.db.movies.find_one({"_id": ObjectId(movie_id)},
+                                     {"reviews": 1})
+    review = find_review_for_movies_in_reviews_list(
+                movie["reviews"], str(user["_id"]))
+    return render_template("edit-review.html", movie=movie, review=review)
+
+
+@app.route("/movie/<movie_id>/review/delete")
+def delete_review(movie_id):
+    """
+    check movie and review exists, delete from all lists and movie doc
+    """
+    user = mongo.db.users.find_one({"_id": ObjectId(session["id"])},
+                                   {"_id": 1})
     movie = find_one_with_id("movies", ObjectId(movie_id))
-    review = find_review_for_movies_in_reviews_list(movie["reviews"], user_id)
-
-    return render_template(
-        "edit-review.html",
-        selected_movie=movie, movie_review=review)
-
-
-@app.route("/movie/<movie_id>/review/<user_id>/delete")
-def delete_review(movie_id, user_id):
-
-    is_user_allowed = is_correct_user(user_id)
-    if not is_user_allowed:
-        flash("You don't have permission to delete this review")
-        return redirect(url_for('home'))
-    try:
-        movie = find_one_with_id("movies", ObjectId(movie_id))
-        review = find_review_for_movies_in_reviews_list(
-                    movie["reviews"], user_id)
-    except Exception as e:
-        flash("Review Not Found")
-        flash(str(e))
-        flash("Please try again or get in touch to report a"
-              " reoccurring problem")
-        return redirect(url_for('home'))
-
+    review = find_review_for_movies_in_reviews_list(
+                movie["reviews"], str(user["_id"]))
     if review:
+        is_user_allowed = is_correct_user(review["reviewer_id"])
+        if not is_user_allowed:
+            flash("You are not allowed to delete this review")
+            return redirect(url_for('view_reviews', movie_id=movie_id))
         # remove review from movie profile reviews list using review_date
         update_collection_item_dict("movies", "_id", ObjectId(movie_id),
                                     "$pull", "reviews",
@@ -1062,18 +990,18 @@ def delete_review(movie_id, user_id):
                                     "$pull", "latest_reviews", "review_date",
                                     review["review_date"])
         # remove review from user profile reviews list
-        update_collection_item_dict("users", "_id", ObjectId(user_id),
+        update_collection_item_dict("users", "_id", user["_id"],
                                     "$pull", "movies_reviewed",
                                     "movie_id", ObjectId(movie_id))
         # remove review from user profile latest reviews list
-        update_collection_item_dict("users", "_id", ObjectId(user_id),
+        update_collection_item_dict("users", "_id", user["_id"],
                                     "$pull", "user_latest_reviews",
                                     "review_for_id", ObjectId(movie_id))
         flash("Review deleted")
         update_average_rating(ObjectId(movie_id))
         return redirect(url_for('view_reviews', movie_id=movie_id))
     else:
-        flash("Review not found")
+        flash("Movie and/or Review not found")
         return redirect(url_for('home'))
 
 
@@ -1105,18 +1033,10 @@ def remove_watched_movie(movie_id):
     if not user_signed_in:
         flash("You need to be signed in to do this")
         return redirect(url_for("signin"))
-    try:
-        update_collection_item_dict("users", "_id", ObjectId(session["id"]),
-                                    "$pull", "movies_watched", "movie_id",
-                                    ObjectId(movie_id))
-    except Exception as e:
-        flash("Movie or User Not Found")
-        flash(str(e))
-        flash("Please try again or get in touch to report a"
-              " reoccurring problem")
-        return redirect(url_for('profile'))
+    update_collection_item_dict("users", "_id", ObjectId(session["id"]),
+                                "$pull", "movies_watched", "movie_id",
+                                ObjectId(movie_id))
     flash("Movie Removed from your Watched List")
-
     return redirect(url_for("view_movie", movie_id=movie_id))
 
 
@@ -1127,14 +1047,9 @@ def add_want_to_watch_movie(movie_id):
     if not user_signed_in:
         flash("You need to be signed in to do this")
         return redirect(url_for("signin"))
-    try:
-        create_and_add_mini_movie_dict(movie_id, "movies_to_watch")
-    except Exception as e:
-        flash("Movie or User Not Found")
-        flash(str(e))
-        flash("Please try again or get in touch to report a"
-              " reoccurring problem")
-        return redirect(url_for('profile'))
+
+    create_and_add_mini_movie_dict(movie_id, "movies_to_watch")
+
     flash("Movie added to your Want To Watch List")
 
     return redirect(url_for("view_movie", movie_id=movie_id))
@@ -1147,16 +1062,11 @@ def remove_want_to_watch_movie(movie_id):
     if not user_signed_in:
         flash("You need to be signed in to do this")
         return redirect(url_for("signin"))
-    try:
-        update_collection_item_dict("users", "_id", ObjectId(session["id"]),
-                                    "$pull", "movies_to_watch", "movie_id",
-                                    ObjectId(movie_id))
-    except Exception as e:
-        flash("Movie or User Not Found")
-        flash(str(e))
-        flash("Please try again or get in touch to report a"
-              " reoccurring problem")
-        return redirect(url_for('profile'))
+ 
+    update_collection_item_dict("users", "_id", ObjectId(session["id"]),
+                                "$pull", "movies_to_watch", "movie_id",
+                                ObjectId(movie_id))
+
     flash("Movie Removed from your Want To Watch List")
 
     return redirect(url_for("view_movie", movie_id=movie_id))
