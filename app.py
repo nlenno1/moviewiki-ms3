@@ -402,7 +402,8 @@ def movie_title_search():
     query = request.form.get("movie_title_search")
     searched_movies = list(mongo.db.movies.find(
                             {"$text": {"$search": query}}).sort("movie_title"))
-    return render_template("movie-search.html", movies=searched_movies)
+    movies = check_and_replace_image_links(searched_movies)
+    return render_template("movie-search.html", movies=movies)
 
 
 # genre management

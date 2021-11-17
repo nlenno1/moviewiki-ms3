@@ -372,7 +372,6 @@ footer .logo {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    margin: 40px 0 50px;
     flex-wrap: wrap;
 }
 
@@ -815,14 +814,6 @@ select>.text-black {
     #confirm_profile_delete {
         min-height: calc(100vh - 296px);
     }
-}
-
-/* Modal */
-
-.modal-search-bar-container input {
-    width: 80%;
-    margin-top: 15px;
-    text-align: center;
 }
 
 /* Reviews */

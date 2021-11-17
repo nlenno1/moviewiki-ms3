@@ -4,7 +4,7 @@
     <h1 id="header-title">Genres</h1>
 
     <div class="container-md">
-        <form class="search-bar-container" method="POST" action="{{ url_for('add_genre') }}">
+        <form class="search-bar-container mt-5" method="POST" action="{{ url_for('add_genre') }}">
             <div class="input-container">
                 <div>
                     <input type="text" name="genre-name" id="genre-name" placeholder="New Genre Name" minlength="3" maxlength="20" class="validate" pattern="^(?!.*[ -/]{2})[a-zA-Z0-9-/ ]{3,20}$"  required>

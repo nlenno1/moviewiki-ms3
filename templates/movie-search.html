@@ -6,7 +6,8 @@
     <div class="container-md">
         <div class="row g-0">
             <div class="col">
-                <form method="POST" action="{{ url_for('movie_title_search') }}" class="search-bar-container">
+                <h2 class="mb-0 mt-4 text-center">Search for a <strong>Movie Title</strong> to see if it is on MovieWiki</h2>
+                <form method="POST" action="{{ url_for('movie_title_search') }}" class="search-bar-container mt-0">
                     <div class="input-container">
                         <div>
                             <input type="text" name="movie_title_search" id="movie_title_search" placeholder="Search for a Movie" minlength="0" maxlength="30" class="validate" pattern="^(?!.*[ -]{2})[a-zA-Z0-9- ]{0,30}$" required>
@@ -35,6 +36,13 @@
                                 </div>
                             </div>
                         {% endfor %}
+                        <div class="movie-picture-display">
+                            <div class="movie-placeholder">
+                                <p>Can't find the Movie title you want? <br>It might not exist yet. Try a different search or view all our Movies.</p>
+                                <a class="button generic-button button-color-gold" href="{{ url_for('view_all_movies') }}">Movies</a>
+                            </div>
+                            <h4 class="movie-text">Still Looking?</h4>
+                        </div>
                     </div>
                 </div>
             </div>

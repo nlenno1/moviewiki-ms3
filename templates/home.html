@@ -7,10 +7,10 @@
         <div class="row g-0">
             <div class="col">
                 <div class="text-center mt-5 mb-1">
-                    <h3>Welcome to MovieWiki the place to share your views on the latest movies and find new movies to watch!</h3>
-                    <h5>To get started search for a movie title, have a look through the lists below or visit the About page to learn more about how to use MovieWiki</h5>
+                    <h2>Welcome to MovieWiki the place to share your views on the latest movies and find new movies to watch!</h2>
+                    <p class="pb-0">To get started search for a <strong>Movie Title</strong>, have a look through the lists below or visit the About page to learn more about how to use MovieWiki</p>
                 </div>
-                <form method="POST" action="{{ url_for('movie_title_search') }}" class="search-bar-container">
+                <form method="POST" action="{{ url_for('movie_title_search') }}" class="search-bar-container mt-0">
                     <div class="input-container">
                         <div>
                             <input type="text" name="movie_title_search" id="movie_title_search" placeholder="Search for a Movie" minlength="0" maxlength="30" class="validate" pattern="^(?!.*[ -]{2})[a-zA-Z0-9- ]{0,30}$" required>
@@ -66,7 +66,7 @@
                             {% endfor %}
                             <div class="movie-picture-display">
                                 <div class="movie-placeholder">
-                                    <p>Go to your profile for a full list of the films you Want to Watch!</p>
+                                    <p>Go to your profile for a full list of the Movies you Want to Watch!</p>
                                     <a href="{{ url_for('profile') }}" class="button generic-button button-color-gold">Your Profile</a></button>
                                 </div>
                                 <h4 class="movie-text">Still Looking?</h4>
@@ -97,7 +97,7 @@
                     {% if session['id'] %}
                         <div class="movie-picture-display">
                             <div class="movie-placeholder">
-                                <p>Can't find the film you want then try searching or create a new profile for it!</p>
+                                <p>Can't find the Movie you want then try searching or create a new profile for it!</p>
                                 <a href="{{ url_for('create_movie') }}" class="button generic-button button-color-gold">Create Movie</a>
                             </div>
                             <h4 class="movie-text">Still Looking?</h4>
@@ -105,7 +105,7 @@
                     {% else %}
                         <div class="movie-picture-display">
                             <div class="movie-placeholder">
-                                <p>Can't find the film you want then try searching or sign in and create a new profile for it!</p>
+                                <p>Can't find the Movie you want then try searching or sign in and create a new profile for it!</p>
                                 <a class="button generic-button button-color-gold" href="{{ url_for('signin') }}">Sign In</a>
                             </div>
                             <h4 class="movie-text">Still Looking?</h4>
@@ -135,7 +135,7 @@
                     {% if session['id'] %}
                         <div class="movie-picture-display">
                             <div class="movie-placeholder">
-                                <p>Can't find the film you want then try searching or create a new profile for it!</p>
+                                <p>Can't find the Movie you want then try searching or create a new profile for it!</p>
                                 <a href="{{ url_for('create_movie') }}" class="button generic-button button-color-gold">Create Movie</a>
                             </div>
                             <h4 class="movie-text">Still Looking?</h4>
@@ -143,7 +143,7 @@
                     {% else %}
                         <div class="movie-picture-display">
                             <div class="movie-placeholder">
-                                <p>Can't find the film you want then try searching or sign in and create a new profile for it!</p>
+                                <p>Can't find the Movie you want then try searching or sign in and create a new profile for it!</p>
                                 <a href="{{ url_for('signin') }}" class="button generic-button button-color-gold">Sign In</a>
                             </div>
                             <h4 class="movie-text">Still Looking?</h4>
@@ -170,7 +170,7 @@
                     {% if session['id'] %}
                         <div class="movie-picture-display">
                             <div class="movie-placeholder">
-                                <p>Can't find the film you want then try searching or create a new profile for it!</p>
+                                <p>Can't find the Movie you want then try searching or create a new profile for it!</p>
                                 <a href="{{ url_for('create_movie') }}" class="button generic-button button-color-gold">Create Movie</a>
                             </div>
                             <h4 class="movie-text">Still Looking?</h4>
@@ -178,7 +178,7 @@
                     {% else %}
                         <div class="movie-picture-display">
                             <div class="movie-placeholder">
-                                <p>Can't find the film you want then try searching or sign in and create a new profile for it!</p>
+                                <p>Can't find the Movie you want then try searching or sign in and create a new profile for it!</p>
                                 <a href="{{ url_for('signin') }}" class="button generic-button button-color-gold">Sign In</a>
                             </div>
                             <h4 class="movie-text">Still Looking?</h4>
