@@ -1,3 +1,7 @@
+"""
+Import and Flask initialization code adapted from Code Institute's
+Course Material Task Manager Flask App Mini Project
+"""
 import os
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -5,7 +9,7 @@ from flask import (
     Flask, flash, render_template,
     redirect, request, session, url_for)
 from flask_pymongo import PyMongo
-from bson.objectid import ObjectId  # to render an object id in a bson format
+from bson.objectid import ObjectId  # to render object id in a bson format
 if os.path.exists("env.py"):
     import env
 
@@ -1131,39 +1135,39 @@ def view_all_movies():
 @app.errorhandler(400)
 def bad_request(e):
     message = "A Bad Request was made"
-    return render_template('error.html', error=400, message=message), 400
+    return render_template('error.html', error=e, message=message), 400
 
 
 @app.errorhandler(403)
 def forbidden(e):
     message = "This action is Forbidden!"
-    return render_template('error.html', error=403, message=message), 403
+    return render_template('error.html', error=e, message=message), 403
 
 
 @app.errorhandler(404)
 def not_found(e):
     message = "Sorry, we can't find the page you are looking for!"
-    return render_template('error.html', error_code=404, message=message), 404
+    return render_template('error.html', error_code=e, message=message), 404
 
 
 @app.errorhandler(408)
 def request_timeout(e):
     message = "The Server didn't recieve a complete request is time. Please try \
         again"
-    return render_template('error.html', error_code=408, message=message), 408
+    return render_template('error.html', error_code=e, message=message), 408
 
 
 @app.errorhandler(429)
 def too_many_requests(e):
     message = "The Server recieved too many Requests. Try again later"
-    return render_template('error.html', error_code=429, message=message), 429
+    return render_template('error.html', error_code=e, message=message), 429
 
 
 @app.errorhandler(500)
 def internal_server_error(e):
     message = "Sorry, its not you, its me! I have had an internal server \
         error! Please give me some time and we can try again"
-    return render_template('error.html', error_code=500, message=message), 500
+    return render_template('error.html', error_code=e, message=message), 500
 
 
 @app.errorhandler(Exception)
