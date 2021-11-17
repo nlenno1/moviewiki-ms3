@@ -27,7 +27,7 @@
                     </div> 
                     <label for="dob" class="small-text unselected-text">Date Of Birth *</label>
                     <div>
-                        <input onkeydown="return false" type='date' onfocus="dobDatePicker()" value="{{ user.dob }}" name="dob" id="dob" placeholder="Date of Birth" class="validate" required>
+                        <input onkeydown="return false" type='date' onfocus="dobDatePicker()" value="{{ user.dob }}" name="dob" id="dob" class="validate" required>
                         <p class="invalid-message">Use the date picker to select your date of birth</p>
                     </div>
                     <label for="email" class="small-text unselected-text">Email Address *</label>
@@ -41,16 +41,14 @@
                     <button class="dropdown-button dropdown-toggle text-start" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                       <span>Movie Genre Selection</span><i class="fas fa-angle-down"></i>
                     </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                        <div class="checkbox-group required">
-                            {% for genre in genre_list %}
-                                {% if genre.checked %}
-                                <li><input checked id="{{ genre.genre_name }}" name="movie-genre" value="{{ genre.genre_name|lower }}" type="checkbox">{{ genre.genre_name|title }}</li>
-                                {% else %}
-                                <li><input id="{{ genre.genre_name }}" name="movie-genre" value="{{ genre.genre_name|lower }}" type="checkbox">{{ genre.genre_name|title }}</li>
-                                {% endif %}
-                            {% endfor %}
-                        </div>
+                    <ul class="dropdown-menu checkbox-group required" aria-labelledby="dropdownMenuButton1">
+                        {% for genre in genre_list %}
+                            {% if genre.checked %}
+                            <li><input checked id="{{ genre.genre_name|replace(' ','-') }}" name="movie-genre" value="{{ genre.genre_name|lower }}" type="checkbox">{{ genre.genre_name|title }}</li>
+                            {% else %}
+                            <li><input id="{{ genre.genre_name|replace(' ','-') }}" name="movie-genre" value="{{ genre.genre_name|lower }}" type="checkbox">{{ genre.genre_name|title }}</li>
+                            {% endif %}
+                        {% endfor %}
                     </ul>
                 </div>
                 <div class="buttons-container mt-4">
