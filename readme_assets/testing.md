@@ -118,6 +118,23 @@ I passed the url into the validator to stop any Jinja Templating Language creati
 
 ### JavaScript
 
+<details>
+  <summary>JavaScript Validation Errors</summary>
+
+Base Control
+![Validation Image](validation/base-control-valid.jpg)
+Create Edit Movie Validation
+![Validation Image](validation/create-edit-movie-validation-valid.jpg)
+Date Picker
+![Validation Image](validation/date-picker-valid.jpg)
+Profile Delete
+![Validation Image](validation/profile-delete-valid.jpg)
+Review Questions
+![Validation Image](validation/review-questions-control-valid.jpg)
+Review Star Function
+![Validation Image](validation/review-star-function-valid.jpg)
+</details>
+
 ### Python
 
 ![Validation Image](validation/python-valid.jpg)
