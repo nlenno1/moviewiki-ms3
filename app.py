@@ -1097,7 +1097,7 @@ def contact():
     return render_template("contact.html", user=user)
 
 
-@app.route("/movie/view_all")
+@app.route("/movies")
 def view_all_movies():
     """
     find all movies, store required information, sort by movie title and 
@@ -1148,7 +1148,7 @@ def internal_server_error(e):
 
 
 @app.errorhandler(Exception)
-def internal_server_error(e):
+def other_error(e):
     message = "Something went wrong! If this is a reoccuring error then \
         get in touch"
     return render_template('error.html', error_code=e, message=message)
