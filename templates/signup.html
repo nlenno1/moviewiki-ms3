@@ -48,17 +48,15 @@
                         <p class="invalid-message">Email address up to 40 characters which must have @ and a domain extension</p>
                     </div>
                     <hr class="shadow">
-                    <label for="favourite-genre" class="text-center">Pick your favourite movie genres</label>
+                    <label for="genre-dropdown-button" class="text-center">Pick your favourite movie genres</label>
                     <div class="dropdown">
                         <button class="dropdown-button dropdown-toggle text-start" type="button" id="genre-dropdown-button" data-bs-toggle="dropdown" aria-expanded="false">
                           <span>Movie Genre Selection</span><i class="fas fa-angle-down"></i>
                         </button>
-                        <ul class="dropdown-menu" aria-labelledby="genre-dropdown-button">
-                            <div class="checkbox-group required">
-                                {% for genre in genre_list %}
-                                    <li><input id="{{ genre.genre_name }}" name="favourite-genre" value="{{ genre.genre_name|lower }}" type="checkbox">{{ genre.genre_name|title }}</li>
-                                {% endfor %}
-                            </div>
+                        <ul class="dropdown-menu checkbox-group required" aria-labelledby="genre-dropdown-button">
+                            {% for genre in genre_list %}
+                                <li><input id="{{ genre.genre_name|replace(' ','-') }}" name="favourite-genre" value="{{ genre.genre_name|lower }}" type="checkbox">{{ genre.genre_name|title }}</li>
+                            {% endfor %}
                         </ul>
                     </div>
                     <div class="buttons-container mt-4">
