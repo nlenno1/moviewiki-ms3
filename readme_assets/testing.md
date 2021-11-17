@@ -1,6 +1,8 @@
 # MovieWiki Testing
 
-## Testing
+## Manual Testing
+
+--- 
 
 ### User Stories
 
@@ -71,16 +73,51 @@
 ### Responsive Design & Browser Testing
 Mobile Compatibility Tester - Google Mobile-Friendly Test
 
-### General Testing
+
+## Automated Testing
+
+---
+
+## General Testing
 General Performance/SEO - Google Lighthouse
+
 Colour Tester - A11y
 
 ## Validation
 
 ### HTML
 
+To validate the HTML files I used the [W3C Markup Validator](https://validator.w3.org/nu/).
+I passed the url into the validator to stop any Jinja Templating Language creating errors.
+**All the HTML passed validation with no issues**. Below is the confirmation messages:
+
+<details>
+  <summary>HTML/Markup Validation</summary>
+
+![Validation Image](validation/about-valid.jpg)
+![Validation Image](validation/contact-valid.jpg)
+![Validation Image](validation/create-movie-valid.jpg)
+![Validation Image](validation/create-review-valid.jpg)
+![Validation Image](validation/edit-movie-valid.jpg)
+![Validation Image](validation/edit-review-valid.jpg)
+![Validation Image](validation/edit-user-profile-valid.jpg)
+![Validation Image](validation/genre-valid.jpg)
+![Validation Image](validation/home-valid.jpg)
+![Validation Image](validation/movie-search-valid.jpg)
+![Validation Image](validation/profile-valid.jpg)
+![Validation Image](validation/signin-valid.jpg)
+![Validation Image](validation/signup-valid.jpg)
+![Validation Image](validation/view-all-movies-valid.jpg)
+![Validation Image](validation/view-all-user-reveiws-valid.jpg)
+![Validation Image](validation/view-movie-valid.jpg)
+![Validation Image](validation/view-reviews-valid.jpg)
+</details>
+
 ### CSS
+
 
 ### JavaScript
 
 ### Python
+
+![Validation Image](validation/python-valid.jpg)
