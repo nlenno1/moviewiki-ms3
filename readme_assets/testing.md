@@ -1,5 +1,7 @@
 # MovieWiki Testing
 
+![Live Project Representation Image](ms3-showcase-image-2.jpg)
+
 # Manual Testing
 
 --- 

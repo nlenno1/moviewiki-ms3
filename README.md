@@ -164,7 +164,7 @@ During the development of this project, I altered some of the elements in these 
 
 ### Design Decisions
 
-Bootstrap provides a clean user friendly appearance to the website which is easy to customise for the situation using its extensive supporting documentation.
+Bootstrap provides a clean user-friendly appearance to the website which is easy to customise for the situation using its extensive supporting documentation.
 
 **Colour Scheme**
 
@@ -174,7 +174,7 @@ The colour scheme is high contrast and easily viewable. This is the final colour
 ![Colour Scheme Diagram](readme_assets/colors_diagram.png)
 
 All navigational sections have a black (#111111) background with the contrasting yellow/gold (#FFCA18) nav links.
-Mobile devices use a hamburger-menu-naigation button to access the side navbar. The sidenav is positioned on the right, to make it more accessable to mobile users using one hand.
+Mobile devices use a hamburger-menu-naigation button to access the side navbar. The sidenav is positioned on the right, to make it more accessible to mobile users using one hand.
 
 [Sidenav Image](readme_assets/sidenav_image.png)
 
@@ -353,28 +353,42 @@ I added a few ideas to this list after the development and testing of the projec
 - Combine Watched, Want To Watch and Reviewed lists to reduce space in database documnet
 
 # Technologies Used
-
+Languages and Librarys
 - [HTML5](https://developer.mozilla.org/en-US/docs/Glossary/HTML5) - Programming Language
 - [CSS 3](https://developer.mozilla.org/en-US/docs/Web/CSS) - Programming Language
 - [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript) - Programming Language
+- [Python](https://www.python.org/) - Programming Language
+- [Werkzeug ](https://www.python.org/) - Python library to manage user management integrity
 - [MongoDB](https://www.mongodb.com/) - Data base storage
-- [Flask](https://flask.palletsprojects.com/en/2.0.x/) - Python Web Framework
+- [Flask](https://flask.palletsprojects.com/en/2.0.x/) - Python Micro-framework Framework
+- [Jinja](https://jinja.palletsprojects.com/en/3.0.x/) - Templating Language
 - [jQuery](https://jquery.com/) - JavaScript Library
-- [Bootstrap v4.3.1](https://getbootstrap.com/) - Library Import
+- [Bootstrap v5](https://getbootstrap.com/) - Library Import
 - [Google Fonts](https://fonts.google.com/) - Typography Import
+- [Font Awesome](https://fontawesome.com/) - Icon provider
+
+IDE and Version Control
 - [Git Pod](https://gitpod.io/) - IDE (Integrated Development Environment)
 - [Git](https://git-scm.com/) - Version Control Tool
 - [Github](https://github.com/) - Cloud based hosting service to manager my Git Repositories
 - [Code Institute GitPod Template](https://github.com/Code-Institute-Org/gitpod-full-template) - Provides GitPod extensions to help with code production
-- [Google Chrome Development Tools](https://developer.chrome.com/docs/devtools/) - Development Tools
-- [Tiny JPG](https://tinyjpg.com/) - JPG and PNG Image Compressor
+
+Design and Development
+- [Google Chrome Development Tools](https://developer.chrome.com/docs/devtools/) - Design/Development Tools
 - [Figma](https://www.figma.com/) - Wireframe designer software
-- [HTML Formatter](https://www.freeformatter.com/html-formatter.html#ad-output) - Formatting HTML Code
+- [Coolors](https://coolors.co/) - Colour scheme generator
+- [Lucid App](https://lucid.app/) - Diagram creator
+- [Draw.io](https://app.diagrams.net/) - Flow chart creator
+
+Validation and Testing
 - [CSS Beautifier](https://www.freeformatter.com/css-beautifier.html) - Beautifying CSS Code
 - [JavaScript Validator](https://beautifytools.com/javascript-validator.php) - Validating JS code
+- [Lambda Test](https://www.lambdatest.com/) - Browser Testing Cloud Service
+- [Am I Responsive?](http://ami.responsivedesign.is/) - Webpage Breakpoint visualizer and image generator
+
+Other
+- [Tiny JPG](https://tinyjpg.com/) - JPG and PNG Image Compressor
 - [GIMP](https://www.gimp.org/) - Image editor
-- [Coolors](https://coolors.co/) - Colour scheme generator
-- [Font Awesome](https://fontawesome.com/) - Icon provider
 
 # Bugs and Issues
 
