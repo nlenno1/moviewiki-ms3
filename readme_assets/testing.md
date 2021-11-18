@@ -92,7 +92,26 @@ Mobile Compatibility Tester - Google Mobile-Friendly Test
 ---
 
 ## General Testing
-General Performance/SEO - Google Lighthouse
+
+I tested the Performance, Accessibility, Best Practices and SEO of MovieWiki using [Lighthouse](https://developers.google.com/web/tools/lighthouse) in Chrome Developer Tools.
+
+I tested the home page initially as it has a large amount of content.As you can see, by the results below, it tested very well on desktop however the performance suffered at mobile.
+
+I decided to test the Movies page, as it contains all the images used on the site currently, to see if the mobile could handle it however the test results were only marginally effected by the extra images.
+
+Finally I tested the About page on mobile for contract. The results show tat while the page on mbile is being effected by having images on it, as you add more images the effect seems to lessen. 
+
+In conclusion, I think that the app performs well at the moment however I can forsee and issue in the futre, as the database grown, where the amount of data could need to be limited to improve the app performance.
+
+This could be achieved by setting an image limit size on the urls uploaded, storing and compressing the images on a server, adding some pagination to the sit as the movie numbers grow or [Lazy Loading](https://web.dev/codelab-use-lazysizes-to-lazyload-images/) and images that are in the carousels but not on screen when loaded at mobile.
+
+Below are the Lighthouse test results:
+
+Test|Desktop |Mobile |
+:-----:|:-----:|:------:
+Home |  ![Lighthouse Test Results](testing/lighthouse-desktop-test.jpg)| ![Lighthouse Test Results](testing/lighthouse-mobile-test.jpg) 
+View All Movies |  ![Lighthouse Test Results](testing/lighthouse-desktop-movies-test.jpg)| ![Lighthouse Test Results](testing/lighthouse-mobile-movies-test.jpg) 
+About |  No Test Taken | ![Lighthouse Test Results](testing/lighthouse-mobile-about-test.jpg) 
 
 ## Validation
 
@@ -226,7 +245,9 @@ I validated my colour scheme contrast on A11y Color Contrast Accessibility Valid
 
 I used the Sign Up page as it contains all the colours on the site and is accessabily by a user who is not signed in.
 
-The Sign Up page **passed** the colour contrast test with no issues.
+During testing, an issue was raised that the white h1 header text did not contrast enough with the background because the background of the h1 element was set to transparent/white by default. The error occured even though the header is placed on the header image using position relative and absolute. To rectify this issue, I altered the background colour of the h1 element to a translucent black. This darkened the image behind it, emplasizing the header text by increasing the contrast and giving the h1 itself element a darker background for the A11y test.
+
+After this change, the Sign Up page **passed** the colour contrast test with no issues.
 
 <details>
   <summary>A11y Results</summary>
