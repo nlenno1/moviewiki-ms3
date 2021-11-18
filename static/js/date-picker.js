@@ -1,4 +1,4 @@
-function dobDatePicker(this) { 
+function dobDatePicker() { 
     // create date string of 8 years ago to the day
     var year = new Date().getFullYear();
     var month = new Date().getMonth();
@@ -6,7 +6,7 @@ function dobDatePicker(this) {
     var yearsAgo = new Date(year - 8, month, day);
     var yearsAgoString = yearsAgo.toISOString().split('T')[0];
     // set string as max attribute of dob date pickers
-    $(this).attr('max', yearsAgoString);
+    $('#dob').attr('max', yearsAgoString);
 }
 
 function todayDatePicker() {
@@ -16,7 +16,3 @@ function todayDatePicker() {
     // set string as max attribute for all date type date pickers
     $('input[type="date"]').attr('max', todayString);
 }
-
-$('document').ready (function () {
-    $('input[type="date"]').focus(dobDatePicker(this))
-});
