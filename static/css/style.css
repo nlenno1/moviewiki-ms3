@@ -100,7 +100,7 @@ h4,
     }
 }
 
-@media (min-width: 576px) {
+@media (min-width: 768px) {
     .justify-right {
         justify-content: flex-end;
     }
@@ -391,9 +391,9 @@ footer .logo {
 }
 
 .search-bar-container input {
-    width: 80vw;
+    width: 100%;
     min-width: 180px;
-    margin: 10px 20px 30px;
+    margin: 10px 0 0;
     border-radius: 3px;
     text-align: center;
     border: 2px inset rgb(118, 118, 118);
@@ -432,12 +432,14 @@ footer .logo {
     padding-top: 4px;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 600px) {
     .search-bar-container input {
         width: 450px;
         margin: 0 20px 0 0;
     }
+}
 
+@media (min-width: 768px) {
     .genre-container form button,
     .genre-container form input {
         margin: 0.25rem 4px;
@@ -537,7 +539,7 @@ input[type="checkbox" i] {
 .form-card {
     margin: 30px auto;
     width: 100%;
-    padding: 20px 0;
+    padding: 20px 5px;
 }
 
 .form-card hr {
@@ -984,6 +986,7 @@ select>.text-black {
     flex-direction: column;
     flex-wrap: nowrap;
     align-items: center;
+    text-align: center;
 }
 
 @media (min-width: 768px) {
@@ -993,6 +996,7 @@ select>.text-black {
         flex-wrap: nowrap;
         align-items: flex-start !important;
         justify-content: space-evenly;
+        text-align: start;
     }
 }
 
