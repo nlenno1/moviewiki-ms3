@@ -24,7 +24,7 @@ This is the third of four Milestone Projects that make up the Full Stack Web Dev
 
 ### Business Goals
 - Provide a service that Users could pay to use additional functionality in,
-- Build a platform that can facillitate productive and relevant adverts or sponsored links to secondary sites (eg. Streaming services or Cinemas)
+- Build a platform that can facilitate productive and relevant adverts or sponsored links to secondary sites (eg. Streaming services or Cinemas)
 
 ### User Demographic
 - All ages and backgrounds for viewing Movie information
@@ -68,7 +68,6 @@ This is the third of four Milestone Projects that make up the Full Stack Web Dev
 - Delete any Review
 - Add, Modify and Delete any Genre Catagory
 
-
 # Scope
 ### Feature Ideas Table
 
@@ -86,7 +85,7 @@ After an initial planning session I drew up a list of potential features to buil
 | H | Report/Suggest corrections/updates for Movie Profiles | 3 | 3 |
 | I | Display Cinema times & location/Link to streaming services on Movie Profile | 3 | 3 |
 | J | Search Movie Profiles using Name| 5 | 5 |
-| K | Advanced Movie Search using mulitple parameters| 3 | 4 |
+| K | Advanced Movie Search using multiple parameters| 3 | 4 |
 | L | View User Profile | 4 | 5 |
 | M | Search User Profiles | 2 | 5 |
 | N | Display Suggested/Relevant Movies to User | 4 | 5 |
@@ -140,7 +139,7 @@ This project uses MongoDB as its database provider.
 This diagram shows the structure and schema used in the database.
 The coloured headers are the different collections and the embedded documents are shown connected to the collections.
 
-All data is stored in formats that make manipulating the data in python functions easier for example the user bate of birth field is stored as a string rather than a date.
+All data is stored in formats that make manipulating the data in python functions easier for example the user bate of birth field is stored as a string rather than a date. Default values are set to empty, 0 or none depending on data type.
 
 ![Database Structure Diagram](readme_assets/moviewiki_database_structure.jpeg)
 
@@ -331,6 +330,51 @@ At Mobile screen widths, the navbar link will be contained in a sidebar which ca
 - Home link to navigate the user home
 
 ---
+
+### CRUD Table
+
+This table shows what CRUD functionality is avaliable from what page.
+
+| Page | Create | Read | Update | Delete |
+|-----|-----|-----|-----|-----|
+|about|||||
+|contact||user profile|||
+|create-movie|movie|all genres, user, all age ratings|||
+|create-review|review|all movie titles|||
+|edit-movie||movie, all movies, all genres|movie|movie|
+|edit-review||review|review|review|
+|edit-user-profile||user profile, all genres|user profile|user profile|
+|genre-management|genre|all genres|genre|genre|
+|home||all movies (filtered), user|||
+|movie-search||searched movies|||
+|profile||user profile and reviews|||
+|signin||user profile for password check|||
+|signup|user profile|all genres|||
+|view-all-movies||all movies|||
+|view-all-user-reviews||all user reviews||user reviews(if superuser)|
+|view-movie||movie and reviews|||
+|view-reviews||movie reviews|||
+
+### Defensive Programming 
+
+To keep the site secure and defended against any "brute force" loading, I added some defensive programming to my project. This includes:
+
+- Using Jinja Templating Language to not create elements when the user does not have the autherization to access them
+- Creating Python functions to check if a user:
+    1. is logged in,
+    2. is the correct user (has permissison),
+    3. is a superuser (admin)
+
+These functions work by using an id variable saved in the session storage, when the user logs in, and calling to the database. If the id is correct and the database responds with a document then function 1 returns false but 2 and 3 continue. 
+For function 2, an argument has to be passed into the function. The argument will have been taken from a movie created_by field stored on a movie document in the database which will have been called previously. If these 2 id fields match then the function passes true.
+For function 3, the is_super user value on the document is checked and if it is true then the check passes.
+
+If a user tries to change the id in session storage, the page url or any information passed through the python code, it will be caught by an error handler and the user will be brought to the error page with a feedback/warning message and the error message.
+
+The error page would look similar to this but with a specific error message for every error.
+
+![Error Handler Error Page](readme_assets/error-handler-image.jpg)
+
 ## Features for future releases
 
 I added a few ideas to this list after the development and testing of the project.
@@ -350,7 +394,11 @@ I added a few ideas to this list after the development and testing of the projec
 - User Watched & Want To Watch design change when clicked rather than text change (from Peer Review Testing)
 - Add Like/Dislike Movie button (from Peer Review Testing)
 - Paginate or Lazy Load Movies (from Performance Testing)
-- Combine Watched, Want To Watch and Reviewed lists to reduce space in database documnet
+- Combine Watched, Want To Watch and Reviewed lists to reduce space in database document
+- Upload a user avatar to display on reviews
+- Admin message viewing page
+
+--- 
 
 # Technologies Used
 Languages and Librarys
