@@ -141,7 +141,11 @@ h4,
 
 .navbar-buttons {
     margin-right: 1rem;
-    justify-content: end !important;
+    justify-content: flex-end !important;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    align-content: center;
 }
 
 .navbar-button {
@@ -922,6 +926,7 @@ select>.text-black {
     flex-wrap: wrap;
     flex-direction: column;
     align-content: center;
+    align-items: center;
 }
 
 .accordion-button:not(.collapsed) {
