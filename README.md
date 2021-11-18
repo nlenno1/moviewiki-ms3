@@ -148,6 +148,20 @@ All data is stored in formats that make manipulating the data in python function
 
 To view the wireframes for this project [click here](readme_assets/wireframe_display.md)
 
+During the development of this project, I altered some of the elements in these wireframes. These are the main changes that I made:
+
+|Page/Section |Alteration |Reason |
+|-----|-----|-----|
+|Navbar |Removed the active page ring from the nav items |Changing that while the navbar is being rendered from the Jinja base template was impossible |
+||Added a Movies (with dropdown for signed in users) |Easier access to view all movies, add movie and add review pages which made the site flow much better|
+|Mulitple Pages |Removed Green Color Button and replaced it with Gold |A mentor suggestion to keep in with the colour scheme|
+||Limited the delete review and profile buttons to the edit pages |Avoid accidental deletion|
+|User Profile |Removed other reviews button from user's latest reviews|Not needed |
+|Create Movie |Removed Watched Movie switch |Not Needed as the user can control this on the next page they are taken to after adding a movie|
+|Movie Profile |Removed Trailer, Nearest Cinema and Streaming Services Accordion |Features were removed and added to Future Features due to time limitations|
+|View All Reviews |Review cards shortened to half the screen width |Reduce space as there is not that much information in a review|
+|Genre |Remove accordion sections for each genre |Accordion element overused in project. Decided clean and simple is better|
+
 ### Design Decisions
 
 Bootstrap provides a clean user friendly appearance to the website which is easy to customise for the situation using its extensive supporting documentation.
