@@ -292,6 +292,9 @@ If user is editing a Movie profile, then the buttons will be update and cancel b
 - Moderate Content being submitted by Users
 - Actor/Actresses profiles
 - Add computer location to User profile to change movie age restrictions depending on country
+- User Watched & Want To Watch design change when clicked rather than text change (from Peer Review Testing)
+- Add Like/Dislike Movie button (from Peer Review Testing)
+
 
 # Technologies Used
 

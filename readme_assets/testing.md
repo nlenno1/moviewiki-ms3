@@ -81,7 +81,21 @@
 </details>
 <br>
 
-### Peer Review Testing
+### Peer Review 
+
+I requested peer review feedback from my friends, family and the Code Institute slack community. Below you can find any issues or suggestions from my peers and any changes I made in response to the feedback. All other feedback, apart that logged below, was positive.
+
+|Peer |Feedback |Changes Made |
+|-----|-----|-----|
+|Michael Greenberry (slack)|About page is empty |Added description and FAQ section to About page |
+||Date of Birth in Sign Up form doesn't seem necessary|Added filter to user suggested movies to remove any that are age rated over the age of the user |
+|Nat Kate (Slack) |Image Link validation/error message incorrect |Check regex patterns. Image Link URL user was inputting was from a webpage and not a hosted image so I added better instructions to the About page's FAQ section for adding a Movie Image Link
+| |Username validation/error message incorrect |Updated regex pattern |
+|Hollie Coote |Found spelling errors on a few pages |Ran a spell check on all webpages |
+|Tayla Joel | Rather than changing text on Watched and Want to Watch, change button design to be "pushed in" or out |Add feature to future development list |
+| | Add a Like/Dislike button to Movie Profile for easier rating |Add feature to future development list |
+|Carla Buongiorno (slack)|Genre Dropdown in Sign Up not working |Re-added Bootstrap JS script tag which was removed as I thought it was unused |
+|Leo Joseph |Search Function Not Working |User tried searching for words not included in the movie title so I added clearer instructions over all search bars to tell users to search the movie title|
 
 ### Responsive Design & Browser Testing
 Mobile Compatibility Tester - Google Mobile-Friendly Test
@@ -95,7 +109,7 @@ Mobile Compatibility Tester - Google Mobile-Friendly Test
 
 I tested the Performance, Accessibility, Best Practices and SEO of MovieWiki using [Lighthouse](https://developers.google.com/web/tools/lighthouse) in Chrome Developer Tools.
 
-I tested the home page initially as it has a large amount of content.As you can see, by the results below, it tested very well on desktop however the performance suffered at mobile.
+I tested the home page initially as it has a large amount of content. As you can see, by the results below, it tested very well on desktop however the performance suffered at mobile.
 
 I decided to test the Movies page, as it contains all the images used on the site currently, to see if the mobile could handle it however the test results were only marginally effected by the extra images.
 
