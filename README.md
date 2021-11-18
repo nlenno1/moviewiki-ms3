@@ -82,7 +82,7 @@ After an initial planning session I drew up a list of potential features to buil
 | D | Create, Edit and Delete Account and Log In/Out | 5 | 5 |
 | E | Moderate Content being submitted by Users | 4 | 2 |
 | F | Send Messages to Admin | 5 | 5 |
-| G | Recieve notificatons about activity related to the User | 3 | 4 |
+| G | Receive notifications about activity related to the User | 3 | 4 |
 | H | Report/Suggest corrections/updates for Movie Profiles | 3 | 3 |
 | I | Display Cinema times & location/Link to streaming services on Movie Profile | 3 | 3 |
 | J | Search Movie Profiles using Name| 5 | 5 |
@@ -99,7 +99,7 @@ After an initial planning session I drew up a list of potential features to buil
 
 Having performed this analysis, I decided to remove features M, K, G, H, I and E from this production release due to many factors including time limitations.
 Feature R (Links to socials) has been left in due to its simplicity.
-Some of these fetaures will have restricted access which will be controlled by if they are signed in or using a superuser account. 
+Some of these features will have restricted access which will be controlled by if they are signed in or using a superuser account. 
 
 ## Functionality Requirements
 - Clean and themed presentation of information
@@ -139,6 +139,8 @@ This project uses MongoDB as its database provider.
 
 This diagram shows the structure and schema used in the database.
 The coloured headers are the different collections and the embedded documents are shown connected to the collections.
+
+All data is stored in formats that make manipulating the data in python functions easier for example the user bate of birth field is stored as a string rather than a date.
 
 ![Database Structure Diagram](readme_assets/moviewiki_database_structure.jpeg)
 
@@ -284,9 +286,9 @@ If user is editing a Movie profile, then the buttons will be update and cancel b
 ---
 ## Features for future releases
 
-- Advanced Movie Search using mulitple parameters
+- Advanced Movie Search using multiple parameters
 - Search User Profiles
-- Recieve notificatons about activity related to - the User
+- Receive notifications about activity related to - the User
 - Display Cinema times & location/Link to streaming services on Movie Profile
 - Report/Suggest corrections/updates for Movie Profiles
 - Moderate Content being submitted by Users
@@ -324,7 +326,7 @@ If user is editing a Movie profile, then the buttons will be update and cancel b
 
 |Bug ID # | Bug      | Cause/Reason | Fix |
 | ----------- | ----------- | ----------- | ----------- | 
-|1 |Screen overflowing on the y axis with little or no content displayed | Set min-height attribute for content and then changed the height of other elements not in the contect div|Set all non content elements to a set height and altered the content div min-height calculation|
+|1 |Screen overflowing on the y-axis with little or no content displayed | Set min-height attribute for content and then changed the height of other elements not in the content div|Set all non-content elements to a set height and altered the content div min-height calculation|
 |2 |Variable not displaying in flash messages |Invalid F string syntax|Read up on f string documentation and improved the syntax|
 |3 | | | |
 | | | | |
@@ -358,13 +360,13 @@ Testing for this project can be found in the [Testing Document](readme_assets/te
 
 ## Heroku Deployment
 
-Full instructions on how to create heroku app
+Full instructions on how to create Heroku app
 - connect to repo
 - setup hidden/secret variables
 
 ## Database Deployment
 
-Full instructions on how to create mongo db database
+Full instructions on how to create MongoDB database
 - user access
 - create collections
 
