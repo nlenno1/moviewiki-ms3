@@ -4,6 +4,8 @@
 
 --- 
 
+## Features Testing
+
 ## User Stories
 
 **Casual/First Time User** 
@@ -149,7 +151,7 @@ During initial tests using Lamdba test, the following errors occurred:
 |Error Number |Error |Browser |
 |-----|-----|-----|
 |1 |Navbar buttons out of position |Safari, Edge|
-|2 |View Movie Profile all reviews button off center| Safari |
+|2 |View Movie Profile all reviews button off center|Safari |
 |3 |Date picker on form not working |Safari |
 
 I corrected issue 1 but adding some extra css classes as the error was created by flex display incompatibility.
@@ -166,7 +168,7 @@ I have removed Internet Explorer from the table as there were so many compatibil
 
 Upon reflection, I decided that these errors might have been due to the limited versions I could use on Lambda Test with a free account so decided to test manually.
 
-I downloaded Firefox (version 94), Chrome (version 96) and Edge (version 95) onto my Windows 10 machine and called a peer to talk them through testing the page on Safari (version 15), so I could manually test all browsers.
+I downloaded Firefox (version 94), Chrome (version 96) and Edge (version 95) onto my Windows 10 machine and called a peer to talk them through testing the page on Safari (version 15.1), so I could manually test all browsers.
 
 **At the time of release, all latest versions of the browsers tested presented no issues**
 
