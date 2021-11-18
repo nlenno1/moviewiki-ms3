@@ -1,5 +1,5 @@
 # MovieWiki
-![Live Project Representation Image]()
+![Live Project Representation Image](readme_assets/ms3-showcase-image.jpg)
 
 [Link to Live Project](https://moviewiki-project.herokuapp.com/)
 
@@ -396,7 +396,7 @@ readme structure.components https://github.com/RussOakham/wanderlust-recipes/
 **Images**
 - Header image from [PIXABAY](https://pixabay.com/photos/movie-film-roll-filmstrip-analog-3057394/)
 - Favicon from [PNGEGG](https://www.pngegg.com/en/png-zwxhn)
-- Fovie placeholder from [PNGAAA](https://www.pngaaa.com/detail/3488028)
+- Movie placeholder from [PNGAAA](https://www.pngaaa.com/detail/3488028)
 
 ## Acknowledgments
 
