@@ -18,10 +18,16 @@ Find all my manual testing criteria, procedure and outcomes in my [Manual Testin
 
 - Find out more about MovieWiki and how to use it
     - The About page, which is easily accessible from the navbar or sidenav at all times, contains all the information needed.
+![]()
+
 - Search for specific movies or view all movies
-    - On the home page the user can search for any movies using the search bar or, they can view all movies via the Movies navbar dropdown menu
+    - On the home page the user can search for any movies using the search bar or, they can view all movies via the Movies navbar button or dropdown menu
+![]()
+
 - Find the highest rated movies and the latest releases
     - On the home page, when a user not logged in, the first movie carousel contains the top 15 highest rated movies and the second contains the 15 films with the latest release dates.
+![]()
+
 - View information about those movies
     - All information about a movie is accessible by clicking on the movie image on any movie display.
 - Quickly establish if I should watch a Movie or not
@@ -82,7 +88,7 @@ Find all my manual testing criteria, procedure and outcomes in my [Manual Testin
 
 - Do everything a Contributor can
     - A superuser account has the ability to update all movies on the site but not edit or delete any User Accounts.
-- Delete any Movie Profile
+- Edit and Delete any Movie Profile
     - The Delete & Update Movie buttons are found at the bottom of the Edit Movie Profile page.
 - Delete any Review
     - Admin can delete any review from the View All Movie Reviews. The button is placed at the bottom of the review card.

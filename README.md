@@ -64,7 +64,7 @@ This is the third of four Milestone Projects that make up the Full Stack Web Dev
 
 **Admin** - As an administrator, I want to be able to:
 - Do everything a Contributer can
-- Delete any Movie Profile
+- Edit and Delete any Movie Profile
 - Delete any Review
 - Add, Modify and Delete any Genre Catagory
 
@@ -473,9 +473,10 @@ Other
 |28 |HTML Validation Error |A tags missing aria labels |Added Aria Labels |
 |29 |HTML Validation Error |Buttons inside anchor tags |Removed buttons and styled anchor tags to match existing buttons |
 |30 |Movies being removed from Movie Object/List when passed through check image URL function|Added a storage list to the function and appended the movie to the storage list when checked. The storage list was returned when all movies are checked |
+|31 |Admin Account unable to delete other user review on view reviews page |Delete review function using session["id"] so when admin is logged in, the review can't be found as it isn't theirs |Pass reviewer_id variable through button to delete function using get.args and use the reviewer_id to find the review. Then check if user is allowed using reviewer_id as an argument as that function calls to the session storage to compare |
 
 Unsolved Issues
-- Add letters with accents to regexs
+- Add letters with accents to regex validation
 - Validate input from textarea input elements
 
 # Testing
