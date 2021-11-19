@@ -486,7 +486,93 @@ Testing for this project can be found in the [Testing Document](readme_assets/te
 
 This project used Gitpod for development, Github for repository storage, Git for version control and has been deployed using Heroku. This I how I deployed the project:
 
+Prerequisites:
+To do this you require the following installed on you local computer or IDE:
+- Python 3 or higher - Programming Language
+- Pip3 - Python Package Installer
+- Git - Version control
+
+## Cloning the Repository using Git
+1. Open the [repository](https://github.com/nlenno1/moviewiki-ms3), click the  code button, which is located on the right above all the repository file names.
+2. Select HTTPS and copy the clone URL.
+3. In your command line type "git clone" and then paste the URL that you just copied.
+4. Press enter to create your local clone
+
+## Cloning the Repository using GitPod
+To clone the repository, you first need to:
+
+1. Install the GitPod Browser Extension for Chrome (including restarting the browser).
+2. Log into your GitHub or create an account.
+3. Find the GitHub Repository that you want to clone.
+4. Click the green "GitPod" button in the top right corner of the repository. This will trigger a new GitPod workspace to be created.
+
+## Creating Virtual Environment
+
+*This process is dependent on your OS. Please check this [Python Help Guide](https://python.readthedocs.io/en/latest/library/venv.html) if you experience difficulties
+
+In your IDE install the app dependencies using this command:
+
+    pip3 install -r requirements.txt
+
+## Create Database in MongoDB
+
+You will need a MongoDB account to do this
+
+1. In MongoDB create a new database
+2. Created the following collections in that database
+
+    - users
+    - movies
+    - genre
+    - messages
+    - age_ratings
+
+## Create a hidden environment file in your IDE
+
+Create a file called env.py which should contain the following (replacing the Secret Key, MongoDB URI and Database Name with your own):
+
+    import os
+
+    os.environ.setdefault("IP", "0.0.0.0")
+    os.environ.setdefault("PORT", "5000")
+    os.environ.setdefault("SECRET_KEY", "YOUR_OWN_SECRET_KEY")
+    os.environ.setdefault("MONGO_URI", "YOUR_OWN_MONGODB_URI")
+    os.environ.setdefault("MONGO_DBNAME", "YOUR_OWN_MONGODB_DATABASE_NAME")
+
+**IMPORTANT!**
+
+<span style="font-size:larger">Now Add your `env.py` file to your `.gitignore` file before commiting or pushing any data to the repository</span>
+
+**IMPORTANT!**
+
+Run the application to check it works by entering this command into the command link:
+
+    python3 app.py
+
+Create a requirements.txt and Procfile by entering these commands:
+
+    echo web: python app.py > Procfile
+
+    pip3 freeze --local > requirements.txt
+
+Commit and push your repository.
+
 ## Heroku Deployment
+
+You will require a Heroku account to do this
+
+1. Log into your Heroku app and create a new app
+2. Enter a globally unique name for your app
+3. Choose a geographical region closest to your location for a server
+4. Go to the settings page for your app and open the `Config Vars` Section.
+5.  In `Config Vars`, add the environment variables that are in your `env.py` file with their corresponding keys (if you need reminding scroll up to when we created the env.py file)
+6. Connect Heroku to the github repository:
+    1. Select GitHub from the Deployment Method menu and click Connect to GitHub.
+    2. Log in to your GitHub account from to link the account.
+    3. Find the repository you want to connect to from the dropdown menu
+    4. Click Connect.
+    5. Click Enable Automatic Deployment from the GitHub Master/Main branch
+7. Click Open App
 
 Full instructions on how to create Heroku app
 - connect to repo
