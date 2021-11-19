@@ -27,6 +27,7 @@
                         {% endif %}
                     {% endfor %}
                 </select>
+                <p class="invalid-message">&nbsp;</p>
                 <label for="duration" class="small-text unselected-text">Duration (mins) *</label>
                 <input value="{{ movie.duration }}" type="text" name="duration" id="duration" placeholder="Duration (mins) *" minlength="2" maxlength="3" class="validate" pattern="^[0-9]{2,3}$" required>
                 <p class="invalid-message">Enter a number either 2 or 3 characters long</p>
@@ -102,12 +103,12 @@
                     <label for="series-name" class="small-text unselected-text">Series Name</label>
                     <input {% if  movie.is_part_of_series == True %}required{% endif %} type="text" value="{{ movie.movie_series_info.series_name|title }}" name="series-name" id="series-name" placeholder="Series Name" minlength="3" maxlength="30" class="validate" pattern="^(?!.*[\p{P} ]{3})[a-zA-Z0-9\p{P} ]{3,30}$">
                     <p class="invalid-message">3 to 30 characters long using letters,numbers and only 2 spaces and/or symbols consecutively</p>
-                    <div {% if  movie.movie_series_info.series_position != 'end' or movie.movie_series_info.series_position != 'middle' %}hidden{% endif %} id="previous-movie-container">
+                    <div {% if  movie.movie_series_info.series_position == 'start' %}hidden{% endif %} id="previous-movie-container">
                         <label for="previous-movie-name" class="small-text unselected-text">Previous Movie Name - Name of the movie before this one in the series</label>
                         <input {% if movie.movie_series_info.series_position and movie.movie_series_info.series_position != 'start' %}required{% endif %} type="text" value="{{ movie.movie_series_info.previous_movie_title|title }}" name="previous-movie-name" id="previous-movie-name" placeholder="Previous Movie in the Series" minlength="3" maxlength="30" class="validate" pattern="^(?!.*[\p{P} ]{3})[a-zA-Z0-9\p{P} ]{3,30}$">
                         <p class="invalid-message">3 to 30 characters long using letters, numbers and only 2 spaces and/or symbols consecutively</p>
                     </div>
-                    <div {% if movie.movie_series_info.series_position != 'start' or movie.movie_series_info.series_position != 'middle' %}hidden{% endif %} id="next-movie-container">
+                    <div {% if movie.movie_series_info.series_position == 'end' %}hidden{% endif %} id="next-movie-container">
                         <label for="next-movie-name" class="small-text unselected-text">Next Movie Name - Name of the movie after this one in the series</label>
                         <input {% if movie.movie_series_info.series_position and movie.movie_series_info.series_position != 'end' %}required{% endif %} type="text" value="{{ movie.movie_series_info.next_movie_title|title }}" name="next-movie-name" id="next-movie-name" placeholder="Next Movie in the Series" minlength="3" maxlength="30" class="validate" pattern="^(?!.*[\p{P} ]{3})[a-zA-Z0-9\p{P} ]{3,30}$">
                         <p class="invalid-message">3 to 30 characters long using letters, numbers and only 2 spaces and/or symbols consecutively</p>
@@ -150,7 +151,6 @@
         </div>
     </div>
 
-
 {% endblock %}
 
 {% block scripts %}
@@ -159,9 +159,8 @@
     <script src="{{url_for('static', filename='js/review-star-functions.js')}}"></script>
     <script src="{{url_for('static', filename='js/series-questions-control.js')}}"></script>
     <script src="{{url_for('static', filename='js/review-questions-control.js')}}"></script>
-    <script src="{{url_for('static', filename='js/genre-selected-check.js')}}"></script>
     <script src="{{url_for('static', filename='js/create-edit-movie-validation.js')}}"></script>
+    <script src="{{url_for('static', filename='js/genre-selected-check.js')}}"></script>
     <script src="{{url_for('static', filename='js/date-picker.js')}}"></script>
-
 
 {% endblock %}
