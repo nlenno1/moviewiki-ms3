@@ -432,7 +432,7 @@ Design and Development
 - [Coolors](https://coolors.co/) - Colour scheme generator
 - [Lucid App](https://lucid.app/) - Diagram creator
 - [Draw.io](https://app.diagrams.net/) - Flow chart creator
-- [Animista](https://animista.net/) - animation css designer
+- [Animista](https://animista.net/) - CSS animation designer
 
 Validation and Testing
 - [CSS Beautifier](https://www.freeformatter.com/css-beautifier.html) - Beautifying CSS Code
