@@ -349,6 +349,15 @@ def check_and_replace_image_links(movies):
     return storage_list
 
 
+def check_and_replace_image_link(movie):
+    """
+    check image link in single movie and replace with file name if needed
+    """
+    if movie["image_link"] == "none":
+        movie["image_link"] = "/static/img/movie_placeholder.png"
+    return movie
+
+
 # ---------- app.route ----------
 @app.route("/")
 @app.route("/home")
@@ -758,6 +767,7 @@ def view_movie(movie_id):
     """
     movie = mongo.db.movies.find_one(
             {'_id': ObjectId(movie_id)})
+    movie = check_and_replace_image_link(movie)
     user_want_to_watch = False
     user_watched = False
     user_reviewed = False
@@ -882,8 +892,7 @@ def view_reviews(movie_id):
     movie = mongo.db.movies.find_one({"_id": ObjectId(movie_id)},
                                      {"reviews": 1, "movie_title": 1,
                                      "average_rating": 1, "image_link": 1})
-    if movie["image_link"] == "none":
-        movie["image_link"] = "/static/img/movie_placeholder.png"
+    check_and_replace_image_link(movie)
     movie_reviews = sorted(movie["reviews"], key=lambda d: d[
                                 'review_date'], reverse=True)
     return render_template("view-reviews.html", movie=movie,
