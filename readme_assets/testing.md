@@ -120,14 +120,28 @@ Find all my manual testing criteria, procedure and outcomes in my [Manual Testin
 <details>
   <summary>As an administrator, I want to be able to:</summary>
 
-- Do everything a Contributor can
-    - A superuser account has the ability to update all movies on the site but not edit or delete any User Accounts.
+- Have the ability to maintain the website and the content on it
+    - A superuser account has the ability to create, edit or delete all movies and delete all reviews on the site
+    - Superusers can not edit or delete any User Accounts or edit any user reviews as to prevent user misrepresentation.
+    - The ability to delete user accounts has been added to the future feature list.
 - Edit and Delete any Movie Profile
     - The Delete & Update Movie buttons are found at the bottom of the Edit Movie Profile page.
+    ![Contributer Story Image](user-stories/11.jpg)
+    - Admin can access the update movie page via the Edit Movie Profile button
+    ![Contributer Story Image](user-stories/11-1.jpg)
 - Delete any Review
     - Admin can delete any review from the View All Movie Reviews. The button is placed at the bottom of the review card.
+    ![Contributer Story Image](user-stories/16-1.jpg)
 - Add, Modify and Delete any Genre Category
-    - All Genre control is accessible from 
+    - The Genre Management page is accessible from the navbar and sidenav at all times, for admin only.
+    ![Contributer Story Image](user-stories/17-1.jpg)
+    - All Genre control is accessible from the genre management page through:
+        - the new genre bar and add button
+        ![Contributer Story Image](user-stories/17-2.jpg)
+        - the update input field and button
+        - the genre delete button 
+        ![Contributer Story Image](user-stories/17-3.jpg)
+
 </details>
 <br>
 

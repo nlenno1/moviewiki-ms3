@@ -63,7 +63,7 @@ This is the third of four Milestone Projects that make up the Full Stack Web Dev
 - Delete my account
 
 **Admin** - As an administrator, I want to be able to:
-- Do everything a Contributer can
+- Have the ability to maintain the website and the content on it
 - Edit and Delete any Movie Profile
 - Delete any Review
 - Add, Modify and Delete any Genre Catagory
@@ -391,13 +391,14 @@ I added a few ideas to this list after the development and testing of the projec
 - View All Movies created by User
 - Actor/Actresses profiles
 - Add computer location to User profile when signed in to change movie age restrictions depending on country of access
+- Combine Watched, Want To Watch and Reviewed lists to reduce space in database document
+- Upload a user avatar to display on reviews and profile page
+- Admin message viewing page
+- Admin User Permissions control page
+- Admin Delete User account function
 - User Watched & Want To Watch design change when clicked rather than text change (from Peer Review Testing)
 - Add Like/Dislike Movie button (from Peer Review Testing)
 - Paginate or Lazy Load Movies (from Performance Testing)
-- Combine Watched, Want To Watch and Reviewed lists to reduce space in database document
-- Upload a user avatar to display on reviews
-- Admin message viewing page
-- Admin User Permissions control page
 
 --- 
 
