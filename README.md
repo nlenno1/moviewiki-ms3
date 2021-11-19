@@ -401,6 +401,7 @@ I added a few ideas to this list after the development and testing of the projec
 - User Watched & Want To Watch design change when clicked rather than text change (from Peer Review Testing)
 - Add Like/Dislike Movie button (from Peer Review Testing)
 - Paginate or Lazy Load Movies (from Performance Testing)
+- Scroll buttons on the movie carousels to move right and left to avoid using scroll bars as they change from browser to browser
 
 --- 
 
