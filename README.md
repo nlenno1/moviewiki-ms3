@@ -397,6 +397,7 @@ I added a few ideas to this list after the development and testing of the projec
 - Combine Watched, Want To Watch and Reviewed lists to reduce space in database document
 - Upload a user avatar to display on reviews
 - Admin message viewing page
+- Admin User Permissions control page
 
 --- 
 
@@ -444,35 +445,46 @@ Other
 | ----------- | ----------- | ----------- | ----------- | 
 |1 |Screen overflowing on the y-axis with little or no content displayed | Set min-height attribute for content and then changed the height of other elements not in the content div|Set all non-content elements to a set height and altered the content div min-height calculation|
 |2 |Variable not displaying in flash messages |Invalid F string syntax|Read up on f string documentation and improved the syntax|
-|3 | | | |
-| | | | |
-| | | | |
-| | | | |
-| | | | |
-| | | | |
-| | | | |
-| | | | |
-| | | | |
-| | | | |
-| | | | |
-| | | | |
-| | | | |
-| | | | |
-| | | | |
-| | | | |
-| | | | |
-| | | | |
-| | | | |
-| | | | |
-| | | | |
-| | | | |
-| | | | |
+|3 |session storage KeyError when referencing Id or user |Value can not be checked if the variable does not exist in session storage|Add a session length check before and specific key reference to see if there is anything in session |
+|4 |NoneType error when trying to access a movie or user retrieved from MongoDB |MongoDb call was incorrect (usually not using ObjectId when required) and therefore not returning any values to store in the variable |Correct the MongoDB call error |
+|5 |Update Movie Profile removed all the existing reviews on that document |Function was using create movie dict function, that was written for create movie function initially, which was defining all document variables as they were when the movie was created, therefore removing any new reviews, average_rating etc |Passed a new argument into create movie dict function to tell the function to not define the fields that didn't need to be updated |
+|6 |Unable to access variables from request.get.args |Could not retrieve single value from Immutable Dict Obect |Read up on documentation and used Stack Overflow to view cases of the method being used to help my understanding |
+|7 |Couldn't Build URL end point |No Return statement was included in the @app.route function |Added a return statement or rearranged function so existing was accessible |
+|8 |@app.route Variables Undefined |Putting links to with a url_for but not including the required arguments for the functions |Added the correct arguments to the url_for |
+|9 |Cancelling on the edit review page returned a NoneType error |Creating & Updating a review didn’t have a reviewer_id being passed to it so MongoDB was generating a random new one for it which was used in the cancel button view movie url_for link |Corrected the id missing id by adding the session storage id to the field |
+|10 |Delete Movie not removing reviews from User profiles |Tried "pulling" documents from multiple user documents in one call which syntactically did not work and when seperated to multiple calls needed adjustment because they were accessing different data structures| Read up on the syntax for MongoDB calls and corrected |
+|11 |Cannot Access Datetime/Timedelta Objects |Trying to access Datetime/Timedelta Objects like strings to calculate age rating to compare against age |Read up on Datetime/Timedelta Objects and decided to age rating age by taking the year and multiplying it by 364.25. This would mean that the age rating is 1 day behind for 3 out of every 4 years which I decided is acceptable because it is only being used to filter films based on the users age  |
+|12 |average_rating KeyError when displaying movie profile |When creating the movie, no value was being set for average_rating until update average rating function was called on add/remove of review |Added update average rating function to create movie function | 
+|13 |Form Regex validation allowing numbers when not wanted |Included À-ÿ in my regex pattern attribute to allow accents in names but this also includes numbers |Removed À-ÿ but yet to implement a solution to accented letters|
+|14 |Select Required attribute not working |Select elements need the first option element to have an empty value for the Required attribute to work |Added a new option element before all the others with a value of "" and the hidden attribute |
+|15 |JS Check Series & reviews information alerting and stopping submit event when the sections aren't displayed |Inputs still contained value/were required when hidden |Used JS to remove value and hidden attribute from section when not displayed |
+|16 | Full page being pushed to the left by a black object |Custom navbar changes were incompatible and unstable therefore effecting the page layout |Removed custom navbar css rules |
+|17 |Movie Images overlapping movie text |Movie text not inside movie display container | Restructured HTML to have the text inside the movie display container div |
+|18 |Movie Image not displaying image |Image link was wrong, broken or not included |Add onerr function to replace any broken image with the placeholder image. Add none as default value when stored and add check Image link functions to swap none for image link before rendering |
+|19 |Bootstrap popover not working |Unable to initialize the Popovers |Build custom popovers for the site using CSS |
+|20 |TypeError collection object is not callable |Using remove_one method which doesn't exist in PyMongo |Change to remove method which I update to delete_one after a deprecated method warning |
+|21 |Socials links not opening to a new page/tab |target="_blank" had not been added |Added the required attribute |
+|22 |Update movie profile Series Checkbox is checked check not working |Review Checkbox Check was breaking in JS file due to the Review section not being rendered as the user had already added a review to the movie. This broke the Series check as it was after the Review Check in the on submit function |Rearranged the function calls so Series Check was first and add a try catch statement for the Review check to remove any other errors generated |
+|23 |TypeError: 'SecureCookieSession' object is not callable |Trying to use session passed into a function in utils python file |Left all functions in the same file |
+|24 |Pattern attribute not allowed in a textarea element |Pattern Attribute in TextArea |Removed Pattern Attribute as textarea inputs are only used for display |
+|25|CSS Validator Parse Error [checkboxi]|CSS Selector was miss spelled |Corrected to [checkbox] i|
+|26 |CSS Validator Value Error |font-size only 0 can be a unit. You must put a unit after your number : 600 |Corrected font-size to font-weight|
+|27 |HTML Validation Error |No hr elements in lists |Either removed the hr elements or stopped the list and started again after the hr|
+|28 |HTML Validation Error |A tags missing aria labels |Added Aria Labels |
+|29 |HTML Validation Error |Buttons inside anchor tags |Removed buttons and styled anchor tags to match existing buttons |
+|30 |Movies being removed from Movie Object/List when passed through check image URL function|Added a storage list to the function and appended the movie to the storage list when checked. The storage list was returned when all movies are checked |
+
+Unsolved Issues
+- Add letters with accents to regexs
+- Validate input from textarea input elements
 
 # Testing
 
 Testing for this project can be found in the [Testing Document](readme_assets/testing.md)
 
 # Deployment
+
+This project used Gitpod for development, Github for repository storage, Git for version control and has been deployed using Heroku. This I how I deployed the project:
 
 ## Heroku Deployment
 
