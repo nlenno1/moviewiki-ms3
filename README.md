@@ -431,6 +431,7 @@ Design and Development
 - [Coolors](https://coolors.co/) - Colour scheme generator
 - [Lucid App](https://lucid.app/) - Diagram creator
 - [Draw.io](https://app.diagrams.net/) - Flow chart creator
+- [Animista](https://animista.net/) - animation css designer
 
 Validation and Testing
 - [CSS Beautifier](https://www.freeformatter.com/css-beautifier.html) - Beautifying CSS Code
@@ -601,14 +602,35 @@ Full instructions on how to create MongoDB database
 
 # Credits
 
-errorhandlers seen in https://github.com/kairosity/mp3-snapathon/
-readme structure.components https://github.com/RussOakham/wanderlust-recipes/
-
 ### Code snippets
+
+Email Regex taken from [Stack Overflow](https://stackoverflow.com/questions/169625/regex-to-check-if-valid-url-that-ends-in-jpg-png-or-gif/169631)
+
+Bootstrap 5 components of
+- Navbar (with dropdown menu)
+- Dropdown Button
+- Accordion
+- Card class
+taken from documentation examples and heavily modified.
 
 ### Resources
 
+[Code Institute Course Content](https://courses.codeinstitute.net/) - Code fundamental learning platform
+[Stack Overflow](https://stackoverflow.com/)
+[W3Schools](https://www.w3schools.com/)
+[Python Documentation](https://docs.python.org/3/)
+[Flask Documentation](https://flask.palletsprojects.com/en/2.0.x/)
+[Jinja Template Designer Documentation](https://jinja.palletsprojects.com/en/2.11.x/templates/)
+[Guru99](https://www.guru99.com/) - Python Switch Statement Idea
+
+error handlers seen in https://github.com/kairosity/mp3-snapathon/ before being researched and implimented
+readme structure and component ideas from https://github.com/RussOakham/wanderlust-recipes/
+README template used to produce this documentation is from [Code Institute README Template](https://github.com/Code-Institute-Solutions/readme-template)
+[README and Testing Inspiration](https://github.com/NaoiseGaffney/Training)
+
 ## Content
+
+Content for the Movies and Reviews is all provided by the Users and only reflects the Users opinions
 
 ## Media 
 **Images**
@@ -617,5 +639,4 @@ readme structure.components https://github.com/RussOakham/wanderlust-recipes/
 - Movie placeholder from [PNGAAA](https://www.pngaaa.com/detail/3488028)
 
 ## Acknowledgments
-
-README template used to produce this documentation is from [Code Institute README Template](https://github.com/Code-Institute-Solutions/readme-template)
+A big thank you to my CI mentor [Akshat](https://github.com/akshatnitd ), the CI Slack Community and my family and friends who have offered support and encouragement throughout the building of this project.
