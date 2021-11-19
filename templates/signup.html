@@ -13,17 +13,17 @@
                     <label for="username" class="small-text unselected-text">Username *</label>
                     <div>
                         <input type="text" name="username" id="username" placeholder="Username" minlength="4" maxlength="20" class="validate" pattern="^(?!.*[-_]{3})[a-zA-Z][a-zA-Z0-9_-]{4,20}$" required>
-                        <p class="invalid-message">4 to 20 characters long, starting with a letter, using letters, numbers and only 2 underscores or dashs consecutively</p>
+                        <p class="invalid-message">4 to 20 characters long, starting with a letter, using letters, numbers and only 2 underscores or dashs consecutively. No spaces</p>
                     </div>
                     <label for="password" class="small-text unselected-text">Password *</label>
                     <div>
                         <input type="password" name="password" id="password" placeholder="Password" minlength="5" maxlength="15" class="validate" pattern="^[a-zA-Z0-9-_!?]{5,15}$" required>
-                        <p class="invalid-message">5 to 20 characters long with letters, numbers and these symbols -_!? only</p>
+                        <p class="invalid-message">5 to 20 characters long with letters, numbers and these symbols -_!? only. No spaces</p>
                     </div>
                     <label for="password-confirm" class="small-text unselected-text">Confirm Password *</label>
                     <div>
                         <input type="password" name="password-confirm" id="password-confirm" placeholder="Confirm Password"  minlength="5" maxlength="15" class="validate" pattern="^[a-zA-Z0-9-_!?]{5,15}$" required>
-                        <p class="invalid-message">5 to 20 characters long with letters, numbers and these symbols -_!?/\ only</p>
+                        <p class="invalid-message">5 to 20 characters long with letters, numbers and these symbols -_!?/\ only. No spaces</p>
                     </div>
                     <p id="password-feedback" class="small-text pb-0 text-center">&nbsp;</p>
                     <hr class="shadow">
