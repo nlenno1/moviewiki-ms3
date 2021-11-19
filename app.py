@@ -46,10 +46,10 @@ def is_correct_user(user_id_to_check):
     check if user created document and is allowed to edit by passing in
     created_by variable and calling to db using session id
     """
-    if session and len(session) > 1 and session["id"]:
+    if session and len(session) > 0 and session["id"]:
         user = mongo.db.users.find_one({"_id": ObjectId(session["id"])},
                                        {"is_superuser": 1})
-        if user and (user["_id"] == ObjectId(user_id_to_check) or session[
+        if user and (user["_id"] == ObjectId(user_id_to_check) or user[
                         "is_superuser"] is True):
             return True
     return False
@@ -1001,41 +1001,49 @@ def edit_review(movie_id):
         return redirect(url_for('view_reviews', movie_id=movie_id))
 
 
-@app.route("/movie/<movie_id>/review/delete")
-def delete_review(movie_id):
+@app.route("/movie/review/delete")
+def delete_review():
     """
     check movie and review exists, delete from all lists and movie doc
     """
-    user = mongo.db.users.find_one({"_id": ObjectId(session["id"])},
-                                   {"_id": 1})
-    movie = find_one_with_id("movies", ObjectId(movie_id))
-    review = find_review_for_movies_in_reviews_list(
-                movie["reviews"], str(user["_id"]))
+    movie_id = request.args.get("movie_id")  # retrieve arguements
+    reviewer_id = request.args.get("reviewer_id")
+    movie = find_one_with_id("movies", ObjectId(movie_id))  # find movie
+    review = find_review_for_movies_in_reviews_list(  # find review in movie
+                movie["reviews"], reviewer_id)
     if review:
         is_user_allowed = is_correct_user(review["reviewer_id"])
         if not is_user_allowed:
             flash("You are not allowed to delete this review")
             return redirect(url_for('view_reviews', movie_id=movie_id))
-        # remove review from movie profile reviews list using review_date
-        update_collection_item_dict("movies", "_id", ObjectId(movie_id),
-                                    "$pull", "reviews",
-                                    "review_date",
-                                    review["review_date"])
-        # remove review from movie profile latest reviews list with review_date
-        update_collection_item_dict("movies", "_id", ObjectId(movie_id),
-                                    "$pull", "latest_reviews", "review_date",
-                                    review["review_date"])
-        # remove review from user profile reviews list
-        update_collection_item_dict("users", "_id", user["_id"],
-                                    "$pull", "movies_reviewed",
-                                    "movie_id", ObjectId(movie_id))
-        # remove review from user profile latest reviews list
-        update_collection_item_dict("users", "_id", user["_id"],
-                                    "$pull", "user_latest_reviews",
-                                    "review_for_id", ObjectId(movie_id))
-        flash("Review deleted")
-        update_average_rating(ObjectId(movie_id))
-        return redirect(url_for('view_reviews', movie_id=movie_id))
+        user = mongo.db.users.find_one({"_id": ObjectId(review["reviewer_id"])},
+                                       {"_id": 1})
+        if user:
+            # remove review from movie profile reviews list using review_date
+            update_collection_item_dict("movies", "_id", ObjectId(movie_id),
+                                        "$pull", "reviews",
+                                        "review_date",
+                                        review["review_date"])
+            # remove review from movie profile latest reviews list
+            # with review_date
+            update_collection_item_dict("movies", "_id", ObjectId(movie_id),
+                                        "$pull", "latest_reviews",
+                                        "review_date",
+                                        review["review_date"])
+            # remove review from user profile reviews list
+            update_collection_item_dict("users", "_id", user["_id"],
+                                        "$pull", "movies_reviewed",
+                                        "movie_id", ObjectId(movie_id))
+            # remove review from user profile latest reviews list
+            update_collection_item_dict("users", "_id", user["_id"],
+                                        "$pull", "user_latest_reviews",
+                                        "review_for_id", ObjectId(movie_id))
+            flash("Review deleted")
+            update_average_rating(ObjectId(movie_id))
+            return redirect(url_for('view_reviews', movie_id=movie_id))
+        else:
+            flash("User Account not found")
+            return redirect(url_for('view_reviews', movie_id=movie_id))
     else:
         flash("Movie and/or Review not found")
         return redirect(url_for('home'))
