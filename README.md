@@ -1,14 +1,16 @@
 # MovieWiki
+This project is designed to be a space where users can share their honest reviews and opinions on movies.
+
 ![Live Project Representation Image](readme_assets/ms3-showcase-image.jpg)
 
 [Link to Live Project](https://moviewiki-project.herokuapp.com/)
 
----
-# Introduction
-
-This project is designed to be a space where users can share their honest reviews and opinions on movies.
 
 This is the third of four Milestone Projects that make up the Full Stack Web Development Program at The Code Institute. The main requirements of this project are to *"build a full-stack site that allows your users to manage a common dataset about a particular domain"* using: **HTML**, **CSS**, **Javascript**, **Python+Flask** and **MongoDB**
+
+I chose to build this project as I have a great love for movies and have spent a large amount of time watching them. 
+
+I have seen so many movies that I forget what I have seen and when I come to pick a movie to watch I can never find anything new that I know I am going to like. This is where the idea for MovieWiki came from!
 
 ---
 
