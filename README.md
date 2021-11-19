@@ -314,17 +314,17 @@ At Mobile screen widths, the navbar link will be contained in a sidebar which ca
 - Update Genre input and button - Collects input and "POST"s it to the database
 - Delete - calls the delete_genre() function and returns to genre.html
 
-### /contact.html
+### /contact
 
 - Form input section - Collects data from user. On invalid input, an error message will display under the input
 - Form name and email address will be autofilled when the user is signed in
 - Send Message Button - Passes message data onto API to send message. Returns user to contact page with the form as it was initially and a message sent notification.
 
-### /contact.html
+### /about
 
 - FAQ Accordion - Contains FAQ information to help the user use MovieWiki
 
-### /contact.html
+### /error
 
 - Error message to help the user understand what went wrong
 - Home link to navigate the user home
