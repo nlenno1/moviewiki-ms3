@@ -184,7 +184,7 @@ The forms and fields follow the same custom look consistently across the website
 **Typography**
 
 To suit the Movie theme of the website, I chose to use [Bebas Neue](https://fonts.google.com/specimen/Bebas+Neue) for the headers, logo and some buttons.
-For the rest of the text, I decieded to use the neutral looking font of [Montserrat](https://fonts.google.com/specimen/Montserrat) to balance the characted of the heading font.
+For the rest of the text, I decided to use the neutral looking font of [Montserrat](https://fonts.google.com/specimen/Montserrat) to balance the character of the heading font.
 
 **Imagery**
 
@@ -193,7 +193,7 @@ The movie placeholder image was chosen as it fits with the colour scheme and fon
 
 # Features
 
-This is a full breakdown of all the features & elements that have been be implimented for the first production release of MovieWiki.
+This is a full breakdown of all the features & elements that have been implemented for the first production release of MovieWiki.
 
 ### Multi Page Elements
 
@@ -464,8 +464,8 @@ Other
 |15 |JS Check Series & reviews information alerting and stopping submit event when the sections aren't displayed |Inputs still contained value/were required when hidden |Used JS to remove value and hidden attribute from section when not displayed |
 |16 | Full page being pushed to the left by a black object |Custom navbar changes were incompatible and unstable therefore effecting the page layout |Removed custom navbar css rules |
 |17 |Movie Images overlapping movie text |Movie text not inside movie display container | Restructured HTML to have the text inside the movie display container div |
-|18 |Movie Image not displaying image |Image link was wrong, broken or not included |Add onerr function to replace any broken image with the placeholder image. Add none as default value when stored and add check Image link functions to swap none for image link before rendering |
-|19 |Bootstrap popover not working |Unable to initialize the Popovers |Build custom popovers for the site using CSS |
+|18 |Movie Image not displaying image |Image link was wrong, broken or not included |Add onerror function to replace any broken image with the placeholder image. Add none as default value when stored and add check Image link functions to swap none for image link before rendering |
+|19 |Bootstrap popover not working |Unable to initialize the tooltips |Build custom tooltips for the site using CSS |
 |20 |TypeError collection object is not callable |Using remove_one method which doesn't exist in PyMongo |Change to remove method which I update to delete_one after a deprecated method warning |
 |21 |Socials links not opening to a new page/tab |target="_blank" had not been added |Added the required attribute |
 |22 |Update movie profile Series Checkbox is checked check not working |Review Checkbox Check was breaking in JS file due to the Review section not being rendered as the user had already added a review to the movie. This broke the Series check as it was after the Review Check in the on submit function |Rearranged the function calls so Series Check was first and add a try catch statement for the Review check to remove any other errors generated |
@@ -579,38 +579,20 @@ You will require a Heroku account to do this
     5. Click Enable Automatic Deployment from the GitHub Master/Main branch
 7. Click Open App
 
-Full instructions on how to create Heroku app
-- connect to repo
-- setup hidden/secret variables
-
-## Database Deployment
-
-Full instructions on how to create MongoDB database
-- user access
-- create collections
-
-## Repository Management
-
-### Clone/Fork Repo
-
-**Installing Requirements**
-
-    pip3 install -r requirements.txt
-
-**Setup Environmental Variables**
-
-
 # Credits
 
 ### Code snippets
 
 Email Regex taken from [Stack Overflow](https://stackoverflow.com/questions/169625/regex-to-check-if-valid-url-that-ends-in-jpg-png-or-gif/169631)
 
-Bootstrap 5 components of
+Tooltips template taken from [W3](https://www.w3schools.com/css/css_tooltip.asp) and heavily modified
+
+Bootstrap 5 components of:
 - Navbar (with dropdown menu)
 - Dropdown Button
 - Accordion
 - Card class
+
 taken from documentation examples and heavily modified.
 
 ### Resources
@@ -619,14 +601,18 @@ taken from documentation examples and heavily modified.
 [Stack Overflow](https://stackoverflow.com/)
 [W3Schools](https://www.w3schools.com/)
 [Python Documentation](https://docs.python.org/3/)
+[PyMongo Documentation](https://pypi.org/project/pymongo/)
 [Flask Documentation](https://flask.palletsprojects.com/en/2.0.x/)
 [Jinja Template Designer Documentation](https://jinja.palletsprojects.com/en/2.11.x/templates/)
 [Guru99](https://www.guru99.com/) - Python Switch Statement Idea
 
-error handlers seen in https://github.com/kairosity/mp3-snapathon/ before being researched and implimented
-readme structure and component ideas from https://github.com/RussOakham/wanderlust-recipes/
+Error Handlers seen in https://github.com/kairosity/mp3-snapathon/ before being researched and implimented
+
+Readme structure and component ideas from https://github.com/RussOakham/wanderlust-recipes/
+
 README template used to produce this documentation is from [Code Institute README Template](https://github.com/Code-Institute-Solutions/readme-template)
-[README and Testing Inspiration](https://github.com/NaoiseGaffney/Training)
+
+[README and Testing Inspiration](https://github.com/NaoiseGaffney/Training) from Naoise Gaffney
 
 ## Content
 
