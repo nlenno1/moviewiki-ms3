@@ -683,9 +683,8 @@ p>a:hover {
     font-size: calc(1.275rem + .3vw);;
 }
 
-.movie-text p .title, .search-results-container p .title {
-    padding-bottom: 0;
-    font-size: calc(1.275rem + .3vw);;
+.movie-text p {
+    margin-bottom: 0;
 }
 
 .movie-placeholder {

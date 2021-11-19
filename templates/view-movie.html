@@ -222,11 +222,11 @@
                     <div class="movie-carousel">
                         {% for item in similar_movies %}
                             <div class="movie-picture-display">
-                                <div class="movie-image-continer">
-                                    <a href="{{ url_for('view_movie', movie_id=item._id) }}">
+                                <a href="{{ url_for('view_movie', movie_id=item._id) }}">
+                                    <div class="movie-image-continer">
                                         <img src="{{ item.image_link }}" onerror="this.onerror=null;this.src='{{ url_for('static', filename='img/movie_placeholder.png') }}'" alt="Movie Image">
-                                    </a>
-                                </div>
+                                    </div>
+                                </a>
                                 <h4 class="movie-text">{{ item.movie_title }}</h4>
                             </div>
                         {% endfor %}
