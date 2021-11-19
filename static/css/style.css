@@ -10,7 +10,8 @@ h4,
 .navbar-brand,
 .logo,
 .movie-font,
-.movie-image-continer, .title {
+.movie-image-continer,
+.title {
     font-family: "Bebas Neue", "sans-serif";
 }
 
@@ -42,7 +43,8 @@ h4,
     text-decoration: none;
 }
 
-.generic-button:hover, .button:hover {
+.generic-button:hover,
+.button:hover {
     color: #fafafa;
 }
 
@@ -67,8 +69,9 @@ h4,
     width: 100%;
 }
 
-.text-button-container, .buttons-container {
-    display:flex;
+.text-button-container,
+.buttons-container {
+    display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
@@ -91,19 +94,6 @@ h4,
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
-}
-
-@media (min-width: 350px) {
-    #user-review-accordion .generic-button {
-        height: 40px;
-        width: 180px;
-    }
-}
-
-@media (min-width: 768px) {
-    .justify-right {
-        justify-content: flex-end;
-    }
 }
 
 /*  Navbar */
@@ -316,30 +306,6 @@ h4,
     background-color: rgba(0, 0, 0, .25);
 }
 
-@media (min-width: 768px) {
-    .content {
-        min-height: calc(100vh - (135px + 2.5rem));
-    }
-}
-
-@media (max-width: 320px) {
-    .sidenav {
-        padding-top: 15px;
-    }
-
-    .sidenav a {
-        font-size: 18px;
-    }
-
-    .navbar-brand {
-        margin: 0;
-    }
-
-    .navbar-toggler {
-        margin-right: 0.5rem;
-    }
-}
-
 /* Footer */
 
 footer {
@@ -432,20 +398,6 @@ footer .logo {
     padding-top: 4px;
 }
 
-@media (min-width: 600px) {
-    .search-bar-container input {
-        width: 450px;
-        margin: 0 20px 0 0;
-    }
-}
-
-@media (min-width: 768px) {
-    .genre-container form button,
-    .genre-container form input {
-        margin: 0.25rem 4px;
-    }
-}
-
 /* Form Elements */
 
 .generic-form {
@@ -512,7 +464,7 @@ select,
     padding: 10px;
 }
 
-input[type="checkbox" i] {
+input[type="checkbox"i] {
     width: 20px !important;
     margin: 3px 3px 3px 4px;
     box-sizing: border-box;
@@ -591,12 +543,6 @@ p>a {
 p>a:hover {
     font-weight: 900;
     color: #ffca18;
-}
-
-@media (min-width: 315px){
-    .form-card {
-        padding: 20px 25px;
-    }
 }
 
 /* Contact */
@@ -680,7 +626,8 @@ p>a:hover {
     flex-direction: column;
     flex-wrap: nowrap;
     padding-bottom: 0;
-    font-size: calc(1.275rem + .3vw);;
+    font-size: calc(1.275rem + .3vw);
+    ;
 }
 
 .movie-text p {
@@ -802,17 +749,6 @@ select>.text-black {
 
 #confirm_profile_delete i {
     font-size: 150px;
-}
-
-
-@media (min-width: 768px) {
-    #processing {
-        min-height: calc(100vh - 135px);
-    }
-
-    #confirm_profile_delete {
-        min-height: calc(100vh - 296px);
-    }
 }
 
 /* Reviews */
@@ -968,7 +904,8 @@ select>.text-black {
     align-items: center;
 }
 
-.profile_controls_container h1, .profile_controls_container div {
+.profile_controls_container h1,
+.profile_controls_container div {
     text-align: center;
 }
 
@@ -980,18 +917,7 @@ select>.text-black {
     text-align: center;
 }
 
-@media (min-width: 768px) {
-    .user-info {
-        display: flex;
-        flex-direction: column;
-        flex-wrap: nowrap;
-        align-items: flex-start !important;
-        justify-content: space-evenly;
-        text-align: start;
-    }
-}
-
-/* Tooltips - example taken from W3 (https://www.w3schools.com/css/css_tooltip.asp)*/
+/* Tooltips - template taken from W3 (https://www.w3schools.com/css/css_tooltip.asp)*/
 
 .tooltip-custom {
     position: relative;
@@ -1049,12 +975,12 @@ textarea:placeholder-shown {
     border: 1px solid #111;
 }
 
-input:placeholder-shown{
+input:placeholder-shown {
     border-bottom: 1px solid #111;
 }
 
 .invalid-message {
-    color:rgb(200, 0, 0);
+    color: rgb(200, 0, 0);
     margin-bottom: 0;
     text-align: center;
     font-size: 0.6rem;
@@ -1063,11 +989,14 @@ input:placeholder-shown{
     min-height: 35px;
 }
 
-input:invalid + p{
+input:invalid+p {
     opacity: 1 !important;
 }
 
-input:valid + p, input:placeholder-shown + p, textarea:valid + p, textarea:placeholder-shown + p {
+input:valid+p,
+input:placeholder-shown+p,
+textarea:valid+p,
+textarea:placeholder-shown+p {
     opacity: 0 !important;
 }
 
@@ -1075,7 +1004,8 @@ input:valid + p, input:placeholder-shown + p, textarea:valid + p, textarea:place
     border-bottom: 2px solid rgb(200, 0, 0);
 }
 
-.input-container input:valid, .input-container input:placeholder-shown {
+.input-container input:valid,
+.input-container input:placeholder-shown {
     border-bottom: 2px solid #111;
 }
 
@@ -1085,4 +1015,74 @@ input:valid + p, input:placeholder-shown + p, textarea:valid + p, textarea:place
     color: black;
     font-weight: 600;
     text-decoration: none;
+}
+
+/* Media Queries */
+
+@media (min-width: 315px) {
+    .form-card {
+        padding: 20px 25px;
+    }
+}
+
+@media (min-width: 350px) {
+    #user-review-accordion .generic-button {
+        height: 40px;
+        width: 180px;
+    }
+}
+
+@media (min-width: 600px) {
+    .search-bar-container input {
+        width: 450px;
+        margin: 0 20px 0 0;
+    }
+}
+
+@media (min-width: 768px) {
+    #confirm_profile_delete {
+        min-height: calc(100vh - 296px);
+    }
+
+    .user-info {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        align-items: flex-start !important;
+        justify-content: space-evenly;
+        text-align: start;
+    }
+
+    .genre-container form button,
+    .genre-container form input {
+        margin: 0.25rem 4px;
+    }
+
+    .justify-right {
+        justify-content: flex-end;
+    }
+
+    .content {
+        min-height: calc(100vh - (135px + 2.5rem));
+    }
+}
+
+/* Condensing the navbar css to use minimal classes 
+required me to use max-width rather than min */
+@media (max-width: 320px) {
+    .sidenav {
+        padding-top: 15px;
+    }
+
+    .sidenav a {
+        font-size: 18px;
+    }
+
+    .navbar-brand {
+        margin: 0;
+    }
+
+    .navbar-toggler {
+        margin-right: 0.5rem;
+    }
 }
