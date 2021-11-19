@@ -10,7 +10,7 @@ function checkIfReviewWasMeantToBeSubmitted(event) {
 function checkIfSeriesInformationWasMeantToBeSubmitted(event) {
     // checks for length in input value and if any over 0 then stop submit
     // all values are cleared when the section is not visible
-    if ($('#submit-series-info').prop('checked') != true && ($('#series-name').val().length > 0 || $('#previous-movie-name').val().length > 0 || $('#next-movie-name').val().length > 0)) {
+    if ($('#submit-series-info').prop('checked') == false && $('#series-name').val().length > 0) {
         alert('You have entered information in the Series Information section but not chosen to submit it. Please correct this');
         event.preventDefault(event);
     }
@@ -19,9 +19,14 @@ function checkIfSeriesInformationWasMeantToBeSubmitted(event) {
 $('document').ready (function () {
     initializeSelectElementColorChange();
     initializeStarRating();
+
     $("form").submit(function(event){
-        checkIfReviewWasMeantToBeSubmitted(event);
         checkIfSeriesInformationWasMeantToBeSubmitted(event);
-        checkStarCountHasBeenEntered(event);
+        try {
+            checkIfReviewWasMeantToBeSubmitted(event);
+            checkStarCountHasBeenEntered(event);
+        } catch (err) {
+
+        }
     });
 });
