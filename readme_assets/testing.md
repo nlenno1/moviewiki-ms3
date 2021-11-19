@@ -69,31 +69,50 @@ Find all my manual testing criteria, procedure and outcomes in my [Manual Testin
     - See above
 - Add, edit and delete my own movie reviews
     - Add - The New Review button is in the navbar movies dropdown or the sidenav at all times, when signed in. This take the user to a form to fill out, which has clear required input markers and validation error messages if the input is not what is required.
-    - Edit - On any Movie Profile the user created, the edit movie profile button is found underneath the movie logo in grey rather than gold to make it stand out from the 3 buttons above it. When this button is click, the user will be taken to the edit movie profile page, which is the same as the create movie page but with the existing values autofilled.
+    ![Contributer Story Image](user-stories/8-1.jpg)
+    ![Contributer Story Image](user-stories/8-1-1.jpg)
+    - Edit - The user can get to the edit movie review page from their profile throught the view all reviews button and then clicking update review on the one they want to edit or via the movie profile, clicking view all reviews and then clicking update review on their review.The update review page is the same as the create movie review page but with the existing values autofilled.
+    ![Contributer Story Image](user-stories/8-2-1.jpg)
+    ![Contributer Story Image](user-stories/8-2.jpg)
     - The Delete Review button is at the bottom of the update review page and will remove the review from the movie, the user's latest reviews (if applicable) and the users reviewed movies list
 - View my latest reviews and all my reviews on the site
     - A user's latest reviews are displayed on their profile page, under the "Your Latest Reviews" heading.
     - To view all a users reviews on MovieWiki, click the View All Review button which is either next to or underneath the "Your Latest Reviews" heading.
+    ![Contributer Story Image](user-stories/9.jpg)
 - Create movie profiles that don't exist yet
     - The New Movie button is in the navbar movies dropdown or the sidenav at all times, when signed in. This take the user to a form to fill out, which has clear required input markers and validation error messages if the input is not what is needed.
+    ![Contributer Story Image](user-stories/10.jpg)
 - Edit and delete movie profiles that I created
     - On any Movie Profile the user created, the edit movie profile button is found underneath the movie logo in grey rather than gold to make it stand out from the 3 buttons above it. 
+    ![Contributer Story Image](user-stories/11.jpg)
     - When this button is click, the user will be taken to the edit movie profile page, which is the same as the create movie page but with the existing values autofilled.
+    - To update the movie all the user has to do is change some values and click update movie
     - The Delete movie button is found at the bottom of the edit movie profile form and will return the user home when the movie is deleted. 
     - Deleting a movie will remove all the reviews for that movie from the movie profile and all users profiles and will also remove the movie name from all users watched, want to watch and reviewed lists.
+    ![Contributer Story Image](user-stories/11-1.jpg)
 - Keep track of what movies I have watched, reviewed and the ones I want to watch
     - The users movies watched, want to watch and movies reviewed lists are displayed in the users profile in their own accordion sections. All movie names are links to the related movie profile page.
+    ![Contributer Story Image](user-stories/12-1.jpg)
+    ![Contributer Story Image](user-stories/12-4.jpg)
+    - To add or remove things from the lists the user just needs to click the buttons below the movie image on the movies profile page. Doing this changes icons for the different lists which have popovers to explain what they mean
+    ![Contributer Story Image](user-stories/12-2.jpg)
     - On the homepage, the 2nd movie carousel, will contain the users want to watch list movies, as long as the list is not empty. 
+    ![Contributer Story Image](user-stories/12-3.jpg)
 - Have new movies suggested to me based on my movie genre preferences, age, what I have watched and the movie's review scores
     - At the bottom of the users profile page and the first movie carousel on the home page displays "Movies Recommended For You".
     - These movies are the top 15 in the list which is selected based on the users favourite genre list, with any films that have an age rating over the uses age removed and then sorted in by average star rating. Movies that are in the user watched list are also removed from the recommended list.
+    ![Contributer Story Image](user-stories/13-1.jpg)
     - When viewing any movie, a movie carousel is displayed at the bottom of the page, which contains movies that share any genres with the current movie, sorted by average rating. The current movie is removed from this list.
+    ![Contributer Story Image](user-stories/13-2.jpg)
 - Edit my account information
     - The update profile button is easily found on the users profile page underneath their username.
-    - This takes the user to the edit user profile form which is autofilled with the existing information to change and submit.
+    ![Contributer Story Image](user-stories/14.jpg)
+    - This takes the user to the edit user profile form which is autofilled with the existing information to change and submit by clicking the update account button at the bottom of the form
+    ![Contributer Story Image](user-stories/14-2.jpg)
 - Delete my account
-    - The Delete account button is found at the bottom of the edit user profile page.
+    - The Delete account button is found at the bottom of the edit user profile page (see above).
     - When clicked the user is shown a confirmation screen which contains details about how their access will be effected if they delete their account.
+    ![Contributer Story Image](user-stories/15-1.jpg)
 </details>
 <br>
 
