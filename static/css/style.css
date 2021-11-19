@@ -292,7 +292,7 @@ h4,
 }
 
 .content {
-    min-height: calc(100vh - 237px);
+    min-height: calc(100vh - (237px + 2.5rem));
 }
 
 #header-image {
@@ -318,7 +318,7 @@ h4,
 
 @media (min-width: 768px) {
     .content {
-        min-height: calc(100vh - 135px);
+        min-height: calc(100vh - (135px + 2.5rem));
     }
 }
 
@@ -796,16 +796,8 @@ select>.text-black {
 /* Delete Confirmation Screen */
 
 #confirm_profile_delete {
-    width: 100%;
-    cursor: wait;
     display: none;
-    min-height: calc(100vh - 237px);
-}
-
-#confirm_profile_delete {
-    cursor: initial;
-    display: none;
-    min-height: calc(100vh - 397px);
+    min-height: calc(100vh - (397px + 2.5rem));
 }
 
 #confirm_profile_delete i {
