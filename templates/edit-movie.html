@@ -62,7 +62,7 @@
                 <p class="invalid-message">Movie Description 10 to 500 characters long</p>
                 <label for="image-link" class="small-text unselected-text">Image Link - Provide an image URL from a hosting website to display</label>
                 <!-- Regex taken from https://stackoverflow.com/questions/169625/regex-to-check-if-valid-url-that-ends-in-jpg-png-or-gif/169631 -->
-                <input value="{{ movie.image_link }}" type="text" name="image-link" id="image-link" placeholder="Link to Movie Image" class="validate" pattern="^https?://(?:[a-z0-9\-]+\.)+[a-z]{2,6}(?:/[^/#?]+)+\.(?:jpg|png)$">
+                <input value="{% if movie.image_link != 'none'  %}{{ movie.image_link }}{% endif %}" type="text" name="image-link" id="image-link" placeholder="Link to Movie Image" class="validate" pattern="^https?://(?:[a-z0-9\-]+\.)+[a-z]{2,6}(?:/[^/#?]+)+\.(?:jpg|png)$">
                 <p class="invalid-message">URL link starting with https:// and ending with either jpg/png<p>
                 <hr class="shadow">
                 <div class="switch-display mb-3">
