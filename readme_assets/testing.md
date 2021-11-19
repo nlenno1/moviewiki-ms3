@@ -18,31 +18,46 @@ Find all my manual testing criteria, procedure and outcomes in my [Manual Testin
 
 - Find out more about MovieWiki and how to use it
     - The About page, which is easily accessible from the navbar or sidenav at all times, contains all the information needed.
-![]()
+![First Time User Story Image](user-stories/1-about-link.jpg)
 
 - Search for specific movies or view all movies
     - On the home page the user can search for any movies using the search bar or, they can view all movies via the Movies navbar button or dropdown menu
-![]()
+![First Time User Story Image](user-stories/2-movie-search.jpg)
+
 
 - Find the highest rated movies and the latest releases
     - On the home page, when a user not logged in, the first movie carousel contains the top 15 highest rated movies and the second contains the 15 films with the latest release dates.
-![]()
+![First Time User Story Image](user-stories/3-highest-and-latest-movies.jpg)
+
 
 - View information about those movies
     - All information about a movie is accessible by clicking on the movie image on any movie display.
+![First Time User Story Image](user-stories/4-movie-info.jpg)
+
 - Quickly establish if I should watch a Movie or not
     - On the movie profile page, the movie synopsis, age rating and average star rating are easy to find and therefore will help the user decide if they want to watch the movie.
     - If the user needs more information, then it is provided further down the page.
+![First Time User Story Image](user-stories/5-movie-watch-info.jpg)
+
 - View movie reviews including ratings
     - There is a View All Reviews button underneath the Average Star Rating on the movie's profile which allows the user to see all the movie's reviews.
     - On the view all review each review is displayed with review text, title, reviewer name, date of review and the star rating displayed using icons to make it more engaging.
     - The user will find the 3 latest reviews for any movie just below the movie description (if provided) on its profile.
     - If there haven't been any reviews for the movies then the latest review section will not display
+![First Time User Story Image](user-stories/6-view-movie-ratings.jpg)
+![First Time User Story Image](user-stories/6a-view-movie-reviews.jpg)
+
 - Contact the admin team if I have any problems, see incorrect information or want to report anything
     - The contact page is always easily accessible from the navbar or sidebar and it is simple to complete and send.
     - When a user is logged in, the name and email fields will autofill for ease of use.
+![First Time User Story Image](user-stories/7-contact.jpg)
+![First Time User Story Image](user-stories/7a-contact-sidebar-signed-in.jpg)
+
 - Create an account if I want to do more
     - The signup page is always easily accessible from the navbar or sidebar through the signup button.
+![First Time User Story Image](user-stories/8-navbar.jpg)
+![First Time User Story Image](user-stories/7a-contact-sidebar.jpg)
+
 </details>
 <br>
 
