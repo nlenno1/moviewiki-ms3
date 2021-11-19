@@ -147,7 +147,7 @@ Find all my manual testing criteria, procedure and outcomes in my [Manual Testin
 
 ## Peer Review 
 
-I requested peer review feedback from my friends, family and the Code Institute slack community. Below you can find any issues or suggestions from my peers and any changes I made in response to the feedback. All other feedback, apart that logged below, was positive.
+I requested peer review feedback from my friends, family and the Code Institute slack community. Below you can find any issues or suggestions from my peers and any changes I made in response to the feedback. Apart from that logged below, all other peer review feedback was positive.
 
 |Peer |Feedback |Changes Made |
 |-----|-----|-----|
@@ -389,7 +389,7 @@ I validated my colour scheme contrast on A11y Color Contrast Accessibility Valid
 
 I used the Sign Up page as it contains all the colours on the site and is accessabily by a user who is not signed in.
 
-During testing, an issue was raised that the white h1 header text did not contrast enough with the background because the background of the h1 element was set to transparent/white by default. The error occured even though the header is placed on the header image using position relative and absolute. To rectify this issue, I altered the background colour of the h1 element to a translucent black. This darkened the image behind it, emplasizing the header text by increasing the contrast and giving the h1 itself element a darker background for the A11y test.
+During testing, an issue was raised that the white h1 header text did not contrast enough with the background because the background of the h1 element was set to transparent/white by default. The error occured even though the header is placed on the header image using position relative and absolute. To rectify this issue, I altered the background colour of the h1 element to a translucent black. This darkened the image behind it, emphasizing the header text by increasing the contrast and giving the h1 itself element a darker background for the A11y test.
 
 After this change, the Sign Up page **passed** the colour contrast test with no issues.
 
