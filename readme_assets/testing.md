@@ -4,11 +4,8 @@
 
 # Manual Testing
 
-Find all my manual testing criteria, procedure and outcomes in my [Manual Testing Document](ms3-manual-feature-testing.pdf)
-
---- 
-
 ## Features Testing
+Find all my manual testing criteria, procedure and outcomes in my [Manual Testing Document](ms3-manual-feature-testing.pdf)
 
 ## User Stories
 

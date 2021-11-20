@@ -405,44 +405,9 @@ I added a few ideas to this list after the development and testing of the projec
 
 --- 
 
-# Technologies Used
-Languages and Librarys
-- [HTML5](https://developer.mozilla.org/en-US/docs/Glossary/HTML5) - Programming Language
-- [CSS 3](https://developer.mozilla.org/en-US/docs/Web/CSS) - Programming Language
-- [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript) - Programming Language
-- [Python](https://www.python.org/) - Programming Language
-- [Werkzeug ](https://www.python.org/) - Python library to manage user management integrity
-- [MongoDB](https://www.mongodb.com/) - Data base storage
-- [Flask](https://flask.palletsprojects.com/en/2.0.x/) - Python Micro-framework Framework
-- [Jinja](https://jinja.palletsprojects.com/en/3.0.x/) - Templating Language
-- [jQuery](https://jquery.com/) - JavaScript Library
-- [Bootstrap v5](https://getbootstrap.com/) - Library Import
-- [Google Fonts](https://fonts.google.com/) - Typography Import
-- [Font Awesome](https://fontawesome.com/) - Icon provider
+# Testing
 
-IDE and Version Control
-- [Git Pod](https://gitpod.io/) - IDE (Integrated Development Environment)
-- [Git](https://git-scm.com/) - Version Control Tool
-- [Github](https://github.com/) - Cloud based hosting service to manager my Git Repositories
-- [Code Institute GitPod Template](https://github.com/Code-Institute-Org/gitpod-full-template) - Provides GitPod extensions to help with code production
-
-Design and Development
-- [Google Chrome Development Tools](https://developer.chrome.com/docs/devtools/) - Design/Development Tools
-- [Figma](https://www.figma.com/) - Wireframe designer software
-- [Coolors](https://coolors.co/) - Colour scheme generator
-- [Lucid App](https://lucid.app/) - Diagram creator
-- [Draw.io](https://app.diagrams.net/) - Flow chart creator
-- [Animista](https://animista.net/) - CSS animation designer
-
-Validation and Testing
-- [CSS Beautifier](https://www.freeformatter.com/css-beautifier.html) - Beautifying CSS Code
-- [JavaScript Validator](https://beautifytools.com/javascript-validator.php) - Validating JS code
-- [Lambda Test](https://www.lambdatest.com/) - Browser Testing Cloud Service
-- [Am I Responsive?](http://ami.responsivedesign.is/) - Webpage Breakpoint visualizer and image generator
-
-Other
-- [Tiny JPG](https://tinyjpg.com/) - JPG and PNG Image Compressor
-- [GIMP](https://www.gimp.org/) - Image editor
+Testing for this project can be found in the [Testing Document](readme_assets/testing.md)
 
 # Bugs and Issues
 
@@ -485,10 +450,6 @@ Unsolved/Known Issues
 - Validate input from textarea input elements
 
 Currently in the HTML files, the Jinja Templating language with the URL for the local movie placeholder image inside the OnError attribute presents as an error/bad code. The OnError functions as expected, so I think this issue is with the code validator rather than the code itself.
-
-# Testing
-
-Testing for this project can be found in the [Testing Document](readme_assets/testing.md)
 
 # Deployment
 
@@ -581,6 +542,45 @@ You will require a Heroku account to do this
     4. Click Connect.
     5. Click Enable Automatic Deployment from the GitHub Master/Main branch
 7. Click Open App
+
+# Technologies Used
+Languages and Librarys
+- [HTML5](https://developer.mozilla.org/en-US/docs/Glossary/HTML5) - Programming Language
+- [CSS 3](https://developer.mozilla.org/en-US/docs/Web/CSS) - Programming Language
+- [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript) - Programming Language
+- [Python](https://www.python.org/) - Programming Language
+- [Werkzeug ](https://www.python.org/) - Python library to manage user management integrity
+- [MongoDB](https://www.mongodb.com/) - Data base storage
+- [Flask](https://flask.palletsprojects.com/en/2.0.x/) - Python Micro-framework Framework
+- [Jinja](https://jinja.palletsprojects.com/en/3.0.x/) - Templating Language
+- [jQuery](https://jquery.com/) - JavaScript Library
+- [Bootstrap v5](https://getbootstrap.com/) - Library Import
+- [Google Fonts](https://fonts.google.com/) - Typography Import
+- [Font Awesome](https://fontawesome.com/) - Icon provider
+
+IDE and Version Control
+- [Git Pod](https://gitpod.io/) - IDE (Integrated Development Environment)
+- [Git](https://git-scm.com/) - Version Control Tool
+- [Github](https://github.com/) - Cloud based hosting service to manager my Git Repositories
+- [Code Institute GitPod Template](https://github.com/Code-Institute-Org/gitpod-full-template) - Provides GitPod extensions to help with code production
+
+Design and Development
+- [Google Chrome Development Tools](https://developer.chrome.com/docs/devtools/) - Design/Development Tools
+- [Figma](https://www.figma.com/) - Wireframe designer software
+- [Coolors](https://coolors.co/) - Colour scheme generator
+- [Lucid App](https://lucid.app/) - Diagram creator
+- [Draw.io](https://app.diagrams.net/) - Flow chart creator
+- [Animista](https://animista.net/) - CSS animation designer
+
+Validation and Testing
+- [CSS Beautifier](https://www.freeformatter.com/css-beautifier.html) - Beautifying CSS Code
+- [JavaScript Validator](https://beautifytools.com/javascript-validator.php) - Validating JS code
+- [Lambda Test](https://www.lambdatest.com/) - Browser Testing Cloud Service
+- [Am I Responsive?](http://ami.responsivedesign.is/) - Webpage Breakpoint visualizer and image generator
+
+Other
+- [Tiny JPG](https://tinyjpg.com/) - JPG and PNG Image Compressor
+- [GIMP](https://www.gimp.org/) - Image editor
 
 # Credits
 
