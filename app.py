@@ -1016,7 +1016,8 @@ def delete_review():
         if not is_user_allowed:
             flash("You are not allowed to delete this review")
             return redirect(url_for('view_reviews', movie_id=movie_id))
-        user = mongo.db.users.find_one({"_id": ObjectId(review["reviewer_id"])},
+        user = mongo.db.users.find_one({"_id": ObjectId(
+                                                review["reviewer_id"])},
                                        {"_id": 1})
         if user:
             # remove review from movie profile reviews list using review_date
@@ -1201,5 +1202,4 @@ def other_error(e):
 if __name__ == "__main__":
     # retrieve the hidden env values and set them in variables
     app.run(host=os.environ.get("IP"),
-            port=int(os.environ.get("PORT")),
-            debug=True)  # this only used in development to debug
+            port=int(os.environ.get("PORT")))
