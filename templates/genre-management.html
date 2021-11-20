@@ -4,6 +4,7 @@
     <h1 id="header-title">Genres</h1>
 
     <div class="container-md">
+        <!-- Add New Genre Input and Button -->
         <form class="search-bar-container mt-5" method="POST" action="{{ url_for('add_genre') }}">
             <div class="input-container">
                 <div>
@@ -12,6 +13,7 @@
             </div>
             <button class="generic-button button-color-gold" type="submit">Add New Genre  <i class="fas fa-folder-plus"></i></button>
         </form>
+        <!-- Genre Display Section with Update and Delete buttons and input -->
         <div class="card form-card">
             <p class="small-text unselected text-center">All Genre names should be 3 to 20 characters long using letters and only 1 space, slash or dash consecutively</p>
             {% for genre in genre_list %}

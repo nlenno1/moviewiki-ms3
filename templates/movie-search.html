@@ -6,6 +6,7 @@
     <div class="container-md">
         <div class="row g-0">
             <div class="col">
+                <!-- Search Instructions and Search Bar Container -->
                 <h2 class="mb-0 mt-4 text-center">Search for a <strong>Movie Title</strong> to see if it is on MovieWiki</h2>
                 <form method="POST" action="{{ url_for('movie_title_search') }}" class="search-bar-container mt-0">
                     <div class="input-container">
@@ -18,6 +19,7 @@
                 </form>
             </div>
         </div>
+        <!-- Search Results Container -->
         <div class="row g-0">
             <div class="col">
                 <h3 class="carousel-label">Search Results</h3>
@@ -36,6 +38,7 @@
                                 </div>
                             </div>
                         {% endfor %}
+                        <!-- End of Results Placeholder -->
                         <div class="movie-picture-display">
                             <div class="movie-placeholder">
                                 <p>Can't find the Movie title you want? <br>It might not exist yet. Try a different search or view all our Movies.</p>

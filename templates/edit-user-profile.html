@@ -9,6 +9,7 @@
                 <div class="text-end small-text unselected-text">
                     * required
                 </div>
+                <!-- Form Input Section -->
                 <label for="username" class="small-text unselected-text">Username *</label>
                 <div>
                     <input type="text" value="{{ user.username }}" name="username" id="username" placeholder="Username" minlength="4" maxlength="20" class="validate" pattern="^(?!.*[-_]{3})[a-zA-Z][a-zA-Z0-9_-]{4,20}$" required>
@@ -37,6 +38,7 @@
                     </div>
                 <hr class="shadow">
                 <p class="text-center small-text">Pick your favourite movie genre.</p>
+                <!-- Genre Dropdown Selector -->
                 <div class="dropdown">
                     <button class="dropdown-button dropdown-toggle text-start" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                       <span>Movie Genre Selection</span><i class="fas fa-angle-down"></i>
@@ -51,6 +53,7 @@
                         {% endfor %}
                     </ul>
                 </div>
+                <!-- Form Buttons Container -->
                 <div class="buttons-container mt-4">
                     <button type="submit" class="generic-button button-color-gold">Update Account</button>
                     <a  class="button generic-button" href="{{ url_for('profile') }}">Cancel</a>
@@ -59,6 +62,7 @@
             </form>
         </div>
     </div>
+    <!-- Confirm Profile Delete Screen - hidden until Delete Profile is clicked -->
     <div id="confirm_profile_delete" class="container card-large">
         <div class="row g-0">
             <div class="col-12 px-2 text-center">
@@ -67,6 +71,7 @@
                 <p class="px-2 mt-4">Deleting this account will be permenent and you will not be able to modify any reviews or movie profiles created with this account even if you register again</p>
             </div>
         </div>
+        <!-- Confirm Delete Buttons Container -->
         <div class="buttons-container mt-4">
             <a  class="button generic-button button-color-red" href="{{ url_for('delete_user_profile', user_id=user['_id']) }}">Delete Profile</a>
             <a  class="button generic-button" href="{{ url_for('profile') }}">Cancel</a>

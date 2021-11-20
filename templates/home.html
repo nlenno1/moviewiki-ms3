@@ -6,10 +6,12 @@
     <div class="container-md">
         <div class="row g-0">
             <div class="col">
+                <!-- Welcome Text / Introduction -->
                 <div class="text-center mt-5 mb-1">
                     <h2>Welcome to MovieWiki, the place to share your views on the latest movies and find information on new movies to watch!</h2>
                     <p class="pb-0">To get started search for a <strong>Movie Title</strong>, have a look through the lists below or visit the About page to learn more about how to use MovieWiki</p>
                 </div>
+                <!-- Movie Search Bar Container -->
                 <form method="POST" action="{{ url_for('movie_title_search') }}" class="search-bar-container mt-0">
                     <div class="input-container">
                         <div>
@@ -21,6 +23,7 @@
                 </form>
             </div>
         </div>
+        <!-- Movies for You Movie Carousel -->
         {% if session["id"] %}
             {% if movies_for_you|length > 0 %}
                 <div class="row g-0">
@@ -37,6 +40,7 @@
                                     <h4 class="movie-text">{{ movie.movie_title }}</h4>
                                 </div>
                             {% endfor %}
+                            <!-- Final Movie Placeholder -->
                             <div class="movie-picture-display">
                                 <div class="movie-placeholder">
                                     <p>Add some genres to your profile for more recomendations here!</p>
@@ -49,6 +53,7 @@
                 </div>
                 <hr class="generic-divider shadow">
             {% endif %}
+            <!-- Want to Watch Movie Carousel -->
             {% if want_to_watch|length > 0 %}
                 <div class="row g-0">
                     <div class="col">
@@ -64,6 +69,7 @@
                                     <h4 class="movie-text">{{ movie.movie_title }}</h4>
                                 </div>
                             {% endfor %}
+                            <!-- Final Movie Placeholder -->
                             <div class="movie-picture-display">
                                 <div class="movie-placeholder">
                                     <p>Go to your profile for a full list of the Movies you Want to Watch!</p>
@@ -77,6 +83,7 @@
                 <hr class="generic-divider shadow">
             {% endif %}
         {% endif %}
+        <!-- Highest Rated Movies Carousel -->
         <div class="row g-0">
             <div class="col">
                 <h3 class="carousel-label">Highest Rated Movies</h3>
@@ -94,6 +101,7 @@
                             </div>
                         </div>
                     {% endfor %}
+                    <!-- Final Movie Placeholder -->
                     {% if session['id'] %}
                         <div class="movie-picture-display">
                             <div class="movie-placeholder">
@@ -115,6 +123,7 @@
             </div>
         </div>
         <hr class="generic-divider shadow">
+        <!-- Latest Releases Movie Carousel -->
         <div class="row g-0">
             <div class="col">
                 <h3 class="carousel-label">Latest Releases</h3>
@@ -132,6 +141,7 @@
                         </div>
                     </div>
                     {% endfor %}
+                    <!-- Final Movie Placeholder -->
                     {% if session['id'] %}
                         <div class="movie-picture-display">
                             <div class="movie-placeholder">
@@ -152,6 +162,7 @@
                 </div>
             </div>
         </div>
+        <!-- All Movies Carousel -->
         <hr class="generic-divider shadow">
         <div class="row g-0">
             <div class="col">
@@ -167,6 +178,7 @@
                             <h4 class="movie-text">{{ movie.movie_title }}</h4>
                         </div>
                     {% endfor %}
+                    <!-- Final Movie Placeholder -->
                     {% if session['id'] %}
                         <div class="movie-picture-display">
                             <div class="movie-placeholder">

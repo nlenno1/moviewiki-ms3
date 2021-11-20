@@ -81,7 +81,7 @@
             </ul>
         </div>
     </nav>
-    <!-- Sidenav bar -->
+    <!-- Sidenav/Sidebar -->
     <aside class="sidenav" id="sidenav">
         <button onclick="closeNav()" class="closebtn">&times;</button>
         <ul class="navbar-nav">
@@ -152,10 +152,12 @@
     <!-- Content container to keep footer at bottom with no content -->
     <main class="content" id="content">
         <img id="header-image" src="{{ url_for('static', filename='img/movie_header_image.jpg') }}" alt="Header image of the page showing two movie reels on a shiny surfacy with a bit of the film unrolled">
+        <!-- Jinja content block -->
         {% block content %}
 
         {% endblock %}
     </main>
+    <!-- Footer -->
     <footer>
         <div class="row text-center g-0">
             <div class="col-12 col-sm-4">
@@ -195,6 +197,7 @@
     <!-- Base Local Scripts -->
     <script src="{{url_for('static', filename='js/base-control.js')}}"></script>
     
+    <!-- Jinja Script Block -->
     {% block scripts %}
 
     {% endblock %}

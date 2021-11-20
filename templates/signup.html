@@ -9,6 +9,7 @@
                 <div class="text-end small-text unselected-text">
                     * required
                 </div>
+                <!-- Sign Up Input Section -->
                 <div class="generic-form">
                     <label for="username" class="small-text unselected-text">Username *</label>
                     <div>
@@ -48,6 +49,7 @@
                         <p class="invalid-message">Email address up to 40 characters which must have @ and a domain extension</p>
                     </div>
                     <hr class="shadow">
+                    <!-- Genre Dropdown Selector - dropdown template taken from Bootstrap 5 -->
                     <label for="genre-dropdown-button" class="text-center">Pick your favourite movie genres</label>
                     <div class="dropdown">
                         <button class="dropdown-button dropdown-toggle text-start" type="button" id="genre-dropdown-button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -59,6 +61,7 @@
                             {% endfor %}
                         </ul>
                     </div>
+                    <!-- Form Buttons Container -->
                     <div class="buttons-container mt-4">
                         <button type="submit" class="generic-button button-color-gold">Create Account</button>
                         <a class="button generic-button" href="{{ url_for('home') }}">Cancel</a>

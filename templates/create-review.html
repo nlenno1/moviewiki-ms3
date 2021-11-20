@@ -4,6 +4,7 @@
     <h1 id="header-title">Add Review</h1>
 
     <div class="container-md">
+        <!-- Instructions -->
         <h3 class="text-center mt-5">Write a Review for any Movie that has a profile</h3>
         <h5 class="text-center">If the movie you want is not in the dropdown menu then it doesn't have a profile yet!</h5>
         <form class="generic-form" method="POST" action="{{ url_for('create_review') }}">
@@ -11,6 +12,7 @@
                 <div class="text-end small-text unselected-text">
                     * required
                 </div>
+                <!-- Movie Select Element -->
                 <label for="movie-title-list" class="small-text unselected-text">Movie Title *</label>
                 <select id="movie-title-list" onfocus="this.size=10" onblur='this.size=1;' onchange='this.size=1; this.blur();' name="selected-movie-id" required>
                     <option class="hidden" value="" hidden>Movie Title *</option>
@@ -22,6 +24,7 @@
                         {% endif %}
                     {% endfor %}
                 </select>
+                <!-- Error message placeholder to maintain input spacing -->
                 <p class="invalid-message mb-2">&nbsp;</p>
                 <label for="review-title" class="small-text unselected-text">Review Title *</label>
                 <input type="text" name="review-title" id="review-title" placeholder="Review Title" minlength="2" maxlength="75" class="validate" pattern='^(?!.*[  !-.,?:/;"(]{3})[a-zA-Z0-9 !-.,?:/;"(]{2,75}$' required>
@@ -29,6 +32,7 @@
                 <label for="movie-review" class="small-text unselected-text">Movie Review *</label>
                 <textarea name="movie-review" id="movie-review" rows ="8" cols="100" placeholder="Movie Review" minlength="10" maxlength="500" class="validate" required></textarea>
                 <p class="invalid-message">Review from 10 to 500 characters in length</p>
+                <!-- Star Rating Selector -->
                 <div class="star-rating-container">
                     <input type="hidden" name="star-count" id="star-count" value="0">
                     <span>Click the stars to choose your Star Rating: </span>
@@ -40,12 +44,14 @@
                         <i id="5" class="fas fa-star"></i>
                     </span>
                 </div>
+                <!-- Form Buttons -->
                 <div class="buttons-container mt-4 mb-2">
                     <button type="submit" class="generic-button button-color-gold">Create Review</a></button>
                     <a class="button generic-button" href="{{ url_for('home') }}">Cancel</a>
                 </div>
             </div>
         </form>
+        <!-- Create Movie Button -->
         {% if not selected_movie_id %}
             <div class="text-button-container">
                 <p>If you can't find the Movie you want to review then make its profile page</p>

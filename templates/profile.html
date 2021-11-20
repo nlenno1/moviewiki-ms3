@@ -5,6 +5,7 @@
 
     <div class="container-md">
         <div class="card form-card shadow">
+            <!-- User Information Section -->
             <div class="row g-0">
                 <div class="col-12 col-md-4 profile_controls_container">
                     <h1>{{ user.username }}</h1>
@@ -30,12 +31,14 @@
                     <p><strong>Number of Reviews submitted :</strong> {{ user.movies_reviewed|length }}</p>
                     <p><strong>Number of Movies Watched :</strong> {{ user.movies_watched|length }}</p>
                 </div>
+                <!-- Edit User Profile Button -->
                 <div class="col-12 d-md-none centered-spaced-out-element ">
                     <a class="button generic-button button-color-gold" href="{{ url_for('edit_user_profile')}}">Update Profile</a>
                 </div>
             </div>
             <div class="row">
                 <div class="col-12">
+                    <!-- User Watched, Want to Watch and Review List Accordion Section - Template taken from Bootstrap 5 -->
                     <div class="accordion mt-3" id="user-profile-accordion">
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="to-watch-header">
@@ -131,6 +134,7 @@
                     </div>
                 </div>
             </div>
+            <!-- User Latest Reviews -->
             {% if user_latest_reviews|length > 0 %}
                 <div class="row mt-4 text-center">
                     <div class="col-12 col-md-6 text-md-start">
@@ -143,6 +147,7 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="card form-card shadow">
+                            <!-- Latest Reviews Accordion Section - template taken from Bootstrap 5 -->
                             <div class="accordion" id="user-review-accordion">
                                 {% for review in user_latest_reviews %}
                                     {% if loop.index < 4 %}
@@ -174,6 +179,7 @@
                 </div>
             {% endif %}
         </div>
+        <!-- Suggested Movies Carousel -->
         {% if suggested_movies|length > 0 %}
             <div class="row g-0">
                 <div class="col">

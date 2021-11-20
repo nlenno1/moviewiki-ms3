@@ -4,17 +4,21 @@
     <h1 id="header-title">Reviews</h1>
 
     <div class="container-md">
+        <!-- Movie Information -->
         <div class="row g-0 py-2 mt-5 reviews-header shadow">
             <div class="col-12 col-sm-6 col-md-3">
+                <!-- Movie Image -->
                 <div class="d-flex justify-content-center">
                     <a href="{{ url_for('view_movie', movie_id=movie._id) }}">
                         <img class="reviews-header-img" onerror="this.onerror=null;this.src='{{ url_for('static', filename='img/movie_placeholder.png') }}'" src="{{ movie.image_link }}" alt="Movie Image">
                     </a>
                 </div>
             </div>
+            <!-- Movie Title -->
             <div class="col-12 col-sm-6 col-md-6 pt-3 text-center">
                 <h1>{{ movie.movie_title }}</h1>
             </div>
+            <!-- Average Star Rating Display -->
             <div class="col-12 col-md-3 pt-3 text-center">
                 <h4 class="mb-0">Average Star Rating:</h4>
                 <div class="five-stars-container">
@@ -26,6 +30,7 @@
                 <h5><span id="average_rating">{% if movie.average_rating %}{{ movie.average_rating }}{% else %}0{% endif %}</span> / 5 </h5>
             </div>
         </div>
+        <!-- Add Review / Sign In Button -->
         <div class="text-button-container">
             <p>Want to add your own review, click here!</p>
             {% if session["user"] %}
@@ -35,14 +40,17 @@
             {% endif %}
         </div>
         <div class="row">
+            <!-- Reviews Section -->
             <div class="col-12 reviews-container">
                 {% if movie_reviews|length > 0 %}
                     {% for review in movie_reviews %}
+                        <!-- Review Card -->
                         <div class="card form-card card-small review-card shadow">
                             <div class="review-header">
                                 <div class="row pb-2">
                                     <div class="col-12 col-md-6">
                                         <h4 class="mb-0"> {{ review.review_title }} </h4>
+                                        <!-- Star Rating Icon Display -->
                                         {% for star in range(review.star_rating) %}
                                             <i class="fas fa-star gold-star"></i>
                                         {% endfor %}
@@ -50,6 +58,7 @@
                                             <i class="fas fa-star"></i>
                                         {% endfor %}
                                     </div>
+                                    <!-- Review Information on the right side of the card -->
                                     <div class="col-12 col-md-6 text-end small-text">
                                         <p class="mb-0">
                                             Reviewer: {{ review.reviewer|title }}
@@ -61,9 +70,11 @@
                                     </div>
                                 </div>
                             </div>
+                            <!-- Review Text -->
                             <div class="review-body small-text">
                                 <p>{{ review.review }}</p>
                             </div>
+                            <!-- Update / Delete Review Buttons -->
                             <div class="review-footer">
                             {% if (review.reviewer_id == session["id"]) %}
                                 <a class="button generic-button button-color-gold" href="{{ url_for('edit_review', movie_id=movie._id) }}">Update Review</a>
@@ -75,6 +86,7 @@
                         </div>
                     {% endfor %}
                 {% else %}
+                    <!-- No Reviews Placeholder -->
                     <div class="row">
                         <div class="col-12">
                             <div class="card form-card card-large text-button-container shadow">
