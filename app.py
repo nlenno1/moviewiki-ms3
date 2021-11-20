@@ -700,8 +700,8 @@ def signout():
     if not user_signed_in:
         flash("You need to be Signed In to Sign Out")
         return redirect(url_for("signin"))
-    flash("You have signed out")
     session.clear()
+    flash("You have signed out")
     return redirect(url_for('home'))
 
 
